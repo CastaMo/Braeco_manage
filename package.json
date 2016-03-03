@@ -23,8 +23,11 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-express-server": "^0.5.1",
     "grunt-hashmap": "^0.1.5",
+    "grunt-jade": "^0.5.1",
     "grunt-livescript": "^0.6.0",
     "grunt-ssh": "^0.12.8",
+    "jade": "^1.11.0",
+    "morgan": "^1.7.0",
     "passport": "^0.3.2",
     "serve-index": "^1.7.2",
     "serve-static": "^1.10.0"
