@@ -107,7 +107,7 @@ module.exports = function(grunt) {
                 dest: '<%= dirs.dest_path %>',
                 expand: true
             },
-    
+
             backup: {
                 cwd: '../braeco_client',
                 src: ['**/*', '!./node_modules/*'],
@@ -134,6 +134,16 @@ module.exports = function(grunt) {
                 files: {
                     "<%= dirs.dist_path %>DinnerManage.php": "<%= dirs.source_path %><%= dirs.jade %>DinnerManage/develop.jade"
                 }
+            },
+            table_test: {
+                files: {
+                    "<%= dirs.dest_path %>DinnerManageTable.html": "<%= dirs.source_path %><%= dirs.jade %>DinnerManageTable/develop.jade"
+                }
+            },
+            table_test: {
+                files: {
+                    "<%= dirs.dest_path %>DinnerManageTable.html": "<%= dirs.source_path %><%= dirs.jade %>DinnerManageTable/develop.jade"
+                }
             }
         },
         sass: {
@@ -145,6 +155,12 @@ module.exports = function(grunt) {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.css %>DinnerManage/main.css": "<%= dirs.source_path %><%= dirs.sass %>DinnerManage/main.sass",
                     "<%= dirs.dest_path %><%= dirs.css %>DinnerManage/base64.css": "<%= dirs.source_path %><%= dirs.sass %>DinnerManage/base64.sass"
+                }
+            },
+            table_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.css %>DinnerManageTable/main.css": "<%= dirs.source_path %><%= dirs.sass %>DinnerManageTable/main.sass",
+                    "<%= dirs.dest_path %><%= dirs.css %>DinnerManageTable/base64.css": "<%= dirs.source_path %><%= dirs.sass %>DinnerManageTable/base64.sass"
                 }
             }
         },
@@ -158,16 +174,29 @@ module.exports = function(grunt) {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.js %>DinnerManage/main.js": "<%= dirs.source_path %><%= dirs.ls %>DinnerManage/main.ls"
                 }
+            },
+            table_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>DinnerManageTable/main.js": "<%= dirs.source_path %><%= dirs.ls %>DinnerManageTable/main.ls"
+                }
             }
+
         },
         watch: {
-            gruntfile: {
-                files: '<%= jshint.gruntfile.src %>',
-                tasks: ['jshint:gruntfile']
+            options: {
+                livereload: lrPort,
+                debounceDelay: debounceDelay
             },
-            lib_test: {
-                files: '<%= jshint.lib_test.src %>',
-                tasks: ['jshint:lib_test', 'qunit']
+            manage: {
+                files: [
+                    '<%= dirs.source_path %>**/DinnerManage/**',
+                    '<%= dirs.source_path %>**/common/**'
+                ],
+                tasks: [
+                    'sass:manage_test',
+                    'livescript:manage_test',
+                    'jade:manage_test'
+                ]
             }
         }
     });
