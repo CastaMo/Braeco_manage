@@ -127,40 +127,45 @@ module.exports = function(grunt) {
             },
             manage_test: {
                 files: {
-                    "<%= dirs.dest_path %>DinnerManage.html": "<%= dirs.source_path %><%= dirs.jade %>DinnerManage/develop.jade"
+                    "<%= dirs.dest_path %>CanteenManage.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManage/develop.jade"
                 }
             },
             manage_dist: {
                 files: {
-                    "<%= dirs.dist_path %>DinnerManage.php": "<%= dirs.source_path %><%= dirs.jade %>DinnerManage/develop.jade"
+                    "<%= dirs.dist_path %>CanteenManage.php": "<%= dirs.source_path %><%= dirs.jade %>CanteenManage/develop.jade"
                 }
             },
-            table_test: {
+            menu_test: {
                 files: {
-                    "<%= dirs.dest_path %>DinnerManageTable.html": "<%= dirs.source_path %><%= dirs.jade %>DinnerManageTable/develop.jade"
+                    "<%= dirs.dest_path %>CanteenManageMenu.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/develop.jade"
                 }
             },
-            table_test: {
+            menu_dist: {
                 files: {
-                    "<%= dirs.dest_path %>DinnerManageTable.html": "<%= dirs.source_path %><%= dirs.jade %>DinnerManageTable/develop.jade"
+                    "<%= dirs.dest_path %>CanteenManageMenu.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/develop.jade"
                 }
             }
         },
-        sass: {
+        less: {
             options: {
                 compress: false,
                 yuicompress: false
             },
-            manage_test: {
+            common: {
                 files: {
-                    "<%= dirs.dest_path %><%= dirs.css %>DinnerManage/main.css": "<%= dirs.source_path %><%= dirs.sass %>DinnerManage/main.sass",
-                    "<%= dirs.dest_path %><%= dirs.css %>DinnerManage/base64.css": "<%= dirs.source_path %><%= dirs.sass %>DinnerManage/base64.sass"
+                    "<%= dirs.dest_path %><%= dirs.css %>common/common.css": "<%= dirs.source_path %><%= dirs.less %>common/common.less",
                 }
             },
-            table_test: {
+            manage_test: {
                 files: {
-                    "<%= dirs.dest_path %><%= dirs.css %>DinnerManageTable/main.css": "<%= dirs.source_path %><%= dirs.sass %>DinnerManageTable/main.sass",
-                    "<%= dirs.dest_path %><%= dirs.css %>DinnerManageTable/base64.css": "<%= dirs.source_path %><%= dirs.sass %>DinnerManageTable/base64.sass"
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManage/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManage/main.less",
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManage/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManage/base64.less"
+                }
+            },
+            menu_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/main.less",
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/base64.less"
                 }
             }
         },
@@ -171,31 +176,68 @@ module.exports = function(grunt) {
                 flatten: true
             },
             manage_test: {
-                files: {
-                    "<%= dirs.dest_path %><%= dirs.js %>DinnerManage/main.js": "<%= dirs.source_path %><%= dirs.ls %>DinnerManage/main.ls"
-                }
+                expand: true,
+                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManage/',
+                src: ['*.ls'],
+                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManage/',
+                ext: '.js'
             },
-            table_test: {
-                files: {
-                    "<%= dirs.dest_path %><%= dirs.js %>DinnerManageTable/main.js": "<%= dirs.source_path %><%= dirs.ls %>DinnerManageTable/main.ls"
-                }
+            menu_test: {
+                expand: true,
+                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMenu/',
+                src: ['*.ls'],
+                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/',
+                ext: '.js'
             }
 
         },
+        browserify: {
+            manage_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManage/main.js": ["<%= dirs.source_path %><%= dirs.ls %>CanteenManage/index.js"]
+                }
+            }
+        },
         watch: {
-            options: {
-                livereload: lrPort,
-                debounceDelay: debounceDelay
-            },
-            manage: {
+            common: {
+                options: {
+                    livereload: lrPort,
+                    debounceDelay: debounceDelay
+                },
                 files: [
-                    '<%= dirs.source_path %>**/DinnerManage/**',
-                    '<%= dirs.source_path %>**/common/**'
+                    "<%= dirs.source_path %><%= dirs.less %>common/**.less",
                 ],
                 tasks: [
-                    'sass:manage_test',
+                    'less:common'
+                ]
+            },
+            manage: {
+                options: {
+                    livereload: lrPort,
+                    debounceDelay: debounceDelay
+                },
+                files: [
+                    '<%= dirs.source_path %>**/CanteenManage/**',
+                ],
+                tasks: [
+                    'less:manage_test',
                     'livescript:manage_test',
+                    'browserify:manage_test',
                     'jade:manage_test'
+                ]
+            },
+            menu: {
+                options: {
+                    livereload: lrPort,
+                    debounceDelay: debounceDelay
+                },
+                files: [
+                    '<%= dirs.source_path %>**/CanteenManageMenu/**',
+                ],
+                tasks: [
+                    'less:menu_test',
+                    'livescript:menu_test',
+                    'jade:menu_test'
                 ]
             }
         }
@@ -210,7 +252,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jade');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-clean');
@@ -222,13 +264,14 @@ module.exports = function(grunt) {
     grunt.registerTask('default', [
         'express',
         'copy:test',
-        'sass',
+        'less',
         'livescript',
+        'browserify',
         'watch'
     ]);
     grunt.registerTask('ready', [
         'copy:test',
-        'sass',
+        'less',
         'livescript',
         'uglify',
         'cssmin',

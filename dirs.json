@@ -2,7 +2,7 @@
 	"css": "public/css/",
 	"js": "public/js/",
 	"ls": "public/ls/",
-	"sass": "public/sass/",
+	"less": "public/less/",
 	"jade": "jade/",
 	"version": "version/",
 	"source_path": "src/",
