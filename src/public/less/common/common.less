@@ -1,6 +1,7 @@
 @grey-color: #EDEDED;
 @border-grey-color: #CECECE;
 @brown-color: #D5CEC6;
+@deep-coffee-color: #441e01;
 
 @config-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYBAMAAAASWSDLAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAeUExURQAAAHR0dGxsbG1tbXFxcW5ubnBwcGxsbG9vb2tra1S3yA4AAAAJdFJOUwAZza4umE3wYyAMqJYAAACTSURBVBjTY2AAAsZgUwEGGGCbOd0BynRj4Jg5M4ExEcRm0QwUnjkz0HkySKXTzEmaM0HYEMjpnAkFZUCOMIwTANJTCWFPAulh1ERwxFqBjCJ1IBHhyGAOpKY3SIDUljKAFE2GqJ2KyrEEK+OoBHPEmuEGJKIaDXQoEgfFOSgOhXtBEclzk8A+dxMAe7sRM0AQQQUAdGVgLp0gMxgAAAAASUVORK5CYII=";
 @menu-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYBAMAAAASWSDLAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAYUExURQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFY3HCoAAAAHdFJOUx7hAX37vG5AQ6XHAAAAVklEQVQY02MIKYcDVwZ3BKeEodxREApEyhnKBRiggBHEUYICCAciAeEoBIJ0iDJBOOIgowqZMGVQ9CglGwOBmRIWPcgcFGWUW4rsBWTPIXsbJUCQgwoAKgE+j/7KdZkAAAAASUVORK5CYII=";
@@ -12,6 +13,10 @@
 * {
     margin: 0;
     padding: 0;
+}
+
+.hide {
+    display: none;
 }
 
 body {
@@ -52,7 +57,7 @@ a {
     width: 100%;
     .nav-container {
         height: 50px;
-        background-color: #441e01;
+        background-color: @deep-coffee-color;
         color: #fff;
         .logo-wrapper {
             float: left;
@@ -108,10 +113,10 @@ a {
 }
 
 #braeco-main {
-    width: 90%;
     margin: 100px auto;
-    min-width: 1150px;
-    min-height: 800px;
+    width: 1150px;
+    height: 800px;
+    overflow: auto;
     background-color: #fff;
     border: solid 1px @border-grey-color;
     #braeco-sidebar {
@@ -124,11 +129,6 @@ a {
             p {
                 padding-left: 40px;
             }
-            a {
-            	p:hover {
-            		background-color: @brown-color;
-            	}
-            }
             .header {
                 line-height: 35px;
                 font-size: 16px;
@@ -136,6 +136,16 @@ a {
             .sub-menu,
             .menu-header {
                 border-bottom: solid 1px @border-grey-color;
+            }
+            .a-link {
+                position: relative;
+                &:hover {
+                    background-color: @brown-color;
+                }
+                &.choose {
+                    border: solid 1px @deep-coffee-color;
+                    background-color: @brown-color;
+                }
             }
             .menu-header {
                 position: relative;
@@ -171,6 +181,22 @@ a {
                 p {
                     font-size: 14px;
                     line-height: 30px;
+                }
+            }
+        }
+    }
+    #braeco-mainbar {
+        height: 800px;
+        overflow: auto;
+        .mainbar-wrapper {
+            width: 100%;
+            .main-title-field {
+                height: 72px;
+                border-bottom: solid 1px @border-grey-color;
+                line-height: 72px;
+                p {
+                    padding-left: 50px; 
+                    font-size: 20px;
                 }
             }
         }
