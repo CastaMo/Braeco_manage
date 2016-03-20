@@ -1,6 +1,14 @@
 @grey-color: #EDEDED;
 @border-grey-color: #CECECE;
 @brown-color: #D5CEC6;
+
+@config-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYBAMAAAASWSDLAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAeUExURQAAAHR0dGxsbG1tbXFxcW5ubnBwcGxsbG9vb2tra1S3yA4AAAAJdFJOUwAZza4umE3wYyAMqJYAAACTSURBVBjTY2AAAsZgUwEGGGCbOd0BynRj4Jg5M4ExEcRm0QwUnjkz0HkySKXTzEmaM0HYEMjpnAkFZUCOMIwTANJTCWFPAulh1ERwxFqBjCJ1IBHhyGAOpKY3SIDUljKAFE2GqJ2KyrEEK+OoBHPEmuEGJKIaDXQoEgfFOSgOhXtBEclzk8A+dxMAe7sRM0AQQQUAdGVgLp0gMxgAAAAASUVORK5CYII=";
+@menu-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYBAMAAAASWSDLAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAYUExURQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFY3HCoAAAAHdFJOUx7hAX37vG5AQ6XHAAAAVklEQVQY02MIKYcDVwZ3BKeEodxREApEyhnKBRiggBHEUYICCAciAeEoBIJ0iDJBOOIgowqZMGVQ9CglGwOBmRIWPcgcFGWUW4rsBWTPIXsbJUCQgwoAKgE+j/7KdZkAAAAASUVORK5CYII=";
+@market-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAXBAMAAADjD5IeAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAqUExURQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoTzogAAAANdFJOUwDNCxtpuJ8qVD2D5fO+VM4kAAAAvUlEQVQY02NggACm1ZIMcMBx9qoCWBBEsNy9COIwLUwHkux7j4AV3L0GIkUmQRSAVBs6gLWyy140YGBwVYAYVNKapNleDjOWeabM7UVwSwzv3r0C5/jeBdnSmgnmrAVyrFbtvc2g4c7c2Xv37lWV1Lt3GXIuJoqY3r17goE59irD2buRBuzZGxsYGEycGWTvTAAaXgwxaVoIyO4yAwgP7A7DCQivMaimI3F6LiJJxd5dgODk3nVAcEq3gYwDAHN/Ok5oDZhsAAAAAElFTkSuQmCC";
+@data-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAXCAMAAADTAfSvAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAzUExURQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKMFRskAAAARdFJOUwAYnogySV/+yfANA2uuP7vcxsB72wAAAKtJREFUGNNtkdsaxBAMhHNAiDi8/9Mu3dbatnNj/CTyDSB5KgJJuks6+FjdUj1840EVLmHjPBaaFBf1EjXrG7XmdopVB8UoYaOZUnihRexOsb5QZP+kSOHRQV2zORYhcoBAOGi1Gq2GJTOLDNl3xrLi6mXIQ+ismaX5qbFqziOLTgoaxY6hXUrua3TbzAlWKkHOODMJXXDz6/yvbvUCqD+r7Xx3Xijrl/go+wDaKwkpZtCFjgAAAABJRU5ErkJggg==";
+@business-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAA2UExURQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALd2aHIAAAARdFJOUwC5RQndoFaP9uxrrcUyH9CFmHFDFwAAAQhJREFUKM9lklF2xCAIRQEJCKKR/W+2mknmNO39Up4iPAT4zeC84VccOtebP0IRvZE/wuR/N0p3VaeufIHgx0JHb7bfrEhj7oDD3lcXzhrHETVN5ApdN5w4TyljFIo0ckRUOM4Te8uzAzVcYiQO3cJqqZFVAeGGPGGvj52KVMkzCmi4d4KCOWllhzATzQOA2EIKwNrQucrFRyhdT5sfoVYDeVJNJ9copaX2bYntx2slmIx4TuiWotsSjWgDM0aRq9yW0ZE5wFtrTpZBMDqsjlbrX0suGwx1LsNsn3osaXMQ1svEkN33bclmdpmtqYxV9wbgmTLP8R7ad5he3sKy5AP3t/D9MPYWfgDQUg/JToAtLwAAAABJRU5ErkJggg==";
+@settings-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYBAMAAAASWSDLAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAwUExURQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFo/HAsAAAAQdFJOUwD7zRwPiwe7dDCjUPBj37D75jP5AAAA8UlEQVQY02NgAIEUNwYYYN5apB7tAGGzXJJRLzqoC+FZCXW6pcxQXAxWVBgMokzFDYCkl0QCiMPWuARIXgyznsaWlsDsKgtUpWSpeJa7Y4OVsZIBA7cEq6CcRWjDPYPGDQysJ70eCm4NDVtnMCeAIV3FVVFmV8RiPQOnMganMo5CofmrVr4zSFcBcpg/nuUQvHkOxAEi8wss9dlyIGWsJxmyJjCEcsuBDOCWYHDaAOYAjWZWMpjTwFbPqWesBHT3xYA5AWz6DPdMZcEOBXP6YkAOZa4pBHECwV5gsBL86aI+4+FiuLfPwLzNwIIUIIigAgBZkEb2pdiYrgAAAABJRU5ErkJggg==";
+
 * {
     margin: 0;
     padding: 0;
@@ -31,6 +39,11 @@ a {
     -moz-perspective: 1000;
     backface-visibility: hidden;
     perspective: 1000;
+}
+
+.background-norm(@elem: "none") {
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 #braeco-head-nav {
@@ -98,18 +111,18 @@ a {
     width: 90%;
     margin: 100px auto;
     min-width: 1150px;
-    min-height: 700px;
+    min-height: 800px;
     background-color: #fff;
     border: solid 1px @border-grey-color;
     #braeco-sidebar {
         float: left;
-        height: 700px;
+        height: 800px;
         border-right: solid 1px @border-grey-color;
         .sidebar-wrapper {
             width: 150px;
             min-width: 150px;
             p {
-                padding-left: 30px;
+                padding-left: 40px;
             }
             a {
             	p:hover {
@@ -117,18 +130,47 @@ a {
             	}
             }
             .header {
-                line-height: 30px;
+                line-height: 35px;
                 font-size: 16px;
             }
             .sub-menu,
-            .config-menu-header,
-            .sub-menu-header {
+            .menu-header {
                 border-bottom: solid 1px @border-grey-color;
+            }
+            .menu-header {
+                position: relative;
+                icon {
+                    position: absolute;
+                    width: 18px;
+                    height: 18px;
+                    top: 8.5px;
+                    left: 12px;
+                    background-size: 18px 18px;
+                    .background-norm();
+                    &.config-icon-pic {
+                        background-image: url(@config-icon-url);
+                    }
+                    &.menu-icon-pic {
+                        background-image: url(@menu-icon-url);
+                    }
+                    &.market-icon-pic {
+                        background-image: url(@market-icon-url);
+                    }
+                    &.data-icon-pic {
+                        background-image: url(@data-icon-url);
+                    }
+                    &.business-icon-pic {
+                        background-image: url(@business-icon-url);
+                    }
+                    &.settings-icon-pic {
+                        background-image: url(@settings-icon-url);
+                    }
+                }
             }
             ul.sub-menu-content-list {
                 p {
                     font-size: 14px;
-                    line-height: 25px;
+                    line-height: 30px;
                 }
             }
         }
