@@ -9,8 +9,12 @@ module.exports = function(passport) {
 		res.render('./CanteenManage/develop');
 	});
 
-	router.get('/index', function(req, res) {
-		res.render('index');
+	router.get('/Menu/Food', function(req, res) {
+		res.render('./CanteenManageMenu/Food/develop');
+	});
+
+	router.get('/Menu/Category', function(req, res) {
+		res.render('./CanteenManageMenu/Category/develop');
 	});
 
 	router.get('/renew', function(req, res) {

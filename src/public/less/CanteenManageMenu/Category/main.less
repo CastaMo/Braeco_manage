@@ -1,0 +1,74 @@
+@import "../../common/common";
+
+#category {
+	margin-bottom: 100px;
+	.category-wrapper {
+		width: 90%;
+		margin: 0 auto;
+		.c-block {
+			margin-top: 25px;
+		}
+		#category-main {
+			.category-new-field {
+				#new-btn {
+					background-color: @deep-coffee-color;;
+					color: #fff;
+					cursor: pointer;
+				}
+			}
+			.category-all-field {
+				width: 100%;
+				margin-top: 50px;
+				border: solid 1px @border-grey-color;
+				.t-header {
+					background-color: rgb(231, 232, 235);
+				}
+				.t-header > *:not(.clear), .t-body > *:not(.clear) {
+					float: left;
+					text-align: center;
+					width: 33%;
+				}
+				.t-header > *:not(.clear) {
+					height: 40px;
+					line-height: 40px;
+				}
+				.t-body > *:not(.clear) {
+					height: 80px;
+					line-height: 80px;
+					border-top: solid 1px @border-grey-color;
+				}
+				.t-first {
+					border-right: solid 1px @border-grey-color;
+				}
+				.t-third {
+					border-left: solid 1px @border-grey-color;
+				}
+				.food-pic-field {
+					margin: 10px auto;
+					.img {
+						margin: 0 auto;
+						width: 215.4px;
+						height: 60px;
+						.background-norm();
+						background-size: 215.4px 60px;
+					}
+				}
+				.oper-field {
+					width: 180px;
+					margin: 0 auto;
+					> *:not(.clear) {
+						color: @deep-coffee-color;
+						float: left;
+						width: 60px;
+						p {
+							cursor: pointer;
+							&:hover {
+								text-decoration: underline;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

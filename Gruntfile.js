@@ -132,17 +132,27 @@ module.exports = function(grunt) {
             },
             manage_dist: {
                 files: {
-                    "<%= dirs.dist_path %>CanteenManage.php": "<%= dirs.source_path %><%= dirs.jade %>CanteenManage/develop.jade"
+                    "<%= dirs.dist_path %>CanteenManage.php": "<%= dirs.source_path %><%= dirs.jade %>CanteenManage/formal.jade"
                 }
             },
-            menu_test: {
+            menu_category_test: {
                 files: {
-                    "<%= dirs.dest_path %>CanteenManageMenu.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/develop.jade"
+                    "<%= dirs.dest_path %>CanteenManageMenu/Category/Category.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Category/develop.jade"
                 }
             },
-            menu_dist: {
+            menu_category_dist: {
                 files: {
-                    "<%= dirs.dest_path %>CanteenManageMenu.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/develop.jade"
+                    "<%= dirs.dist_path %>CanteenManageMenu/Category/Category.php": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Category/formal.jade"
+                }
+            },
+            menu_food_test: {
+                files: {
+                    "<%= dirs.dest_path %>CanteenManageMenu/Food/Food.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/develop.jade"
+                }
+            },
+            menu_food_dist: {
+                files: {
+                    "<%= dirs.dist_path %>CanteenManageMenu/Food/Food.php": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/formal.jade"
                 }
             }
         },
@@ -162,10 +172,16 @@ module.exports = function(grunt) {
                     "<%= dirs.dest_path %><%= dirs.css %>CanteenManage/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManage/base64.less"
                 }
             },
-            menu_test: {
+            menu_food_test: {
                 files: {
-                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/main.less",
-                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/base64.less"
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Food/main.less",
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Food/base64.less"
+                }
+            },
+            menu_category_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Category/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Category/main.less",
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Category/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Category/base64.less"
                 }
             }
         },
@@ -182,11 +198,18 @@ module.exports = function(grunt) {
                 dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManage/',
                 ext: '.js'
             },
-            menu_test: {
+            menu_food_test: {
                 expand: true,
-                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMenu/',
+                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMenu/Food',
                 src: ['*.ls'],
-                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/',
+                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food',
+                ext: '.js'
+            },
+            menu_category_test: {
+                expand: true,
+                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMenu/Category',
+                src: ['*.ls'],
+                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category',
                 ext: '.js'
             }
 
@@ -195,6 +218,16 @@ module.exports = function(grunt) {
             manage_test: {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManage/main.js": ["<%= dirs.source_path %><%= dirs.ls %>CanteenManage/index.js"]
+                }
+            },
+            menu_food_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/main.js": ["<%= dirs.source_path %><%= dirs.ls %>CanteenManageMenu/Food/index.js"]
+                }
+            },
+            menu_category_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/main.js": ["<%= dirs.source_path %><%= dirs.ls %>CanteenManageMenu/Category/index.js"]
                 }
             }
         },
@@ -226,18 +259,34 @@ module.exports = function(grunt) {
                     'jade:manage_test'
                 ]
             },
-            menu: {
+            menu_food: {
                 options: {
                     livereload: lrPort,
                     debounceDelay: debounceDelay
                 },
                 files: [
-                    '<%= dirs.source_path %>**/CanteenManageMenu/**',
+                    '<%= dirs.source_path %>**/CanteenManageMenu/Food/**',
                 ],
                 tasks: [
-                    'less:menu_test',
-                    'livescript:menu_test',
-                    'jade:menu_test'
+                    'less:menu_food_test',
+                    'livescript:menu_food_test',
+                    'browserify:menu_food_test',
+                    'jade:menu_food_test'
+                ]
+            },
+            menu_category: {
+                options: {
+                    livereload: lrPort,
+                    debounceDelay: debounceDelay
+                },
+                files: [
+                    '<%= dirs.source_path %>**/CanteenManageMenu/Category/**',
+                ],
+                tasks: [
+                    'less:menu_category_test',
+                    'livescript:menu_category_test',
+                    'browserify:menu_category_test',
+                    'jade:menu_category_test'
                 ]
             }
         }
