@@ -32,6 +32,25 @@ a {
     color: black;
 }
 
+.clear {
+    clear: both;
+}
+
+.btn {
+    padding: 0 15px;
+    float: left;
+    line-height: 30px;
+    .rounded-corners(5px);
+}
+
+.rounded-corners (@radius: 5px) {
+    -webkit-border-radius: @radius;
+    -moz-border-radius: @radius;
+    -ms-border-radius: @radius;
+    -o-border-radius: @radius;
+    border-radius: @radius;
+}
+
 .transition (@time: .3s) {
     -webkit-transition: all @time ease-in-out;
     -moz-transition: all @time ease-in-out;
