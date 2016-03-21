@@ -20,6 +20,7 @@ let win = window, doc = document
 	_init-all-module = ->
 		page = require "./pageManage.js";			page.initial!
 		new_ = require "./newManage.js"; 			new_.initial!
+		edit = require "./editManage.js"; 			edit.initial!
 		main = require "./mainManage.js";		 	main.initial _get-category-JSON
 
 
@@ -28,3 +29,4 @@ let win = window, doc = document
 		else window.main-init = _main-init
 
 	_test-is-data-ready!
+	

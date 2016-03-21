@@ -1,4 +1,5 @@
 page = require "./pageManage.js"
+edit = require "./editManage.js"
 main-manage = let
 	[deep-copy, getJSON] 	=	 [util.deep-copy, util.getJSON]
 
@@ -11,7 +12,7 @@ main-manage = let
 				id 		:	category.categoryid
 				name	:	category.categoryname
 				pic 	:	category.categorypic
-				isHead	:	category.isHead || false
+				is-head	:	category.is-head || false
 			}
 
 	_init-all-event = !->
@@ -32,6 +33,9 @@ main-manage = let
 		init-all-event: !->
 			(@dom.find ".remove").click !~> if confirm "确定要删除品类吗?(此操作无法恢复)" then @remove-self!
 			(@dom.find ".top").click !~> @top-self!
+			(@dom.find ".edit").click !~>
+				edit.get-category-and-show @
+				page.toggle-page "edit"
 
 		init-dom: !->
 			_get-category-dom = (category)->
@@ -60,11 +64,13 @@ main-manage = let
 								</div>
 								<div class='clear'></div>"
 				dom.html innerHTML
-				if category.isHead then _category-main-container-dom.prepend dom
+				if category.is-head then _category-main-container-dom.prepend dom
 				else _category-main-container-dom.append dom
 				dom
 
 			@dom = _get-category-dom @
+			@name-dom = @dom.find ".t-first p"
+			@pic-dom = @dom.find ".t-second .food-pic-field .img"
 
 		remove-self: !->
 			@dom.fade-out 200, !~>
@@ -73,12 +79,12 @@ main-manage = let
 
 		top-self: !->
 			@dom.remove!
-			temp = {}; deep-copy @, temp; temp.dom = null
+			temp = {}; deep-copy @, temp; temp.dom = null; temp.name-dom = null; temp.pic-dom = null
 			main-manage.add-new-category {
 				name 		:		temp.name
 				id 			:		temp.id
 				pic 		:		temp.pic
-				isHead 		:		true
+				is-head 		:		true
 			}
 
 		edit-self: (options)!->

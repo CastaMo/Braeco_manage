@@ -1,23 +1,29 @@
 page = require "./pageManage.js"
 main = require "./mainManage.js"
-new-manage = let
+edit-manage = let
 	
 	[get-Object-URL] = [util.get-Object-URL]
 
-	_name-input-dom = $ "input\#new-name"
-	_pic-input-dom = $ "input\#new-pic"
-	_display-img-dom = $ "\#new-table .img-field .img"
-	_cancel-btn-dom = $ "\#new-table .cancel-btn"
-	_save-btn-dom = $ "\#new-table .save-btn"
+	_name-input-dom = $ "input\#edit-name"
+	_pic-input-dom = $ "input\#edit-pic"
+	_display-img-dom = $ "\#edit-table .img-field .img"
+	_cancel-btn-dom = $ "\#edit-table .cancel-btn"
+	_save-btn-dom = $ "\#edit-table .save-btn"
 
 	_is-wait = false
+	_current-category = null
 	_src = ""
 	_name = ""
 
 	_reset-all-input = !->
+		_current-category := null
 		_name-input-dom.val ''; _name := ""
 		_pic-input-dom.val null; _src := ""
 		_display-img-dom.css {"background-image" : ""}
+
+	_init-input = !->
+		_name := _current-category.name; _name-input-dom.val _name
+		_src := _current-category.pic; _display-img-dom.css {"background-image":"url(#{_src})"}
 
 
 	_init-all-event = !->
@@ -33,7 +39,7 @@ new-manage = let
 		_pic-input-dom.change !->
 			if file = @files[0]
 				_src := util.getObjectURL file
-				_display-img-dom.css({"background-image":"url(#{_src})"})
+				_display-img-dom.css {"background-image":"url(#{_src})"}
 
 	_check-is-valid = ->
 		_name := _name-input-dom.val()
@@ -43,11 +49,15 @@ new-manage = let
 		return true
 
 
-	_success-callback = (options)->
-		main.add-new-category options
+	_success-callback = (options)!->
+		_current-category.edit-self options
 		_reset-all-input!
 		page.toggle-page "main"
 
+
+	get-category-and-show: (category)!->
+		_current-category := category
+		_init-input!
 
 	initial: !->
 		_init-all-event!
@@ -55,4 +65,4 @@ new-manage = let
 
 
 
-module.exports = new-manage
+module.exports = edit-manage
