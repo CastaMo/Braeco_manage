@@ -17,38 +17,6 @@
 								p 操作
 							.clear
 					#t-body-field
-						#category-0.t-body
-							.t-first
-								p 店长推荐
-							.t-second
-								.food-pic-field
-									.img.default-category-image
-							.t-third
-								.oper-field
-									.edit
-										p 修改
-									.remove
-										p 删除
-									.top
-										p 置顶
-									.clear
-							.clear
-						#category-1.t-body
-							.t-first
-								p 店长推荐
-							.t-second
-								.food-pic-field
-									.img.default-category-image
-							.t-third
-								.oper-field
-									.edit
-										p 修改
-									.remove
-										p 删除
-									.top
-										p 置顶
-									.clear
-							.clear
 		#category-new.c-block
 			#new-table.single-table
 				#t-header-field
@@ -61,12 +29,12 @@
 							.name-field
 								p 品类名
 								.input-field
-									input(name='new-name', id='new-name' type='text')
+									input(name='new-name', id='new-name' type='text' maxlength='21')
 								.clear
 							.pic-field
 								p 图片
 								.input-field
-									label
+									label(for='new-pic')
 										.img-field
 											.img.default-category-image
 									input(name='new-pic', id='new-pic' type='file' class='hide')
@@ -91,12 +59,12 @@
 							.name-field
 								p 品类名
 								.input-field
-									input(name='edit-name', id='edit-name' type='text')
+									input(name='edit-name', id='edit-name' type='text' maxlength='21')
 								.clear
 							.pic-field
 								p 图片
 								.input-field
-									label
+									label(for='edit-pic')
 										.img-field
 											.img.default-category-image
 									input(name='edit-pic', id='edit-pic' type='file' class='hide')

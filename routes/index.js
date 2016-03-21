@@ -33,6 +33,13 @@ module.exports = function(passport) {
 		}, 0);
 	});
 
+	router.get('/Menu/Category/Data', function(req, res) {
+		setTimeout(function() {
+			res.send("var allData = '"+'{"message":"success","data":{"category":[{"dishes":[],"categoryid":234,"categoryname":"a","categorypic":"http:\/\/static.brae.co\/images\/category\/8hicrfu2qp8areusucya3ruu322sskn0"},{"dishes":[],"categoryid":214,"categoryname":"\u5662\u54c8\u554a\u597d\u54c8\u563f\u563f","categorypic":"http:\/\/static.brae.co\/images\/category\/lodkbx7vqwkiymwqf5x7nzecuc1u2sgo"},{"dishes":[],"categoryid":215,"categoryname":"\u5496\u5561","categorypic":"http:\/\/static.brae.co\/images\/category\/avemumn6pgi8nev4ozr7mshivk9zo23z"},{"dishes":[],"categoryid":216,"categoryname":"\u86cb\u7cd5","categorypic":"http:\/\/static.brae.co\/images\/category\/1ljfqmfl28fzfyi4ckf6bhdn2yqbn1to"},{"dishes":[],"categoryid":217,"categoryname":"\u5976\u8336","categorypic":"http:\/\/static.brae.co\/images\/category\/mnw6fnwsish5ogkz2bimxqgeq5rznmla"}]}}'+"';"+
+			"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;}");
+		}, 0);
+	});
+
 	router.post('/test', function(req, res) {
 	    res.json({
 	        message: "success"
