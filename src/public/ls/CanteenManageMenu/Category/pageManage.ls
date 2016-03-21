@@ -2,6 +2,8 @@ module.exports = let
 
 	_state = null
 
+	$("\#Category-sub-menu").addClass "choose"
+
 	_mainDom = $ "\#category-main"
 	_newDom = $ "\#category-new"
 	_editDom = $ "\#category-edit"
@@ -12,4 +14,3 @@ module.exports = let
 			dom.fade-out 200
 
 	initial: ->
-		_unshowAllDomExceptGiven _mainDom
