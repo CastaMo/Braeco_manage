@@ -50,4 +50,62 @@
 									.clear
 							.clear
 		#category-new.c-block
+			#new-table.single-table
+				#t-header-field
+					.t-header
+						.t-content
+							p 新建品类
+				#t-body-field
+					.t-body
+						.t-content
+							.name-field
+								p 品类名
+								.input-field
+									input(name='new-name', id='new-name' type='text')
+								.clear
+							.pic-field
+								p 图片
+								.input-field
+									label
+										.img-field
+											.img.default-category-image
+									input(name='new-pic', id='new-pic' type='file' class='hide')
+								.clear
+				#t-bottom-field
+					.t-bottom
+						.t-content
+							.cancel-btn.btn
+								p 取消
+							.save-btn.btn
+								p 保存
+							.clear
 		#category-edit.c-block
+			#edit-table.single-table
+				#t-header-field
+					.t-header
+						.t-content
+							p 修改品类
+				#t-body-field
+					.t-body
+						.t-content
+							.name-field
+								p 品类名
+								.input-field
+									input(name='edit-name', id='edit-name' type='text')
+								.clear
+							.pic-field
+								p 图片
+								.input-field
+									label
+										.img-field
+											.img.default-category-image
+									input(name='edit-pic', id='edit-pic' type='file' class='hide')
+								.clear
+				#t-bottom-field
+					.t-bottom
+						.t-content
+							.cancel-btn.btn
+								p 取消
+							.save-btn.btn
+								p 保存
+							.clear

@@ -2,6 +2,8 @@
 @border-grey-color: #CECECE;
 @brown-color: #D5CEC6;
 @deep-coffee-color: #441e01;
+@orange-color: #FFC107;
+@shallow-grey-color: #E3E3E3;
 
 @config-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYBAMAAAASWSDLAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAeUExURQAAAHR0dGxsbG1tbXFxcW5ubnBwcGxsbG9vb2tra1S3yA4AAAAJdFJOUwAZza4umE3wYyAMqJYAAACTSURBVBjTY2AAAsZgUwEGGGCbOd0BynRj4Jg5M4ExEcRm0QwUnjkz0HkySKXTzEmaM0HYEMjpnAkFZUCOMIwTANJTCWFPAulh1ERwxFqBjCJ1IBHhyGAOpKY3SIDUljKAFE2GqJ2KyrEEK+OoBHPEmuEGJKIaDXQoEgfFOSgOhXtBEclzk8A+dxMAe7sRM0AQQQUAdGVgLp0gMxgAAAAASUVORK5CYII=";
 @menu-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYBAMAAAASWSDLAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAYUExURQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFY3HCoAAAAHdFJOUx7hAX37vG5AQ6XHAAAAVklEQVQY02MIKYcDVwZ3BKeEodxREApEyhnKBRiggBHEUYICCAciAeEoBIJ0iDJBOOIgowqZMGVQ9CglGwOBmRIWPcgcFGWUW4rsBWTPIXsbJUCQgwoAKgE+j/7KdZkAAAAASUVORK5CYII=";
@@ -27,6 +29,12 @@ ul li {
     list-style-type: none;
 }
 
+input {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
 a {
     text-decoration: none;
     color: black;
@@ -37,6 +45,7 @@ a {
 }
 
 .btn {
+    cursor: pointer;
     padding: 0 15px;
     float: left;
     line-height: 30px;

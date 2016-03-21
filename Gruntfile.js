@@ -217,17 +217,17 @@ module.exports = function(grunt) {
         browserify: {
             manage_test: {
                 files: {
-                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManage/main.js": ["<%= dirs.source_path %><%= dirs.ls %>CanteenManage/index.js"]
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManage/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManage/index.js"]
                 }
             },
             menu_food_test: {
                 files: {
-                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/main.js": ["<%= dirs.source_path %><%= dirs.ls %>CanteenManageMenu/Food/index.js"]
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/index.js"]
                 }
             },
             menu_category_test: {
                 files: {
-                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/main.js": ["<%= dirs.source_path %><%= dirs.ls %>CanteenManageMenu/Category/index.js"]
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/index.js"]
                 }
             }
         },
