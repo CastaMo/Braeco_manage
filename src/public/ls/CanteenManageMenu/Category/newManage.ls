@@ -1,5 +1,4 @@
-page = require "./pageManage.js"
-main = require "./mainManage.js"
+page = main = null
 new-manage = let
 	
 	[get-Object-URL] = [util.get-Object-URL]
@@ -13,6 +12,10 @@ new-manage = let
 	_is-wait = false
 	_src = ""
 	_name = ""
+
+	_init-depend-module = !->
+		page := require "./pageManage.js"
+		main := require "./mainManage.js"
 
 	_reset-all-input = !->
 		_name-input-dom.val ''; _name := ""
@@ -51,6 +54,7 @@ new-manage = let
 
 	initial: !->
 		_init-all-event!
+		_init-depend-module!
 
 
 

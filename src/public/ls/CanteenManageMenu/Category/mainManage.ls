@@ -1,5 +1,4 @@
-page = require "./pageManage.js"
-edit = require "./editManage.js"
+page = edit = null
 main-manage = let
 	[deep-copy, getJSON] 	=	 [util.deep-copy, util.getJSON]
 
@@ -18,6 +17,10 @@ main-manage = let
 	_init-all-event = !->
 		($ "\#category-main \#new-btn").click !->
 				page.toggle-page "new"
+
+	_init-depend-module = !->
+		page := require "./pageManage.js"
+		edit := require "./editManage.js"
 
 	class Category
 		_category-main-container-dom = $ "\#category-main .category-all-field \#t-body-field"
@@ -84,18 +87,20 @@ main-manage = let
 				name 		:		temp.name
 				id 			:		temp.id
 				pic 		:		temp.pic
-				is-head 		:		true
+				is-head 	:		true
 			}
 
 		edit-self: (options)!->
 			if options.name isnt @name
-				@name = options.name
+				@name = options.name; @name-dom.html @name
+			@pic = options.pic; @pic-dom.css {"background-image":"url(#{@pic})"}
 
 
 
 	initial: (_get-category-JSON)!->
 		_init-all-category _get-category-JSON
 		_init-all-event!
+		_init-depend-module!
 
 	add-new-category: (options)-> category = new Category options
 

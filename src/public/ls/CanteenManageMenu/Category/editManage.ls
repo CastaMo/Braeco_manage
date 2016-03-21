@@ -1,5 +1,4 @@
-page = require "./pageManage.js"
-main = require "./mainManage.js"
+page = main = null
 edit-manage = let
 	
 	[get-Object-URL] = [util.get-Object-URL]
@@ -14,6 +13,10 @@ edit-manage = let
 	_current-category = null
 	_src = ""
 	_name = ""
+
+	_init-depend-module = !->
+		page := require "./pageManage.js"
+		main := require "./mainManage.js"
 
 	_reset-all-input = !->
 		_current-category := null
@@ -34,7 +37,6 @@ edit-manage = let
 			if _check-is-valid! then _success-callback {
 				name 	:	_name
 				pic 	:	_src
-				id 		:	123434
 			}
 		_pic-input-dom.change !->
 			if file = @files[0]
@@ -61,8 +63,7 @@ edit-manage = let
 
 	initial: !->
 		_init-all-event!
-
-
+		_init-depend-module!
 
 
 module.exports = edit-manage
