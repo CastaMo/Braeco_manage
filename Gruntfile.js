@@ -145,9 +145,9 @@ module.exports = function(grunt) {
                     "<%= dirs.dist_path %>CanteenManageMenu/Category/Category.php": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Category/formal.jade"
                 }
             },
-            menu_food_test: {
+            menu_food_single_test: {
                 files: {
-                    "<%= dirs.dest_path %>CanteenManageMenu/Food/Food.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/develop.jade"
+                    "<%= dirs.dest_path %>CanteenManageMenu/Food/Single/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/Single/Single.jade"
                 }
             },
             menu_food_dist: {
@@ -172,16 +172,16 @@ module.exports = function(grunt) {
                     "<%= dirs.dest_path %><%= dirs.css %>CanteenManage/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManage/base64.less"
                 }
             },
-            menu_food_test: {
-                files: {
-                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Food/main.less",
-                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Food/base64.less"
-                }
-            },
             menu_category_test: {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Category/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Category/main.less",
                     "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Category/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Category/base64.less"
+                }
+            },
+            menu_food_single_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Food/Single/main.less",
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Food/Single/base64.less"
                 }
             }
         },
@@ -198,20 +198,20 @@ module.exports = function(grunt) {
                 dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManage/',
                 ext: '.js'
             },
-            menu_food_test: {
-                expand: true,
-                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMenu/Food',
-                src: ['*.ls'],
-                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food',
-                ext: '.js'
-            },
             menu_category_test: {
                 expand: true,
                 cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMenu/Category',
                 src: ['*.ls'],
                 dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category',
                 ext: '.js'
-            }
+            },
+            menu_food_single_test: {
+                expand: true,
+                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMenu/Food/Single',
+                src: ['*.ls'],
+                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single',
+                ext: '.js'
+            },
 
         },
         browserify: {
@@ -220,14 +220,14 @@ module.exports = function(grunt) {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManage/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManage/index.js"]
                 }
             },
-            menu_food_test: {
-                files: {
-                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/index.js"]
-                }
-            },
             menu_category_test: {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/index.js"]
+                }
+            },
+            menu_food_single_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/index.js"]
                 }
             }
         },
@@ -259,21 +259,6 @@ module.exports = function(grunt) {
                     'jade:manage_test'
                 ]
             },
-            menu_food: {
-                options: {
-                    livereload: lrPort,
-                    debounceDelay: debounceDelay
-                },
-                files: [
-                    '<%= dirs.source_path %>**/CanteenManageMenu/Food/**',
-                ],
-                tasks: [
-                    'less:menu_food_test',
-                    'livescript:menu_food_test',
-                    'browserify:menu_food_test',
-                    'jade:menu_food_test'
-                ]
-            },
             menu_category: {
                 options: {
                     livereload: lrPort,
@@ -287,6 +272,21 @@ module.exports = function(grunt) {
                     'livescript:menu_category_test',
                     'browserify:menu_category_test',
                     'jade:menu_category_test'
+                ]
+            },
+            menu_food_single: {
+                options: {
+                    livereload: lrPort,
+                    debounceDelay: debounceDelay
+                },
+                files: [
+                    '<%= dirs.source_path %>**/CanteenManageMenu/Food/Single/**',
+                ],
+                tasks: [
+                    'less:menu_food_single_test',
+                    'livescript:menu_food_single_test',
+                    'browserify:menu_food_single_test',
+                    'jade:menu_food_single_test'
                 ]
             }
         }

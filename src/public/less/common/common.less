@@ -190,6 +190,9 @@ a {
                 line-height: 60px;
                 a {
                     color: #fff;
+                    p {
+                        font-size: 18px;
+                    }
                 }
             }
             .ac-op-container {
@@ -321,13 +324,34 @@ a {
         overflow: auto;
         .mainbar-wrapper {
             width: 100%;
-            .main-title-field {
-                height: 72px;
+            .main-head-field {
                 border-bottom: solid 1px @border-grey-color;
-                line-height: 72px;
-                p {
+                p.title {
+                    line-height: 72px;
                     padding-left: 50px; 
                     font-size: 20px;
+                }
+                .head-nav {
+                    .nav-container {
+                        li {
+                            float: left;
+
+                            /*使下划线刚好覆盖框线*/
+                            position: relative;
+                            top: 1px;
+                            /*end*/
+
+                            padding: 0 30px;
+                            line-height: 40px;
+                            &:hover {
+                                border-bottom: solid 3px @border-grey-color;
+                            }
+                            &.choose {
+                                color: @orange-color;
+                                border-bottom: solid 3px @orange-color;
+                            }
+                        }
+                    }
                 }
             }
         }
