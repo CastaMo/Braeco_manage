@@ -1,7 +1,6 @@
 @import "../common/common";
-
-#rectangle {
-    width: 190px;
+.rectangle {
+    width: 240px;
     height: 46px;
     background: white;
     float: left;
@@ -12,10 +11,10 @@
     font-size: 13px;
 }
 
-.mainbar-wrapper .choose {
+.mainbar-wrapper #choose {
     top: 20px;
     left: 20px;
-    width: 640px;
+    width: 800px;
     height: 46px;
     position: relative;
     border-color: #797979;
@@ -23,16 +22,16 @@
     border-style: solid;
 }
 
-.step1 #rectangle {
+#step1 .rectangle {
     background: #0066CC;
     color: white;
 }
 
-.step1 #triangle_border_right span {
+#step1 .triangle_border_right span {
     border-color: transparent transparent transparent #0066CC;
 }
 
-#triangle_border_right {
+.triangle_border_right {
     width: 0;
     height: 0;
     border-width: 23px 0 23px 23px;
@@ -44,8 +43,8 @@
     float: left;
 }
 
-#triangle_border_right span {
-	display: block;
+.triangle_border_right span {
+    display: block;
     width: 0;
     height: 0;
     border-width: 22px 0 22px 22px;
@@ -56,4 +55,87 @@
     float: left;
     top: -22px;
     left: -23px;
+}
+
+#stepContent {
+    border-style: solid;
+    border-color: #797979;
+    border-width: 1px;
+    width: 800px;
+    height: 280px;
+    margin: 40px 0 0 20px;
+}
+
+.peopleManage {
+    margin: 40px 40px 0 40px;
+    border-color: #797979;
+    border-width: 1px;
+    border-style: solid;
+    width: 260px;
+    height: 70px;
+    float: left;
+}
+
+.productManage {
+    float: left;
+    margin: 40px 40px 0 40px;
+    border-color: #797979;
+    border-width: 1px;
+    border-style: solid;
+    width: 260px;
+    height: 70px;
+}
+
+.paymentManage {
+    float: left;
+    margin: 40px 40px 0 40px;
+    border-color: #797979;
+    border-width: 1px;
+    border-style: solid;
+    width: 260px;
+    height: 70px;
+}
+
+.peoPic {
+    background-color: #0066CC;
+}
+
+.proPic {
+    background-color: #0066CC;
+}
+
+.payPic {
+    background-color: #0066CC;
+}
+
+p {
+    font-size: 13px;
+}
+
+#stepChoose {
+    position: relative;
+    border-style: solid;
+    border-color: #797979;
+    border-width: 1px;
+    width: 800px;
+    height: 40px;
+    margin: -1px 0 0 20px;
+}
+
+.nextBtn {
+    background-color: #F3F3F3;
+    border-color: black;
+    color: black;
+}
+
+.lastBtn {
+    background-color: #F3F3F3;
+    border-color: black;
+    color: black;
+}
+
+.finBtn {
+    background-color: #F3F3F3;
+    border-color: black;
+    color: black;
 }
