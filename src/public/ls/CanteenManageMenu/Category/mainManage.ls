@@ -91,9 +91,8 @@ main-manage = let
 			}
 
 		edit-self: (options)!->
-			if options.name isnt @name
-				@name = options.name; @name-dom.html @name
-			@pic = options.pic; @pic-dom.css {"background-image":"url(#{@pic})"}
+			if options.name isnt @name then @name = options.name; @name-dom.html @name
+			if @pic = options.pic then @pic-dom.css {"background-image":"url(#{@pic})"}
 
 
 
@@ -104,8 +103,8 @@ main-manage = let
 
 	add-new-category: (options)-> category = new Category options
 
-	is-exist-name: (name)->
-		[return true for id, category of _categories when category.name is name]
+	is-exist-name: (name, id_)->
+		[return true for id, category of _categories when category.name is name and (Number id) isnt (Number id_)]
 		return false
 
 

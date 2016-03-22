@@ -11,7 +11,6 @@
             .category-new-field {
                 #new-btn {
                     background-color: @deep-coffee-color;
-                    ;
                     color: #fff;
                     cursor: pointer;
                 }
@@ -39,7 +38,14 @@
                     border-top: solid 1px @border-grey-color;
                 }
                 .t-first {
+                    position: relative;
                     border-right: solid 1px @border-grey-color;
+                    p {
+                        width: 70%;
+                        line-height: 25px;
+                        .total-center;
+                        .ellipsisWithLineNum(3);
+                    }
                 }
                 .t-third {
                     border-left: solid 1px @border-grey-color;
@@ -48,10 +54,8 @@
                     margin: 10px auto;
                     .img {
                         margin: 0 auto;
-                        width: 215.4px;
-                        height: 60px;
+                        .background-size(215.4px, 60px);
                         .background-norm();
-                        background-size: 215.4px 60px;
                     }
                 }
                 .oper-field {
@@ -113,9 +117,7 @@
                     		cursor: pointer;
                     		.img-field {
                     			.img {
-                    				width: 215.4px;
-                    				height: 60px;
-                    				background-size: 215.4px 60px;
+                                    .background-size(215.4px, 60px);
                     			}
                     		}
                     	}

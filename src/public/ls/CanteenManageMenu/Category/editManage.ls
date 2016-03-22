@@ -26,7 +26,7 @@ edit-manage = let
 
 	_init-input = !->
 		_name := _current-category.name; _name-input-dom.val _name
-		_src := _current-category.pic; _display-img-dom.css {"background-image":"url(#{_src})"}
+		if _src := _current-category.pic then _display-img-dom.css {"background-image":"url(#{_src})"}
 
 
 	_init-all-event = !->
@@ -47,7 +47,7 @@ edit-manage = let
 		_name := _name-input-dom.val()
 		if _name.length is 0 then alert "请输入品类名称"; return false
 		if _name.length > 21 then alert "输入的品类名称长度大于21"; return false
-		if main.is-exist-name _name then alert "已存在该名字的品类, 请输入其他品类名"; return false
+		if main.is-exist-name _name, _current-category.id then alert "已存在该名字的品类, 请输入其他品类名"; return false
 		return true
 
 
