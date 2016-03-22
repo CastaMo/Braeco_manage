@@ -11,14 +11,31 @@ block head
 
 '''这里是主体'''
 block content
-	div.choose
-		div.step1
-			div#rectangle 第一步:餐厅设置
-			div#triangle_border_right
+	div#choose
+		div#step1
+			div.rectangle 第一步:餐厅设置
+			div.triangle_border_right
 				span
-		div.step2
-			div#rectangle 第二步:基础业务
-			div#triangle_border_right
+		div#step2
+			div.rectangle 第二步:基础业务
+			div.triangle_border_right
 				span
-		div.step3
-			div#rectangle 第三步:菜单管理
+		div#step3
+			div.rectangle 第三步:菜单管理
+	div#stepContent
+		div.peopleManage
+			div.peoPic 
+			p 员工管理 
+			p 管理不同员工，为其分配账号与角色权限
+		div.productManage
+			div.proPic 
+			p 产品安装
+			p 安装打印程序与手机APP，进一步提高效率
+		div.paymentManage
+			div.payPic
+			p 支付渠道开通
+			p 开通微信支付等支付渠道
+	div#stepChoose
+		div.nextBtn.btn 下一步
+		div.lastBtn.btn 上一步
+		div.finBtn.btn 完成
