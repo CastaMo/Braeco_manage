@@ -30,3 +30,4 @@ main-manage = let
 		_init-all-event!
 		_init-depend-module!
  
+ module.exports = main-manage

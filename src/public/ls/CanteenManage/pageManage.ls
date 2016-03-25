@@ -1,5 +1,5 @@
 page-manage = let
-	_state = 0
+	_state = main._state
 
 	$(".config-menu-header").addClass "choose"
 
@@ -37,7 +37,12 @@ page-manage = let
 				_judge-to-show!
 				_unshow-all-dom-except-given _step3-dom
 	}
+
+	_init-depend-module = !->
+		main := require "./mainManage.js"
+
 	initial: ->
+	_init-depend-module!
 	_judge-to-show!
 	toggle-page: (page)->
 		get-state: -> return _state
