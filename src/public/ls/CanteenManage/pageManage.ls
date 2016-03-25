@@ -3,9 +3,9 @@ page-manage = let
 
 	$(".config-menu-header").addClass "choose"
 
-	_step1-dom = $ "\#stepContent1, \#nextBtn"
-	_step2-dom = $ "\#stepContent2, \#nextBtn, \#lastBtn"
-	_step3-dom = $ "\#stepContent3, \#lastBtn, \#finBtn"
+	_step1-dom = $ "\#step1Content, \#nextBtn"
+	_step2-dom = $ "\#step2Content, \#nextBtn, \#lastBtn"
+	_step3-dom = $ "\#step3Content, \#lastBtn, \#finBtn"
 	_all-dom = [_step1-dom, _step2-dom, _step3-dom]
 
 	_judge-to-show = ->
@@ -38,8 +38,9 @@ page-manage = let
 				_unshow-all-dom-except-given _step3-dom
 	}
 	initial: ->
-
+	_judge-to-show!
 	toggle-page: (page)->
+		get-state: -> return _state
 		_toggle-page-callback[page]?!
 		set-timeout "scrollTo(0, 0)", 0
 
