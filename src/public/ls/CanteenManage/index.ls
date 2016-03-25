@@ -7,8 +7,9 @@ let win = window, doc = document
 	}
 
 	_main-init = (result)->
-	_init-callback[result.message]?(result)
+		_init-callback["success"]?(result)
 
 	_init-all-module = !->
 		page = require "./pageManage.js";			page.initial!
-	_test-is-data-ready!
+
+	_main-init!
