@@ -12,29 +12,59 @@ block head
 '''这里是主体'''
 block content
 	div#choose
-		div#step1
+		div#step1.btn
 			div.rectangle 第一步:餐厅设置
 			div.triangle_border_right
 				span
-		div#step2
+		div#step2.btn
 			div.rectangle 第二步:基础业务
 			div.triangle_border_right
 				span
-		div#step3
+		div#step3.btn
 			div.rectangle 第三步:菜单管理
-	div#stepContent
+	div#step1Content
 		div.peopleManage
-			div.peoPic 
-			p 员工管理 
+			div.peoPic.default-display-image
+			h5 员工管理 
 			p 管理不同员工，为其分配账号与角色权限
 		div.productManage
-			div.proPic 
-			p 产品安装
+			div.proPic.default-display-image
+			h5 产品安装
 			p 安装打印程序与手机APP，进一步提高效率
 		div.paymentManage
-			div.payPic
-			p 支付渠道开通
+			div.payPic.default-display-image
+			h5 支付渠道开通
 			p 开通微信支付等支付渠道
+	div#step2Content
+		div.canOrder
+			div.canPic.default-display-image
+			h5 堂食自助点餐
+			p 顾客到店后扫码自助点餐，极大提高经营效率
+		div.takeAway
+			div.takePic.default-display-image
+			h5 预订外带
+			p 顾客远程点餐，按时到店可直接取餐外带
+		div.takeDis
+			div.takeDisPic.default-display-image
+			h5 外卖配送
+			p 顾客远程订单，餐厅负责送餐上门
+	div#step3Content
+		div.categoryPart
+			div.categoryPic.default-display-image
+			h5 品类
+			p 将单品分为不同品类管理，提高菜单可读性
+		div.singlePart
+			div.singlePartPic.default-display-image
+			h5 单品
+			p 菜单最基本单位，丰富信息将吸引顾客下单
+		div.packagePart
+			div.packagePartPic.default-display-image
+			h5 套餐
+			p 添加基于单品的套餐组合，提高客单价
+		div.mustPoint
+			div.mustPointPic.default-display-image
+			h5 必点
+			p 编辑顾客必点的商品，比如茶位、纸巾
 	div#stepChoose
 		div.nextBtn.btn 下一步
 		div.lastBtn.btn 上一步

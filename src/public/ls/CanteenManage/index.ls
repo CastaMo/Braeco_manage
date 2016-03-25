@@ -1,3 +1,14 @@
 let win = window, doc = document
-	a = 10
-	b = require("./pageManage.js")
+
+	_init-callback = {
+		"Need to rescan qrcode" 	:	->	win.location.pathname = "/Table/Confirm/rescan"
+		"success" 					:	(result)->
+			_init-all-module()
+	}
+
+	_main-init = (result)->
+	_init-callback[result.message]?(result)
+
+	_init-all-module = !->
+		page = require "./pageManage.js";			page.initial!
+	_test-is-data-ready!
