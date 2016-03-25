@@ -27,6 +27,10 @@
     color: white;
 }
 
+#step1.btn, #step2.btn, #step3.btn {
+    padding: 0;
+}
+
 #step1 .triangle_border_right span {
     border-color: transparent transparent transparent #0066CC;
 }
@@ -57,7 +61,7 @@
     left: -23px;
 }
 
-#stepContent {
+#step1Content, #step2Content, #step3Content {
     border-style: solid;
     border-color: #797979;
     border-width: 1px;
@@ -66,7 +70,11 @@
     margin: 40px 0 0 20px;
 }
 
-.peopleManage {
+#step3Content , #step2Content{
+    display: none;
+}
+
+.peopleManage, .productManage, .paymentManage {
     margin: 40px 40px 0 40px;
     border-color: #797979;
     border-width: 1px;
@@ -76,40 +84,39 @@
     float: left;
 }
 
-.productManage {
-    float: left;
+.canOrder, .takeAway, .takeDis{
     margin: 40px 40px 0 40px;
     border-color: #797979;
     border-width: 1px;
     border-style: solid;
     width: 260px;
     height: 70px;
+    float: left;
 }
 
-.paymentManage {
-    float: left;
+.categoryPart, .singlePart, .packagePart, .mustPoint {
     margin: 40px 40px 0 40px;
     border-color: #797979;
     border-width: 1px;
     border-style: solid;
     width: 260px;
     height: 70px;
+    float: left;
 }
 
-.peoPic {
-    background-color: #0066CC;
-}
-
-.proPic {
-    background-color: #0066CC;
-}
-
-.payPic {
-    background-color: #0066CC;
-}
-
-p {
+p, h5 {
     font-size: 13px;
+}
+
+h5 {
+    margin-top: 10px;
+    color: blue;
+}
+
+.peoPic, .proPic, .payPic {
+    .background-size(50px, 50px);
+    float: left;
+    margin: 10px 20px 0 20px;
 }
 
 #stepChoose {
@@ -118,24 +125,16 @@ p {
     border-color: #797979;
     border-width: 1px;
     width: 800px;
-    height: 40px;
+    height: 50px;
     margin: -1px 0 0 20px;
 }
 
-.nextBtn {
+.nextBtn, .lastBtn, .finBtn {
     background-color: #F3F3F3;
-    border-color: black;
+    border-style: solid;
+    border-color: #797979;
+    border-width: 1px;
     color: black;
-}
-
-.lastBtn {
-    background-color: #F3F3F3;
-    border-color: black;
-    color: black;
-}
-
-.finBtn {
-    background-color: #F3F3F3;
-    border-color: black;
-    color: black;
+    font-size: 13px;
+    margin: 10px 0 0 20px;
 }
