@@ -1,12 +1,12 @@
-page = null
 main-manage = let
-	_state = page._state
-	_step1-dom = $ "\#step1Content"
-	_step2-dom = $ "\#step2Content"
-	_step3-dom = $ "\#step3Content"
-	_next-dom = $ "\#nextBtn"
-	_last-dom = $ "\#lastBtn"
-	_fin-dom = $ "\#finBtn"
+	page = null
+	_state = 0
+	_step1-dom = $ "\#step1"
+	_step2-dom = $ "\#step2"
+	_step3-dom = $ "\#step3"
+	_next-dom = $ "\.nextBtn"
+	_last-dom = $ "\.lastBtn"
+	_fin-dom = $ "\.finBtn"
 
 	_init-all-event = !->
 		_step1-dom.click !->
@@ -16,18 +16,30 @@ main-manage = let
 		_step3-dom.click !->
 			page.toggle-page "step3"
 		_next-dom.click !->
-			_state = _state+1
+			if _state < 2
+				_state := _state + 1
+			console.log "next_state:", _state
+			if _state == 1
+				page.toggle-page "step2"
+			else if _state == 2
+				page.toggle-page "step3"
 		_last-dom.click !->
-			_state = _state-1
+			if _state > 0
+				_state := _state - 1
+			console.log "last_state:", _state
+			if _state == 1
+				page.toggle-page "step2"
+			else if _state == 0
+				page.toggle-page "step1"
 
 	_init-depend-module = !->
 		page := require "./pageManage.js"
 
-	main-manage: (main)->
-		get-state: -> return _state
+	get-state: -> return _state
 
 	initial: !->
-		_init-all-event!
 		_init-depend-module!
+		_init-all-event!
+
  
- module.exports = main-manage
+module.exports = main-manage
