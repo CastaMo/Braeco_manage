@@ -11,6 +11,10 @@
     font-size: 13px;
 }
 
+#step3 .rectangle {
+    width: 274px;
+}
+
 .mainbar-wrapper #choose {
     top: 20px;
     left: 20px;
@@ -20,6 +24,8 @@
     border-color: #797979;
     border-width: 1px;
     border-style: solid;
+    margin: 0;
+    padding: 0;
 }
 
 #step1 .rectangle {
@@ -29,6 +35,8 @@
 
 #step1.btn, #step2.btn, #step3.btn {
     padding: 0;
+    border-width: 0;
+    border-style: none;
 }
 
 #step1 .triangle_border_right span {
@@ -106,6 +114,7 @@
 
 p, h5 {
     font-size: 13px;
+    margin: 0 10px 0 10px; 
 }
 
 h5 {
@@ -118,6 +127,19 @@ h5 {
     float: left;
     margin: 10px 20px 0 20px;
 }
+
+.canPic, .takePic, .takeDisPic {
+    .background-size(50px, 50px);
+    float: left;
+    margin: 10px 20px 0 20px;
+}
+
+.categoryPic, .singlePartPic, .mustPointPic, .packagePartPic {
+    .background-size(50px, 50px);
+    float: left;
+    margin: 10px 20px 0 20px;
+}
+
 
 #stepChoose {
     position: relative;
@@ -137,4 +159,8 @@ h5 {
     color: black;
     font-size: 13px;
     margin: 10px 0 0 20px;
+}
+
+.lastBtn, .finBtn {
+    display: none;
 }
