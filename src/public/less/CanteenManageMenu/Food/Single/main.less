@@ -30,7 +30,7 @@
                         > *:not(.clear) {
                             cursor: pointer;
                             width: 55px;
-                            margin-left: 20px;
+                            margin-left: 40px;
                             font-size: 14px;
                             &:hover {
                                 p {
@@ -58,6 +58,11 @@
                     background-color: @grey-color;
                     .name-container {
                         .parallel-container;
+                        .t-choose {
+                            .choose-pic {
+                                margin: 14px 0 0 18.5px;
+                            }
+                        }
                         > *:not(.clear) {
                             height: 46px;
                             p {
@@ -73,20 +78,33 @@
                                 &:hover {
                                     background-color: @shallow-orange-color;
                                 }
+                                position: relative;
                                 text-align: center;
                                 font-size: 14px;
-                                .parallel-container;
-                                > *:not(.clear) {
-                                    height: 120px;
-                                    position: relative;
-                                    > * {
-                                        .total-center;
-                                        &:not(.pic-field) {
-                                            width: 85%;
+                                .single-info {
+                                    .parallel-container;
+                                    > *:not(.clear) {
+                                        height: 120px;
+                                        position: relative;
+                                        > * {
+                                            .total-center;
+                                            &:not(.pic-field, .choose-field) {
+                                                width: 85%;
+                                            }
+                                        }
+                                        p {
+                                            .ellipsisWithLineNum();
                                         }
                                     }
-                                    p {
-                                        .ellipsisWithLineNum();
+                                }
+                                .single-cover {
+                                    .hide-cover {
+                                        position: absolute;
+                                        height: 100%;
+                                        right: 0;
+                                        top: 0;
+                                        .background-norm();
+                                        .background-size(862.688px, 120px);
                                     }
                                 }
                             }
@@ -95,6 +113,11 @@
                 }
                 .t-choose {
                     width: 6%;
+                    .choose-pic {
+                        .background-norm();
+                        .background-size(16px, 16px);
+                        border: solid 1px @border-grey-color;
+                    }
                 }
                 .t-pic {
                     width: 15%;

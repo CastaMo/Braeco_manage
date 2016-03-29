@@ -1,4 +1,5 @@
 @font-grey-color: #9B9B9B;
+@font-black-color: #4A4A4A;
 @grey-color: #F4F5F9;
 @yellow-color: #FFCC00;
 @border-grey-color: #C8C7CC;
@@ -31,6 +32,7 @@
 
 body {
     background-color: @grey-color;
+    color: @font-black-color;
     font-family: "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "\9ED1\4F53", Arial, sans-serif;
 }
 
@@ -295,6 +297,9 @@ a {
                 }
                 &.choose {
                     background-color: @orange-color;
+                    a {
+                        color: #fff;
+                    }
                 }
             }
             .menu-header {

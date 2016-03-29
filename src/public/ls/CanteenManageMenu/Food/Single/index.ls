@@ -19,7 +19,7 @@ let win = window, doc = document
 
 	_init-all-module = !->
 		page = require "./pageManage.js";			page.initial!
-		#main = require "./mainManage.js";		 	main.initial _get-food-JSON
+		main = require "./mainManage.js";		 	main.initial _get-food-JSON
 
 
 	_test-is-data-ready = ->
