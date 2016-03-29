@@ -11,14 +11,74 @@
 			.food-single-table				
 				.food-single-oper-field
 					.oper-container
-						.new 新建
-						.edit 修改
-						.remove 删除
-						.copy 复制
-						.move 移动
-						.top 置顶
-						.show-or-hide 售罄
+						#new
+							icon.new-icon
+							p.new-word 新建
+						#edit
+							icon.edit-icon
+							p.edit-word 修改
+						#move
+							icon.move-icon
+							p.move-word 移动
+						#top
+							icon.top-icon
+							p.top-word 置顶
+						#copy
+							icon.copy-icon
+							p.copy-word 复制
+						#show-or-hide
+							icon.show-or-hide-icon
+							p.show-or-hide-word 售罄
+						#remove
+							icon.remove-icon
+							p.remove-word 删除
+						.clear
 				.food-single-header-field
+					.name-container
+						.t-choose
+						.t-pic
+							p 图片
+						.t-name
+							p 名称
+						.t-price
+							p 基础价格
+						.t-property
+							p 属性组
+						.t-dc
+							p 促销工具
+						.t-remark
+							p 备注标签
+						.clear
 				.food-single-list-field
+					.single-list-field
+						ul.single-list
+							li.singel-content
+								.t-choose
+								.t-pic.left-right-border
+									.pic-field
+										.pic.default-square-image
+								.t-name
+									.name-field
+										p 单品中文名称最长十二个字
+										p English name up to 2lines
+								.t-price.left-right-border
+									.price-field
+										p 19
+								.t-property
+									.property-field
+										p 咖啡口味
+										p 冷热
+										p 大小
+										p ...余81个属性
+								.t-dc.left-right-border
+									.dc-field
+										p 立减2元
+										p 2016-02-14
+										p 0:00 - 23:59
+								.t-remark
+									.remark-field
+										p 备注栏最多八个字
+								.clear
+
 		#food-single-new.f-block
 		#food-single-add.f-block

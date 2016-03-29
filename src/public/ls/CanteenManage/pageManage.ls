@@ -17,12 +17,12 @@ page-manage = let
 		"step1"		:	 let
 			->
 				_state := 0
-				_step1-dom.fade-in 200
 				_step2-dom.fade-out 200
 				_step3-dom.fade-out 200
-				_next-dom.fade-in 200
 				_last-dom.fade-out 200
-				_fin-dom.fade-out 200
+				_fin-dom.fade-out 200, ->
+					_next-dom.fade-in 200
+					_step1-dom.fade-in 200
 				_step1-dom-btn.find(".rectangle").css {"background-color":"#0066CC"}
 				_step1-dom-btn.find(".rectangle").css {"color":"white"}
 				_step1-dom-btn.find(".triangle_border_right span").css {"border-color":"transparent transparent transparent #0066CC"}
@@ -37,11 +37,11 @@ page-manage = let
 			->
 				_state := 1
 				_step1-dom.fade-out 200
-				_step2-dom.fade-in 200
-				_step3-dom.fade-out 200
-				_next-dom.fade-in 200
-				_last-dom.fade-in 200
 				_fin-dom.fade-out 200
+				_step3-dom.fade-out 200, ->
+					_step2-dom.fade-in 200
+					_next-dom.fade-in 200
+					_last-dom.fade-in 200
 				_step1-dom-btn.find(".rectangle").css {"background-color":"white"}
 				_step1-dom-btn.find(".rectangle").css {"color":"#333333"}
 				_step1-dom-btn.find(".triangle_border_right span").css {"border-color":"#0066CC #0066CC #0066CC transparent"}
@@ -58,10 +58,10 @@ page-manage = let
 				_state := 2
 				_step1-dom.fade-out 200
 				_step2-dom.fade-out 200
-				_step3-dom.fade-in 200
-				_last-dom.fade-in 200
-				_fin-dom.fade-in 200
-				_next-dom.fade-out 200
+				_next-dom.fade-out 200, ->
+					_step3-dom.fade-in 200
+					_last-dom.fade-in 200
+					_fin-dom.fade-in 200
 				_step1-dom-btn.find(".rectangle").css {"background-color":"white"}
 				_step1-dom-btn.find(".rectangle").css {"color":"#333333"}
 				_step1-dom-btn.find(".triangle_border_right span").css {"border-color":"transparent transparent transparent white"}

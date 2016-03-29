@@ -11,10 +11,13 @@ main-manage = let
 	_init-all-event = !->
 		_step1-dom.click !->
 			page.toggle-page "step1"
+			_state := 0
 		_step2-dom.click !->
 			page.toggle-page "step2"
+			_state := 1
 		_step3-dom.click !->
 			page.toggle-page "step3"
+			_state := 2
 		_next-dom.click !->
 			if _state < 2
 				_state := _state + 1

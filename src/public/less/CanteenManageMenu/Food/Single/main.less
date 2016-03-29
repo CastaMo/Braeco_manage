@@ -1,22 +1,133 @@
 @import "../main";
 #food {
     .food-wrapper {
-        width: 90%;
+        width: 93%;
         margin: 0 auto;
         .f-block {
             margin-top: 25px;
         }
         #food-single-main {
-        	p {
-        		line-height: 30px;
-        	}
-        	.select-container {
-        		margin-top: 5px;
-        		select {
-        			width: 200px;
-        			font-size: 20px;
-        		}
-        	}
+            .food-single-select-field {
+                p {
+                    line-height: 30px;
+                }
+                .select-container {
+                    margin-top: 5px;
+                    select {
+                        width: 200px;
+                        font-size: 20px;
+                    }
+                }
+            }
+            .food-single-table {
+                margin-top: 20px;
+                border: solid 1px @border-grey-color;
+                .food-single-oper-field {
+                    height: 43px;
+                    line-height: 43px;
+                    .oper-container {
+                        .parallel-container;
+                        > *:not(.clear) {
+                            cursor: pointer;
+                            width: 55px;
+                            margin-left: 20px;
+                            font-size: 14px;
+                            &:hover {
+                                p {
+                                    color: @orange-color;
+                                }
+                            }
+                            icon {
+                                margin-top: 10.5px;
+                                float: left;
+                                .background-size(20px, 20px);
+                                .background-norm();
+                            }
+                            p {
+                                float: right;
+                            }
+                        }
+                    }
+                }
+                .food-single-header-field {
+                    height: 46px;
+                    font-size: 16px;
+                    line-height: 46px;
+                    border-top: solid 1px @border-grey-color;
+                    border-bottom: solid 1px @border-grey-color;
+                    background-color: @grey-color;
+                    .name-container {
+                        .parallel-container;
+                        > *:not(.clear) {
+                            height: 46px;
+                            p {
+                                text-align: center;
+                            }
+                        }
+                    }
+                }
+                .food-single-list-field {
+                    .single-list-field {
+                        ul {
+                            li {
+                                &:hover {
+                                    background-color: @shallow-orange-color;
+                                }
+                                text-align: center;
+                                font-size: 14px;
+                                .parallel-container;
+                                > *:not(.clear) {
+                                    height: 120px;
+                                    position: relative;
+                                    > * {
+                                        .total-center;
+                                        &:not(.pic-field) {
+                                            width: 85%;
+                                        }
+                                    }
+                                    p {
+                                        .ellipsisWithLineNum();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .t-choose {
+                    width: 6%;
+                }
+                .t-pic {
+                    width: 15%;
+                    .pic-field {
+                        .pic {
+                            .background-norm();
+                            .background-size(100px, 100px);
+                        }
+                    }
+                }
+                .t-name {
+                    width: 22%;
+                }
+                .t-price {
+                    width: 10.7%;
+                    .price-field {
+                        p {
+                            &:before {
+                                content: "￥";
+                            }
+                        }
+                    }
+                }
+                .t-property {
+                    width: 11.8%;
+                }
+                .t-dc {
+                    width: 17.5%;
+                }
+                .t-remark {
+                    width: 16%;
+                }
+            }
         }
     }
 }
