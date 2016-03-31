@@ -6,72 +6,76 @@ page-manage = let
 	_step1-dom = $ "\#step1Content"
 	_step2-dom = $ "\#step2Content"
 	_step3-dom = $ "\#step3Content"
+	_all-step-dom = [_step1-dom, _step2-dom, _step3-dom]
 	_step1-dom-btn = $ "\#step1"
 	_step2-dom-btn = $ "\#step2"
 	_step3-dom-btn = $ "\#step3"
 	_next-dom = $ "\.nextBtn"
 	_last-dom = $ "\.lastBtn"
 	_fin-dom = $ "\.finBtn"
+	_all-btn-dom = [_last-dom, _next-dom, _fin-dom]
+
+	_hide-all-dom = (dom_, callback)->
+		for dom, i in dom_
+			if i is dom_.length-1
+				dom.fade-out 100, callback
+			else dom.fade-out 100
+
+	_rectangle-hide = (dom_)->
+		dom_.find(".rectangle").css {"background-color":"white"}
+		dom_.find(".rectangle").css {"color":"#333333"}
+
+	_rectangle-show = (dom_)->
+		dom_.find(".rectangle").css {"background-color":"#0066CC"}
+		dom_.find(".rectangle").css {"color":"white"}
 
 	_toggle-page-callback = {
 		"step1"		:	 let
 			->
 				_state := 0
-				_step2-dom.fade-out 200
-				_step3-dom.fade-out 200
-				_last-dom.fade-out 200
-				_fin-dom.fade-out 200, ->
-					_next-dom.fade-in 200
+				_hide-all-dom _all-btn-dom
+				_hide-all-dom _all-step-dom, ->
 					_step1-dom.fade-in 200
-				_step1-dom-btn.find(".rectangle").css {"background-color":"#0066CC"}
-				_step1-dom-btn.find(".rectangle").css {"color":"white"}
+					_next-dom.fade-in 200
+				_rectangle-show _step1-dom-btn
 				_step1-dom-btn.find(".triangle_border_right span").css {"border-color":"transparent transparent transparent #0066CC"}
 				_step1-dom-btn.find(".triangle_border_right").css {"border-color":"transparent transparent transparent #797979"}
-				_step2-dom-btn.find(".rectangle").css {"background-color":"white"}
-				_step2-dom-btn.find(".rectangle").css {"color":"#333333"}
+				_rectangle-hide _step2-dom-btn
 				_step2-dom-btn.find(".triangle_border_right span").css {"border-color":"transparent transparent transparent white"}
 				_step2-dom-btn.find(".triangle_border_right").css {"border-color":"transparent transparent transparent #797979"}
-				_step3-dom-btn.find(".rectangle").css {"background-color":"white"}
-				_step3-dom-btn.find(".rectangle").css {"color":"#333333"}
+				_rectangle-hide _step3-dom-btn
+				
 		"step2"		:	 let
 			->
 				_state := 1
-				_step1-dom.fade-out 200
-				_fin-dom.fade-out 200
-				_step3-dom.fade-out 200, ->
+				_hide-all-dom _all-btn-dom
+				_hide-all-dom _all-step-dom, ->
 					_step2-dom.fade-in 200
 					_next-dom.fade-in 200
 					_last-dom.fade-in 200
-				_step1-dom-btn.find(".rectangle").css {"background-color":"white"}
-				_step1-dom-btn.find(".rectangle").css {"color":"#333333"}
+				_rectangle-hide _step1-dom-btn
 				_step1-dom-btn.find(".triangle_border_right span").css {"border-color":"#0066CC #0066CC #0066CC transparent"}
 				_step1-dom-btn.find(".triangle_border_right").css {"border-color":"#0066CC #0066CC #0066CC transparent"}
-				_step2-dom-btn.find(".rectangle").css {"background-color":"#0066CC"}
-				_step2-dom-btn.find(".rectangle").css {"color":"white"}
+				_rectangle-show _step2-dom-btn
 				_step2-dom-btn.find(".triangle_border_right span").css {"border-color":"transparent transparent transparent #0066CC"}
 				_step2-dom-btn.find(".triangle_border_right").css {"border-color":"transparent transparent transparent #0066CC"}
-				_step3-dom-btn.find(".rectangle").css {"background-color":"white"}
-				_step3-dom-btn.find(".rectangle").css {"color":"#333333"}
+				_rectangle-hide _step3-dom-btn
 
 		"step3"		:	 let
 			->
 				_state := 2
-				_step1-dom.fade-out 200
-				_step2-dom.fade-out 200
-				_next-dom.fade-out 200, ->
+				_hide-all-dom _all-btn-dom
+				_hide-all-dom _all-step-dom, ->
 					_step3-dom.fade-in 200
 					_last-dom.fade-in 200
 					_fin-dom.fade-in 200
-				_step1-dom-btn.find(".rectangle").css {"background-color":"white"}
-				_step1-dom-btn.find(".rectangle").css {"color":"#333333"}
+				_rectangle-hide _step1-dom-btn
 				_step1-dom-btn.find(".triangle_border_right span").css {"border-color":"transparent transparent transparent white"}
 				_step1-dom-btn.find(".triangle_border_right").css {"border-color":"transparent transparent transparent #797979"}
-				_step2-dom-btn.find(".rectangle").css {"background-color":"white"}
-				_step2-dom-btn.find(".rectangle").css {"color":"#333333"}
+				_rectangle-hide _step2-dom-btn
 				_step2-dom-btn.find(".triangle_border_right span").css {"border-color":"#0066CC #0066CC #0066CC transparent"}
 				_step2-dom-btn.find(".triangle_border_right").css {"border-color":"#0066CC #0066CC #0066CC transparent"}
-				_step3-dom-btn.find(".rectangle").css {"background-color":"#0066CC"}
-				_step3-dom-btn.find(".rectangle").css {"color":"white"}
+				_rectangle-show _step3-dom-btn
 	}
 
 	_init-depend-module = !->
