@@ -1,6 +1,6 @@
 #food
 	.food-wrapper
-		#food-single-main.f-block
+		#food-single-main.f-block.hide
 			.food-single-select-field
 				p 品类选择
 				.select-container
@@ -51,4 +51,74 @@
 					.single-list-field
 
 		#food-single-new.f-block
-		#food-single-add.f-block
+			.f-table
+				.f-header-field
+					.header-wrapper.t-wrapper
+						p.header 新建单品
+				.f-basic-field.top-bottom-border
+					.basic-wrapper.t-wrapper
+						.left-part
+							.warn-container
+								p.warn 带 * 号的为必填项
+							.c-name-container.input-container
+								p 单品名称 *
+								input(id='c-name' name='c-name')
+								.clear
+							.e-name-container.input-container
+								p 英文名
+								input(id='e-name' name='e-name')
+								.clear
+							.default-price-container.input-container
+								p 基础价格 *
+								input(id='default-price' name='default-price')
+								.clear
+							.basic-business-container
+								.name-part
+									p 基础业务 *
+									p 价差
+								.choose-part.parallel-container
+									#choose-buffet.choose-elem
+										.choose-field
+											.tick
+											p 堂食自助
+										.price-field
+											.grey-cover
+											input(id='buffet-price' name='buffet-price')
+									#choose-take-out.choose-elem
+										.choose-field
+											.tick
+											p 预订外卖
+										.price-field
+											.grey-cover
+											input(id='take-out-price' name='take-out-price')
+									#choose-delivery.choose-elem
+										.choose-field
+											.tick
+											p 外卖配送
+										.price-field
+											.grey-cover
+											input(id='delivery-price' name='delivery-price')
+									#choose-combo-only.choose-elem
+										.choose-field
+											.tick
+											p 仅套可见 (不可单点)
+										.price-field
+											.grey-cover
+											input(id='combo-only-price' name='combo-only-price')
+						.right-part
+							.pic-field
+								label(for='new-pic')
+									.img-field
+										.img
+								input(name='new-pic', id='new-pic' type='file' class='hide')
+						.clear
+				.f-extra-field
+				.f-shelves-field
+				.f-dc-field
+		#food-single-add.f-block.hide
+			.f-table
+				.f-header-field
+				.f-basic-field
+				.f-extra-field
+				.f-shelves-field
+				.f-dc-field
