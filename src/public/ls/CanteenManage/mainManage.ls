@@ -21,7 +21,6 @@ main-manage = let
 		_next-dom.click !->
 			if _state < 2
 				_state := _state + 1
-			console.log "next_state:", _state
 			if _state == 1
 				page.toggle-page "step2"
 			else if _state == 2
@@ -29,7 +28,6 @@ main-manage = let
 		_last-dom.click !->
 			if _state > 0
 				_state := _state - 1
-			console.log "last_state:", _state
 			if _state == 1
 				page.toggle-page "step2"
 			else if _state == 0

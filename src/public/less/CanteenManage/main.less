@@ -1,21 +1,7 @@
 @import "../common/common";
 
-.rectangle {
-    width: 240px;
-    height: 46px;
-    background: white;
-    float: left;
-    position: relative;
-    text-align: center;
-    line-height: 46px;
-    color: #333333;
-    font-size: 13px;
-}
-
-#step3 {
-    .rectangle {
-        width: 274px;
-    }
+#choose {
+    display: none;
 }
 
 .mainbar-wrapper {
@@ -28,68 +14,6 @@
         margin-top: 10px;
         color: blue;
     }
-}
-
-.mainbar-wrapper {
-    #choose {
-        top: 20px;
-        left: 20px;
-        width: 800px;
-        height: 46px;
-        position: relative;
-        border-color: #797979;
-        border-width: 1px;
-        border-style: solid;
-        margin: 0;
-        padding: 0;
-    }
-}
-
-#step1 {
-    .rectangle {
-        background: #0066CC;
-        color: white;
-    }
-}
-
-#step1.btn,
-#step2.btn,
-#step3.btn {
-    padding: 0;
-    border-width: 0;
-    border-style: none;
-}
-
-#step1 {
-    .triangle_border_right span {
-        border-color: transparent transparent transparent #0066CC;
-    }
-}
-
-.triangle_border_right {
-    width: 0;
-    height: 0;
-    border-width: 23px 0 23px 23px;
-    border-style: solid;
-    border-color: transparent transparent transparent #797979;
-    /*透明 透明 透明 灰色*/
-    margin: 0px auto;
-    position: relative;
-    float: left;
-}
-
-.triangle_border_right span {
-    display: block;
-    width: 0;
-    height: 0;
-    border-width: 22px 0 22px 22px;
-    border-style: solid;
-    border-color: transparent transparent transparent white;
-    /*透明 透明 透明 白色*/
-    position: absolute;
-    float: left;
-    top: -22px;
-    left: -23px;
 }
 
 #step1Content,
@@ -191,7 +115,68 @@
     font-size: 13px;
     margin: 10px 0 0 20px;
 }
+
 .lastBtn,
 .finBtn {
     display: none;
+}
+
+.stepsPic {
+    .background-size(800px, 65px);
+    margin: 10px 20px 0 20px;
+    z-index: 10;
+}
+
+
+#step1 {
+    .background-size(287px, 65px);
+    margin: 0;
+    z-index: 20;
+    position: relative;
+    top: -65px;
+    left: 20px;
+    float: left;
+    z-index: 10;
+    padding: 0px;
+}
+
+.step1Pic {
+    .background-size(287px, 65px);
+}
+
+#step2 {
+    .background-size(304px, 65px);
+    margin: 0;
+    z-index: 20;
+    position: relative;
+    float: left;
+    top: -65px;
+    left: -20px;
+    z-index: 20;
+    padding: 0px;
+}
+
+.step2Pic {
+    .background-size(304px, 65px);
+    display: none;
+}
+
+#step3 {
+    .background-size(288px, 65px);
+    margin: 0;
+    z-index: 20;
+    top: -65px;
+    left: -59px;
+    position: relative;
+    float: left;
+    padding: 0px;
+}
+
+.step3Pic {
+    .background-size(288px, 65px);
+    display: none;
+}
+
+#steps {
+    margin: 0;
 }
