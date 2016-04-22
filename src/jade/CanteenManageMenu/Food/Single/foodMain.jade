@@ -57,62 +57,93 @@
 						p.header 新建单品
 				.f-basic-field.top-bottom-border
 					.basic-wrapper.t-wrapper
-						.left-part
-							.warn-container
-								p.warn 带 * 号的为必填项
-							.c-name-container.input-container
-								p 单品名称 *
-								input(id='c-name' name='c-name')
-								.clear
-							.e-name-container.input-container
-								p 英文名
-								input(id='e-name' name='e-name')
-								.clear
-							.default-price-container.input-container
-								p 基础价格 *
-								input(id='default-price' name='default-price')
-								.clear
-							.basic-business-container
-								.name-part
-									p 基础业务 *
-									p 价差
-								.choose-part.parallel-container
-									#choose-buffet.choose-elem
-										.choose-field
-											.tick
-											p 堂食自助
-										.price-field
-											.grey-cover
-											input(id='buffet-price' name='buffet-price')
-									#choose-take-out.choose-elem
-										.choose-field
-											.tick
-											p 预订外卖
-										.price-field
-											.grey-cover
-											input(id='take-out-price' name='take-out-price')
-									#choose-delivery.choose-elem
-										.choose-field
-											.tick
-											p 外卖配送
-										.price-field
-											.grey-cover
-											input(id='delivery-price' name='delivery-price')
-									#choose-combo-only.choose-elem
-										.choose-field
-											.tick
-											p 仅套可见 (不可单点)
-										.price-field
-											.grey-cover
-											input(id='combo-only-price' name='combo-only-price')
-						.right-part
-							.pic-field
-								label(for='new-pic')
-									.img-field
-										.img
-								input(name='new-pic', id='new-pic' type='file' class='hide')
-						.clear
+						.basic-container
+							.left-part
+								.warn-container
+									p.warn 带 * 号的为必填项
+								.c-name-container.input-container
+									p 单品名称 *
+									input(id='c-name' name='c-name')
+									.clear
+								.e-name-container.input-container
+									p 英文名
+									input(id='e-name' name='e-name')
+									.clear
+								.default-price-container.input-container
+									p 基础价格 *
+									input(id='default-price' name='default-price')
+									.clear
+								.basic-business-container
+									.name-part
+										p 基础业务 *
+										p 价差
+									.choose-part.parallel-container
+										#choose-buffet.choose-elem
+											.choose-field
+												.tick
+												p 堂食
+											.price-field
+												.grey-cover
+												input(id='buffet-price' name='buffet-price' placeholder='元')
+										#choose-take-out.choose-elem
+											.choose-field
+												.tick
+												p 外带
+											.price-field
+												.grey-cover
+												input(id='take-out-price' name='take-out-price' placeholder='元')
+										#choose-delivery.choose-elem
+											.choose-field
+												.tick
+												p 外卖
+											.price-field
+												.grey-cover
+												input(id='delivery-price' name='delivery-price' placeholder='元')
+										#choose-combo-only.choose-elem
+											.choose-field
+												.tick
+												p 仅套餐
+											.price-field
+												.grey-cover
+												input(id='combo-only-price' name='combo-only-price' placeholder='元')
+										.clear
+									.clear
+							.right-part
+								.pic-field
+									label(for='new-pic')
+										.img-field
+											.img(class='default-square-image')
+										.warn-field.total-center
+											p 点击上传图片
+											p 建议尺寸:
+											p 200像素 * 200像素
+									input(name='new-pic', id='new-pic' type='file' class='hide')
+							.clear
 				.f-extra-field
+					.extra-wrapper.t-wrapper
+						.extra-container
+							.property-container
+								.left-part
+									p 属性组
+									#property
+								.right-part
+									.btn-field
+										.btn.manage-property-btn
+											p 管理属性组
+										.clear
+								.clear
+							.remark-tag-container
+								.left-part
+									p 备注标签
+								.right-part
+									input(id="remark-tag" name="remark-tag" placeholder='最多9个汉字')
+								.clear
+							.intro-container
+								.left-part
+									p 详情介绍
+								.right-part
+									textarea(id="intro" name="intro")
+								.clear
 				.f-shelves-field
 				.f-dc-field
 		#food-single-add.f-block.hide

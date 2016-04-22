@@ -1,7 +1,10 @@
 @import "../main";
 #food {
+    input, textarea {
+        font-size: 16px;
+    }
     .food-wrapper {
-        width: 94.44%;
+        width: 92.2348%;
         margin: 0 auto;
         .f-block {
             margin-top: 25px;
@@ -159,7 +162,7 @@
             border: solid 1px @border-grey-color;
             font-size: 14px;
             .t-wrapper {
-                width: 94%;
+                width: 91.994%; //655px
                 margin: 0 auto;
             }
             .f-header-field {
@@ -170,11 +173,29 @@
             }
             .f-basic-field {
                 .left-part {
-                    width: 615px;
-                    float: left;
+                    width: 70.992%;
+                    border-right: solid 1px @border-grey-color;
                 }
                 .right-part {
-                    float: right;
+                    .pic-field {
+                        width: 160px;
+                        height: 160px;
+                        margin-top: 75px;
+                        position: relative;
+                        label {
+                            cursor: pointer;
+                        }
+                        .img-field {
+                            .img {
+                                .background-norm();
+                                .background-size(160px, 160px);
+                            }
+                        }
+                        .warn-field {
+                            width: 100%;
+                            text-align: center;
+                        }
+                    }
                 }
                 .warn-container {
                     margin-top: 13.5px;
@@ -182,6 +203,7 @@
                     color: @font-grey-color;
                 }
                 .input-container {
+                    width: 462px;
                     margin-bottom: 20px;
                     line-height: 30px;
                     p {
@@ -190,18 +212,96 @@
                     input {
                         padding-left: 5px;
                         font-size: 16px;
-                        width: 530px;
+                        width: 350px;
                         height: 30px;
                         float: right;
+                        margin-right: 30px;
                     }
                 }
                 .basic-business-container {
+                    line-height: 30px;
+                    padding-bottom: 30px;
                     .name-part {
                         float: left;
                     }
                     .choose-part {
                         float: right;
-
+                        margin-right: 30px;
+                        .choose-elem {
+                            .choose-field {
+                                cursor: pointer;
+                            }
+                            .tick {
+                                .background-norm();
+                                .background-size(15px, 15px);
+                                border: solid 1px @border-grey-color;
+                                float: left;
+                                margin: 7.5px 9px 0 0;
+                            }
+                            width: 70px;
+                            &:not(#choose-buffet) {
+                                margin-left: 23.6px;
+                            }
+                            input {
+                                width: 70px;
+                                height: 30px;
+                            }
+                        }
+                    }
+                }
+            }
+            .f-extra-field {
+                .extra-container {
+                    padding: 30px 0;
+                    line-height: 30px;
+                    > *:not(.intro-container) {
+                        margin-bottom: 20px;
+                    }
+                    .property-container {
+                        .left-part {
+                            width: 464px;
+                            p {
+                                float: left;
+                            }
+                            #property {
+                                cursor: text;
+                                float: right;
+                                width: 380px;
+                                height: 30px;
+                                border: solid 1px @border-grey-color;
+                            }
+                        }
+                        .right-part {
+                            .manage-property-btn {
+                                height: 30px;
+                                border: solid 1px @border-grey-color;
+                                width: 160px;
+                                text-align: center;
+                                padding: 0;
+                            }
+                        }
+                    }
+                    .remark-tag-container {
+                        .right-part {
+                            input {
+                                height: 30px;
+                                width: 569px;
+                            }
+                        }
+                    }
+                    .intro-container {
+                        .right-part {
+                            textarea {
+                                width: 549px;
+                                min-width: 549px;
+                                max-width: 549px;
+                                height: 55px;
+                                min-height: 55px;
+                                max-height: 55px;
+                                padding: 10px 10px;
+                                border: solid 1px @border-grey-color;
+                            }
+                        }
                     }
                 }
             }
