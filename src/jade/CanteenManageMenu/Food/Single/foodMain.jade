@@ -216,7 +216,21 @@
 										option(value='all') 所有时间
 								.clear
 							.date-range-container
-							.enable-time-container
+								p 日期区间
+								.range-field.parallel-container
+									input(type="date" id="date-range-start")
+									p 至
+									input(type="date" id="date-range-end")
+									.clear
+								.clear
+							.time-range-container
+								p 启用时间
+								.range-field.parallel-container
+									input(type="time" id="time-range-start")
+									p 至
+									input(type="time" id="time-range-end")
+									.clear
+								.clear
 		#food-single-add.f-block.hide
 			.f-table
 				.f-header-field
