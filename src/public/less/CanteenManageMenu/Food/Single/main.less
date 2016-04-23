@@ -1,5 +1,8 @@
 @import "../main";
 #food {
+    #food-single-new, #food-single-add {
+        .hide;
+    }
     input,
     textarea {
         font-size: 16px;
@@ -15,7 +18,7 @@
         width: 92.2348%;
         margin: 0 auto;
         .f-block {
-            margin-top: 25px;
+            margin: 25px 0;
         }
         #food-single-main {
             .food-single-select-field {
@@ -38,11 +41,12 @@
                     height: 43px;
                     line-height: 43px;
                     .oper-container {
+                        margin-left: 30px;
                         .parallel-container;
                         > *:not(.clear) {
                             cursor: pointer;
                             width: 55px;
-                            margin-left: 40px;
+                            margin-right: 30px;
                             font-size: 14px;
                             &:hover {
                                 p {
@@ -71,8 +75,9 @@
                     .name-container {
                         .parallel-container;
                         .t-choose {
+                            position: relative;
                             .choose-pic {
-                                margin: 14px 0 0 18.5px;
+                                .total-center;
                             }
                         }
                         > *:not(.clear) {
@@ -134,7 +139,7 @@
                     }
                 }
                 .t-pic {
-                    width: 15%;
+                    width: 17%;
                     .pic-field {
                         .pic {
                             .background-norm();
@@ -143,10 +148,10 @@
                     }
                 }
                 .t-name {
-                    width: 22%;
+                    width: 17%;
                 }
                 .t-price {
-                    width: 10.7%;
+                    width: 12.8%;
                     .price-field {
                         p {
                             &:before {
@@ -156,13 +161,13 @@
                     }
                 }
                 .t-property {
-                    width: 11.8%;
+                    width: 12.6%;
                 }
                 .t-dc {
-                    width: 17.5%;
+                    width: 16.17%;
                 }
                 .t-remark {
-                    width: 16%;
+                    width: 17.5%;
                 }
             }
         }
@@ -392,6 +397,25 @@
                                 width: 180px;
                             }
                         }
+                    }
+                }
+            }
+            .f-oper-field {
+                border-top: solid 1px @border-grey-color;
+                .oper-container {
+                    padding: 30px 0;
+                    line-height: 30px;
+                    .btn {
+                        width: 120px;
+                        border: solid 1px @border-grey-color;
+                        text-align: center;
+                    }
+                    .cancel-btn {
+                        margin-right: 30px;
+                    }
+                    .save-btn {
+                        background-color: @orange-color;
+                        color: #fff;
                     }
                 }
             }
