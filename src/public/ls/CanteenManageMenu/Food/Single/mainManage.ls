@@ -64,7 +64,7 @@ main-manage = let
 		""
 
 	_update-choose-dish = !->
-		_current-dish-id = []
+		_current-dish-id := []
 		for dish in _dishes-array[_current-category-id]
 			if dish.is-choose then _current-dish-id.push dish.id
 
