@@ -11,3 +11,51 @@ block head
 '''这里是主体'''
 block content
 	include basicMain
+	#business
+		#stopBusiness
+			input(type = "radio")
+			暂停业务
+		#runBusiness
+			input(type = "radio")
+			运营业务
+		#modifyBusiness
+			#modifySetting
+				p 修改设置
+			#modifyTime
+				p 接单日期
+					input(type = "checkbox")
+					周一
+					input(type = "checkbox")
+					周二
+					input(type = "checkbox")
+					周三
+					input(type = "checkbox")
+					周四
+					input(type = "checkbox")
+					周五
+					input(type = "checkbox")
+					周六
+					input(type = "checkbox")
+					周日
+				p 接单时间
+			#modifyPay
+				p 支付渠道
+					input(type = "checkbox")
+					现金支付
+					input(type = "checkbox")
+					支付宝
+					input(type = "checkbox")
+					微信支付
+					input(type = "checkbox")
+					百度钱包
+			#modifyMeal
+				p 适用餐品
+					select
+						option 全选
+						option 其他一
+						option 其他二
+			#modifyChoose
+				.canBtn.btn
+					p 取消
+				.finBtn.btn
+					p 保存
