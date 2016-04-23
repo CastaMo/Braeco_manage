@@ -144,8 +144,79 @@
 								.right-part
 									textarea(id="intro" name="intro")
 								.clear
-				.f-shelves-field
+				.f-shelves-field.top-bottom-border
+					.shelves-wrapper.t-wrapper
+						.shelves-container
+							.date-container
+								p 上架日期
+								ul.date-list.parallel-container
+									li#date-Mon.parallel-container
+										.tick
+										p 周一
+										.clear
+									li#date-Tue.parallel-container
+										.tick
+										p 周二
+										.clear
+									li#date-Wed.parallel-container
+										.tick
+										p 周三
+										.clear
+									li#date-Thurs.parallel-container
+										.tick
+										p 周四
+										.clear
+									li#date-Fri.parallel-container
+										.tick
+										p 周五
+										.clear
+									li#date-Sat.parallel-container
+										.tick
+										p 周六
+										.clear
+									li#date-Sun.parallel-container
+										.tick
+										p 周日
+										.clear
+									.clear
+								.clear
+							.time-container
+								.left-part
+									p 上架时间
+									#time
+									.clear
+								.right-part
+									.btn-field
+										.btn.manage-time-btn
+											p 管理上架时间
+										.clear
+								.clear
 				.f-dc-field
+					.dc-wrapper.t-wrapper
+						.dc-container
+							.dc-tool-container.parallel-container
+								p 促销工具
+								.select-field
+									select(id='select-dc-type' class='total-center')
+										option(value='none') 无
+										option(value='sale') 减价优惠
+										option(value='discount') 折扣优惠
+										option(value='half') 第二杯半价
+										option(value='limit') 限量供应
+								.addtional.parallel-container
+									input(type="number" placeholder='(1-99)' max='99' min='1')
+									p 份
+									.clear
+								.clear
+							.effective-date-container.parallel-container
+								p 有效日期
+								.select-field
+									select(id='select-effective-date' class='total-center')
+										option(value='range') 日期区间
+										option(value='all') 所有时间
+								.clear
+							.date-range-container
+							.enable-time-container
 		#food-single-add.f-block.hide
 			.f-table
 				.f-header-field

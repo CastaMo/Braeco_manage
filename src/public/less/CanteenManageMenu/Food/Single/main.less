@@ -1,7 +1,15 @@
 @import "../main";
 #food {
-    input, textarea {
+    input,
+    textarea {
         font-size: 16px;
+    }
+    .tick {
+        .background-norm();
+        .background-size(15px, 15px);
+        border: solid 1px @border-grey-color;
+        float: left;
+        margin: 7.5px 9px 0 0;
     }
     .food-wrapper {
         width: 92.2348%;
@@ -231,13 +239,6 @@
                             .choose-field {
                                 cursor: pointer;
                             }
-                            .tick {
-                                .background-norm();
-                                .background-size(15px, 15px);
-                                border: solid 1px @border-grey-color;
-                                float: left;
-                                margin: 7.5px 9px 0 0;
-                            }
                             width: 70px;
                             &:not(#choose-buffet) {
                                 margin-left: 23.6px;
@@ -300,6 +301,80 @@
                                 max-height: 55px;
                                 padding: 10px 10px;
                                 border: solid 1px @border-grey-color;
+                            }
+                        }
+                    }
+                }
+            }
+            .f-shelves-field {
+                .shelves-container {
+                    padding: 30px 0;
+                    line-height: 30px;
+                    > *:not(.time-container) {
+                        margin-bottom: 20px;
+                    }
+                    .date-container {
+                        > p {
+                            float: left;
+                        }
+                        ul {
+                            float: right;
+                            width: 570px;
+                            li {
+                                cursor: pointer;
+                                margin-right: 25px;
+                            }
+                        }
+                    }
+                    .time-container {
+                        .left-part {
+                            width: 464px;
+                            p {
+                                float: left;
+                            }
+                            #time {
+                                cursor: text;
+                                float: right;
+                                width: 380px;
+                                height: 30px;
+                                border: solid 1px @border-grey-color;
+                            }
+                        }
+                        .right-part {
+                            .manage-time-btn {
+                                height: 30px;
+                                border: solid 1px @border-grey-color;
+                                width: 160px;
+                                text-align: center;
+                                padding: 0;
+                            }
+                        }
+                    }
+                }
+            }
+            .f-dc-field {
+                .dc-container {
+                    padding: 30px 0;
+                    line-height: 30px;
+                    >:not(.enable-time-container) {
+                        margin-bottom: 20px;
+                    }
+                    .select-field {
+                        margin-left: 20px;
+                        position: relative;
+                        width: 100px;
+                        height: 30px;
+                        select {
+                            width: 100px;
+                        }
+                    }
+                    .dc-tool-container {
+                        .addtional {
+                            margin-left: 20px;
+                            input {
+                                height: 30px;
+                                width: 80px;
+                                margin-right: 10px;
                             }
                         }
                     }
