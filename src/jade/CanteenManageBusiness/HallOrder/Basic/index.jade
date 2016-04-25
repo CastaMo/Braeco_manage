@@ -13,41 +13,44 @@ block content
 	include basicMain
 	#business
 		#stopBusiness
-			input(type = "radio")
-			暂停业务
+			input(type = "radio" name = "select" checked = "checked")
+			span 暂停业务
 		#runBusiness
-			input(type = "radio")
-			运营业务
+			input(type = "radio" name = "select")
+			span 运营业务
 		#modifyBusiness
 			#modifySetting
 				p 修改设置
 			#modifyTime
 				p 接单日期
 					input(type = "checkbox")
-					周一
+					span 周一
 					input(type = "checkbox")
-					周二
+					span 周二
 					input(type = "checkbox")
-					周三
+					span 周三
 					input(type = "checkbox")
-					周四
+					span 周四
 					input(type = "checkbox")
-					周五
+					span 周五
 					input(type = "checkbox")
-					周六
+					span 周六
 					input(type = "checkbox")
-					周日
+					span 周日
 				p 接单时间
+					input(type = "time")
+					span  ~
+					input(type = "time")
 			#modifyPay
 				p 支付渠道
 					input(type = "checkbox")
-					现金支付
+					span 现金支付
 					input(type = "checkbox")
-					支付宝
+					span 支付宝
 					input(type = "checkbox")
-					微信支付
+					span 微信支付
 					input(type = "checkbox")
-					百度钱包
+					span 百度钱包
 			#modifyMeal
 				p 适用餐品
 					select
