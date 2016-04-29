@@ -180,7 +180,81 @@
                                     width: 105px;
                                 }
                             }
+                            .oper-field {
+                                margin-left: 20px;
+                                > * > * {
+                                    .background-norm();
+                                    .background-size(30px, 30px);
+                                }
+                                > * {
+                                    cursor: pointer;
+                                }
+                                .top {
+                                    margin-right: 10px;
+                                }
+                            }
                         }
+                        #content-0 {
+                            .top {
+                                display: none;
+                            }
+                        }
+                    }
+                    .add-content-btn-field {
+                        .add-btn {
+                            line-height: 30px;
+                            width: 120px;
+                            .rounded-corners(5px);
+                            border: solid 1px @border-grey-color;
+                            cursor: pointer;
+                            .add-btn-wrapper {
+                                width: 80px;
+                                margin: 0 auto;
+                                .add-pic {
+                                    float: left;
+                                    .background-norm();
+                                    .background-size(14px, 14px);
+                                    margin-top: 8px;
+                                }
+                                p {
+                                    float: right;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            #uisng {
+                .using-content-container {
+                    padding: 35px 0 105px 0;
+                    .using-field {
+                        margin-left: 20px;
+                        .using-wrapper {
+                            width: 258px;
+                            height: 200px;
+                            overflow: auto;
+                            line-height: 30px;
+                        }
+                    }
+                }
+            }
+            #btn {
+                .btn-container {
+                    padding: 20px 0;
+                    > *:not(.clear) {
+                        .rounded-corners(5px);
+                        width: 120px;
+                        text-align: center;
+                        cursor: pointer;
+                    }
+                    .cancel-btn {
+                        margin-right: 30px;
+                        border: solid 1px @border-grey-color;
+                    }
+                    .save-btn {
+                        line-height: 32px;
+                        background-color: @orange-color;
+                        color: #fff;
                     }
                 }
             }

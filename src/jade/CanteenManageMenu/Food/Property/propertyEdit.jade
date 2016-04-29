@@ -2,7 +2,7 @@
 	.property-handle-table-field
 		.property-handle-header
 			.header-container
-				p.header 新建属性组
+				p.header 编辑属性组
 		.property-handle-body
 			#basic.top-bottom-border
 				.basic-wrapper.body-wrapper
@@ -11,11 +11,11 @@
 							p 带*号的为必填项
 						.name-field
 							p 名称*
-							input(name="new-name" id="new-name")
+							input(name="edit-name" id="new-name")
 							.clear
 						.remark-field
 							p 备注
-							input(name="new-remark" id="new-remark")
+							input(name="edit-remark" id="new-remark")
 							.clear
 			#content
 				.content-wrapper.body-wrapper
@@ -31,11 +31,12 @@
 										p 价差
 										input(name="price-0" id="price-0" placeholder="+号不写, -号必写" type="number")
 										.clear
-									.oper-field
+									.oper-field.parallel-container
 										.top
 											.top-pic
 										.remove
 											.remove-pic
+										.clear
 									.clear
 								li#content-1.content.parallel-container
 									.name-field
@@ -46,11 +47,12 @@
 										p 价差
 										input(name="price-1" id="price-1" placeholder="+号不写, -号必写" type="number")
 										.clear
-									.oper-field
+									.oper-field.parallel-container
 										.top
 											.top-pic
 										.remove
 											.remove-pic
+										.clear
 									.clear
 								li#content-2.content.parallel-container
 									.name-field
@@ -61,11 +63,12 @@
 										p 价差
 										input(name="price-2" id="price-2" placeholder="+号不写, -号必写" type="number")
 										.clear
-									.oper-field
+									.oper-field.parallel-container
 										.top
 											.top-pic
 										.remove
 											.remove-pic
+										.clear
 									.clear
 						.add-content-btn-field
 							.add-btn
@@ -74,8 +77,8 @@
 									p 添加选项
 									.clear
 			#uisng.top-bottom-border
-				.using-wrapper.body-wrapper
-					.using-container
+				.using-content-wrapper.body-wrapper
+					.using-content-container.parallel-container
 						.word-field
 							p 适用单品*
 						.using-field
@@ -84,6 +87,11 @@
 									.top-choose
 										p 全部单品
 										.tick-pic
+									ul.food-choose-list
+										.category-choose
+											.arrow-pic
+											p 店长推荐
+											.tick-pic
 									ul.food-choose-list
 										.category-choose
 											.arrow-pic
@@ -101,10 +109,12 @@
 										li.food-choose
 											p 单品名称最长十二个中文字
 											.tick-pic
+						.clear
 			#btn
 				.btn-wrapper.body-wrapper
-					.btn-container
+					.btn-container.parallel-container
 						.cancel-btn
 							p 取消
 						.save-btn
 							p 保存
+						.clear
