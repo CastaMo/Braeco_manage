@@ -170,7 +170,9 @@ main-manage = let
 								<div class='clear'></div>
 							</div>
 							<div class='single-cover'>
-								<div class='hide-cover'></div>
+								<div class='hide-cover'>
+									<p>售罄中</p>
+								</div>
 							</div>
 						</li>"
 				_categories[dish.category-id].single-list-dom.append dom
@@ -222,6 +224,7 @@ main-manage = let
 					dish.dc-dom.html inner-html
 
 				if @pic then @pic-dom.css {"background-image":"url('#{@pic}')"} else @pic-dom.css {"background-image":""}
+				if not @able then @cover-dom.fade-in 200
 				@c-name-dom.html @c-name; @e-name-dom.html @e-name
 				@default-price-dom.html @default-price
 				_update-property-dom @
