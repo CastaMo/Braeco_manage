@@ -33,6 +33,10 @@ module.exports = function(passport) {
 		res.render('./CanteenManageMenu/Food/Shelves/develop');
 	});
 
+	router.get('/Market/Activity', function(req, res) {
+		res.render('./CanteenManageMarket/Activity/develop');
+	});
+
 	router.get('/Business/HallOrder/Basic', function(req, res) {
 		res.render('./CanteenManageBusiness/HallOrder/Basic/develop');
 	});

@@ -155,6 +155,11 @@ module.exports = function(grunt) {
                     "<%= dirs.dest_path %>CanteenManageMenu/Food/Property/Property.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/Property/develop.jade"
                 }
             },
+            market_activity_test: {
+                files: {
+                    "<%= dirs.dist_path %>CanteenManageMarket/Activity/Activity.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Activity/develop.jade"
+                }
+            },
             business_hallOrder_basic_test: {
                 files: {
                     "<%= dirs.dest_path %>CanteenManageBusiness/HallOrder/Basic/Basic.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageBusiness/HallOrder/Basic/develop.jade"
@@ -193,6 +198,12 @@ module.exports = function(grunt) {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Food/Property/main.less",
                     "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Food/Property/base64.less"
+                }
+            },
+            market_activity_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Activity/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMarket/Activity/main.less",
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Activity/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMarket/Activity/base64.less"
                 }
             },
             business_hallOrder_basic_test: {
@@ -236,6 +247,13 @@ module.exports = function(grunt) {
                 dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property',
                 ext: '.js'
             },
+            market_activity_test: {
+                expand: true,
+                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMarket/Activity',
+                src: ['*.ls'],
+                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity',
+                ext: '.js'
+            },
             business_hallOrder_basic_test: {
                 expand: true,
                 cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageBusiness/HallOrder/Basic',
@@ -263,6 +281,11 @@ module.exports = function(grunt) {
             menu_food_property_test: {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/index.js"]
+                }
+            },
+            market_activity_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/index.js"]
                 }
             },
             business_hallOrder_basic_test: {
@@ -342,6 +365,21 @@ module.exports = function(grunt) {
                     'livescript:menu_food_property_test',
                     'browserify:menu_food_property_test',
                     'jade:menu_food_property_test'
+                ]
+            },
+            market_activity_test: {
+                options: {
+                    livereload: lrPort,
+                    debounceDelay: debounceDelay
+                },
+                files: [
+                    '<%= dirs.source_path %>**/CanteenManageMarket/Activity/**',
+                ],
+                tasks: [
+                    'less:market_activity_test',
+                    'livescript:market_activity_test',
+                    'browserify:market_activity_test',
+                    'jade:market_activity_test'
                 ]
             },
             business_hallOrder_basic_test: {
