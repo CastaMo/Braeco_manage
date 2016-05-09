@@ -15,17 +15,17 @@ page-manage = let
 	_toggle-page-callback = {
 		"main"		:	 let
 			->
-				_main-dom.fade-in 200
 				_unshow-all-dom-except-given _main-dom
+				set-timeout (-> _main-dom.fade-in 200), 200
 		"new"		:	 let
 			->
-				_new-dom.fade-in 200
 				_unshow-all-dom-except-given _new-dom
+				set-timeout (-> _new-dom.fade-in 200), 200
 
 		"edit"		:	 do
 			->
-				_edit-dom.fade-in 200
 				_unshow-all-dom-except-given _edit-dom
+				set-timeout (-> _edit-dom.fade-in 200), 200
 	}
 
 

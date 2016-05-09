@@ -18,10 +18,11 @@ let win = window, doc = document
 		_init-callback[result.message]?(result)
 
 	_init-all-module = !->
-		page = require "./pageManage.js";			page.initial!
-		main = require "./mainManage.js";		 	main.initial _get-category-JSON
-		new_ = require "./newManage.js"; 			new_.initial!
-		edit = require "./editManage.js"; 			edit.initial!
+		page 		= require "./pageManage.js";			page.initial!
+		main		= require "./mainManage.js";		 	main.initial _get-category-JSON
+		new_ 		= require "./newManage.js"; 			new_.initial!
+		edit 		= require "./editManage.js"; 			edit.initial!
+		require_ 	= require "./requireManage.js";			require_.initial!
 
 
 	_test-is-data-ready = ->

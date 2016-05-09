@@ -1,4 +1,4 @@
-page = edit = null
+page = edit = require_ =  null
 main-manage = let
 	[deep-copy, getJSON] 	=	 [util.deep-copy, util.getJSON]
 
@@ -19,8 +19,9 @@ main-manage = let
 				page.toggle-page "new"
 
 	_init-depend-module = !->
-		page := require "./pageManage.js"
-		edit := require "./editManage.js"
+		page 		:= 	require "./pageManage.js"
+		edit 		:= 	require "./editManage.js"
+		require_	:=	require "./requireManage.js"
 
 	class Category
 		_category-main-container-dom = $ "\#category-main .category-all-field \#t-body-field"
@@ -34,8 +35,22 @@ main-manage = let
 			@init-all-event!
 
 		init-all-event: !->
-			(@dom.find ".remove").click !~> if confirm "确定要删除品类吗?(此操作无法恢复)" then @remove-self!
-			(@dom.find ".top").click !~> @top-self!
+			(@dom.find ".remove").click !~> if confirm "确定要删除品类吗?(此操作无法恢复)" then
+				require_.get("remove").require {
+					data 			:	 {
+						id 			:	@id
+					}
+					callback		:	(result_)~> @remove-self!
+				}
+			(@dom.find ".top").click !~> 
+				if @dom.prev!.length is 0 then alert "已经位于顶部"
+				else 
+					require_.get("top").require {
+						data 		:	{
+							id 		:	@id
+						}
+						callback 	:	(require_)~> @top-self!
+					}
 			(@dom.find ".edit").click !~>
 				edit.get-category-and-show @
 				page.toggle-page "edit"
@@ -93,7 +108,6 @@ main-manage = let
 		edit-self: (options)!->
 			if options.name isnt @name then @name = options.name; @name-dom.html @name
 			if @pic = options.pic then @pic-dom.css {"background-image":"url(#{@pic})"}
-
 
 
 	initial: (_get-category-JSON)!->

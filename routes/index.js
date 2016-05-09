@@ -74,42 +74,35 @@ module.exports = function(passport) {
 		}, 0);
 	});
 
-	router.post('/test', function(req, res) {
+	router.post('/Category/Add', function(req, res) {
 	    res.json({
 	        message: "success"
 	    });
 	});
 
-	router.post('/server/captcha', function(req, res) {
-		res.json({
+	router.post('/Category/Remove', function(req, res) {
+	    res.json({
 	        message: "success"
 	    });
 	});
 
-	router.post('/Eater/Login/Mobile', function(req, res) {
-		res.json({
-	        message: "success",
-	        id : 4
+	router.post('/Category/Update/Profile', function(req, res) {
+	    res.json({
+	        message: "success"
 	    });
 	});
 
-	router.post('/Order/Add', function(req, res) {
-		res.json({
-	        message: "success",
-	        id: Number(Math.floor(100000 + Math.random() * 100000))
+
+	router.post('/Category/Update/Top/:id', function(req, res) {
+	    res.json({
+	        message: "success"
 	    });
 	});
 
-	router.post('/Membership/Card/Charge', function(req, res) {
-		res.json({
-			message:"success"
-		})
-	});
-
-	router.post('/Eater/Like/Dinner/:id', function(req, res) {
-		res.json({
-			message:"success"
-		})
+	router.post('/pic/upload/token/category', function(req, res) {
+	    res.json({
+	        message: "success"
+	    });
 	});
 
 	return router;
