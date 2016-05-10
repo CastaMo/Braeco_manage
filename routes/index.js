@@ -76,7 +76,8 @@ module.exports = function(passport) {
 
 	router.post('/Category/Add', function(req, res) {
 	    res.json({
-	        message: "success"
+	        message 	: 		"success" 	,
+	        id 			: 		Number(Math.floor(100000 + Math.random() * 100000))
 	    });
 	});
 
@@ -95,13 +96,15 @@ module.exports = function(passport) {
 
 	router.post('/Category/Update/Top/:id', function(req, res) {
 	    res.json({
-	        message: "success"
+	        message: 	"success"
 	    });
 	});
 
-	router.post('/pic/upload/token/category', function(req, res) {
+	router.post('/pic/upload/token/category/:id', function(req, res) {
 	    res.json({
-	        message: "success"
+	        message 	: 		"success"	,
+	        key 		: 		100 		,
+	        token 		: 		"heihei"
 	    });
 	});
 

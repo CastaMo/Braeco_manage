@@ -9,7 +9,7 @@ require-manage = let
 	_all-require-name = [
 		'add',							'remove',
 		'update',						'top',
-		'picUpload'
+		'picUploadPre',					'picUpload'
 	]
 
 	###
@@ -20,7 +20,8 @@ require-manage = let
 		'remove'		:		'/Category/Remove'
 		'update' 		:		'/Category/Update/Profile'
 		'top' 			:		'/Category/Update/Top'
-		'picUpload' 	:		'/pic/upload/token/category'
+		'picUploadPre' 	:		'/pic/upload/token/category'
+		'picUpload' 	:		'http://up.qiniu.com/putb64'
 	}
 
 	_requires = {}
@@ -34,13 +35,6 @@ require-manage = let
 	}
 
 	###
-	#	校正ajax-object的url
-	###
-	_correct-URL = {
-		"top"		:		(ajax-object, data)-> ajax-object.url += "/#{data.id}"
-	}
-
-	###
 	#	获取一个基本的ajax请求对象，主要有url、type、async的配置
 	###
 	_get-normal-ajax-object = (config)->
@@ -51,13 +45,36 @@ require-manage = let
 		}
 
 	###
+	#	校正ajax-object的url
+	###
+	_correct-URL = {
+		"top"			:		(ajax-object, data)-> ajax-object.url += "/#{data.id}"
+		'picUploadPre' 	:		(ajax-object, data)-> ajax-object.url += "/#{data.id}"
+		'picUpload' 	:		(ajax-object, data)-> ajax-object.url += "/#{data.fsize}"
+	}
+
+
+	###
+	#	按照需要设定header
+	###
+	_set-header = {
+		"picUpload" 		:		(ajax-object, data)-> ajax-object.header =  {
+			"Content-Type" 		:		"application/octet-stream"
+			"Authorization" 	:		"UpToken #{data.token}"
+		}
+	}
+
+
+	###
 	#	ajax请求对象对应的数据请求属性，以键值对Object呈现于此
 	###
 	_get-require-data-str = {
-		"add" 		:		(data)-> return "name=#{data.name}"
-		"remove" 	:		(data)-> return "id=#{data.id}"
-		"update" 	:		(data)-> return "id=#{data.id}&name=#{data.name}"
-		"top" 		:		(data)-> return ""
+		"add" 			:		(data)-> return "name=#{data.name}"
+		"remove" 		:		(data)-> return "id=#{data.id}"
+		"update" 		:		(data)-> return "id=#{data.id}&name=#{data.name}"
+		"top" 			:		(data)-> return ""
+		"picUploadPre" 	:		(data)-> return ""
+		"picUpload" 	:		(data)-> return "#{data.url}"
 
 	}
 
@@ -80,19 +97,18 @@ require-manage = let
 	#	在请求状态码为200且返回的message属性不为success时的处理方法
 	###
 	_require-fail-callback = {
-		"add"		:		{
+		"add"			:		{
 			"Used name" 				:	-> alert "此品类名称已经存在"
 		}
-		"remove" 	:		{
+		"remove" 		:		{
 
 		}
-		"update" 	:		{
+		"update" 		:		{
 			"Used name" 				:	-> alert "此品类名称已经存在"
 		}
-		"top"		:		{
+		"top"			:		{
 
 		}
-		
 	}
 
 
@@ -105,9 +121,11 @@ require-manage = let
 	_require-handle = (name, config)->
 		return (options)->
 			ajax-object = _get-normal-ajax-object config
-			ajax-object.data = _get-require-data-str[name] options.data
+			ajax-object.data = _get-require-data-str[name]? options.data
 			_correct-URL[name]? ajax-object, options.data
+			_set-header[name]? ajax-object, options.data
 			ajax-object.success = (result_)-> _normal-handle name, result_, options.callback
+			console.log ajax-object
 			ajax ajax-object
 
 

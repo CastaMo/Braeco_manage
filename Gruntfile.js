@@ -13,6 +13,7 @@ module.exports = function(grunt) {
     // 使用 middleware(中间件)，就必须关闭 LiveReload 的浏览器插件
     var serveStatic = require('serve-static');
     var serveIndex = require('serve-index');
+    var md5File = require('md5-file');
     var lrMiddleware = function(connect, options, middlwares) {
         return [
             lrSnippet,
@@ -113,8 +114,72 @@ module.exports = function(grunt) {
                 src: ['**/*', '!./node_modules/*'],
                 dest: '../backup/braeco_client',
                 expand: true
-            }
+            },
 
+            versioncontrol: {
+                options : {
+                    process: function (content, srcpath) {
+
+                        var versionPrefix = "/public/version";
+
+                        var commonMap = {
+                            utiljs: {
+                                reg: /(?:\/public\/js\/)(\S+)(?:\/util\.js)((\?v=)(\w+))?/g,
+                                path: 'bin/public/js/common/util.js',
+                                prefix: '/public/js/common/util_',
+                                type: '.js'
+                            }
+                        };
+
+                        var pageMap =  {
+                            mainCss: {
+                                reg   : /(?:\/public\/css\/)(\S+)(?:\/main\.css)(?:(?:\?v=)(?:\w+))?/g,
+                                path  : 'bin/public/css/{page}/main.css',
+                                prefix: '/public/css/{page}/main_',
+                                type  : ".css"
+                            },
+                            base64Css: {
+                                reg: /(?:\/public\/css\/)(\S+)(?:\/base64\.css)(?:(?:\?v=)(?:\w+))?/g,
+                                path: 'bin/public/css/{page}/base64.css',
+                                prefix: '/public/css/{page}/base64_',
+                                type  : ".css"
+                            },
+                            mainJs: {
+                                reg: /(?:\/public\/js\/)(\S+)(?:\/main\.js)(?:(?:\?v=)(?:\w+))?/g,
+                                path: 'bin/public/js/{page}/main.js',
+                                prefix: '/public/js/{page}/main_',
+                                type  : ".js"
+                            },
+                        };
+
+                        for ( var key in commonMap ) {
+                            content = content.replace(commonMap[key].reg, versionPrefix + commonMap[key].prefix + md5File(commonMap[key].path).substring(0, 10) + commonMap[key].type);
+                        }
+
+                        for ( var key in pageMap ) {
+                            var found = pageMap[key].reg.exec(content);
+
+                            if (!found )
+                                continue;
+
+                            var file    = pageMap[key].path.replace('{page}', found[1]),
+                                fileMd5 = md5File(file).substring(0, 10),
+                                prefix  = pageMap[key].prefix.replace('{page}', found[1]);
+                                type    = pageMap[key].type
+
+                            content = content.replace(found[0], versionPrefix + prefix + fileMd5 + type);
+                        }
+
+                        return content;
+                    }
+                },
+                files: [
+                    {
+                        src: './bin/CanteenManage.html',
+                        dest: './views/CanteenManage.html'
+                    }
+                ]
+            }
         },
 
         /*编译jade，源文件路径设为src的根目录，src/jade里面装jade的option部分(比如你把head和script分离出来)，编译后放在bin中*/
@@ -397,8 +462,97 @@ module.exports = function(grunt) {
                     'jade:business_hallOrder_basic_test'
                 ]
             }
+        },
+
+        hashmap: {
+            options: {
+                // These are default options
+                output: '#{= dest}/hash.json',
+                etag: null, // See below([#](#option-etag))
+                algorithm: 'md5', // the algorithm to create the hash
+                rename: '#{= dirname}/#{= basename}.#{= hash}#{= extname}', // save the original file as what
+                keep: true, // should we keep the original file or not
+                merge: false, // merge hash results into existing `hash.json` file or override it.
+                hashlen: 10, // length for hashsum digest
+            },
+            map: {
+                cwd: '<%= dirs.dest_path %>',
+                src: [  '<%= dirs.js %>**/main.min.js',
+                        '<%= dirs.js %>**/extra.min.js',
+                        '<%= dirs.css %>**/*.min.css'],
+                dest: '<%= dirs.dest_path %>public/<%= dirs.version %>'
+            }
+        },
+
+        /*压缩js，把dest_path中的js路径里所有js都压缩为一个main.min.js*/
+        uglify: {
+            options: {
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+                report: "min"
+            },
+            dist: {
+                files: {
+                    '<%= dirs.dest_path %><%= dirs.js %>common/extra.min.js': ['<%= dirs.dest_path %><%= dirs.js %>common/*.js', '!<%= dirs.dest_path %><%= dirs.js %>common/*.min.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManage/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManage/*.js', '!<%= dirs.dest_path %><%= dirs.js %>CanteenManage/*.min.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageBusiness/HallOrder/Basic/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageBusiness/HallOrder/Basic/*.js', '!<%= dirs.dest_path %><%= dirs.js %>CanteenManageBusiness/HallOrder/Basic/*.min.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/*.js', '!<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/*.min.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/*.js', '!<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/*.min.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/*.js', '!<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/*.min.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/*.js', '!<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/*.min.js']
+                }
+            }
+        },
+
+        /*把dest_path中的css路径里所有css都压缩为一个main.min.css*/
+        cssmin: {
+            options: {
+                keepSpecialComments: 0,
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+            },
+            compress: {
+                files: {
+                    '<%= dirs.dest_path %><%= dirs.css %>common/extra.min.css': ['<%= dirs.dest_path %><%= dirs.css %>common/*.css', '!<%= dirs.dest_path %><%= dirs.css %>common/*.min.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManage/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManage/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManage/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManage/base64.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageBusiness/HallOrder/Basic/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageBusiness/HallOrder/Basic/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageBusiness/HallOrder/Basic/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageBusiness/HallOrder/Basic/base64.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Activity/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Activity/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Activity/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Activity/base64.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Category/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Category/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Category/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Category/base64.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/base64.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/base64.css']
+                }
+            }
+        },
+
+        filerev: {
+            css: {
+                src: '/bin/public/css/CanteenManage/*.css',
+                dest: 'bin/public/test'
+            }
+        },
+
+        useminPrepare: {
+
+            html: 'bin/CanteenManage.html'
+
+        },
+
+
+        usemin: {
+            options: {
+                pretty: true,
+                assetDirs: [
+                    '/bin/public/test'
+                ]
+            },
+            html: 'bin/CanteenManage.html'
         }
     });
+
 
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
@@ -417,6 +571,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-hashmap');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-express-server');
+    grunt.loadNpmTasks('grunt-filerev');
+    grunt.loadNpmTasks('grunt-usemin');
 
     grunt.registerTask('default', [
         'express',

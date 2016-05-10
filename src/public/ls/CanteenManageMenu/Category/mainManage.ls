@@ -40,7 +40,7 @@ main-manage = let
 					data 			:	 {
 						id 			:	@id
 					}
-					callback		:	(result_)~> @remove-self!
+					callback		:	(result)~> @remove-self!
 				}
 			(@dom.find ".top").click !~> 
 				if @dom.prev!.length is 0 then alert "已经位于顶部"
@@ -49,7 +49,7 @@ main-manage = let
 						data 		:	{
 							id 		:	@id
 						}
-						callback 	:	(require_)~> @top-self!
+						callback 	:	(result)~> @top-self!
 					}
 			(@dom.find ".edit").click !~>
 				edit.get-category-and-show @
