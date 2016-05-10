@@ -1,3 +1,4 @@
+header = null
 main-manage = let
 	_state = null
 	[get-JSON, deep-copy] = [util.get-JSON, util.deep-copy]
@@ -16,6 +17,9 @@ main-manage = let
 	_single-list-field-dom = $ ".single-list-field"
 	_all-choose-field-dom = $ ".food-single-header-field .name-container > .t-choose"
 	_all-choose-dom = _all-choose-field-dom.find ".choose-pic"
+
+	_init-depend-module = !->
+		header 		:= 		require "./headerManage.js"
 
 	_init-all-food = (_get-food-JSON)!->
 		all-foods = get-JSON _get-food-JSON!
@@ -67,6 +71,7 @@ main-manage = let
 		_current-dish-id := []
 		for dish in _dishes-array[_current-category-id]
 			if dish.is-choose then _current-dish-id.push dish.id
+		header.check-all-control-headers-by-current-dish-id _current-dish-id
 
 	class Category
 
@@ -239,7 +244,14 @@ main-manage = let
 
 
 	initial: (_get-food-JSON)!->
+		_init-depend-module!
 		_init-all-evnet!
 		_init-all-food _get-food-JSON
+		console.log _dishes
+
+	get-dish-by-id: (dish-id)->
+		console.log _dishes
+		if _dishes[_current-category-id] then return _dishes[_current-category-id][dish-id]
+		else return null
 
 module.exports = main-manage

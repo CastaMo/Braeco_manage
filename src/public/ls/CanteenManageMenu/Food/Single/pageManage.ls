@@ -4,9 +4,9 @@ page-manage = let
 	$("\#Food-sub-menu").addClass "choose"
 	$("\#food-nav li\#Single").addClass "choose"
 
-	_main-dom = $ "\#category-main"
-	_new-dom = $ "\#category-new"
-	_edit-dom = $ "\#category-edit"
+	_main-dom = $ "\#food-single-main"
+	_new-dom = $ "\#food-single-new"
+	_edit-dom = $ "\#food-single-edit"
 	_all-dom = [_main-dom, _new-dom, _edit-dom]
 
 	_unshow-all-dom-except-given = (dom_)->
@@ -23,7 +23,7 @@ page-manage = let
 				_new-dom.fade-in 200
 				_unshow-all-dom-except-given _new-dom
 
-		"edit"		:	 do
+		"edit"		:	 let
 			->
 				_edit-dom.fade-in 200
 				_unshow-all-dom-except-given _edit-dom

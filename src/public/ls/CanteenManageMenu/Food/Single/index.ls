@@ -18,8 +18,9 @@ let win = window, doc = document
 		_init-callback[result.message]?(result)
 
 	_init-all-module = !->
-		page = require "./pageManage.js";			page.initial!
-		main = require "./mainManage.js";		 	main.initial _get-food-JSON
+		page 	= require "./pageManage.js";			page.initial!
+		main 	= require "./mainManage.js";		 	main.initial _get-food-JSON
+		header 	= require "./headerManage.js";			header.initial!
 
 
 	_test-is-data-ready = ->

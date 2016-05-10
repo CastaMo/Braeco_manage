@@ -16,7 +16,7 @@ main-manage = let
 
 	_init-all-event = !->
 		($ "\#category-main \#new-btn").click !->
-				page.toggle-page "new"
+			page.toggle-page "new"
 
 	_init-depend-module = !->
 		page 		:= 	require "./pageManage.js"
