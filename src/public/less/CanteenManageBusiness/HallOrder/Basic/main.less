@@ -6,25 +6,66 @@ input {
 
 #runBusiness,
 #stopBusiness {
-	margin: 30px 30px 30px 30px;
+	margin: 20px 30px 20px 30px;
 	font-size: 14px;
 	font-style: Arial;
 	font-weight: bold;
+	overflow: hidden;
 }
 
-#modifySetting,
-#modifyTime,
-#modifyPay,
-#modifyMeal {
-	border: solid;
-    border-color: #797979;
-    border-width: 1px;
-	margin: -1px 30px 0px 30px;
-	width: 650px;
-	p {
-		margin-left: 20px;
-		margin-top: 10px;
-		font-size: 14px;
+#previewBusiness {
+	span {
+		margin: 0 0 0 30px;
+	}
+	color: #333333;
+	#modifyTime,
+	#modifyPay,
+	#modifyMeal {
+		border: solid;
+	    border-color: #333333;
+	    border-width: 1px 0 1px 0;
+		margin: -1px 30px 0px 30px;
+		width: 650px;
+		p {
+			margin-left: 20px;
+			margin-top: 10px;
+			font-size: 14px;
+		}
+	}
+	#modifyTime {
+		height: 70px;
+	}
+	#modifyMeal,
+	#modifyChoose,
+	#modifyPay {
+		height: 40px;
+	}
+}
+
+#modifyBusiness {
+	display: none;
+	#modifySetting,
+	#modifyTime,
+	#modifyPay,
+	#modifyMeal {
+		border: solid;
+	    border-color: #797979;
+	    border-width: 1px;
+		margin: -1px 30px 0px 30px;
+		width: 650px;
+		p {
+			margin-left: 20px;
+			margin-top: 10px;
+			font-size: 14px;
+		}
+	}
+	#modifyTime {
+		height: 140px;
+	}
+	#modifyMeal,
+	#modifyChoose,
+	#modifyPay {
+		height: 40px;
 	}
 }
 
@@ -39,17 +80,6 @@ input {
 #modifySetting {
 	height: 40px;
 	background-color: #F4F5F9;
-}
-
-
-#modifyTime {
-	height: 140px;
-}
-
-#modifyMeal,
-#modifyChoose,
-#modifyPay {
-	height: 40px;
 }
 
 .canBtn,
@@ -69,4 +99,41 @@ input {
 select {
 	margin-left: 10px;
 	width: 200px;
+}
+
+#modifyForBus {
+	position: relative;
+	left: 120px;
+	bottom: 44px;
+	color: blue;
+	font-size: 14px;
+	font-style: Arial;
+	font-weight: bold;
+}
+
+#timer {
+	position: relative;
+	font-size: 14px;
+	bottom: 20px;
+	left: 90px;
+}
+
+#modifyDelTime {
+	position: relative;
+	left: 290px;
+	bottom: 48px;
+	color: blue;
+	font-size: 14px;
+	font-style: Arial;
+	font-weight: bold;
+}
+
+#modifyAddTime {
+	position: relative;
+	left: 280px;
+	bottom: 48px;
+	color: blue;
+	font-size: 14px;
+	font-style: Arial;
+	font-weight: bold;
 }
