@@ -28,7 +28,7 @@ module.exports = function(grunt) {
     grunt.initConfig({
         // Metadata.
         pkg: grunt.file.readJSON('package.json'),
-        secret: grunt.file.readJSON('../secret_for_formal.json'),
+        secret: grunt.file.readJSON('../secret.json'),
         dirs: grunt.file.readJSON('dirs.json'),
 
         banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
@@ -101,6 +101,16 @@ module.exports = function(grunt) {
             }
         },
 
+        /*清除文件*/
+        clean: {
+            build: {
+                src: ["<%= dirs.dest_path %>"]
+            },
+            version: {
+                src: ["<%= dirs.dest_path %>public/<%= dirs.version %>"]
+            }
+        },
+
         copy: {
             test: {
                 cwd: '<%= dirs.lib_path %>',
@@ -117,55 +127,55 @@ module.exports = function(grunt) {
             },
 
             versioncontrol: {
-                options : {
-                    process: function (content, srcpath) {
+                options: {
+                    process: function(content, srcpath) {
 
                         var versionPrefix = "/public/version";
 
                         var commonMap = {
                             utiljs: {
-                                reg: /(?:\/public\/js\/)(\S+)(?:\/util\.js)((\?v=)(\w+))?/g,
-                                path: 'bin/public/js/common/util.js',
-                                prefix: '/public/js/common/util_',
+                                reg: /(?:\/public\/js\/)(\S+)(?:\/extra\.min\.js)((\?v=)(\w+))?/g,
+                                path: 'bin/public/js/common/extra.min.js',
+                                prefix: '/public/js/common/extra.min_',
                                 type: '.js'
                             }
                         };
 
-                        var pageMap =  {
+                        var pageMap = {
                             mainCss: {
-                                reg   : /(?:\/public\/css\/)(\S+)(?:\/main\.css)(?:(?:\?v=)(?:\w+))?/g,
-                                path  : 'bin/public/css/{page}/main.css',
-                                prefix: '/public/css/{page}/main_',
-                                type  : ".css"
+                                reg: /(?:\/public\/css\/)(\S+)(?:\/main\.min\.css)(?:(?:\?v=)(?:\w+))?/g,
+                                path: 'bin/public/css/{page}/main.min.css',
+                                prefix: '/public/css/{page}/main.min_',
+                                type: ".css"
                             },
                             base64Css: {
-                                reg: /(?:\/public\/css\/)(\S+)(?:\/base64\.css)(?:(?:\?v=)(?:\w+))?/g,
-                                path: 'bin/public/css/{page}/base64.css',
-                                prefix: '/public/css/{page}/base64_',
-                                type  : ".css"
+                                reg: /(?:\/public\/css\/)(\S+)(?:\/base64\.min\.css)(?:(?:\?v=)(?:\w+))?/g,
+                                path: 'bin/public/css/{page}/base64.min.css',
+                                prefix: '/public/css/{page}/base64.min_',
+                                type: ".css"
                             },
                             mainJs: {
-                                reg: /(?:\/public\/js\/)(\S+)(?:\/main\.js)(?:(?:\?v=)(?:\w+))?/g,
-                                path: 'bin/public/js/{page}/main.js',
-                                prefix: '/public/js/{page}/main_',
-                                type  : ".js"
+                                reg: /(?:\/public\/js\/)(\S+)(?:\/main\.min\.js)(?:(?:\?v=)(?:\w+))?/g,
+                                path: 'bin/public/js/{page}/main.min.js',
+                                prefix: '/public/js/{page}/main.min_',
+                                type: ".js"
                             },
                         };
 
-                        for ( var key in commonMap ) {
+                        for (var key in commonMap) {
                             content = content.replace(commonMap[key].reg, versionPrefix + commonMap[key].prefix + md5File(commonMap[key].path).substring(0, 10) + commonMap[key].type);
                         }
 
-                        for ( var key in pageMap ) {
+                        for (var key in pageMap) {
                             var found = pageMap[key].reg.exec(content);
 
-                            if (!found )
+                            if (!found)
                                 continue;
 
-                            var file    = pageMap[key].path.replace('{page}', found[1]),
+                            var file = pageMap[key].path.replace('{page}', found[1]),
                                 fileMd5 = md5File(file).substring(0, 10),
-                                prefix  = pageMap[key].prefix.replace('{page}', found[1]);
-                                type    = pageMap[key].type
+                                prefix = pageMap[key].prefix.replace('{page}', found[1]);
+                            type = pageMap[key].type
 
                             content = content.replace(found[0], versionPrefix + prefix + fileMd5 + type);
                         }
@@ -173,12 +183,12 @@ module.exports = function(grunt) {
                         return content;
                     }
                 },
-                files: [
-                    {
-                        src: './bin/CanteenManage.html',
-                        dest: './views/CanteenManage.html'
-                    }
-                ]
+                files: [{
+                    cwd: './bin/module',
+                    src: ["*.html"],
+                    dest: './bin/views',
+                    expand: true
+                }]
             }
         },
 
@@ -192,42 +202,38 @@ module.exports = function(grunt) {
             },
             manage_test: {
                 files: {
-                    "<%= dirs.dest_path %>CanteenManage.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManage/develop.jade"
-                }
-            },
-            manage_dist: {
-                files: {
-                    "<%= dirs.dist_path %>CanteenManage.php": "<%= dirs.source_path %><%= dirs.jade %>CanteenManage/formal.jade"
+                    "<%= dirs.dest_path %>CanteenManage.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManage/develop.jade",
+                    "<%= dirs.dest_path %>module/CanteenManage.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManage/formal.jade"
                 }
             },
             menu_category_test: {
                 files: {
-                    "<%= dirs.dest_path %>CanteenManageMenu/Category/Category.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Category/develop.jade"
-                }
-            },
-            menu_category_dist: {
-                files: {
-                    "<%= dirs.dist_path %>CanteenManageMenu/Category/Category.php": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Category/formal.jade"
+                    "<%= dirs.dest_path %>CanteenManageMenu/Category/Category.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Category/develop.jade",
+                    "<%= dirs.dest_path %>module/Category.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Category/formal.jade"
                 }
             },
             menu_food_single_test: {
                 files: {
-                    "<%= dirs.dest_path %>CanteenManageMenu/Food/Single/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/Single/develop.jade"
+                    "<%= dirs.dest_path %>CanteenManageMenu/Food/Single/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/Single/develop.jade",
+                    "<%= dirs.dest_path %>module/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/Single/formal.jade"
                 }
             },
             menu_food_property_test: {
                 files: {
-                    "<%= dirs.dest_path %>CanteenManageMenu/Food/Property/Property.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/Property/develop.jade"
+                    "<%= dirs.dest_path %>CanteenManageMenu/Food/Property/Property.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/Property/develop.jade",
+                    "<%= dirs.dest_path %>module/Property.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/Property/formal.jade"
                 }
             },
             market_activity_test: {
                 files: {
-                    "<%= dirs.dist_path %>CanteenManageMarket/Activity/Activity.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Activity/develop.jade"
+                    "<%= dirs.dist_path %>CanteenManageMarket/Activity/Activity.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Activity/develop.jade",
+                    "<%= dirs.dist_path %>module/Activity.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Activity/formal.jade"
                 }
             },
             business_hallOrder_basic_test: {
                 files: {
-                    "<%= dirs.dest_path %>CanteenManageBusiness/HallOrder/Basic/Basic.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageBusiness/HallOrder/Basic/develop.jade"
+                    "<%= dirs.dest_path %>CanteenManageBusiness/HallOrder/Basic/Basic.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageBusiness/HallOrder/Basic/develop.jade",
+                    "<%= dirs.dest_path %>module/Basic.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageBusiness/HallOrder/Basic/formal.jade"
                 }
             }
         },
@@ -467,19 +473,20 @@ module.exports = function(grunt) {
         hashmap: {
             options: {
                 // These are default options
-                output: '#{= dest}/hash.json',
+                output: '#{= dest}/Manage/hash.json',
                 etag: null, // See below([#](#option-etag))
                 algorithm: 'md5', // the algorithm to create the hash
-                rename: '#{= dirname}/#{= basename}.#{= hash}#{= extname}', // save the original file as what
+                rename: '#{= dirname}/#{= basename}_#{= hash}#{= extname}', // save the original file as what
                 keep: true, // should we keep the original file or not
                 merge: false, // merge hash results into existing `hash.json` file or override it.
                 hashlen: 10, // length for hashsum digest
             },
             map: {
                 cwd: '<%= dirs.dest_path %>',
-                src: [  '<%= dirs.js %>**/main.min.js',
-                        '<%= dirs.js %>**/extra.min.js',
-                        '<%= dirs.css %>**/*.min.css'],
+                src: ['<%= dirs.js %>**/main.min.js',
+                    '<%= dirs.js %>**/extra.min.js',
+                    '<%= dirs.css %>**/*.min.css'
+                ],
                 dest: '<%= dirs.dest_path %>public/<%= dirs.version %>'
             }
         },
@@ -524,6 +531,51 @@ module.exports = function(grunt) {
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/base64.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/main.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/base64.css']
+                }
+            }
+        },
+
+        /*好吧，这堆有点麻烦，看README.MD吧*/
+        sftp: {
+            options: {
+                host: '<%= secret.host %>',
+                username: '<%= secret.username %>',
+                password: '<%= secret.password %>',
+                showProgress: true,
+                srcBasePath: "<%= dirs.dest_path %>",
+                port: '<%= secret.port %>',
+                createDirectories: true
+            },
+            module: {
+                options: {
+                    path: '<%= secret.path %>'
+                },
+                files: {
+                    "./": ["<%= dirs.dest_path %>views/*.html"]
+                }
+            },
+            config: {
+                options: {
+                    path: '<%= secret.path %>/application'
+                },
+                files: {
+                    "./": ["<%= dirs.dest_path %>public/<%= dirs.version %>**/main.min*.js",
+                            "<%= dirs.dest_path %>public/<%= dirs.version %>**/extra.min*.js",
+                            "<%= dirs.dest_path %>public/<%= dirs.version %>**/main.min*.css",
+                            "<%= dirs.dest_path %>public/<%= dirs.version %>**/base64.min*.css",
+                            "<%= dirs.dest_path %>public/<%= dirs.version %>**/hash.json"]
+                }
+            }
+        },
+
+        sshexec: {
+            test: {
+                command: [  'sh -c "cd /srv/www/WeTable; ls"',
+                            'sh -c "cd /; ls"'],
+                options: {
+                    host: '<%= secret.host %>',
+                    username: '<%= secret.username %>',
+                    password: '<%= secret.password %>'
                 }
             }
         },
@@ -575,11 +627,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-usemin');
 
     grunt.registerTask('default', [
+        'clean:build',
         'express',
         'copy:test',
         'less',
         'livescript',
         'browserify',
+        'jade',
         'watch'
     ]);
     grunt.registerTask('ready', [
@@ -592,8 +646,15 @@ module.exports = function(grunt) {
         'hashmap'
     ]);
     grunt.registerTask('upload', [
-        'jade',
-        'copy:backup',
+        'copy:test',
+        'less',
+        'livescript',
+        'browserify',
+        'cssmin',
+        'uglify',
+        'clean:version',
+        'hashmap',
+        'copy:versioncontrol',
         'sftp'
     ]);
     grunt.registerTask('backup', [
