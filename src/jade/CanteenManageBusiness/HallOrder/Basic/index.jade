@@ -13,68 +13,70 @@ block content
 	include basicMain
 	#business
 		#stopBusiness
-			input(type = "radio" name = "select" checked = "checked")
+			input(type = "radio" name = "select" value = "stop" checked = "checked")
 			span 暂停业务
 		#runBusiness
-			input(type = "radio" name = "select")
+			input(type = "radio" name = "select" value = "run")
 			span 运营业务
 		#modifyForBus.btn 修改
 		#previewBusiness
 			#modifyTime
-				p 接单日期
-					span 周一、周二、周三、周四、周五、周六、周日
+				p 接单日期 
+					span(id = "showDay")
 				p 接单时段
-					span 07：00 ~ 14：30
+
 			#modifyPay
 				p 支付渠道
-					span 现金支付、支付宝、微信支付、百度钱包
+					span(id = 'showPay')
 			#modifyMeal
 				p 适用餐品
 					span 共50款
 		#modifyBusiness
-			#modifySetting
-				p 修改设置
-			#modifyTime
-				p 接单日期
-					input(type = "checkbox" checked = "checked")
-					span 周一
-					input(type = "checkbox" checked = "checked")
-					span 周二
-					input(type = "checkbox" checked = "checked")
-					span 周三
-					input(type = "checkbox" checked = "checked")
-					span 周四
-					input(type = "checkbox" checked = "checked")
-					span 周五
-					input(type = "checkbox" checked = "checked")
-					span 周六
-					input(type = "checkbox" checked = "checked")
-					span 周日
-				p 接单时段
-						span  从
-						input(type = "time")
-						span  至
-						input(type = "time")
-					#modifyDelTime.btn 删除
-					#modifyAddTime.btn 添加
-			#modifyPay
-				p 支付渠道
-					input(type = "checkbox" checked = "checked")
-					span 现金支付
-					input(type = "checkbox" checked = "checked")
-					span 支付宝
-					input(type = "checkbox" checked = "checked")
-					span 微信支付
-					input(type = "checkbox" checked = "checked")
-					span 百度钱包
-			#modifyMeal
-				p 适用餐品
-					select
-						option 全选
-						option 其他一
-						option 其他二
-			#modifyChoose
-				.canBtn.btn
-					p 取消
-				.finBtn.btn
-					p 保存
+			form(id = "myForm")
+				#modifySetting
+					p 修改设置
+				#modifyTime
+					p 接单日期
+						input(type = "checkbox" value = "1" checked = "checked")
+						span 周一
+						input(type = "checkbox" value = "2" checked = "checked")
+						span 周二
+						input(type = "checkbox" value = "3" checked = "checked")
+						span 周三
+						input(type = "checkbox" value = "4" checked = "checked")
+						span 周四
+						input(type = "checkbox" value = "5" checked = "checked")
+						span 周五
+						input(type = "checkbox" value = "6" checked = "checked")
+						span 周六
+						input(type = "checkbox" value = "7" checked = "checked")
+						span 周日
+					p 接单时段
+						#timer
+							span  从
+							input(type = "time")
+							span  至
+							input(type = "time")
+						#modifyDelTime.btn 删除
+						#modifyAddTime.btn 添加
+				#modifyPay
+					p 支付渠道
+						input(type = "checkbox" value = "8" checked = "checked")
+						span 现金支付
+						input(type = "checkbox" value = "9" checked = "checked")
+						span 支付宝
+						input(type = "checkbox" value = "10" checked = "checked")
+						span 微信支付
+						input(type = "checkbox" value = "11" checked = "checked")
+						span 百度钱包
+				#modifyMeal
+					p 适用餐品
+						select
+							option 全选
+							option 其他一
+							option 其他二
+				#modifyChoose
+					.canBtn.btn
+						p 取消
+					.finBtn.btn
+						p 保存

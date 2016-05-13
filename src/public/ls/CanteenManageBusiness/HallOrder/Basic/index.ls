@@ -27,4 +27,3 @@ let win = window, doc = document
 		else window.main-init = _main-init
 
 	_test-is-data-ready!
-
