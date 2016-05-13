@@ -76,9 +76,9 @@ header-manage = let
 
 		init-fn: !->
 			@check-fn  					= _all-control-header-check-fn[@name]
-			@valid-callback 			= !-> @dom.remove-class "disbale"; 	@is-able = true
-			@invalid-callback 			= !-> @dom.add-class "disbale"; 	@is-able = false
 			@special-check-callback  	= _special-check-callback[@name]
+			@valid-callback 			= !-> @dom.remove-class "disabled"; 	@is-able = true
+			@invalid-callback 			= !-> @dom.add-class "disabled"; 	@is-able = false
 			@click-event 				= _all-control-header-click-event[@name]
 
 		init-all-event: !->
@@ -87,7 +87,7 @@ header-manage = let
 
 	check-all-control-headers-by-current-dish-id: (_current-dish-id)!->
 		for name, control-header of _control-headers
-			if control-header.check-fn _current-dish-id then control-header.valid-callback!
+			if control-header.check-fn _current-dish-id then control-header.valid-callback!; 	control-header.special-check-callback?(_current-dish-id)
 			else control-header.invalid-callback!
 
 	initial 	: 		!->

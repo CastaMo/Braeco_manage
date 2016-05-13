@@ -161,11 +161,9 @@ module.exports = function(grunt) {
                                 type: ".js"
                             },
                         };
-
                         for (var key in commonMap) {
                             content = content.replace(commonMap[key].reg, versionPrefix + commonMap[key].prefix + md5File(commonMap[key].path).substring(0, 10) + commonMap[key].type);
                         }
-
                         for (var key in pageMap) {
                             var found = pageMap[key].reg.exec(content);
 
@@ -179,13 +177,12 @@ module.exports = function(grunt) {
 
                             content = content.replace(found[0], versionPrefix + prefix + fileMd5 + type);
                         }
-
                         return content;
                     }
                 },
                 files: [{
                     cwd: './bin/module',
-                    src: ["*.html"],
+                    src: ["**/*.html"],
                     dest: './bin/views',
                     expand: true
                 }]
@@ -203,37 +200,37 @@ module.exports = function(grunt) {
             manage_test: {
                 files: {
                     "<%= dirs.dest_path %>CanteenManage.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManage/develop.jade",
-                    "<%= dirs.dest_path %>module/CanteenManage.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManage/formal.jade"
+                    "<%= dirs.dest_path %>module/Manage/Config.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManage/formal.jade"
                 }
             },
             menu_category_test: {
                 files: {
                     "<%= dirs.dest_path %>CanteenManageMenu/Category/Category.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Category/develop.jade",
-                    "<%= dirs.dest_path %>module/Category.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Category/formal.jade"
+                    "<%= dirs.dest_path %>module/Manage/Menu/Category.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Category/formal.jade"
                 }
             },
             menu_food_single_test: {
                 files: {
                     "<%= dirs.dest_path %>CanteenManageMenu/Food/Single/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/Single/develop.jade",
-                    "<%= dirs.dest_path %>module/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/Single/formal.jade"
+                    "<%= dirs.dest_path %>module/Manage/Menu/Food/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/Single/formal.jade"
                 }
             },
             menu_food_property_test: {
                 files: {
                     "<%= dirs.dest_path %>CanteenManageMenu/Food/Property/Property.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/Property/develop.jade",
-                    "<%= dirs.dest_path %>module/Property.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/Property/formal.jade"
+                    "<%= dirs.dest_path %>module/Manage/Menu/Food/Property.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/Property/formal.jade"
                 }
             },
             market_activity_test: {
                 files: {
                     "<%= dirs.dist_path %>CanteenManageMarket/Activity/Activity.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Activity/develop.jade",
-                    "<%= dirs.dist_path %>module/Activity.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Activity/formal.jade"
+                    "<%= dirs.dist_path %>module/Manage/Market/Activity.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Activity/formal.jade"
                 }
             },
             business_hallOrder_basic_test: {
                 files: {
                     "<%= dirs.dest_path %>CanteenManageBusiness/HallOrder/Basic/Basic.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageBusiness/HallOrder/Basic/develop.jade",
-                    "<%= dirs.dest_path %>module/Basic.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageBusiness/HallOrder/Basic/formal.jade"
+                    "<%= dirs.dest_path %>module/Manage/Business/HallOrder/Basic.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageBusiness/HallOrder/Basic/formal.jade"
                 }
             }
         },
@@ -499,13 +496,13 @@ module.exports = function(grunt) {
             },
             dist: {
                 files: {
-                    '<%= dirs.dest_path %><%= dirs.js %>common/extra.min.js': ['<%= dirs.dest_path %><%= dirs.js %>common/*.js', '!<%= dirs.dest_path %><%= dirs.js %>common/*.min.js'],
-                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManage/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManage/*.js', '!<%= dirs.dest_path %><%= dirs.js %>CanteenManage/*.min.js'],
-                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageBusiness/HallOrder/Basic/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageBusiness/HallOrder/Basic/*.js', '!<%= dirs.dest_path %><%= dirs.js %>CanteenManageBusiness/HallOrder/Basic/*.min.js'],
-                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/*.js', '!<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/*.min.js'],
-                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/*.js', '!<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/*.min.js'],
-                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/*.js', '!<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/*.min.js'],
-                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/*.js', '!<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/*.min.js']
+                    '<%= dirs.dest_path %><%= dirs.js %>common/extra.min.js': ['<%= dirs.dest_path %><%= dirs.js %>common/*.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManage/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManage/main.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageBusiness/HallOrder/Basic/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageBusiness/HallOrder/Basic/main.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/main.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/main.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/main.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/main.js']
                 }
             }
         },
@@ -548,10 +545,10 @@ module.exports = function(grunt) {
             },
             module: {
                 options: {
-                    path: '<%= secret.path %>'
+                    path: '<%= secret.path %>/application'
                 },
                 files: {
-                    "./": ["<%= dirs.dest_path %>views/*.html"]
+                    "./": ["<%= dirs.dest_path %>views/**/*.html"]
                 }
             },
             config: {
@@ -560,18 +557,20 @@ module.exports = function(grunt) {
                 },
                 files: {
                     "./": ["<%= dirs.dest_path %>public/<%= dirs.version %>**/main.min*.js",
-                            "<%= dirs.dest_path %>public/<%= dirs.version %>**/extra.min*.js",
-                            "<%= dirs.dest_path %>public/<%= dirs.version %>**/main.min*.css",
-                            "<%= dirs.dest_path %>public/<%= dirs.version %>**/base64.min*.css",
-                            "<%= dirs.dest_path %>public/<%= dirs.version %>**/hash.json"]
+                        "<%= dirs.dest_path %>public/<%= dirs.version %>**/extra.min*.js",
+                        "<%= dirs.dest_path %>public/<%= dirs.version %>**/main.min*.css",
+                        "<%= dirs.dest_path %>public/<%= dirs.version %>**/base64.min*.css",
+                        "<%= dirs.dest_path %>public/<%= dirs.version %>**/hash.json"
+                    ]
                 }
             }
         },
 
         sshexec: {
             test: {
-                command: [  'sh -c "cd /srv/www/WeTable; ls"',
-                            'sh -c "cd /; ls"'],
+                command: ['sh -c "cd /srv/www/WeTable; ls"',
+                    'sh -c "cd /; ls"'
+                ],
                 options: {
                     host: '<%= secret.host %>',
                     username: '<%= secret.username %>',

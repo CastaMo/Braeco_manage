@@ -51,17 +51,19 @@ new-manage = let
 		_base64-str = ""
 		_data = {}
 
+
 		_check-is-already-and-upload = !->
 			if _base64-str and _data.token and _data.key
 				#步骤③
 				require_.get("picUpload").require {
 					data 		:		{
-						fsize 	:		parse-int _pic-input-dom[0].files[0].size
+						fsize 	:		-1
 						token 	:		_data.token
-						key 	:		_data.key
+						key 	:		btoa(_data.key).replace("+", "-").replace("/", "_")
 						url 	:		_base64-str
 					}
 					callback 	:		(result)->
+						_src 		:= "http://static.brae.co/#{_data.key}"
 						_base64-str := ""
 						_data 		:= {}
 						console.log "success"

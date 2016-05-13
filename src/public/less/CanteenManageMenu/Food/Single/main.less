@@ -1,7 +1,7 @@
 @import "../main";
 #food {
     #food-single-new,
-    #food-single-add {
+    #food-single-edit {
         .hide;
     }
     input,
@@ -49,9 +49,14 @@
                             width: 55px;
                             margin-right: 30px;
                             font-size: 14px;
-                            &:hover {
+                            &:hover:not(.disabled) {
                                 p {
                                     color: @orange-color;
+                                }
+                            }
+                            &.disabled {
+                                p {
+                                    color: @font-grey-color;
                                 }
                             }
                             icon {

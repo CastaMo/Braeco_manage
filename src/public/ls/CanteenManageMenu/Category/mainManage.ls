@@ -63,7 +63,7 @@ main-manage = let
 								</div>
 								<div class='t-second'>
 									<div class='food-pic-field'>
-										<div class='img default-category-image' #{if category.pic then "style=background-image:url(#{category.pic})" else ""}></div>
+										<div class='img default-category-image' #{if category.pic then "style=background-image:url(#{category.pic}?imageView2/1/w/215/h/60)" else ""}></div>
 									</div>
 								</div>
 								<div class='t-third'>

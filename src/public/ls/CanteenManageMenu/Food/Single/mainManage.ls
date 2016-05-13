@@ -12,11 +12,11 @@ main-manage = let
 
 	_num-to-chinese = ["零","一","二","三","四","五","六","七","八","九","十"]
 
-	_map-category-name-to-id = {}
-	_food-single-select-dom = $ "select.food-single-select"
-	_single-list-field-dom = $ ".single-list-field"
-	_all-choose-field-dom = $ ".food-single-header-field .name-container > .t-choose"
-	_all-choose-dom = _all-choose-field-dom.find ".choose-pic"
+	_map-category-name-to-id 		= {}
+	_food-single-select-dom 		= $ "select.food-single-select"
+	_single-list-field-dom 			= $ ".single-list-field"
+	_all-choose-field-dom 			= $ ".food-single-header-field .name-container > .t-choose"
+	_all-choose-dom 				= _all-choose-field-dom.find ".choose-pic"
 
 	_init-depend-module = !->
 		header 		:= 		require "./headerManage.js"
@@ -36,27 +36,43 @@ main-manage = let
 		_fist-category.select-self-event!
 
 	_init-all-evnet = !->
-		_food-single-select-dom.change !->
-			_categories[_map-category-name-to-id[@value]].select-self-event!
+		_food-single-select-dom.change !-> _categories[_map-category-name-to-id[@value]].select-self-event!
 		_all-choose-field-dom.click _click-all-choose-event
 
+
+	###
+	#	header全选点击事件，由_is-all-choose这个标志变量决定。
+	# 	如果_is-all-choose为true，则全部反选，否则全选
+	###
 	_click-all-choose-event = !->
 		if _is-all-choose then _unchoose-current-all-dish!
 		else _choose-current-all-dish!
 			
-
+	###
+	# 	执行全选
+	###
 	_choose-current-all-dish = !->
 		if not _current-category-id then return
 		_is-all-choose := true; _all-choose-dom.add-class "choose"
 		for dish in _dishes-array[_current-category-id]
 			dish.choose-self!
 
+	###
+	# 	执行反选
+	###
 	_unchoose-current-all-dish = !->
 		if not _current-category-id then return
 		_is-all-choose := false; _all-choose-dom.remove-class "choose"
 		for dish in _dishes-array[_current-category-id]
 			dish.unchoose-self!
 
+
+	###
+	#	获取优惠信息相关的字符串
+	#	@param 		{String} 	dcType 	: 优惠类型
+	# 	@param 		{Number} 	dc 		: 优惠系数，根据类型不同而不同
+	# 	@return 	{String} 	dcInfo 	: 优惠信息
+ 	###
 	_get-dc-info = (dc-type, dc)->
 		if dc-type is "discount"
 			if dc % 10 is 0 then num = _num-to-chinese[Math.round dc/10]
@@ -67,6 +83,9 @@ main-manage = let
 		else if dc-type is "limit" then return "剩#{dc}件"
 		""
 
+	###
+	# 	将选中的餐品id添加至临时数组中, 并传递给header模块，用于更新header操作的可用性
+	###
 	_update-choose-dish = !->
 		_current-dish-id := []
 		for dish in _dishes-array[_current-category-id]
@@ -85,7 +104,7 @@ main-manage = let
 
 		_unshow-all-single-list = !->
 			for id, category of _categories
-				category.single-list-dom.fade-out 100
+				category.unshow-single-list-dom!
 
 		init: !->
 			@init-all-dom!
@@ -101,6 +120,10 @@ main-manage = let
 			select-option-dom = $ "<option value='#{@name}'>#{@name}</option>"
 			_food-single-select-dom.append select-option-dom
 
+		###
+		# 	prototype:
+		#	生成餐品对应的容器list
+		###
 		init-single-list-dom: !->
 			_get-single-list-dom = (category)->
 				single-list-dom = $ "<ul class='single-list' id='single-list-#{category.seqNum}'></ul>"
@@ -108,9 +131,13 @@ main-manage = let
 				single-list-dom.css {"display": "none"}
 			@single-list-dom = _get-single-list-dom @
 
+		show-single-list-dom: !-> @single-list-dom.fade-in 100
+
+		unshow-single-list-dom: !-> @single-list-dom.fade-out 100
+
 		add-dish: (options)!->
 			dish = new Dish {
-				able 			:		options.able 		|| true
+				able 			:		options.able 		|| false
 				default-price 	:		options.defaultprice
 				detail 			:		options.detail 		|| ""
 				id 				:		options.dishid
@@ -127,7 +154,7 @@ main-manage = let
 		select-self-event: !->
 			_unchoose-current-all-dish!
 			_unshow-all-single-list!
-			set-timeout (!~> @single-list-dom.fade-in 100), 100
+			set-timeout (!~> @show-single-list-dom!), 100
 			_current-category-id := @id
 
 		class Dish
@@ -213,6 +240,10 @@ main-manage = let
 				@remark-dom = @single-content-dom.find ".t-remark p"
 				@cover-dom = @single-content-dom.find ".hide-cover"
 
+			###
+			# 	prototype
+			#	根据自身的属性对dom作出变化
+			###
 			update-self-dom: !->
 				_update-property-dom = (dish)!->
 					dish.property-dom.html inner-html = ""
@@ -247,10 +278,8 @@ main-manage = let
 		_init-depend-module!
 		_init-all-evnet!
 		_init-all-food _get-food-JSON
-		console.log _dishes
 
 	get-dish-by-id: (dish-id)->
-		console.log _dishes
 		if _dishes[_current-category-id] then return _dishes[_current-category-id][dish-id]
 		else return null
 

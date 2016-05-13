@@ -50,7 +50,7 @@ require-manage = let
 	_correct-URL = {
 		"top"			:		(ajax-object, data)-> ajax-object.url += "/#{data.id}"
 		'picUploadPre' 	:		(ajax-object, data)-> ajax-object.url += "/#{data.id}"
-		'picUpload' 	:		(ajax-object, data)-> ajax-object.url += "/#{data.fsize}"
+		'picUpload' 	:		(ajax-object, data)-> ajax-object.url += "/#{data.fsize}/key/#{data.key}"
 	}
 
 
@@ -101,13 +101,20 @@ require-manage = let
 			"Used name" 				:	-> alert "此品类名称已经存在"
 		}
 		"remove" 		:		{
-
+			"Category not found" 		:	-> alert "品类不存在!"
 		}
 		"update" 		:		{
 			"Used name" 				:	-> alert "此品类名称已经存在"
+			"Category not found" 		:	-> alert "品类不存在!"
 		}
 		"top"			:		{
-
+			"Category not found" 		:	-> alert "品类不存在!"
+		}
+		"picUploadPre" 	:		{
+			"Category not found" 		:	-> alert "品类不存在!"
+		}
+		"picUpload" 	:		{
+			"Category not found" 		:	-> alert "品类不存在!"
 		}
 	}
 
@@ -125,7 +132,6 @@ require-manage = let
 			_correct-URL[name]? ajax-object, options.data
 			_set-header[name]? ajax-object, options.data
 			ajax-object.success = (result_)-> _normal-handle name, result_, options.callback
-			console.log ajax-object
 			ajax ajax-object
 
 
