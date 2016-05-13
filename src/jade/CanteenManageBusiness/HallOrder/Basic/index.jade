@@ -21,16 +21,16 @@ block content
 		#modifyForBus.btn 修改
 		#previewBusiness
 			#modifyTime
-				p 接单日期 
+				p(id = "hel") 接单日期
 					span(id = "showDay")
 				p 接单时段
-
+					span(id = "showTime")
 			#modifyPay
 				p 支付渠道
-					span(id = 'showPay')
+					span(id = "showPay")
 			#modifyMeal
 				p 适用餐品
-					span 共50款
+					span 全选
 		#modifyBusiness
 			form(id = "myForm")
 				#modifySetting
@@ -57,8 +57,8 @@ block content
 							input(type = "time")
 							span  至
 							input(type = "time")
-						#modifyDelTime.btn 删除
-						#modifyAddTime.btn 添加
+						.modifyDelTime.btn 删除
+					.modifyAddTime.btn 添加
 				#modifyPay
 					p 支付渠道
 						input(type = "checkbox" value = "8" checked = "checked")
@@ -71,7 +71,7 @@ block content
 						span 百度钱包
 				#modifyMeal
 					p 适用餐品
-						select
+						select(id = "selNum")
 							option 全选
 							option 其他一
 							option 其他二
