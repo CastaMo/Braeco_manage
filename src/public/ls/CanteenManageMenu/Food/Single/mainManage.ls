@@ -14,6 +14,8 @@ main-manage = let
 
 	_map-category-name-to-id 		= {}
 	_food-single-select-dom 		= $ "select.food-single-select"
+	_copy-select-dom 				= $ "select\#select-copy"
+	_move-select-dom 				= $ "select\#select-move"
 	_single-list-field-dom 			= $ ".single-list-field"
 	_all-choose-field-dom 			= $ ".food-single-header-field .name-container > .t-choose"
 	_all-choose-dom 				= _all-choose-field-dom.find ".choose-pic"
@@ -35,7 +37,7 @@ main-manage = let
 				category_.add-dish dish
 		_fist-category.select-self-event!
 
-	_init-all-evnet = !->
+	_init-all-event = !->
 		_food-single-select-dom.change !-> _categories[_map-category-name-to-id[@value]].select-self-event!
 		_all-choose-field-dom.click _click-all-choose-event
 
@@ -88,9 +90,15 @@ main-manage = let
 	###
 	_update-choose-dish = !->
 		_current-dish-id := []
-		for dish in _dishes-array[_current-category-id]
+		for dish, i in _dishes-array[_current-category-id]
 			if dish.is-choose then _current-dish-id.push dish.id
 		header.check-all-control-headers-by-current-dish-id _current-dish-id
+
+	###
+	#	每次完成操作都要执行的回调函数
+	###
+	_general-callback = !->
+		_unchoose-current-all-dish!
 
 	class Category
 
@@ -116,9 +124,18 @@ main-manage = let
 
 		init-all-event: !->
 
+		###
+		#	给品类select框添加option
+		###
 		init-select-option-dom: !->
 			select-option-dom = $ "<option value='#{@name}'>#{@name}</option>"
 			_food-single-select-dom.append select-option-dom
+
+			#为copy和move的select顺便也添加option，因为懒......
+			select-option-dom = $ "<option value='#{@name}'>#{@name}</option>"
+			_copy-select-dom.append select-option-dom
+			select-option-dom = $ "<option value='#{@name}'>#{@name}</option>"
+			_move-select-dom.append select-option-dom
 
 		###
 		# 	prototype:
@@ -135,6 +152,16 @@ main-manage = let
 
 		unshow-single-list-dom: !-> @single-list-dom.fade-out 100
 
+		select-self-event: !->
+			_unchoose-current-all-dish!
+			_unshow-all-single-list!
+			set-timeout (!~> @show-single-list-dom!), 100
+			_current-category-id := @id
+
+
+
+		###************ operation start **********###
+
 		add-dish: (options)!->
 			dish = new Dish {
 				able 			:		options.able 		|| false
@@ -149,20 +176,37 @@ main-manage = let
 				category-id 	:		@id
 				dc-type			:		options.dc_type		|| ""
 				dc 				:		options.dc 			|| 0
+				is-head 		:		options.is-head 	|| false
 			}
 
-		select-self-event: !->
-			_unchoose-current-all-dish!
-			_unshow-all-single-list!
-			set-timeout (!~> @show-single-list-dom!), 100
-			_current-category-id := @id
+		change-able-dish: (dish-id, able)!-> _dishes[@id][dish-id].change-able-self able
+
+		remove-dish: (dish-id)!-> _dishes[@id][dish-id].remove-self!
+
+		top-dish: (dish-id)!-> _dishes[@id][dish-id].top-self!
+
+		move-dish: (dish-id, new-category-id)!->
+			dish = _dishes[_current-category-id][dish-id]
+			temp = dish.get-copy-for-options!
+			dish.remove-self!
+			_categories[new-category-id].add-dish temp
+
+		copy-dish: (dish-id, new-category-id)!->
+			dish = _dishes[_current-category-id][dish-id]
+			temp = dish.get-copy-for-options!
+			_categories[new-category-id].add-dish temp
+
+		###************ operation end **********###
+
 
 		class Dish
 			(options)!->
 				deep-copy options, @
 				@init!
+				@update-self-dom!
 				_dishes[@category-id][@id] = @
-				_dishes-array[@category-id].push @
+				if @is-head then _dishes-array[@category-id].unshift @
+				else _dishes-array[@category-id].push @
 
 			_get-single-content-dom = (dish)->
 				dom = $ "<li class='single-content'>
@@ -207,7 +251,8 @@ main-manage = let
 								</div>
 							</div>
 						</li>"
-				_categories[dish.category-id].single-list-dom.append dom
+				if dish.is-head then _categories[dish.category-id].single-list-dom.prepend dom
+				else _categories[dish.category-id].single-list-dom.append dom
 				dom
 
 			init: !->
@@ -218,13 +263,9 @@ main-manage = let
 			init-all-dom: !->
 				@init-single-content-dom!
 				@init-detail-all-dom!
-				@update-self-dom!
 
 			init-prepare: !->
 				@is-choose = false
-
-			init-all-event: !->
-				(@single-content-dom.find ".t-choose").click !~> @click-choose-event!
 
 			init-single-content-dom: !->
 				@single-content-dom = _get-single-content-dom @
@@ -239,6 +280,9 @@ main-manage = let
 				@dc-dom = @single-content-dom.find ".t-dc .dc-field"
 				@remark-dom = @single-content-dom.find ".t-remark p"
 				@cover-dom = @single-content-dom.find ".hide-cover"
+
+			init-all-event: !->
+				(@single-content-dom.find ".t-choose").click !~> @click-choose-event!
 
 			###
 			# 	prototype
@@ -261,6 +305,7 @@ main-manage = let
 
 				if @pic then @pic-dom.css {"background-image":"url('#{@pic}')"} else @pic-dom.css {"background-image":""}
 				if not @able then @cover-dom.fade-in 200
+				else @cover-dom.fade-out 200
 				@c-name-dom.html @c-name; @e-name-dom.html @e-name
 				@default-price-dom.html @default-price
 				_update-property-dom @
@@ -272,15 +317,102 @@ main-manage = let
 			choose-self: !-> @is-choose = true; @choose-dom.add-class "choose"; _update-choose-dish!
 
 			unchoose-self: !-> @is-choose = false; @choose-dom.remove-class "choose"; _update-choose-dish!
+			
+			###
+			#	prototype:
+			#	得到一份属性的拷贝，可用于构造一个新的餐品
+			# 	work for copy and top
+			###
+			get-copy-for-options: ->
+				temp = {}; deep-copy @, temp
+				return {
+					able 			:		temp.able
+					defaultprice 	:		temp.default-price
+					detail 			:		temp.detail
+					dishid 			:		temp.id
+					dishname 		:		temp.c-name
+					dishname2 		:		temp.e-name
+					dishpic 		:		temp.pic
+					groups 			:		temp.groups
+					tag 			:		temp.tag
+					dc_type			:		temp.dc-type
+					dc 				:		temp.dc
+				}
+
+			##**************** operation start *****************##
+
+			change-able-self: (able)!->
+				@able = able; @update-self-dom!
+
+			remove-self: !->
+				@single-content-dom.fade-out 200, !~>
+					@single-content-dom.remove!
+					for dish, i in _dishes-array[@category-id]
+						if dish is @ then _dishes-array[@category-id].splice(i, 1); break
+					delete _dishes[@category-id][@id]
+
+			top-self: !->
+				@single-content-dom.remove!
+				temp = @get-copy-for-options!
+				temp.is-head = true
+				for dish, i in _dishes-array[@category-id]
+					if dish is @ then _dishes-array[@category-id].splice(i, 1); break
+				delete _dishes[@category-id][@id]
+				_categories[_current-category-id].add-dish temp
+
+			##**************** operation end *****************##
+
 
 
 	initial: (_get-food-JSON)!->
 		_init-depend-module!
-		_init-all-evnet!
+		_init-all-event!
 		_init-all-food _get-food-JSON
 
 	get-dish-by-id: (dish-id)->
 		if _dishes[_current-category-id] then return _dishes[_current-category-id][dish-id]
 		else return null
+
+	is-equal-for-category: (category-name)!->
+		return _map-category-name-to-id[category-name] is _current-category-id
+
+
+	change-able-for-current-choose-dishes-by-given: (able)!->
+		if not _current-category-id then alert "非法操作!"; return
+		_current-category = _categories[_current-category-id]
+		for id in _current-dish-id
+			_current-category.change-able-dish id, able
+		_general-callback!
+
+	remove-for-current-choose-dishes: !->
+		if not _current-category-id then alert "非法操作!"; return
+		_current-category = _categories[_current-category-id]
+		for id in _current-dish-id
+			_current-category.remove-dish id
+		_general-callback!
+
+	top-for-current-choose-dishes: !->
+		if not _current-category-id then alert "非法操作!"; return
+		_current-category = _categories[_current-category-id]
+		while _current-dish-id.length isnt 0
+			id = _current-dish-id.pop!
+			_current-category.top-dish id
+		_general-callback!
+
+	move-for-current-choose-dishes-by-given: (new-category-name)!->
+		if not _current-category-id then alert "非法操作!"; return
+		new-category-id = _map-category-name-to-id[new-category-name]
+		_current-category = _categories[_current-category-id]
+		for id in _current-dish-id
+			_current-category.move-dish id, new-category-id
+		_general-callback!
+
+	copy-for-current-choose-dishes-by-given: (new-category-name)!->
+		if not _current-category-id then alert "非法操作!"; return
+		new-category-id = _map-category-name-to-id[new-category-name]
+		_current-category = _categories[_current-category-id]
+		for id in _current-dish-id
+			_current-category.copy-dish id, new-category-id
+		_general-callback!
 
 module.exports = main-manage

@@ -21,6 +21,8 @@ let win = window, doc = document
 		page 	= require "./pageManage.js";			page.initial!
 		main 	= require "./mainManage.js";		 	main.initial _get-food-JSON
 		header 	= require "./headerManage.js";			header.initial!
+		move 	= require "./moveManage.js"; 			move.initial!
+		copy 	= require "./copyManage.js"; 			copy.initial!
 
 
 	_test-is-data-ready = ->

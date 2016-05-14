@@ -98,23 +98,26 @@ require-manage = let
 	###
 	_require-fail-callback = {
 		"add"			:		{
-			"Used name" 				:	-> alert "此品类名称已经存在"
+			"Used name" 								:	-> alert "此品类名称已经存在"
 		}
 		"remove" 		:		{
-			"Category not found" 		:	-> alert "品类不存在!"
+			"Category not found" 						:	-> alert "品类不存在!"
+			"Category not found or cannot be removed" 	:	-> alert "品类不存在或该品类无法被删除!"
 		}
 		"update" 		:		{
-			"Used name" 				:	-> alert "此品类名称已经存在"
-			"Category not found" 		:	-> alert "品类不存在!"
+			"Used name" 								:	-> alert "此品类名称已经存在"
+			"Category not found" 						:	-> alert "品类不存在!"
 		}
 		"top"			:		{
-			"Category not found" 		:	-> alert "品类不存在!"
+			"Category not found" 						:	-> alert "品类不存在!"
+			"Dinner not found" 							:	-> alert "餐厅不存在!"
+			"Already at top" 							:	-> alert "当前分类已在顶端"
 		}
 		"picUploadPre" 	:		{
-			"Category not found" 		:	-> alert "品类不存在!"
+			"Category not found" 						:	-> alert "品类不存在!"
 		}
 		"picUpload" 	:		{
-			"Category not found" 		:	-> alert "品类不存在!"
+			
 		}
 	}
 

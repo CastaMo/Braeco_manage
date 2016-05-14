@@ -23,7 +23,7 @@ header-manage = let
 			if _current-dish-id.length is 0 then return false
 			_able = main.get-dish-by-id(_current-dish-id[0]).able
 			for id in _current-dish-id
-				if _able isnt main.get-dish-by-id(_current-dish-id[0]).able then return false
+				if _able isnt main.get-dish-by-id(id).able then return false
 			return true
 		"remove" 		:		(_current-dish-id)-> return _current-dish-id.length >= 1
 	}
@@ -39,11 +39,11 @@ header-manage = let
 	_all-control-header-click-event = {
 		"new" 			:		!-> page.toggle-page "new"
 		"edit" 			:		!-> page.toggle-page "edit"
-		"move" 			:		!->
-		"top" 			:		!->
-		"copy" 			:		!->
-		"show-or-hide" 	:		!->
-		"remove" 		:		!->
+		"move" 			:		!-> page.cover-page "move"
+		"top" 			:		!-> main.top-for-current-choose-dishes!
+		"copy" 			:		!-> page.cover-page "copy"
+		"show-or-hide" 	:		!-> main.change-able-for-current-choose-dishes-by-given !@able; console.log @able
+		"remove" 		:		!-> if confirm "确定要删除餐品吗?(此操作无法恢复)" then main.remove-for-current-choose-dishes!
 	}
 
 	_init-depend-module = !->

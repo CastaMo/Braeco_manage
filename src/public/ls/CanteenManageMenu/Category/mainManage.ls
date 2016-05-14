@@ -97,7 +97,8 @@ main-manage = let
 
 		top-self: !->
 			@dom.remove!
-			temp = {}; deep-copy @, temp; temp.dom = null; temp.name-dom = null; temp.pic-dom = null
+			temp = {}; deep-copy @, temp
+			delete _categories[@id]
 			main-manage.add-new-category {
 				name 		:		temp.name
 				id 			:		temp.id
