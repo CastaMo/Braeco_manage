@@ -29,8 +29,8 @@ main-manage = let
 		for category, i in all-foods
 			category_ = new Category {
 				seqNum 		:		i
-				name 		:		category.categoryname
-				id 			:		category.categoryid
+				name 		:		category.name
+				id 			:		category.id
 			}
 			if i is 0 then _fist-category = category_
 			for dish in category.dishes
@@ -165,12 +165,12 @@ main-manage = let
 		add-dish: (options)!->
 			dish = new Dish {
 				able 			:		options.able 		|| false
-				default-price 	:		options.defaultprice
+				default-price 	:		options.default_price
 				detail 			:		options.detail 		|| ""
-				id 				:		options.dishid
-				c-name 			:		options.dishname 	|| ""
-				e-name 			:		options.dishname2 	|| ""
-				pic 			:		options.dishpic 	|| ""
+				id 				:		options.id
+				c-name 			:		options.name 		|| ""
+				e-name 			:		options.name2 		|| ""
+				pic 			:		options.pic 		|| ""
 				groups 			:		options.groups 		|| []
 				tag 			:		options.tag 		|| ""
 				category-id 	:		@id
@@ -191,9 +191,9 @@ main-manage = let
 			dish.remove-self!
 			_categories[new-category-id].add-dish temp
 
-		copy-dish: (dish-id, new-category-id)!->
-			dish = _dishes[_current-category-id][dish-id]
-			temp = dish.get-copy-for-options!
+		copy-dish: (old-dish-id, new-category-id, new-dish-id)!->
+			dish = _dishes[_current-category-id][old-dish-id]
+			temp = dish.get-copy-for-options!; #temp.id = new-dish-id
 			_categories[new-category-id].add-dish temp
 
 		###************ operation end **********###
@@ -327,12 +327,12 @@ main-manage = let
 				temp = {}; deep-copy @, temp
 				return {
 					able 			:		temp.able
-					defaultprice 	:		temp.default-price
+					default_price 	:		temp.default-price
 					detail 			:		temp.detail
-					dishid 			:		temp.id
-					dishname 		:		temp.c-name
-					dishname2 		:		temp.e-name
-					dishpic 		:		temp.pic
+					id 				:		temp.id
+					name 			:		temp.c-name
+					name2 			:		temp.e-name
+					pic 			:		temp.pic
 					groups 			:		temp.groups
 					tag 			:		temp.tag
 					dc_type			:		temp.dc-type
@@ -424,12 +424,12 @@ main-manage = let
 	#	复制当前选中的dishes到指定的品类中
 	#	@param 		{String} 		dest-category-name: 目标品类名
 	###
-	copy-for-current-choose-dishes-by-given: (dest-category-name)!->
+	copy-for-current-choose-dishes-by-given: (dest-category-name, new-dish-id)!->
 		if not _current-category-id then alert "非法操作!"; return
 		dest-category-id = _map-category-name-to-id[dest-category-name]
 		_current-category = _categories[_current-category-id]
-		for id in _current-dish-id
-			_current-category.copy-dish id, dest-category-id
+		for old-id, i in _current-dish-id
+			_current-category.copy-dish old-id, dest-category-id, new-dish-id[i]
 		_general-callback!
 
 module.exports = main-manage

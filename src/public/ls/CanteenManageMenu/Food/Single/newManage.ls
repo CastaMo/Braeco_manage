@@ -111,6 +111,9 @@ new-manange = let
 		_dc-type 			:= _dc-type-select-dom.val!
 		_dc 				:= _get-dc-value!
 
+	_check-is-valid = ->
+		
+
 	###************ operation end **********###
 
 

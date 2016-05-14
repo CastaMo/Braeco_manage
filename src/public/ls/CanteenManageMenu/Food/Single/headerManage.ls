@@ -90,7 +90,7 @@ header-manage = let
 			if control-header.check-fn _current-dish-id then control-header.valid-callback!; 	control-header.special-check-callback?(_current-dish-id)
 			else control-header.invalid-callback!
 
-	initial 	: 		!->
+	initial: !->
 		_init-depend-module!
 		_init-all-control-header!
 		@check-all-control-headers-by-current-dish-id []
