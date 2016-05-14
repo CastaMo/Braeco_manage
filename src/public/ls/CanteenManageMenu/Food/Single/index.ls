@@ -23,6 +23,7 @@ let win = window, doc = document
 		header 	= require "./headerManage.js";			header.initial!
 		move 	= require "./moveManage.js"; 			move.initial!
 		copy 	= require "./copyManage.js"; 			copy.initial!
+		new_ 	= require "./newManage.js"; 			new_.initial!
 
 
 	_test-is-data-ready = ->

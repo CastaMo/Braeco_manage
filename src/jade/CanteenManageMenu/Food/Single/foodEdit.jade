@@ -2,7 +2,7 @@
 	.f-table
 		.f-header-field
 			.header-wrapper.t-wrapper
-				p.header 新建单品
+				p.header 编辑单品
 		.f-basic-field.top-bottom-border
 			.basic-wrapper.t-wrapper
 				.basic-container
@@ -19,9 +19,9 @@
 							.clear
 						.default-price-container.input-container
 							p 基础价格 *
-							input(id='default-price' name='default-price')
+							input(id='default-price' name='default-price' type="number" min="0")
 							.clear
-						.basic-business-container
+						//.basic-business-container
 							.name-part
 								p 基础业务 *
 								p 价差
@@ -92,8 +92,8 @@
 						.right-part
 							textarea(id="intro" name="intro")
 						.clear
-		.f-shelves-field.top-bottom-border
-			.shelves-wrapper.t-wrapperd
+		//.f-shelves-field.top-bottom-border
+			.shelves-wrapper.t-wrapper
 				.shelves-container
 					.date-container
 						p 上架日期
@@ -156,14 +156,14 @@
 							p 份
 							.clear
 						.clear
-					.effective-date-container.parallel-container
+					//.effective-date-container.parallel-container
 						p 有效日期
 						.select-field
 							select(id='select-effective-date' class='total-center')
 								option(value='range') 日期区间
 								option(value='all') 所有时间
 						.clear
-					.date-range-container
+					//.date-range-container
 						p 日期区间
 						.range-field.parallel-container
 							input(type="date" id="date-range-start")
@@ -171,7 +171,7 @@
 							input(type="date" id="date-range-end")
 							.clear
 						.clear
-					.time-range-container
+					//.time-range-container
 						p 启用时间
 						.range-field.parallel-container
 							input(type="time" id="time-range-start")

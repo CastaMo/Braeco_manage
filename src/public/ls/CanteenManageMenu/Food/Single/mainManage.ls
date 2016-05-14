@@ -376,7 +376,10 @@ main-manage = let
 	is-equal-for-category: (category-name)!->
 		return _map-category-name-to-id[category-name] is _current-category-id
 
-
+	###
+	#	改变当前选中的dishes的able，判断是否显示到webAPP上
+	#	@param 		{Boolean} 		able: 是否可用
+	###
 	change-able-for-current-choose-dishes-by-given: (able)!->
 		if not _current-category-id then alert "非法操作!"; return
 		_current-category = _categories[_current-category-id]
@@ -384,6 +387,9 @@ main-manage = let
 			_current-category.change-able-dish id, able
 		_general-callback!
 
+	###
+	#	删除当前选中的dishes
+	###
 	remove-for-current-choose-dishes: !->
 		if not _current-category-id then alert "非法操作!"; return
 		_current-category = _categories[_current-category-id]
@@ -391,6 +397,9 @@ main-manage = let
 			_current-category.remove-dish id
 		_general-callback!
 
+	###
+	#	置顶当前选中的dishes
+	###
 	top-for-current-choose-dishes: !->
 		if not _current-category-id then alert "非法操作!"; return
 		_current-category = _categories[_current-category-id]
@@ -399,20 +408,28 @@ main-manage = let
 			_current-category.top-dish id
 		_general-callback!
 
-	move-for-current-choose-dishes-by-given: (new-category-name)!->
+	###
+	#	移动当前选中的dishes到指定的品类中
+	#	@param 		{String} 		dest-category-name: 目标品类名
+	###
+	move-for-current-choose-dishes-by-given: (dest-category-name)!->
 		if not _current-category-id then alert "非法操作!"; return
-		new-category-id = _map-category-name-to-id[new-category-name]
+		dest-category-id = _map-category-name-to-id[dest-category-name]
 		_current-category = _categories[_current-category-id]
 		for id in _current-dish-id
-			_current-category.move-dish id, new-category-id
+			_current-category.move-dish id, dest-category-id
 		_general-callback!
 
-	copy-for-current-choose-dishes-by-given: (new-category-name)!->
+	###
+	#	复制当前选中的dishes到指定的品类中
+	#	@param 		{String} 		dest-category-name: 目标品类名
+	###
+	copy-for-current-choose-dishes-by-given: (dest-category-name)!->
 		if not _current-category-id then alert "非法操作!"; return
-		new-category-id = _map-category-name-to-id[new-category-name]
+		dest-category-id = _map-category-name-to-id[dest-category-name]
 		_current-category = _categories[_current-category-id]
 		for id in _current-dish-id
-			_current-category.copy-dish id, new-category-id
+			_current-category.copy-dish id, dest-category-id
 		_general-callback!
 
 module.exports = main-manage

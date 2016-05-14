@@ -17,7 +17,7 @@ page-manage = let
 
 	_unshow-all-toggle-dom-except-given = (dom_)->
 		for dom in _all-toggle-dom when dom isnt dom_
-			dom.fade-out 200
+			dom.fade-out 100
 
 	_unshow-all-cover-dom = !->
 		for dom in _all-cover-dom
@@ -26,16 +26,16 @@ page-manage = let
 	_toggle-page-callback = {
 		"main"		: 		let
 			->
-				_main-dom.fade-in 200
+				set-timeout (-> _main-dom.fade-in 100), 100
 				_unshow-all-toggle-dom-except-given _main-dom
 		"new"		: 		let
 			->
-				_new-dom.fade-in 200
+				set-timeout (-> _new-dom.fade-in 100), 100
 				_unshow-all-toggle-dom-except-given _new-dom
 
 		"edit"		: 		let
 			->
-				_edit-dom.fade-in 200
+				set-timeout (-> _edit-dom.fade-in 100), 100
 				_unshow-all-toggle-dom-except-given _edit-dom
 	}
 
