@@ -27,12 +27,12 @@ input {
 		margin: -1px 30px 0px 30px;
 		width: 650px;
 		p {
-			margin: 10px 0 0 20px;
+			margin: 10px 0 10px 20px;
 			font-size: 14px;
 		}
 	}
 	#modifyTime {
-		height: 70px;
+		height: auto;
 	}
 	#modifyMeal, 
 	#modifyChoose,
@@ -111,17 +111,22 @@ select {
 	font-weight: bold;
 }
 
-#timer {
+#timerAll {
 	position: relative;
-	font-size: 14px;
 	bottom: 20px;
 	left: 90px;
+	width: 300px;
+}
+
+#timer {
+	font-size: 14px;
+	float: left;
 }
 
 .modifyDelTime {
 	position: relative;
-	left: 290px;
-	bottom: 48px;
+	left: 10px;
+	bottom: 3px;
 	color: blue;
 	font-size: 14px;
 	font-style: Arial;
@@ -130,9 +135,10 @@ select {
 
 .modifyAddTime {
 	position: relative;
-	left: 18px;
-	bottom: 20px;
+	margin: 10px 0 10px 0;
 	color: blue;
+	right: 185px;
+	top: 3px;
 	font-size: 14px;
 	font-style: Arial;
 	font-weight: bold;
