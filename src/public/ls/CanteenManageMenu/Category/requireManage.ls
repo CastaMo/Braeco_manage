@@ -26,6 +26,7 @@ require-manage = let
 
 	_requires = {}
 
+
 	###
 	#	ajax请求基本配置，无特殊情况不要改
 	###
