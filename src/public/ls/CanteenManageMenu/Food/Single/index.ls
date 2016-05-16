@@ -21,8 +21,8 @@ let win = window, doc = document
 
 	_init-all-module = !->
 		page 	= require "./pageManage.js";			page.initial!
-		main 	= require "./mainManage.js";		 	main.initial _get-food-JSON
 		group  	= require "./groupManage.js"; 			group.initial _get-group-JSON
+		main 	= require "./mainManage.js";		 	main.initial _get-food-JSON
 		header 	= require "./headerManage.js";			header.initial!
 		move 	= require "./moveManage.js"; 			move.initial!
 		copy 	= require "./copyManage.js"; 			copy.initial!
