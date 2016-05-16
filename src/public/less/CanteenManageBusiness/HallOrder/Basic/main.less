@@ -17,22 +17,38 @@ input {
 	span {
 		margin: 0 0 0 30px;
 	}
-	color: #333333;
+	color: #797979;
 	#modifyTime,
 	#modifyPay,
 	#modifyMeal {
 		border: solid;
-	    border-color: #333333;
+	    border-color: #797979;
 	    border-width: 1px 0 1px 0;
 		margin: -1px 30px 0px 30px;
 		width: 650px;
+		overflow: hidden;
+		clear: left;
 		p {
 			margin: 10px 0 10px 20px;
 			font-size: 14px;
 		}
 	}
-	#modifyTime {
+	#modifyTime  {
+	    font-size: 14px;
 		height: auto;
+		#hel,
+		#iel {
+			margin: 10px 0 10px 20px;
+			float: left;
+			width: 70px;
+		}
+		#showDay,
+		#showTime {
+			word-wrap: break-word;
+			margin: 10px 0 10px 20px;
+			float: left;
+			width: 480px;
+		}
 	}
 	#modifyMeal, 
 	#modifyChoose,
@@ -151,7 +167,15 @@ select {
 	font-weight: bold;
 }
 
-#hel {
-	position: relative;
-	left: -8px;
+#maskLayer {
+	display: none;
+	background-color:#9D9D9D;
+	width: 700px;
+	height: 200px;
+	left: 220px;
+	top: 340px;
+	filter: alpha(opacity=50);
+	opacity: 0.3;
+	z-index: 1;
+	position: absolute;
 }
