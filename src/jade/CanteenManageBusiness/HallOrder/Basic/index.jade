@@ -12,13 +12,15 @@ block head
 block content
 	include basicMain
 	#business
-		#stopBusiness
-			input(type = "radio" name = "select" value = "stop" checked = "checked")
-			span 暂停业务
-		#runBusiness
-			input(type = "radio" name = "select" value = "run")
-			span 运营业务
+		#selectBusiness
+			#stopBusiness
+				input(type = "radio" name = "select" value = "stop" checked = "checked")
+				span 暂停业务
+			#runBusiness
+				input(type = "radio" name = "select" value = "run")
+				span 运营业务
 		#modifyForBus.btn 修改
+		#maskLayer
 		#previewBusiness
 			#modifyTime
 				#hel 接单日期

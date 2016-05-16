@@ -16,6 +16,7 @@ main-manage = let
 	_timerAll-dom = $"\#timerAll"
 	_cancel-dom = $ "\.canBtn"
 	_finish-dom = $ "\.finBtn"
+	_select-dom = $ "\#selectBusiness"
 
 	_init-all-event = !->
 		document.getElementById("showDay").innerHTML = '周一 周二 周三 周四 周五 周六 周日'
@@ -42,7 +43,14 @@ main-manage = let
 			faNode = document.getElementById("timerAll")
 			delNode = @parentNode
 			faNode.removeChild(delNode)
-
+		_select-dom.change !->
+			selectValue = $("input[name='select']:checked").val()
+			if selectValue == "run"
+				document.getElementById("previewBusiness").style.color = "#333333"
+				document.getElementById("previewBusiness").style.border-color = "#333333"				
+			else if selectValue == "stop"
+				document.getElementById("previewBusiness").style.color = "#949494"
+				document.getElementById("previewBusiness").style.border-color = "#949494"
 	_show-form-value = ->
 		x = document.getElementById("myForm")
 		pay = ''
