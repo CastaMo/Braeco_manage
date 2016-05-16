@@ -49,8 +49,8 @@ main-manage = let
 				document.getElementById("previewBusiness").style.color = "#333333"
 				document.getElementById("previewBusiness").style.border-color = "#333333"				
 			else if selectValue == "stop"
-				document.getElementById("previewBusiness").style.color = "#797979"
-				document.getElementById("previewBusiness").style.border-color = "#797979"
+				document.getElementById("previewBusiness").style.color = "#949494"
+				document.getElementById("previewBusiness").style.border-color = "#949494"
 	_show-form-value = ->
 		x = document.getElementById("myForm")
 		pay = ''
