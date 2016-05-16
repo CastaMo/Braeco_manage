@@ -532,7 +532,6 @@ module.exports = function(grunt) {
             }
         },
 
-        /*好吧，这堆有点麻烦，看README.MD吧*/
         sftp: {
             options: {
                 host: '<%= secret.host %>',
@@ -577,30 +576,6 @@ module.exports = function(grunt) {
                     password: '<%= secret.password %>'
                 }
             }
-        },
-
-        filerev: {
-            css: {
-                src: '/bin/public/css/CanteenManage/*.css',
-                dest: 'bin/public/test'
-            }
-        },
-
-        useminPrepare: {
-
-            html: 'bin/CanteenManage.html'
-
-        },
-
-
-        usemin: {
-            options: {
-                pretty: true,
-                assetDirs: [
-                    '/bin/public/test'
-                ]
-            },
-            html: 'bin/CanteenManage.html'
         }
     });
 

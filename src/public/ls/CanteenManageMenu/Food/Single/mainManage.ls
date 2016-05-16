@@ -294,7 +294,7 @@ main-manage = let
 					len_ = (groups = dish.groups).length
 					for i in [0 to 2]
 						if not groups[i] then break
-						inner-html += "<p>#{groups[i].groupname}</p>"
+						inner-html += "<p>#{groups[i].name}</p>"
 					if len_ > 3 then inner-html += "<p>余#{len_ - 3}项</p>"
 					dish.property-dom.html inner-html
 
@@ -320,7 +320,7 @@ main-manage = let
 			
 			###
 			#	prototype:
-			#	得到一份属性的拷贝，可用于构造一个新的餐品
+			#	得到一份属性的拷贝，可用于构造一个新的餐品，由于新添的属性在后面会被覆盖故可以无视dom
 			# 	work for copy and top
 			###
 			get-copy-for-options: ->

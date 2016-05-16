@@ -81,9 +81,7 @@ header-manage = let
 			@invalid-callback 			= !-> @dom.add-class "disabled"; 	@is-able = false
 			@click-event 				= _all-control-header-click-event[@name]
 
-		init-all-event: !->
-			@dom.click !~>
-				if @is-able then @click-event!
+		init-all-event: !-> @dom.click !~> if @is-able then @click-event!
 
 	check-all-control-headers-by-current-dish-id: (_current-dish-id)!->
 		for name, control-header of _control-headers
