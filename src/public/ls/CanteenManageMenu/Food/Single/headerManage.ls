@@ -56,7 +56,6 @@ header-manage = let
 				name 	:	name
 			}
 
-
 	class ControlHeader
 
 		(options)!->
