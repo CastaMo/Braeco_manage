@@ -35,6 +35,9 @@ main-manage = let
 			lastNode = faNode.lastChild
 			newLastNode = lastNode.cloneNode(true)
 			faNode.appendChild(newLastNode)
+			$("\.modifyDelTime").click !->
+				delNode = @parentNode
+				faNode.removeChild(delNode)
 		_del-dom.click !->
 			faNode = document.getElementById("timerAll")
 			delNode = @parentNode
@@ -50,7 +53,7 @@ main-manage = let
 		test = 0
 		for i from 0 to 6 by 1
 			if value[i] == 1
-				day += dayAry[i] + ' '
+				day += dayAry[i] + '&nbsp&nbsp'
 		document.getElementById("showDay").innerHTML = day
 		for i from 7 to x.length-6 by 1
 			if i%2 == 1
@@ -65,7 +68,7 @@ main-manage = let
 		for i from x.length-5 to x.length-2 by 1
 			if value[i] == 1
 				test = i-(x.length-5)
-				pay += payAry[test] + '  '
+				pay += payAry[test] + '&nbsp&nbsp'
 				value[i] = 1
 		document.getElementById("showPay").innerHTML = pay
 		selNum = $ "\#selNum"
