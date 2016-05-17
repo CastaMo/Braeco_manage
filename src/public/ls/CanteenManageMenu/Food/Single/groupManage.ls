@@ -5,8 +5,8 @@ group-manage = let
 	[		deep-copy, 			get-JSON] = 
 		[	util.deep-copy,		util.get-JSON]
 
-	_properies = {}
-	_groups = {}
+	_properties 							= {}
+	_groups 								= {}
 
 	_init-depend-module = !->
 		new_ 	:= require "./newManage.js"
@@ -37,13 +37,48 @@ group-manage = let
 
 	class Property extends Group
 
-		_property-content-list-dom  		= $ "\#full-cover ul.property-content-list"
+		_property-dom 							= $ "\#full-cover .property-field"
+		_close-btn-dom 							= _property-dom.find ".close-btn"
+		_property-content-list-dom  			= _property-dom.find "ul.property-content-list"
+		_cancel-btn-dom 						= _property-dom.find ".cancel-btn"
+		_confirm-btn-dom 						= _property-dom.find ".confirm-btn"
 
-		_current-map-araary
+		_init-all-event = !->
+			_close-btn-dom.click !-> page.cover-page "exit"
+
+			_cancel-btn-dom.click !-> page.cover-page "exit"
+
+		###*************** 当前控制的属性组list对应的成员 start ******************###
+		# 	property-sub-item-list-dom用于显示在'编辑'以及'新建'的属性组栏目里的属性子项
+		# 	property-array存储当前显示的属性子项对应的id, 同时会在'编辑'以及'新建'完成后反馈给对应的dish中
+
+		_current-property-sub-item-list-dom 	= null
+
+		_current-property-sub-item-array 		= []
+
+		###*************** 当前控制的属性组list对应的成员 end ******************###
+
+		_remove-elem-from-property-array-by-target-id = (id_)!->
+			for id, i in _current-property-sub-item-array
+				if id is id_ then _current-property-sub-item-array.splice(i, 1); return
+			alert "不存在对应属性组"
+
+		_add-elem-to-property-array-by-target-id = (id_)!->
+			for id, i in _current-property-sub-item-array
+				if id is id_ then alert "已存在对应的属性组, 无法继续添加"; return
+			_current-property-sub-item-array.push id_
+
+		_set-property-sub-item-dom-and-array = (options)!->
+			_current-property-sub-item-list-dom 			:= options.property-sub-item-list-dom
+			_current-property-sub-item-array 				:= options.property-array
+
+		_init-property-sub-item-dom = !->
+			for id in _current-property-sub-item-array
+				_properties[id].add-sub-item-dom!
 
 		(options)->
 			super options, @
-			_properies[@id] = @
+			_properties[@id] = @
 
 		init: !->
 			@init-all-prepare!
@@ -79,33 +114,69 @@ group-manage = let
 
 			@property-content-dom = _get-property-content-dom @
 
+		add-sub-item-dom: !->
+			_get-sub-item-dom = (property)->
+				dom = $ "<li class='sub-item'>
+							<p>#{property.name}</p>
+							<div class='delete-icon'></div>
+							<div class='clear'></div>
+						</li>"
+				(dom.find ".delete-icon").click !->
+					property.sub-item-delete-icon-click-event !->
+						_remove-elem-from-property-array-by-target-id property.id
+
+				_current-property-sub-item-list-dom.append dom
+				return dom
+			@sub-item-dom = _get-sub-item-dom @
+
+		sub-item-delete-icon-click-event: (callback)!->
+			@sub-item-dom.fade-out 100, !~>
+				@sub-item-dom.remove!
+				@sub-item-dom = null
+				callback?!
+
+
 		active-self: !-> @active = true; @property-content-dom.add-class "active"
 
 		inactive-self: !-> @active = false; @property-content-dom.remove-class "active"
 
-		reset: !-> inactive-self!
+		reset: !-> inactive-self!; if @sub-item-dom then @sub-item-delete-icon-click-event!
 
 		@reset-all = !->
-			for id, property of _properies
+			for id, property of _properties
 				property.reset!
+
 		@active-property-by-array-id = (array-id)!->
 			@reset-all!
 			for id in array-id
 				try
-					_properies[id].active-self!
+					_properties[id].active-self!
 				catch error
 					alert "管理端与后台未同步，请先刷新"
 
-		@get-current-active-array = -> return [id for id, property of _properies when property.active]
+		@get-current-active-array = -> return [id for id, property of _properties when property.active]
+
+		@set-current-property-by-target = (options)!->
+			_set-property-sub-item-dom-and-array options
+			_init-property-sub-item-dom!
+
+		@initial = !->
+			_init-all-event!
+
 
 	initial: (_get-group-JSON)!->
 		_init-depend-module!
 		_init-all-event!
 		_init-all-group _get-group-JSON
+		
+		Property.initial!
 
 	get-group-name-by-id: (id)-> if _groups[id] then return _groups[id].name else return ""
 
 	get-group-type-by-id: (id)-> if _groups[id] then return _groups[id].type else return ""
 
+	set-current-property-by-target: (options)!-> Property.set-current-property-by-target options
 
 module.exports = group-manage
+
+

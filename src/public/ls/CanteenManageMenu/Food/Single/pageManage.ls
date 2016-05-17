@@ -10,9 +10,10 @@ page-manage = let
 	_all-toggle-dom 	= [_main-dom, _new-dom, _edit-dom]
 
 	_full-cover-dom 	= $ "\#full-cover"
-	_move-dom 			= $ _full-cover-dom.find ".move-field"
-	_copy-dom 			= $ _full-cover-dom.find ".copy-field"
-	_all-cover-dom 		= [_move-dom, _copy-dom]
+	_move-dom 			= _full-cover-dom.find ".move-field"
+	_copy-dom 			= _full-cover-dom.find ".copy-field"
+	_property-dom 		= _full-cover-dom.find ".property-field"
+	_all-cover-dom 		= [_move-dom, _copy-dom, _property-dom]
 	
 
 	_unshow-all-toggle-dom-except-given = (dom_)->
@@ -49,6 +50,11 @@ page-manage = let
 			->
 				_unshow-all-cover-dom!
 				_copy-dom.remove-class "hide"
+				_full-cover-dom.fade-in 100
+		"proeporty" : 		let
+			->
+				_unshow-all-cover-dom!
+				_property-dom.remove-class "hide"
 				_full-cover-dom.fade-in 100
 		"exit" 		:		let
 			->
