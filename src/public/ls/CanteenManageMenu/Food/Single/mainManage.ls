@@ -1,4 +1,4 @@
-header = group = null
+header = group = page = edit = null
 main-manage = let
 	_state = null
 	[get-JSON, deep-copy] = [util.get-JSON, util.deep-copy]
@@ -23,6 +23,8 @@ main-manage = let
 	_init-depend-module = !->
 		header 		:= require "./headerManage.js"
 		group 		:= require "./groupManage.js"
+		page 		:= require "./pageManage.js"
+		edit 		:= require "./editManage.js"
 
 	_init-all-food = (_get-food-JSON)!->
 		all-foods = get-JSON _get-food-JSON!
@@ -376,6 +378,11 @@ main-manage = let
 
 	is-equal-for-category: (category-name)!->
 		return _map-category-name-to-id[category-name] is _current-category-id
+
+	toggle-to-edit-for-current-choose-dish: !->
+		if _current-dish-id.length isnt 1 then alert "非法操作"; return
+		page.toggle-page "edit"
+		edit.set-current-dish _dishes[_current-category-id][_current-dish-id[0]]
 
 	###
 	#	改变当前选中的dishes的able，判断是否显示到webAPP上

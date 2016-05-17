@@ -38,7 +38,7 @@ header-manage = let
 
 	_all-control-header-click-event = {
 		"new" 			:		!-> page.toggle-page "new"
-		"edit" 			:		!-> page.toggle-page "edit"
+		"edit" 			:		!-> main.toggle-to-edit-for-current-choose-dish!
 		"move" 			:		!-> page.cover-page "move"
 		"top" 			:		!-> main.top-for-current-choose-dishes!
 		"copy" 			:		!-> page.cover-page "copy"

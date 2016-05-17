@@ -43,10 +43,20 @@ group-manage = let
 		_cancel-btn-dom 						= _property-dom.find ".cancel-btn"
 		_confirm-btn-dom 						= _property-dom.find ".confirm-btn"
 
+		_confirm-btn-click-event = !->
+			while _current-property-sub-item-array.length isnt 0
+				_current-property-sub-item-array.pop();
+			new-group = Property.get-current-active-array!
+			deep-copy new-group, _current-property-sub-item-array
+			_init-property-sub-item-dom!
+			page.cover-page "exit"
+
 		_init-all-event = !->
 			_close-btn-dom.click !-> page.cover-page "exit"
 
 			_cancel-btn-dom.click !-> page.cover-page "exit"
+
+			_confirm-btn-dom.click !-> _confirm-btn-click-event!
 
 		###*************** 当前控制的属性组list对应的成员 start ******************###
 		# 	property-sub-item-list-dom用于显示在'编辑'以及'新建'的属性组栏目里的属性子项
@@ -70,9 +80,10 @@ group-manage = let
 
 		_set-property-sub-item-dom-and-array = (options)!->
 			_current-property-sub-item-list-dom 			:= options.property-sub-item-list-dom
-			_current-property-sub-item-array 				:= options.property-array
+			_current-property-sub-item-array 				:= options.property-sub-item-array
 
 		_init-property-sub-item-dom = !->
+			_current-property-sub-item-list-dom.html ""
 			for id in _current-property-sub-item-array
 				_properties[id].add-sub-item-dom!
 
@@ -140,23 +151,23 @@ group-manage = let
 
 		inactive-self: !-> @active = false; @property-content-dom.remove-class "active"
 
-		reset: !-> inactive-self!; if @sub-item-dom then @sub-item-delete-icon-click-event!
+		reset: !-> @inactive-self!; if @sub-item-dom then @sub-item-delete-icon-click-event!
 
-		@reset-all = !->
+		@inactive-all = !->
 			for id, property of _properties
-				property.reset!
+				property.inactive-self!
 
-		@active-property-by-array-id = (array-id)!->
-			@reset-all!
-			for id in array-id
+		@active-property = !->
+			@inactive-all!
+			for id in _current-property-sub-item-array
 				try
 					_properties[id].active-self!
 				catch error
 					alert "管理端与后台未同步，请先刷新"
 
-		@get-current-active-array = -> return [id for id, property of _properties when property.active]
+		@get-current-active-array = -> return [Number(id) for id, property of _properties when property.active]
 
-		@set-current-property-by-target = (options)!->
+		@set-current-property-sub-item-by-target = (options)!->
 			_set-property-sub-item-dom-and-array options
 			_init-property-sub-item-dom!
 
@@ -168,14 +179,16 @@ group-manage = let
 		_init-depend-module!
 		_init-all-event!
 		_init-all-group _get-group-JSON
-		
+
 		Property.initial!
 
 	get-group-name-by-id: (id)-> if _groups[id] then return _groups[id].name else return ""
 
 	get-group-type-by-id: (id)-> if _groups[id] then return _groups[id].type else return ""
 
-	set-current-property-by-target: (options)!-> Property.set-current-property-by-target options
+	set-current-property-sub-item-by-target: (options)!-> Property.set-current-property-sub-item-by-target options
+
+	set-current-property-active: !-> Property.active-property!
 
 module.exports = group-manage
 

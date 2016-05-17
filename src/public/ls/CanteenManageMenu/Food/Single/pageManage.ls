@@ -51,7 +51,7 @@ page-manage = let
 				_unshow-all-cover-dom!
 				_copy-dom.remove-class "hide"
 				_full-cover-dom.fade-in 100
-		"proeporty" : 		let
+		"property" : 		let
 			->
 				_unshow-all-cover-dom!
 				_property-dom.remove-class "hide"
@@ -66,10 +66,10 @@ page-manage = let
 
 	toggle-page: (page)->
 		_toggle-page-callback[page]?!
-		set-timeout "scrollTo(0, 0)", 0
+		
 
 	cover-page: (page)->
 		_cover-page-callback[page]?!
-		set-timeout "scrollTo(0, 0)", 0
+		
 
 module.exports = page-manage
