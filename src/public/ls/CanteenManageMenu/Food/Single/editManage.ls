@@ -1,8 +1,8 @@
 main = page = group = null
 edit-manange = let
 
-	[		getObjectURL, 		deep-copy] = 
-		[	util.getObjectURL, 	util.deep-copy]
+	[		getObjectURL, 		deep-copy, 			getStrAfterFilter] = 
+		[	util.getObjectURL, 	util.deep-copy, 	util.getStrAfterFilter]
 
 	_edit-dom  				= $ "\#food-single-edit"
 
@@ -117,12 +117,12 @@ edit-manange = let
 			if _dc-type is "none" or _dc-type is "half" then return null
 			return parse-int (_dc-field-dom.find "input").val!
 
-		_c-name  			:= _c-name-dom.val!
-		_e-name 			:= _e-name-dom.val!
+		_c-name  			:= getStrAfterFilter _c-name-dom.val!
+		_e-name 			:= getStrAfterFilter _e-name-dom.val!
 		_default-price 		:= parse-int _default-price-dom.val!
-		_remark 			:= _remark-dom.val!
-		_intro 				:= _intro-dom.val!
-		_dc-type 			:= _dc-type-select-dom.val!
+		_remark 			:= getStrAfterFilter _remark-dom.val!
+		_intro 				:= getStrAfterFilter _intro-dom.val!
+		_dc-type 			:= getStrAfterFilter _dc-type-select-dom.val!
 		_dc 				:= _get-dc-value!
 
 	_read-from-current-dish = !->
@@ -152,7 +152,33 @@ edit-manange = let
 
 
 	_check-is-valid = ->
-		
+		_read-from-input!
+		_valid-flag = true; _err-str = ""
+		if _c-name.length <= 0 or _c-name.length > 32 then _err-str += "单品名称长度应为1~32位\n"; _valid-flag = false
+		if _e-name.length > 32 then _err-str += "英文名长度应为0~32位\n"; _valid-flag = false
+		if _default-price-dom.val! is "" or _default-price < 0 or _default-price > 9999 then _err-str += "默认价格范围应为0~9999元\n"; _valid-flag = false
+		if _remark.length > 18 then _err-str += "标签长度应为0~18位\n"; _valid-flag = false
+		if _intro.length > 400 then _err-str += "详情长度应为0~400位\n"; _valid-flag = false
+		if _groups.length > 40 then _err-str += "属性组数量应为0~40个\n"; _valid-flag = false
+		if _dc
+			options = _dc-type-map-dc-options[_dc-type]; if _dc < options.min or _dc > options.max then _err-str += "优惠范围应在#{options.min}~#{options.max}之内\n"; _valid-flag = false
+		if _valid-flag then return _valid-flag
+		alert _err-str; return _valid-flag
+
+	_success-callback = !->
+		_current-dish.edit-self {
+			default-price 		:		_default-price
+			detail 				: 		_intro
+			c-name 				:		_c-name
+			e-name 				:		_e-name
+			pic 				: 		_src
+			groups 				: 		_groups
+			tag 				:		_remark
+			dc-type 			: 		_dc-type
+			dc 					: 		_dc
+		}
+		page.toggle-page "main"
+		_reset!
 
 	###************ operation end **********###
 
@@ -181,12 +207,10 @@ edit-manange = let
 
 	_cancel-btn-click-event = !->
 		_reset!
-		console.log _groups
 		page.toggle-page "main"
 
 	_save-btn-click-event = !->
-		_reset!
-		page.toggle-page "main"
+		if _check-is-valid! then _success-callback!
 
 
 	###************ event end **********###
@@ -217,7 +241,6 @@ edit-manange = let
 
 	set-current-dish: (dish)!->
 		_current-dish := dish;
-		console.log _current-dish
 		_read-from-current-dish!
 
 

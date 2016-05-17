@@ -344,6 +344,10 @@ main-manage = let
 
 			##**************** operation start *****************##
 
+			edit-self: (options)!->
+				deep-copy options, @
+				@update-self-dom!
+
 			change-able-self: (able)!->
 				@able = able; @update-self-dom!
 
