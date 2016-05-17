@@ -39,6 +39,8 @@ group-manage = let
 
 		_property-content-list-dom  		= $ "\#full-cover ul.property-content-list"
 
+		_current-map-araary
+
 		(options)->
 			super options, @
 			_properies[@id] = @
