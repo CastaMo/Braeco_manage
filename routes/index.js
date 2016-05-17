@@ -36,6 +36,10 @@ module.exports = function(passport) {
 	router.get('/Manage/Market/Activity', function(req, res) {
 		res.render('./CanteenManageMarket/Activity/develop');
 	});
+	
+	router.get('/Manage/Market/Promotion/Single', function(req, res) {
+		res.render('./CanteenManageMarket/Promotion/Single/develop');
+	});
 
 	router.get('/Manage/Business/HallOrder/Basic', function(req, res) {
 		res.render('./CanteenManageBusiness/HallOrder/Basic/develop');
