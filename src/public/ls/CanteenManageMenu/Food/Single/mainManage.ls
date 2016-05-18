@@ -1,4 +1,4 @@
-header = null
+header = group = page = edit = null
 main-manage = let
 	_state = null
 	[get-JSON, deep-copy] = [util.get-JSON, util.deep-copy]
@@ -21,7 +21,10 @@ main-manage = let
 	_all-choose-dom 				= _all-choose-field-dom.find ".choose-pic"
 
 	_init-depend-module = !->
-		header 		:= 		require "./headerManage.js"
+		header 		:= require "./headerManage.js"
+		group 		:= require "./groupManage.js"
+		page 		:= require "./pageManage.js"
+		edit 		:= require "./editManage.js"
 
 	_init-all-food = (_get-food-JSON)!->
 		all-foods = get-JSON _get-food-JSON!
@@ -131,7 +134,7 @@ main-manage = let
 			select-option-dom = $ "<option value='#{@name}'>#{@name}</option>"
 			_food-single-select-dom.append select-option-dom
 
-			#为copy和move的select顺便也添加option，因为懒......
+			#为copy和move的select顺便也添加option，这么写主要是因为懒......
 			select-option-dom = $ "<option value='#{@name}'>#{@name}</option>"
 			_copy-select-dom.append select-option-dom
 			select-option-dom = $ "<option value='#{@name}'>#{@name}</option>"
@@ -294,7 +297,7 @@ main-manage = let
 					len_ = (groups = dish.groups).length
 					for i in [0 to 2]
 						if not groups[i] then break
-						inner-html += "<p>#{groups[i].name}</p>"
+						inner-html += "<p>#{group.get-group-name-by-id groups[i]}</p>"
 					if len_ > 3 then inner-html += "<p>余#{len_ - 3}项</p>"
 					dish.property-dom.html inner-html
 
@@ -341,6 +344,10 @@ main-manage = let
 
 			##**************** operation start *****************##
 
+			edit-self: (options)!->
+				deep-copy options, @
+				@update-self-dom!
+
 			change-able-self: (able)!->
 				@able = able; @update-self-dom!
 
@@ -375,6 +382,11 @@ main-manage = let
 
 	is-equal-for-category: (category-name)!->
 		return _map-category-name-to-id[category-name] is _current-category-id
+
+	toggle-to-edit-for-current-choose-dish: !->
+		if _current-dish-id.length isnt 1 then alert "非法操作"; return
+		page.toggle-page "edit"
+		edit.set-current-dish _dishes[_current-category-id][_current-dish-id[0]]
 
 	###
 	#	改变当前选中的dishes的able，判断是否显示到webAPP上

@@ -11,6 +11,7 @@
     .tick {
         .background-norm();
         .background-size(15px, 15px);
+        background-color: #fff;
         border: solid 1px @border-grey-color;
         float: left;
         margin: 7.5px 9px 0 0;
@@ -285,11 +286,48 @@
                                 float: left;
                             }
                             #property {
-                                cursor: text;
                                 float: right;
                                 width: 380px;
-                                height: 30px;
-                                border: solid 1px @border-grey-color;
+                                .btn-field {
+                                    float: left;
+                                    .add-btn {
+                                        cursor: pointer;
+                                        width: 30px;
+                                        height: 30px;
+                                        .rounded-corners(5px);
+                                        border: solid 1px @border-grey-color;
+                                        text-align: center;
+                                        line-height: 30px;
+                                    }
+                                }
+                                .sub-item-field {
+                                    width: 330px;
+                                    min-height: 30px;
+                                    float: right;
+                                    border: solid 1px @border-grey-color;
+                                    ul {
+                                        margin-bottom: 5px;
+                                        li {
+                                            float: left;
+                                            margin: 5px 0 0 5px;
+                                            font-size: 12px;
+                                            line-height: 20px;
+                                            height: 20px;
+                                            .rounded-corners(2px);
+                                            background-color: @border-grey-color;
+                                            padding-left: 4px;
+                                            cursor: pointer;
+                                            p {
+                                                float: left;
+                                            }
+                                            .delete-icon {
+                                                float: right;
+                                                .background-norm();
+                                                .background-size(14px, 20px);
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                         .right-part {
@@ -519,6 +557,41 @@
                         float: right;
                         background-color: @orange-color;
                         color: #fff;
+                    }
+                }
+            }
+        }
+        &.property-field {
+            height: 390px;
+            .content-field {
+                height: auto;
+                .content-wrapper {
+                    margin: 30px auto;
+                    width: 258px;
+                    height: 190px;
+                    overflow: auto;
+                    border: solid 1px @border-grey-color;
+                    ul {
+                        li {
+                            border-bottom: solid 1px @border-grey-color;
+                            cursor: pointer;
+                            &:hover {
+                                background-color: @grey-color;
+                            }
+                            .property-content-wrapper {
+                                width: 100%;
+                                height: 30px;
+                                .name-field {
+                                    float: left;
+                                    margin-left: 7px;
+                                    line-height: 30px;
+                                }
+                                .tick-field {
+                                    float: right;
+                                    margin-right: 7px;
+                                }
+                            }
+                        }
                     }
                 }
             }
