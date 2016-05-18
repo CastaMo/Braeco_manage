@@ -3,12 +3,8 @@ main-manage = let
 	page = null
 	value = []
 	dayAry = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
-	day = ''
-	time = ''
-	pay = ''
 	test = 0
 	payAry = ["现金支付", "支付宝", "微信支付", "百度钱包"]
-	can = ''
 	
 	_modifyForBus-dom = $ "\#modifyForBus"
 	_add-dom = $ "\.modifyAddTime"
@@ -19,10 +15,6 @@ main-manage = let
 	_select-dom = $ "\#selectBusiness"
 
 	_init-all-event = !->
-		document.getElementById("showDay").innerHTML = '周一 周二 周三 周四 周五 周六 周日'
-		document.getElementById("showPay").innerHTML = '现金支付 支付宝 微信支付 百度钱包'
-		document.getElementById("showTime").innerHTML = '00:00~23:59'
-		document.getElementById("showCan").innerHTML = '全选'
 		_modifyForBus-dom.click !->
 			page.toggle-page "mod"
 		_finish-dom.click !->
@@ -37,20 +29,24 @@ main-manage = let
 			newLastNode = lastNode.cloneNode(true)
 			faNode.appendChild(newLastNode)
 			$("\.modifyDelTime").click !->
-				delNode = @parentNode
-				faNode.removeChild(delNode)
+				childNum = faNode.children.length
+				if childNum != 1
+					delNode = @parentNode
+					faNode.removeChild(delNode)
 		_del-dom.click !->
-			faNode = document.getElementById("timerAll")
-			delNode = @parentNode
-			faNode.removeChild(delNode)
+				faNode = document.getElementById("timerAll")
+				childNum = faNode.children.length
+				if childNum != 1
+					delNode = @parentNode
+					faNode.removeChild(delNode)
 		_select-dom.change !->
 			selectValue = $("input[name='select']:checked").val()
 			if selectValue == "run"
 				document.getElementById("previewBusiness").style.color = "#333333"
 				document.getElementById("previewBusiness").style.border-color = "#333333"				
 			else if selectValue == "stop"
-				document.getElementById("previewBusiness").style.color = "#949494"
-				document.getElementById("previewBusiness").style.border-color = "#949494"
+				document.getElementById("previewBusiness").style.color = '#E7E7EB'
+				document.getElementById("previewBusiness").style.border-color = '#E7E7EB'
 	_show-form-value = ->
 		x = document.getElementById("myForm")
 		pay = ''
@@ -100,8 +96,9 @@ main-manage = let
 		page := require "./pageManage.js"
 
 	initial: !->
+		_save-form-value!
 		_show-form-value!
-		_init-depend-module!
 		_init-all-event!
+		_init-depend-module!
 
 module.exports = main-manage
