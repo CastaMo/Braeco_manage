@@ -23,6 +23,7 @@ main-manage = let
 		edit 		:= 	require "./editManage.js"
 		require_	:=	require "./requireManage.js"
 
+
 	class Category
 		_category-main-container-dom = $ "\#category-main .category-all-field \#t-body-field"
 		(options)!->
