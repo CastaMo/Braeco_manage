@@ -227,6 +227,24 @@ module.exports = function(grunt) {
                     "<%= dirs.dist_path %>module/Manage/Market/Activity.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Activity/formal.jade"
                 }
             },
+            market_member_level_test: {
+                files: {
+                    "<%= dirs.dist_path %>CanteenManageMarket/Member/Level/Level.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/Level/develop.jade",
+                    "<%= dirs.dist_path %>module/Manage/Market/Member/Level.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/Level/formal.jade"
+                }
+            },
+            market_member_list_test: {
+                files: {
+                    "<%= dirs.dist_path %>CanteenManageMarket/Member/List/List.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/List/develop.jade",
+                    "<%= dirs.dist_path %>module/Manage/Market/Member/List.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/List/formal.jade"
+                }
+            },
+            market_member_recharge_test: {
+                files: {
+                    "<%= dirs.dist_path %>CanteenManageMarket/Member/Recharge/Recharge.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/Recharge/develop.jade",
+                    "<%= dirs.dist_path %>module/Manage/Market/Member/Recharge.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/Recharge/formal.jade"
+                }
+            },
             market_promotion_single_test: {
                 files: {
                     "<%= dirs.dist_path %>CanteenManageMarket/Promotion/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Promotion/Single/develop.jade",
@@ -272,6 +290,24 @@ module.exports = function(grunt) {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Food/Property/main.less",
                     "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Food/Property/base64.less"
+                }
+            },
+            market_member_level_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/Level/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMarket/Member/Level/main.less",
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/Level/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMarket/Member/Level/base64.less"
+                }
+            },
+            market_member_list_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/List/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMarket/Member/List/main.less",
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/List/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMarket/Member/List/base64.less"
+                }
+            },
+            market_member_recharge_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/Recharge/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMarket/Member/Recharge/main.less",
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/Recharge/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMarket/Member/Recharge/base64.less"
                 }
             },
             market_activity_test: {
@@ -327,6 +363,27 @@ module.exports = function(grunt) {
                 dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property',
                 ext: '.js'
             },
+            market_member_recharge_test: {
+                expand: true,
+                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMarket/Member/Recharge',
+                src: ['*.ls'],
+                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/Recharge',
+                ext: '.js'
+            },
+            market_member_level_test: {
+                expand: true,
+                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMarket/Member/Level',
+                src: ['*.ls'],
+                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/Level',
+                ext: '.js'
+            },
+            market_member_list_test: {
+                expand: true,
+                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMarket/Member/List',
+                src: ['*.ls'],
+                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/List',
+                ext: '.js'
+            },
             market_activity_test: {
                 expand: true,
                 cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMarket/Activity',
@@ -368,6 +425,21 @@ module.exports = function(grunt) {
             menu_food_property_test: {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/index.js"]
+                }
+            },
+            market_member_recharge_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/Recharge/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/Recharge/index.js"]
+                }
+            },
+            market_member_level_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/Level/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/Level/index.js"]
+                }
+            },
+            market_member_list_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/List/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/List/index.js"]
                 }
             },
             market_activity_test: {
@@ -459,6 +531,51 @@ module.exports = function(grunt) {
                     'jade:menu_food_property_test'
                 ]
             },
+            market_member_recharge_test: {
+                options: {
+                    livereload: lrPort,
+                    debounceDelay: debounceDelay
+                },
+                files: [
+                    '<%= dirs.source_path %>**/CanteenManageMarket/Member/Recharge/**',
+                ],
+                tasks: [
+                    'less:market_member_recharge_test',
+                    'livescript:market_member_recharge_test',
+                    'browserify:market_member_recharge_test',
+                    'jade:market_member_recharge_test'
+                ]
+            },
+            market_member_level_test: {
+                options: {
+                    livereload: lrPort,
+                    debounceDelay: debounceDelay
+                },
+                files: [
+                    '<%= dirs.source_path %>**/CanteenManageMarket/Member/Level/**',
+                ],
+                tasks: [
+                    'less:market_member_level_test',
+                    'livescript:market_member_level_test',
+                    'browserify:market_member_level_test',
+                    'jade:market_member_level_test'
+                ]
+            },
+            market_member_list_test: {
+                options: {
+                    livereload: lrPort,
+                    debounceDelay: debounceDelay
+                },
+                files: [
+                    '<%= dirs.source_path %>**/CanteenManageMarket/Member/List/**',
+                ],
+                tasks: [
+                    'less:market_member_list_test',
+                    'livescript:market_member_list_test',
+                    'browserify:market_member_list_test',
+                    'jade:market_member_list_test'
+                ]
+            },
             market_activity_test: {
                 options: {
                     livereload: lrPort,
@@ -539,6 +656,9 @@ module.exports = function(grunt) {
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManage/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManage/main.js'],
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageBusiness/HallOrder/Basic/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageBusiness/HallOrder/Basic/main.js'],
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/main.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/Recharge/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/Recharge/main.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/Level/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/Level/main.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/List/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/List/main.js'],
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/main.js'],
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/main.js'],
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/main.js'],
@@ -562,6 +682,12 @@ module.exports = function(grunt) {
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageBusiness/HallOrder/Basic/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageBusiness/HallOrder/Basic/base64.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Activity/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Activity/main.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Activity/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Activity/base64.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/Recharge/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/Recharge/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/Recharge/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/Recharge/base64.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/List/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/List/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/List/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/List/base64.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/Level/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/Level/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/Level/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Member/Level/base64.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Promotion/Single/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Promotion/Single/main.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Promotion/Single/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Promotion/Single/base64.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Category/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Category/main.css'],
