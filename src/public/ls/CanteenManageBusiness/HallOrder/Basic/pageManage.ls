@@ -5,10 +5,12 @@ page-manage = let
 
 	_pre-dom = $ "\#previewBusiness"
 	_mod-dom = $ "\#modifyBusiness"
+	_select-dom = $ "\#selectBusiness"
 
 	_toggle-page-callback = {
 		"mod"		:	 let
 			->
+				_select-dom.fade-out 200
 				_pre-dom.fade-out 200
 				_mod-dom.fade-in 200
 
@@ -16,6 +18,7 @@ page-manage = let
 			->
 				_mod-dom.fade-out 200
 				_pre-dom.fade-in 200
+				_select-dom.fade-in 200
 	}
 
 	_init-depend-module = !->

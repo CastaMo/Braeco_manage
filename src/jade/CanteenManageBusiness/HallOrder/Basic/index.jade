@@ -13,19 +13,24 @@ block content
 	include basicMain
 	#business
 		#selectBusiness
-			#stopBusiness
-				input(type = "radio" name = "select" value = "stop" checked = "checked")
-				span 暂停业务
 			#runBusiness
-				input(type = "radio" name = "select" value = "run")
-				span 运营业务
-		#modifyForBus.btn 修改
-		#maskLayer
+				.run-btn.btn
+					#runMes
+						p 启用本业务
+			#stopBusiness
+				.stop-btn.btn
+					#stopMes
+						p 业务已停用
+			#modifyForBus
+				.modify-btn.btn
+					p 修改
 		#previewBusiness
+			#previewTitle
+				p 业务信息
 			#modifyTime
 				#hel 接单日期
 				#showDay
-				#iel 接单时段
+				#iel 接单时间
 				#showTime
 			#modifyPay
 				p 支付渠道
@@ -36,40 +41,43 @@ block content
 		#modifyBusiness
 			form(id = "myForm")
 				#modifySetting
-					p 修改设置
+					p 修改业务信息
 				#modifyTime
-					p 接单日期
-						input(type = "checkbox" checked = "checked")
-						span 周一
-						input(type = "checkbox" checked = "checked")
-						span 周二
-						input(type = "checkbox" checked = "checked")
-						span 周三
-						input(type = "checkbox" checked = "checked")
-						span 周四
-						input(type = "checkbox" checked = "checked")
-						span 周五
-						input(type = "checkbox" checked = "checked")
-						span 周六
-						input(type = "checkbox" checked = "checked")
-						span 周日
-					p 接单时段
-						#timerAll
-							#timerDiv
-								#timer
-									span  从
-									input(type = "time")
-									span  至
-									input(type = "time")
-								.modifyDelTime.btn 删除
-							#timerDiv
-								#timer
-									span  从
-									input(type = "time")
-									span  至
-									input(type = "time")
-								.modifyDelTime.btn 删除
-					.modifyAddTime.btn 添加
+					#orderDate
+						p 接单日期
+							input(type = "checkbox" checked = "checked")
+							span 周一
+							input(type = "checkbox" checked = "checked")
+							span 周二
+							input(type = "checkbox" checked = "checked")
+							span 周三
+							input(type = "checkbox" checked = "checked")
+							span 周四
+							input(type = "checkbox" checked = "checked")
+							span 周五
+							input(type = "checkbox" checked = "checked")
+							span 周六
+							input(type = "checkbox" checked = "checked")
+							span 周日
+					#orderTimer
+						p 接单时间
+							#timerAll
+								#timerDiv
+									#timer
+										input(type = "time")
+										span 至
+										input(type = "time")
+									.modifyDelTime.btn
+										.delete-img
+								#timerDiv
+									#timer
+										input(type = "time")
+										span 至
+										input(type = "time")
+									.modifyDelTime.btn
+										.delete-imgs
+					.modifyAddTime.btn
+						p +添加时段
 				#modifyPay
 					p 支付渠道
 						input(type = "checkbox" checked = "checked")
