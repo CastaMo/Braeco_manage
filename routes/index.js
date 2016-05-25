@@ -49,14 +49,7 @@ module.exports = function(passport) {
 		renew.renew(res);
 	});
 
-	router.get('/Manage/Menu/Category/Data', function(req, res) {
-		setTimeout(function() {
-			res.send("var allData = '"+'{"message":"success","data":{"category":[{"dishes":[],"categoryid":234,"categoryname":"a","categorypic":"http:\/\/static.brae.co\/images\/category\/8hicrfu2qp8areusucya3ruu322sskn0"},{"dishes":[],"categoryid":214,"categoryname":"\u5662\u54c8\u554a\u597d\u54c8\u563f\u563f","categorypic":"http:\/\/static.brae.co\/images\/category\/lodkbx7vqwkiymwqf5x7nzecuc1u2sgo"},{"dishes":[],"categoryid":215,"categoryname":"\u5496\u5561","categorypic":"http:\/\/static.brae.co\/images\/category\/avemumn6pgi8nev4ozr7mshivk9zo23z"},{"dishes":[],"categoryid":216,"categoryname":"\u86cb\u7cd5","categorypic":"http:\/\/static.brae.co\/images\/category\/1ljfqmfl28fzfyi4ckf6bhdn2yqbn1to"},{"dishes":[],"categoryid":217,"categoryname":"\u5976\u8336","categorypic":"http:\/\/static.brae.co\/images\/category\/mnw6fnwsish5ogkz2bimxqgeq5rznmla"}]}}'+"';"+
-			"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
-		}, 0);
-	});
-
-	router.get('/Manage/Menu/Food/Single/Data', function(req, res) {
+	router.get('/Manage/Menu/Food/Data', function(req, res) {
 		setTimeout(function() {
 			res.send("var allData = '"+'{"message":"success","data":{"categories":[{"dishes":[{"id":545,"name":"红茶","name2":"milk tea","tag":null,"like":0,"dc_type":"sale","dc":1,"groups":[1,6],"pic":null,"detail":"呵呵呵","able":true,"default_price":12},{"id":544,"name":"奶茶","name2":"milk tea","tag":null,"like":0,"dc_type":"none","dc":null,"groups":[5],"pic":null,"detail":"呵呵呵","able":true,"default_price":12},{"id":539,"name":"咖啡","name2":"coffee","tag":"测试","like":0,"dc_type":"none","dc":null,"groups":[5,1],"pic":null,"detail":"啦啦啦啦啦啦","able":true,"default_price":10}],"id":236,"name":"品类一","pic":"http://static.brae.co/images/category/default.0.jpg"}],"groups":[{"id":1,"name":"温度","belong_to":[539,545],"type":"property","content":[{"name":"冷","price":0},{"name":"冰","price":1.5},{"name":"热","price":2}]},{"id":3,"name":"早餐饮品","belong_to":[],"type":"discount_combo","require":1,"discount":5000,"content":[]},{"id":5,"name":"午餐饮品","belong_to":[539,544],"type":"static_combo","require":1,"price":40,"content":[544,539]},{"id":6,"name":"包装","belong_to":[545],"type":"property","content":[{"name":"堂食","price":0},{"name":"外带","price":1}]}]}}'+"';"+
 			"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
@@ -105,6 +98,27 @@ module.exports = function(passport) {
 
 	router.post('/pic/upload/token/category/:id', function(req, res) {
 	    res.json({
+	        message 	: 		"success"	,
+	        key 		: 		100 		,
+	        token 		: 		"heihei"
+	    });
+	});
+
+	router.post('/Dish/Add/:categoryId', function(req, res) {
+		res.json({
+	        message 	: 		"success"	,
+	        id 			: 		Number(Math.floor(100000 + Math.random() * 100000))
+	    });
+	});
+
+	router.post('/Dish/Remove', function(req, res) {
+		res.json({
+	        message 	: 		"success"
+	    });
+	});	
+
+	router.post('/pic/upload/token/dishupdate/:dishId', function(req, res) {
+		res.json({
 	        message 	: 		"success"	,
 	        key 		: 		100 		,
 	        token 		: 		"heihei"
