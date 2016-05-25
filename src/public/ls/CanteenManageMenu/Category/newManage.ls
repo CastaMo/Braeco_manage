@@ -70,13 +70,6 @@ new-manage = let
 						callback?!
 				}
 
-		#步骤①
-		if _src then converImgTobase64 _src, (data-URL)->
-			#图片base64字符串去除'data:image/png;base64,'后的字符串
-			_base64-str := data-URL.substr(22)
-			console.log "base64 ready"
-			_check-is-already-and-upload!
-
 		#步骤②
 		if _src then require_.get("picUploadPre").require {
 			data 		:		{
@@ -88,6 +81,13 @@ new-manage = let
 				console.log "token ready"
 				_check-is-already-and-upload!
 		}
+
+		#步骤①
+		if _src then converImgTobase64 _src, (data-URL)->
+			#图片base64字符串去除'data:image/png;base64,'后的字符串
+			_base64-str := data-URL.substr(22)
+			console.log "base64 ready"
+			_check-is-already-and-upload!
 
 	_success-callback = !->
 		main.add-new-category {
@@ -112,7 +112,7 @@ new-manage = let
 
 		require_.get("add").require {
 			data 		:		{
-				name  	:		_name
+				JSON  	:		JSON.stringify({name:_name})
 			}
 			callback 	: 		(result)!-> _new-id := result.id; _callback!
 		}

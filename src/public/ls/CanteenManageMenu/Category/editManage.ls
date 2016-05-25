@@ -73,13 +73,6 @@ edit-manage = let
 						callback?!
 				}
 
-		#步骤①
-		if _src then converImgTobase64 _src, (data-URL)->
-			#图片base64字符串去除'data:image/png;base64,'后的字符串
-			_base64-str := data-URL.substr(22)
-			console.log "base64 ready"
-			_check-is-already-and-upload!
-
 		#步骤②
 		if _src then require_.get("picUploadPre").require {
 			data 		:		{
@@ -91,6 +84,13 @@ edit-manage = let
 				console.log "token ready"
 				_check-is-already-and-upload!
 		}
+
+		#步骤①
+		if _src then converImgTobase64 _src, (data-URL)->
+			#图片base64字符串去除'data:image/png;base64,'后的字符串
+			_base64-str := data-URL.substr(22)
+			console.log "base64 ready"
+			_check-is-already-and-upload!
 
 
 
@@ -118,8 +118,7 @@ edit-manage = let
 			}
 		require_.get("update").require {
 			data 		:		{
-				name  	:		_name
-				id 		:		_current-category.id
+				JSON 	:		JSON.stringify({name: _name, id: _current-category.id})
 			}
 			callback 	: 		(result)!-> _callback!
 		}

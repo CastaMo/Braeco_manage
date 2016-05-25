@@ -39,7 +39,7 @@ main-manage = let
 			(@dom.find ".remove").click !~> if confirm "确定要删除品类吗?(此操作无法恢复)" then
 				require_.get("remove").require {
 					data 			:	 {
-						id 			:	@id
+						JSON 		:	JSON.stringify({id: @id})
 					}
 					callback		:	(result)~> @remove-self!
 				}

@@ -70,9 +70,9 @@ require-manage = let
 	#	ajax请求对象对应的数据请求属性，以键值对Object呈现于此
 	###
 	_get-require-data-str = {
-		"add" 			:		(data)-> return "name=#{data.name}"
-		"remove" 		:		(data)-> return "id=#{data.id}"
-		"update" 		:		(data)-> return "id=#{data.id}&name=#{data.name}"
+		"add" 			:		(data)-> return "#{data.JSON}"
+		"remove" 		:		(data)-> return "#{data.JSON}"
+		"update" 		:		(data)-> return "#{data.JSON}"
 		"top" 			:		(data)-> return ""
 		"picUploadPre" 	:		(data)-> return ""
 		"picUpload" 	:		(data)-> return "#{data.url}"
