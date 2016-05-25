@@ -247,8 +247,8 @@ module.exports = function(grunt) {
             },
             market_promotion_single_test: {
                 files: {
-                    "<%= dirs.dist_path %>CanteenManageMarket/Promotion/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Promotion/Single/develop.jade",
-                    "<%= dirs.dist_path %>module/Manage/Market/Promotion/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Promotion/Single/formal.jade"
+                    "<%= dirs.dest_path %>CanteenManageMarket/Promotion/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Promotion/Single/develop.jade",
+                    "<%= dirs.dest_path %>module/Manage/Market/Promotion/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Promotion/Single/formal.jade"
                 }
             },
             business_hallOrder_basic_test: {
@@ -391,7 +391,7 @@ module.exports = function(grunt) {
                 dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity',
                 ext: '.js'
             },
-            market_activity_test: {
+            market_promotion_single_test: {
                 expand: true,
                 cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMarket/Promotion/Single',
                 src: ['*.ls'],
@@ -442,14 +442,14 @@ module.exports = function(grunt) {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/List/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/List/index.js"]
                 }
             },
-            market_activity_test: {
+            market_promotion_single_test: {
                 files: {
-                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/index.js"]
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/index.js"]
                 }
             },
             market_activity_test: {
                 files: {
-                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/index.js"]
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/index.js"]
                 }
             },
             business_hallOrder_basic_test: {

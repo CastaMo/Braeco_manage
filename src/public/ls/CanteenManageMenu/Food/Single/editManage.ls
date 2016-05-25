@@ -213,6 +213,57 @@ edit-manange = let
 
 	_property-add-btn-click-event = !-> page.cover-page "property"; group.set-current-property-active!
 
+	###
+	#	上传图片事件
+	#	需要完成三个步骤
+	#	①把将上传的图片转化为base64字符串
+	#	②从服务器获取token与key
+	#	③把图片(base64字符串)以及token一起上传给七牛服务器
+	#	其中①和②可以并发进行(一个是调用Ajax异步API，一个是调用canvas同步API)，这里用到了信号量的思想去实现并发处理
+	###
+	_upload-pic-event = (callback)!->
+
+		_base64-str = ""
+		_data = {}
+
+
+		_check-is-already-and-upload = !->
+			if _base64-str and _data.token and _data.key
+				#步骤③
+				require_.get("picUpload").require {
+					data 		:		{
+						fsize 	:		-1
+						token 	:		_data.token
+						key 	:		btoa(_data.key).replace("+", "-").replace("/", "_")
+						url 	:		_base64-str
+					}
+					callback 	:		(result)->
+						_src 		:= "http://static.brae.co/#{_data.key}"
+						_base64-str := ""
+						_data 		:= {}
+						console.log "success"
+						callback?!
+				}
+
+		#步骤②
+		if _src then require_.get("picUploadPre").require {
+			data 		:		{
+				id 		:		_new-id
+			}
+			callback 	:		(result)->
+				_data.token 	= 		result.token
+				_data.key 		= 		result.key
+				console.log "token ready"
+				_check-is-already-and-upload!
+		}
+
+		#步骤①
+		if _src then converImgTobase64 _src, (data-URL)->
+			#图片base64字符串去除'data:image/png;base64,'后的字符串
+			_base64-str := data-URL.substr(22)
+			console.log "base64 ready"
+			_check-is-already-and-upload!
+
 	_cancel-btn-click-event = !->
 		_reset!
 		page.toggle-page "main"
