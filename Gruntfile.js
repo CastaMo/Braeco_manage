@@ -788,13 +788,14 @@ module.exports = function(grunt) {
         'hashmap'
     ]);
     grunt.registerTask('upload', [
+        'clean',
         'copy:test',
         'less',
         'livescript',
         'browserify',
+        'jade',
         'cssmin',
         'uglify',
-        'clean:version',
         'hashmap',
         'copy:versioncontrol',
         'sftp'

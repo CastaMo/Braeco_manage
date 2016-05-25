@@ -8,9 +8,9 @@ main-manage = let
 		all-categories = getJSON _get-category-JSON!
 		for category, i in all-categories
 			category_ = new Category {
-				id 		:	category.categoryid
-				name	:	category.categoryname
-				pic 	:	category.categorypic
+				id 		:	category.id
+				name	:	category.name
+				pic 	:	category.pic
 				is-head	:	category.is-head || false
 			}
 
@@ -22,6 +22,7 @@ main-manage = let
 		page 		:= 	require "./pageManage.js"
 		edit 		:= 	require "./editManage.js"
 		require_	:=	require "./requireManage.js"
+
 
 	class Category
 		_category-main-container-dom = $ "\#category-main .category-all-field \#t-body-field"

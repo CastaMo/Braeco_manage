@@ -44,6 +44,7 @@ edit-manange = let
 	#	当前编辑的dish
 	###
 	_current-dish  			= null
+	_current-category-id 	= null
 
 	###
 	#	属性变量
@@ -109,6 +110,7 @@ edit-manange = let
 		_dc-type 				:= null
 		_dc 					:= null
 		_upload-flag 			:= null
+		_groups 				:= []
 
 		_current-dish 			:= null
 
@@ -125,6 +127,12 @@ edit-manange = let
 		_dc-type 			:= getStrAfterFilter _dc-type-select-dom.val!
 		_dc 				:= _get-dc-value!
 
+	_connect-property-to-groups = !->
+		group.set-current-property-sub-item-by-target {
+			property-sub-item-list-dom 		: 		_property-sub-item-list-dom
+			property-sub-item-array 		:		_groups
+		}
+
 	_read-from-current-dish = !->
 
 		_c-name-dom.val _current-dish.c-name
@@ -139,12 +147,12 @@ edit-manange = let
 		_src 					:= _current-dish.pic
 		if _src then _pic-display-dom.css {"background-image" : "url('#{_src}')"}
 
+		###
+		#	连接当前属性组与当前餐品以及groupMange进行绑定
+		###
 		_groups 				:= []
 		deep-copy _current-dish.groups, _groups
-		group.set-current-property-sub-item-by-target {
-			property-sub-item-list-dom 		: 		_property-sub-item-list-dom
-			property-sub-item-array 		:		_groups
-		}
+		_connect-property-to-groups!		
 
 		_upload-flag 			:= null
 
@@ -166,7 +174,7 @@ edit-manange = let
 		alert _err-str; return _valid-flag
 
 	_success-callback = !->
-		_current-dish.edit-self {
+		main.edit-for-current-choose-dish-by-given _current-dish.id, {
 			default-price 		:		_default-price
 			detail 				: 		_intro
 			c-name 				:		_c-name
@@ -239,7 +247,7 @@ edit-manange = let
 		_init-all-event!
 		_init-depend-module!
 
-	set-current-dish: (dish)!->
+	toggle-callback: (dish, current-category-id)!->
 		_current-dish := dish;
 		_read-from-current-dish!
 

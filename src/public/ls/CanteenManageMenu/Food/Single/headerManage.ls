@@ -1,4 +1,4 @@
-main = page = null
+main = page = require_ = null
 header-manage = let
 
 	[		deep-copy] =
@@ -37,18 +37,25 @@ header-manage = let
 	}
 
 	_all-control-header-click-event = {
-		"new" 			:		!-> page.toggle-page "new"
+		"new" 			:		!-> main.toggle-to-new!
 		"edit" 			:		!-> main.toggle-to-edit-for-current-choose-dish!
 		"move" 			:		!-> page.cover-page "move"
 		"top" 			:		!-> main.top-for-current-choose-dishes!
 		"copy" 			:		!-> page.cover-page "copy"
 		"show-or-hide" 	:		!-> main.change-able-for-current-choose-dishes-by-given !@able; console.log @able
-		"remove" 		:		!-> if confirm "确定要删除餐品吗?(此操作无法恢复)" then main.remove-for-current-choose-dishes!
+		"remove" 		:		!-> if confirm "确定要删除餐品吗?(此操作无法恢复)"
+			require_.get("remove").require {
+				data 		: 		{
+					JSON 	:		JSON.stringify(main.get-current-dishes-id!)
+				}
+				callback 	: 		(result)-> main.remove-for-current-choose-dishes!
+			}
 	}
 
 	_init-depend-module = !->
 		main 		:= 	require "./mainManage.js"
 		page 		:= 	require "./pageManage.js"
+		require_ 	:= 	require "./requireManage.js"
 
 	_init-all-control-header = !->
 		for name in _all-control-header-name

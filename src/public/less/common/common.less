@@ -146,7 +146,7 @@ a {
 }
 
 .translate (@ver: 0, @hor: 0) {
-    .transform(translate3d(@ver, @hor, 0));
+    .transform(translate(@ver, @hor));
 }
 
 .transform (@str: scale(0, 0)) {
@@ -171,7 +171,7 @@ a {
     width: 100%;
     z-index: 100;
     .nav-container {
-        .shadow();
+        //.shadow();
         height: 65px;
         background-color: black;
         color: black;

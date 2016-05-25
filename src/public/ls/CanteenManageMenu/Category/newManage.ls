@@ -38,7 +38,7 @@ new-manage = let
 			if _pic-input-dom[0].files[0].type.substr(0, 5) isnt "image" then alert "请上传正确的格式图片"; return false
 		return true
 
-		###
+	###
 	#	上传图片事件
 	#	需要完成三个步骤
 	#	①把将上传的图片转化为base64字符串
@@ -89,8 +89,12 @@ new-manage = let
 				_check-is-already-and-upload!
 		}
 
-	_success-callback = (options)!->
-		main.add-new-category options
+	_success-callback = !->
+		main.add-new-category {
+			name 	:	_name
+			pic 	:	_src
+			id 		:	_new-id
+		}
 		_reset!
 		page.toggle-page "main"
 
@@ -101,18 +105,11 @@ new-manage = let
 	_save-btn-click-event = !->
 		if not _check-is-valid! then return
 		if _upload-flag
-			_callback = -> _upload-pic-event !->
-				_success-callback {
-					name 	:	_name
-					pic 	:	_src
-					id 		:	_new-id
-				}
+			_callback = !-> _upload-pic-event !->
+				_success-callback!
 		else
-			_callback = -> _success-callback {
-				name 	:	_name
-				pic 	:	_src
-				id 		:	_new-id
-			}
+			_callback = !-> _success-callback!
+
 		require_.get("add").require {
 			data 		:		{
 				name  	:		_name
