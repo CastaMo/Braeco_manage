@@ -391,7 +391,7 @@ module.exports = function(grunt) {
                 dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity',
                 ext: '.js'
             },
-            market_activity_test: {
+            market_single_test: {
                 expand: true,
                 cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMarket/Promotion/Single',
                 src: ['*.ls'],
@@ -447,7 +447,7 @@ module.exports = function(grunt) {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/index.js"]
                 }
             },
-            market_activity_test: {
+            market_single_test: {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/index.js"]
                 }

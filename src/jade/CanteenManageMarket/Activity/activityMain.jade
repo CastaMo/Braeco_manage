@@ -1,27 +1,82 @@
 .braeco-activity
-  .left-menu
-    .photo
-      span 上传餐厅图片
-    .cativity-items
-      ul 
-        li 
-          span 买一送一
-        li 
-          span 买一送二
-    .new-activity
-      span 新建活动
+  .braeco-activity-wrapper
+    .left-menu-wrapper
+      .photo
+        span 上传餐厅图片
+      .activity-items
+        .promotion-activity 
+          p 促销活动
+        ul 
+          li 
+            .content
+              .pic 
+              .info
+                .title 买一送一
+                .brief 这个就是介绍
+          li 
+            .content
+              .pic 
+              .info
+                .title 买一送二
+                .brief 这个就是介绍
+        .new-promotion-activity.new-activity 添加主题活动
 
-  .right-content
-    form(name='newActivity')
-      label(for='activity-name') 活动名称
-      input(type='text' id='activity-name' name='activity-name')
-      label(for='activity-start-time') 开始时间
-      input(type='datetime-local' id='activity-start-time' name='activity-start-time')
-      label(for='activity-end-time') 结束时间
-      input(type='datetime-local' id='activity-end-time' name='activity-end-time')
-      label(for='activity-upload-image') 点击上传图片 建议尺寸 375像素 * 200像素
-      input(type='file' id='activity-upload-image' name='activity-upload-image')
-      label(for='activity-brief') 活动简介
-      textarea(type='text' id='activity-brief' name='activity-brief')
-      input(type='button' value='取消' name='activity-cancle' id='activity-cancle')
-      input(type='button' value='保存' name='activity-save' id='activity-save')
+      .activity-items
+        .theme-activity 
+          p 主题活动
+        ul 
+          li 
+            .content
+              .pic 
+              .info
+                .title 买一送三
+                .brief 这个就是介绍
+        .new-theme-activity.new-activity 添加促销活动
+
+    .right-content-wrapper
+      .form-container
+        form(name='newActivity' action)
+          .warn.form-item
+            p 带 * 号为必填项
+
+          .form-item.activity-name
+            label(for='activity-name') 活动名称 *
+            input(type='text' id='activity-name' name='activity-name')
+            span 字数不超过5个汉字或10个字母
+
+          .form-item
+            label(for='expiry-date') 有效期 *
+            select(id='expiry-date' name='expiry-date')
+              option 永久
+              option 日期区间
+              option 工作日
+              option 周六日
+              option 周日
+
+          .form-item.date-range
+            label.date-range-label 日期区间
+
+            input(type='date' id='activity-start-date' name='activity-start-date')
+            label 至
+            input(type='date' id='activity-end-date' name='activity-end-date')
+
+          .form-item.time-range
+            label(for='activity-start-time') 启动时间
+            input(type='time' id='activity-start-time' name='activity-start-time')
+ 
+            label.end-time-label(for='activity-end-time') 停用时间
+            input(type='time' id='activity-end-time' name='activity-end-time')
+
+          .form-item.activity-image
+            label.activity-image-label(for='activity-upload-image') 
+              span 图片 * 
+              input(type='file' id='activity-upload-image' name='activity-upload-image')
+              .upload-image
+
+          .form-item.activity-brief
+            label.activity-brief-label(for='activity-brief') 活动简介 *
+            textarea(type='text' id='activity-brief' name='activity-brief')
+
+          .form-item
+            input(type='button' value='取消' name='activity-cancle' id='activity-cancle')
+            input(type='submit' value='保存' name='activity-save' id='activity-save')

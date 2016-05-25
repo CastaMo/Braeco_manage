@@ -1,1 +1,202 @@
 @import "../../common/common";
+@activity-border-color: rgba(231, 231, 235, 1);
+
+.braeco-activity {
+  .braeco-activity-wrapper {
+    margin-left: 32px;
+    margin-right: 31px;
+    margin-top: 31px;
+    height: 622px;
+    vertical-align: center; 
+
+    .left-menu-wrapper {
+      float: left;
+      width: 200px;
+      border: 1px solid @activity-border-color;
+      margin-right: 31px;
+
+      .photo {
+        height: 107px;
+        border-bottom: 1px solid @activity-border-color;
+        line-height: 107px;
+        text-align: center;
+      }
+
+      .activity-items {
+        .promotion-activity, .theme-activity {
+          height: 30px;
+          background-color: rgba(244, 245, 249, 1);
+          border-bottom: 1px solid @activity-border-color;
+
+          p {
+            padding-left: 10px;
+            padding-bottom: 7px;
+          }
+        }
+        ul li {
+          height: 60px;
+          border-bottom: 1px solid @activity-border-color;
+          
+          .content {
+            padding: 7px;
+            .pic, .info {
+              display: inline-block;
+              float: left;
+            }
+            .pic {
+              width: 48px;
+              height: 46px;
+              margin-right: 7px;
+              border: 1px solid @activity-border-color;
+            }
+            .title {
+
+            }
+            .brief {
+              color: rgba(161, 161, 161, 1);
+            }
+          }
+        }
+
+        .new-activity {
+          height: 60px;
+          border-bottom: 1px solid @activity-border-color;
+          line-height: 60px;
+          text-align: center;
+        }
+        .new-theme-activity {
+          border: 0px;
+        }
+      }
+    }
+
+    .right-content-wrapper {
+      float: left;
+      width: auto;
+      border: 1px solid @activity-border-color;
+      height: 100%;
+
+      input, select {
+        height: 30px;
+      }
+      input, textarea, select {
+        border: 1px solid @activity-border-color;
+      }
+
+      .form-container {
+        width: 428px;
+        padding: 21px;
+
+        .warn {
+          color: rgba(141, 141, 141, 1);
+        }
+
+        .form-item {
+          margin-bottom: 20px;
+          label {
+            display: inline-block;
+            width: 120px;
+          }
+        }
+
+        .date-range {
+          label {
+            display: inline;
+          }
+          .date-range-label {
+            display: inline-block;
+            width: 120px;
+          }
+          input {
+            width: 130px;
+          }
+          #activity-start-date {
+            margin-right: 10px;
+          }
+          #activity-end-date {
+            margin-left: 10px;
+          }
+        }
+
+        .time-range {
+          .end-time-label {
+            display: inline;
+          }
+          #activity-start-time {
+            margin-right: 20px;
+          }
+          #activity-end-time {
+            margin-left: 20px;
+          }
+        }
+
+        .activity-image {
+          .activity-image-label {
+            width: 420px;
+            cursor: pointer;
+
+            span {
+              display: inline-block;
+              width: 120px;
+              position: relative;
+              bottom: 85px;
+            }
+            #activity-upload-image {
+              display: none;
+            }
+            .upload-image {
+              display: inline-block;
+              border: 1px solid @activity-border-color;
+              width: 180px;
+              height: 96px;
+            }
+          }
+
+        }
+
+        .activity-name {
+          input {
+            width: 200px;
+          }
+          span {
+            display: inline-block;
+            margin-left: 120px;
+            color: rgba(200, 199, 204, 1);
+          }
+        }
+
+        .activity-brief {
+          height: 131px;
+
+          textarea {
+            height: 100%;
+            width: 300px;
+            resize: none;
+            border: 1px solid @activity-border-color;
+          }
+
+          .activity-brief-label {
+            position: relative;
+            bottom: 115px;
+          }
+        }
+
+        #activity-cancle, #activity-save {
+          width: 120px;
+          height: 32px;
+          border: 1px solid @activity-border-color;
+          background-color: white;
+          margin-right: 20px;
+          border-radius: 5px;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+        #activity-save {
+          background-color: rgba(255, 193, 7, 1);
+        }
+      }
+    }
+  }
+}
