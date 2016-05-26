@@ -20,14 +20,13 @@ main-manage = let
 			jumpPage = document.getElementById("jump-input").lastChild.value
 
 		_modify-btn-dom.click !->
-
+			page.cover-page "modify"
 		_recharge-btn-dom.click !-> 
-
+			page.cover-page "recharge"
 
 
 	_init-depend-module = !->
 		page := require "./pageManage.js"
-
 
 	initial: !->
 		_init-depend-module!
