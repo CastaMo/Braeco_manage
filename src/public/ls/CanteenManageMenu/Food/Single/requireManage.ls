@@ -7,20 +7,19 @@ require-manage = let
 	#	请求名字(自己设)
 	###
 	_all-require-name = [
-		'add',							'remove',
-		'update',						'top',
-		'picUploadPre',					'picUpload'
+		'add',							'copy',
+		'remove',						'picUploadPre',
+		'picUpload'
 	]
 
 	###
 	#	请求名字与URL键值对(与后台进行商量)，名字需依赖于上述对象
 	###
 	_all-require-URL = {
-		'add' 			:		'/Category/Add'
-		'remove'		:		'/Category/Remove'
-		'update' 		:		'/Category/Update/Profile'
-		'top' 			:		'/Category/Update/Top'
-		'picUploadPre' 	:		'/pic/upload/token/category'
+		'add' 			:		'/Dish/Add'
+		'copy' 			:		'/Dish/Copy'
+		'remove' 		:		'/Dish/Remove'
+		'picUploadPre' 	:		'/pic/upload/token/dishupdate'
 		'picUpload' 	:		'http://up.qiniu.com/putb64'
 	}
 
@@ -49,7 +48,7 @@ require-manage = let
 	#	校正ajax-object的url
 	###
 	_correct-URL = {
-		"top"			:		(ajax-object, data)-> ajax-object.url += "/#{data.id}"
+		"add"			:		(ajax-object, data)-> ajax-object.url += "/#{data.category-id}"
 		'picUploadPre' 	:		(ajax-object, data)-> ajax-object.url += "/#{data.id}"
 		'picUpload' 	:		(ajax-object, data)-> ajax-object.url += "/#{data.fsize}/key/#{data.key}"
 	}
@@ -71,9 +70,8 @@ require-manage = let
 	###
 	_get-require-data-str = {
 		"add" 			:		(data)-> return "#{data.JSON}"
+		"copy" 			:		(data)-> return "#{data.JSON}"
 		"remove" 		:		(data)-> return "#{data.JSON}"
-		"update" 		:		(data)-> return "#{data.JSON}"
-		"top" 			:		(data)-> return ""
 		"picUploadPre" 	:		(data)-> return ""
 		"picUpload" 	:		(data)-> return "#{data.url}"
 
@@ -99,23 +97,11 @@ require-manage = let
 	###
 	_require-fail-callback = {
 		"add"			:		{
-			"Used name" 								:	-> alert "此品类名称已经存在"
-		}
-		"remove" 		:		{
-			"Category not found" 						:	-> alert "品类不存在!"
-			"Category not found or cannot be removed" 	:	-> alert "品类不存在或该品类无法被删除!"
-		}
-		"update" 		:		{
-			"Used name" 								:	-> alert "此品类名称已经存在"
-			"Category not found" 						:	-> alert "品类不存在!"
-		}
-		"top"			:		{
-			"Category not found" 						:	-> alert "品类不存在!"
-			"Dinner not found" 							:	-> alert "餐厅不存在!"
-			"Already at top" 							:	-> alert "当前分类已在顶端"
+			"Category not found" 						:	-> alert "品类不存在"
+			"Conflict property name" 					: 	-> alert "一个单品所包含的所有属性组不得有重名的属性存在"
 		}
 		"picUploadPre" 	:		{
-			"Category not found" 						:	-> alert "品类不存在!"
+			"Dish  not found" 							:	-> alert "餐品不存在!"
 		}
 		"picUpload" 	:		{
 			
@@ -131,6 +117,7 @@ require-manage = let
 	###
 	_require-handle = (name, config)->
 		return (options)->
+			console.log options
 			ajax-object = _get-normal-ajax-object config
 			ajax-object.data = _get-require-data-str[name]? options.data
 			_correct-URL[name]? ajax-object, options.data

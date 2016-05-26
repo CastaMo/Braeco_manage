@@ -11,7 +11,7 @@ let win = window, doc = document
 	}
 
 	_init-all-get-JSON-func = (data)->
-		_get-category-JSON := -> return JSON.stringify(data.category)
+		_get-category-JSON := -> return (data.categories)
 
 
 	_main-init = (result)->

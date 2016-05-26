@@ -223,32 +223,32 @@ module.exports = function(grunt) {
             },
             market_activity_test: {
                 files: {
-                    "<%= dirs.dist_path %>CanteenManageMarket/Activity/Activity.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Activity/develop.jade",
-                    "<%= dirs.dist_path %>module/Manage/Market/Activity.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Activity/formal.jade"
+                    "<%= dirs.dest_path %>CanteenManageMarket/Activity/Activity.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Activity/develop.jade",
+                    "<%= dirs.dest_path %>module/Manage/Market/Activity.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Activity/formal.jade"
                 }
             },
             market_member_level_test: {
                 files: {
-                    "<%= dirs.dist_path %>CanteenManageMarket/Member/Level/Level.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/Level/develop.jade",
-                    "<%= dirs.dist_path %>module/Manage/Market/Member/Level.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/Level/formal.jade"
+                    "<%= dirs.dest_path %>CanteenManageMarket/Member/Level/Level.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/Level/develop.jade",
+                    "<%= dirs.dest_path %>module/Manage/Market/Member/Level.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/Level/formal.jade"
                 }
             },
             market_member_list_test: {
                 files: {
-                    "<%= dirs.dist_path %>CanteenManageMarket/Member/List/List.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/List/develop.jade",
-                    "<%= dirs.dist_path %>module/Manage/Market/Member/List.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/List/formal.jade"
+                    "<%= dirs.dest_path %>CanteenManageMarket/Member/List/List.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/List/develop.jade",
+                    "<%= dirs.dest_path %>module/Manage/Market/Member/List.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/List/formal.jade"
                 }
             },
             market_member_recharge_test: {
                 files: {
-                    "<%= dirs.dist_path %>CanteenManageMarket/Member/Recharge/Recharge.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/Recharge/develop.jade",
-                    "<%= dirs.dist_path %>module/Manage/Market/Member/Recharge.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/Recharge/formal.jade"
+                    "<%= dirs.dest_path %>CanteenManageMarket/Member/Recharge/Recharge.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/Recharge/develop.jade",
+                    "<%= dirs.dest_path %>module/Manage/Market/Member/Recharge.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/Recharge/formal.jade"
                 }
             },
             market_promotion_single_test: {
                 files: {
-                    "<%= dirs.dist_path %>CanteenManageMarket/Promotion/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Promotion/Single/develop.jade",
-                    "<%= dirs.dist_path %>module/Manage/Market/Promotion/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Promotion/Single/formal.jade"
+                    "<%= dirs.dest_path %>CanteenManageMarket/Promotion/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Promotion/Single/develop.jade",
+                    "<%= dirs.dest_path %>module/Manage/Market/Promotion/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Promotion/Single/formal.jade"
                 }
             },
             business_hallOrder_basic_test: {
@@ -391,7 +391,7 @@ module.exports = function(grunt) {
                 dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity',
                 ext: '.js'
             },
-            market_activity_test: {
+            market_promotion_single_test: {
                 expand: true,
                 cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMarket/Promotion/Single',
                 src: ['*.ls'],
@@ -442,14 +442,14 @@ module.exports = function(grunt) {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/List/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/List/index.js"]
                 }
             },
-            market_activity_test: {
+            market_promotion_single_test: {
                 files: {
-                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/index.js"]
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/index.js"]
                 }
             },
             market_activity_test: {
                 files: {
-                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/index.js"]
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/index.js"]
                 }
             },
             business_hallOrder_basic_test: {
@@ -788,13 +788,14 @@ module.exports = function(grunt) {
         'hashmap'
     ]);
     grunt.registerTask('upload', [
+        'clean',
         'copy:test',
         'less',
         'livescript',
         'browserify',
+        'jade',
         'cssmin',
         'uglify',
-        'clean:version',
         'hashmap',
         'copy:versioncontrol',
         'sftp'
