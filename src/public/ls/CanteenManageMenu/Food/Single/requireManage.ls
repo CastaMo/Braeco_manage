@@ -8,7 +8,9 @@ require-manage = let
 	###
 	_all-require-name = [
 		'add',							'copy',
-		'remove',						'picUploadPre',
+		'remove',						'top',
+		'move', 						'edit',
+		'able', 						'picUploadPre',
 		'picUpload'
 	]
 
@@ -19,6 +21,10 @@ require-manage = let
 		'add' 			:		'/Dish/Add'
 		'copy' 			:		'/Dish/Copy'
 		'remove' 		:		'/Dish/Remove'
+		'top' 			:		'/Dish/Update/Top'
+		'move' 			:		'/Dish/Update/Category'
+		'edit' 			:		'/Dish/Update/All'
+		'able' 			:		'/Dish/Update/Able'
 		'picUploadPre' 	:		'/pic/upload/token/dishupdate'
 		'picUpload' 	:		'http://up.qiniu.com/putb64'
 	}
@@ -49,6 +55,8 @@ require-manage = let
 	###
 	_correct-URL = {
 		"add"			:		(ajax-object, data)-> ajax-object.url += "/#{data.category-id}"
+		"edit" 			:		(ajax-object, data)-> ajax-object.url += "/#{data.dish-id}"
+		"able" 			:		(ajax-object, data)-> ajax-object.url += "/#{data.flag}"
 		'picUploadPre' 	:		(ajax-object, data)-> ajax-object.url += "/#{data.id}"
 		'picUpload' 	:		(ajax-object, data)-> ajax-object.url += "/#{data.fsize}/key/#{data.key}"
 	}
@@ -72,6 +80,10 @@ require-manage = let
 		"add" 			:		(data)-> return "#{data.JSON}"
 		"copy" 			:		(data)-> return "#{data.JSON}"
 		"remove" 		:		(data)-> return "#{data.JSON}"
+		"top" 			: 		(data)-> return "#{data.JSON}"
+		"move" 			:		(data)-> return "#{data.JSON}"
+		"edit" 			:		(data)-> return "#{data.JSON}"
+		"able" 			:		(data)-> return "#{data.JSON}"
 		"picUploadPre" 	:		(data)-> return ""
 		"picUpload" 	:		(data)-> return "#{data.url}"
 
@@ -100,8 +112,14 @@ require-manage = let
 			"Category not found" 						:	-> alert "品类不存在"
 			"Conflict property name" 					: 	-> alert "一个单品所包含的所有属性组不得有重名的属性存在"
 		}
+		"copy" 			:		{}
+		"remove" 		:		{}
+		"top" 			:		{}
+		"move" 			:		{}
+		"edit" 			:		{}
+		"able" 			:		{}
 		"picUploadPre" 	:		{
-			"Dish  not found" 							:	-> alert "餐品不存在!"
+			"Dish not found" 							:	-> alert "餐品不存在!"
 		}
 		"picUpload" 	:		{
 			

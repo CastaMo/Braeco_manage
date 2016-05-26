@@ -186,14 +186,6 @@ new-manange = let
 
 	###************ event start **********###
 
-	_cancel-btn-click-event = !->
-		_reset!
-		page.toggle-page "main"
-
-	_save-btn-click-event = !->
-		_reset!
-		page.toggle-page "main"
-
 	_pic-input-change-event = (input)!->
 		if file = input.files[0]
 			if ((fsize = parse-int(file.size)) / 1024).to-fixed(2) > 4097 then alert "图片大小不能超过4M"
@@ -310,6 +302,7 @@ new-manange = let
 		_init-depend-module!
 
 	toggle-callback: (current-category-id)!->
+		_reset!
 		_current-category-id 	:= current-category-id
 		_groups 				:= []
 		_connect-property-to-groups!

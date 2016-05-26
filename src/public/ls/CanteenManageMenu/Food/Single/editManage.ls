@@ -1,8 +1,10 @@
-main = page = group = null
+main = page = group = require_ = null
 edit-manange = let
 
-	[		getObjectURL, 		deep-copy, 			getStrAfterFilter] = 
-		[	util.getObjectURL, 	util.deep-copy, 	util.getStrAfterFilter]
+	[		getObjectURL, 		deep-copy, 			getStrAfterFilter,
+			converImgTobase64] = 
+		[	util.getObjectURL, 	util.deep-copy, 	util.getStrAfterFilter,
+			util.converImgTobase64]
 
 	_edit-dom  				= $ "\#food-single-edit"
 
@@ -188,6 +190,19 @@ edit-manange = let
 		page.toggle-page "main"
 		_reset!
 
+	_get-upload-JSON-for-edit = ->
+		_read-from-input!
+		return JSON.stringify {
+			dc_type 	:		_dc-type
+			dc 			:		_dc
+			price 		:		_default-price
+			name 		:		_c-name
+			name2 		:		_e-name
+			tag 		:		_remark
+			detail 		:		_intro
+			groups 		:		_groups	
+		}
+
 	###************ operation end **********###
 
 
@@ -248,7 +263,7 @@ edit-manange = let
 		#步骤②
 		if _src then require_.get("picUploadPre").require {
 			data 		:		{
-				id 		:		_new-id
+				id 		:		_current-dish.id
 			}
 			callback 	:		(result)->
 				_data.token 	= 		result.token
@@ -269,7 +284,19 @@ edit-manange = let
 		page.toggle-page "main"
 
 	_save-btn-click-event = !->
-		if _check-is-valid! then _success-callback!
+		if not _check-is-valid! then return
+		if _upload-flag
+			_callback = !-> _upload-pic-event !->
+				_success-callback!
+		else _callback = !-> _success-callback!
+
+		require_.get("edit").require {
+			data 				:		{
+				dish-id 		:	_current-dish.id
+				JSON 			: 	_get-upload-JSON-for-edit!
+			}
+			callback 			: 	(result)!-> _callback!
+		}
 
 
 	###************ event end **********###
@@ -288,9 +315,10 @@ edit-manange = let
 
 
 	_init-depend-module = !->
-		main  	:= require "./mainManage.js"
-		page 	:= require "./pageManage.js"
-		group 	:= require "./groupManage.js"
+		main  		:= require "./mainManage.js"
+		page 		:= require "./pageManage.js"
+		group 		:= require "./groupManage.js"
+		require_ 	:= require "./requireManage.js"
 
 
 	initial: !->
@@ -299,6 +327,7 @@ edit-manange = let
 		_init-depend-module!
 
 	toggle-callback: (dish, current-category-id)!->
+		_reset!
 		_current-dish := dish;
 		_read-from-current-dish!
 
