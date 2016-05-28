@@ -314,7 +314,8 @@ main-manage = let
 				if @pic then @pic-dom.css {"background-image":"url('#{@pic}')"} else @pic-dom.css {"background-image":""}
 				if not @able then @cover-dom.fade-in 200
 				else @cover-dom.fade-out 200
-				@c-name-dom.html @c-name; @e-name-dom.html @e-name
+				@c-name-dom.html @c-name; @c-name-dom.attr {"title": @c-name}
+				@e-name-dom.html @e-name; @e-name-dom.attr {"title": @e-name}
 				@default-price-dom.html @default-price
 				_update-property-dom @
 				_update-dc-dom @

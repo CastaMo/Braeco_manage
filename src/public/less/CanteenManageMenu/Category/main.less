@@ -5,20 +5,39 @@
     .category-wrapper {
         width: 93%;
         margin: 0 auto;
-        .c-block {
-            margin-top: 25px;
+        .category-container {
+            padding-top: 25px;
         }
         #category-main {
             .category-new-field {
                 #new-btn {
+                    width: 160px;
+                    height: 30px;
+                    padding: 0;
+                    font-size: 14px;
                     background-color: @orange-color;
                     color: #fff;
                     cursor: pointer;
+                    .new-btn-wrapper {
+                        width: 78px;
+                        margin: 0 auto;
+                        .new-btn-contaier {
+                            .new-icon {
+                                .background-norm();
+                                .background-size(14px, 14px);
+                                margin-top: 8px;
+                                float: left;
+                            }
+                            p {
+                                float: right;
+                            }
+                        }
+                    }
                 }
             }
             .category-all-field {
                 width: 100%;
-                margin-top: 50px;
+                margin-top: 19px;
                 border: solid 1px @border-grey-color;
                 .t-header {
                     background-color: rgb(231, 232, 235);
@@ -93,11 +112,12 @@
             width: 100%;
             border: solid 1px @border-grey-color;
             .t-header {
-                background-color: rgb(231, 232, 235);
+                background-color: #F4F5F9;
                 .t-content {
                     line-height: 40px;
-                    width: 120px;
-                    text-align: right;
+                    padding-left: 20px;
+                    color: #4A4A4A;
+                    font-size: 14px;
                 }
             }
             .t-body {
@@ -105,53 +125,74 @@
                 border-bottom: solid 1px @border-grey-color;
                 .t-content {
                     width: 100%;
-                    padding: 20px 0;
-                    > * > *:not(.clear) {
-                        float: left;
-                    }
-                    p {
-                        width: 120px;
-                        text-align: right;
-                        line-height: 30px;
-                    }
-                    .name-field {
-                        margin-bottom: 15px;
-                        input[type='text'] {
-                            height: 30px;
-                            font-size: 18px;
-                            width: 300px;
-                        }
-                    }
-                    .input-field {
-                        margin-left: 20px;
-                        label {
-                            cursor: pointer;
-                            .img-field {
-                                .img {
-                                    .background-size(100px, 100px);
+                    .content-wrapper {
+                        margin: 0 29px;
+                        .content-container {
+                            padding: 32px 0;
+                            > * {
+                                font-size: 14px;
+                                margin-bottom: 20px;
+                                &.warn-field {
+                                    color: #8D8D8D;
+                                }
+                                &:not(.warn-field) {
+                                    p {
+                                        color: #4A4A4A;
+                                        width: 84px;
+                                        float: left;
+                                        line-height: 30px;
+                                    }
+                                    .input-field {
+                                        float: left;
+                                    }
+                                }
+                                &.name-field {
+                                    input[type='text'] {
+                                        height: 30px;
+                                        font-size: 16px;
+                                        width: 350px;
+                                    }
+                                }
+                                .input-field {
+                                    margin-left: 20px;
+                                    label {
+                                        cursor: pointer;
+                                        .img-field {
+                                            .img {
+                                                .background-size(160px, 160px);
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
-                    .pic-fic-field {
-                        margin-top: 15px;
                     }
                 }
             }
             .t-bottom {
                 .t-content {
-                    margin: 10px;
-                    > * {
-                        margin-left: 32px;
-                    }
-                    * {
-                        color: #fff;
-                    }
-                    .cancel-btn {
-                        background-color: @shallow-grey-color;
-                    }
-                    .save-btn {
-                        background-color: @orange-color;
+                    .content-wrapper {
+                        margin: 0 29px;
+                        .content-container {
+                            padding: 19px 0;
+                            > *:not(.clear) {
+                                padding: 0;
+                                color: #4A4A4A;
+                                font-size: 14px;
+                                width: 120px;
+                                text-align: center;
+                                margin-right: 30px;
+                            }
+                            .cancel-btn {
+                                line-height: 30px;
+                                border: solid 1px #E7E7EB;
+                            }
+                            .save-btn {
+                                color: #fff;
+                                line-height: 32px;
+                                background-color: @orange-color;
+                            }
+                        }
                     }
                 }
             }
