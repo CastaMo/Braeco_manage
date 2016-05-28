@@ -2,7 +2,7 @@ page-manage = let
 	main = null
 	$("\#Discount-sub-menu").addClass "choose"
 	$("\#Member-sub-menu").addClass "choose"
-	$("\#Member-nav li\#Basic").addClass "choose"
+	$("\#Member-nav li\#Level").addClass "choose"
 	_init-depend-module = !->
 		main := require "./mainManage.js"
 

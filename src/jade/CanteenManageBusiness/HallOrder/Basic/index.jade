@@ -44,23 +44,31 @@ block content
 					p 修改业务信息
 				#modifyTime
 					#orderDate
-						span(id = "od") 接单日期
+						.od
+							span 接单日期
+						.weekday.true
 							input(type = "checkbox" checked = "checked")
 							span 周一
+						.weekday.true
 							input(type = "checkbox" checked = "checked")
 							span 周二
+						.weekday.true
 							input(type = "checkbox" checked = "checked")
 							span 周三
+						.weekday.true
 							input(type = "checkbox" checked = "checked")
 							span 周四
+						.weekday.true
 							input(type = "checkbox" checked = "checked")
 							span 周五
+						.weekday.true
 							input(type = "checkbox" checked = "checked")
 							span 周六
+						.weekday.true
 							input(type = "checkbox" checked = "checked")
 							span 周日
 					#orderTimer
-						span(id = "ss") 接单时间
+						span#ss 接单时间
 							#timerAll
 								#timerDiv
 									#timer
@@ -79,15 +87,21 @@ block content
 							.modifyAddTime.btn
 								p +添加时段
 				#modifyPay
-					p 支付渠道
-						input(type = "checkbox" checked = "checked")
-						span 现金支付
-						input(type = "checkbox" checked = "checked")
-						span 支付宝
-						input(type = "checkbox" checked = "checked")
-						span 微信支付
-						input(type = "checkbox" checked = "checked")
-						span 百度钱包
+					.paymentWay
+						.payWay
+							span 支付渠道
+						.payment.true
+							input(type = "checkbox" checked = "checked")
+							span 现金支付
+						.payment.true
+							input(type = "checkbox" checked = "checked")
+							span 支付宝
+						.payment.true
+							input(type = "checkbox" checked = "checked")
+							span 微信支付
+						.payment.true
+							input(type = "checkbox" checked = "checked")
+							span 百度钱包
 				#modifyMeal
 					p 适用餐品
 						select(id = "selNum")
