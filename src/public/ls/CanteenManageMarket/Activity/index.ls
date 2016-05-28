@@ -1,4 +1,5 @@
-let
+# 'use strict';
+
+let win = window
 	Activity = require './activity.js'
-	activity = new Activity
-	activity.action!
+	win.Activity = new Activity

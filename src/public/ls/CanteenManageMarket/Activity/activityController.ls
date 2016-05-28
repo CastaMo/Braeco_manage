@@ -1,9 +1,10 @@
+# 'use strict';
+
 # ActivityController类定义finite-state-machine，进行数据绑定和相应的DOM操作
 
 class Controller
-  @name = 'ActivityController'
-
-  (controller)->
+  ->
+    @action!
 
   action: ->
     console.log 'This is controller action!'
