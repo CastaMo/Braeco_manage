@@ -27,8 +27,7 @@ class View
   create-transition: (from-states, to-states, conditions)!->
     for condition in conditions
       [hook, event] = condition.split ' '
-      console.log hook, event
-      console.log $(hook)
+
       $(hook)[event] !~>
         console.log @views-dom
         for from-state in from-states
