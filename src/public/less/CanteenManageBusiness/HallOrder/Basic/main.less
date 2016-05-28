@@ -1,5 +1,8 @@
 @import "../main";
 @import "../../../common/common";
+@checkbox-false-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQAgMAAACNX3zMAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAJUExURf////Pz9eTk6GlTKiwAAAAXSURBVAjXY8hatWqVA0MAAwMjtUmwyQB+eA0/S/QgYAAAAABJRU5ErkJggg==";
+@checkbox-true-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQBAMAAAACH4lsAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAVUExURcnJzcjHzP///8zL0Pb29t/e4dHR1S1JgdkAAAABdFJOU3+AXLTLAAAAQklEQVQI12NgFIQABgbcLDMYS9glEcoyUTGEsISdnEGyooEgIRArSRUkBBZTCgEKgfUGKTlDzRMFCUHMCyZkL5AFAK/LC9Jxd5N6AAAAAElFTkSuQmCC";
+
 #business {
     #selectBusiness {
         margin: 30px 0 0 30px;
@@ -178,6 +181,27 @@
             background-color: #F4F5F9;
         }
         #modifyTime {
+            #orderDate {
+                clear: left;
+                .weekday {
+                    margin-top: 30px;
+                    margin-bottom: 20px;
+                    float: left;
+                    background-repeat: no-repeat;
+                    background-position: 29px 4px;
+                    &.true {
+                        background-image: url(@checkbox-true-icon-url);
+                    }
+                    &.false {
+                        background-image: url(@checkbox-false-icon-url);
+                    }
+                }
+                input {
+                    height: 20px;
+                    width: 20px;
+                    opacity: 0;
+                }
+            }
             input {
                 margin: 0 8px 0 28px;
                 border: 1px solid #E7E7EB;
@@ -186,8 +210,9 @@
             margin: 0;
             border: 1px solid #E7E7EB;
             width: 709px;
-            #od {
-                margin: 30px 0 0 30px;
+            .od {
+                float: left;
+                margin: 30px 0 20px 30px;
                 display: block;
             }
             border-top-width: 0;
@@ -257,8 +282,32 @@
             border-top-width: 0;
             width: 709px;
             height: 74px;
-            input {
-                margin: 0 8px 0 30px;
+            .paymentWay {
+                clear: left;
+                .payment {
+                    margin-top: 30px;
+                    margin-bottom: 20px;
+                    float: left;
+                    background-repeat: no-repeat;
+                    background-position: 29px 4px;
+                    &.true {
+                        background-image: url(@checkbox-true-icon-url);
+                    }
+                    &.false {
+                        background-image: url(@checkbox-false-icon-url);
+                    }
+                }
+                input {
+                    margin: 0 8px 0 28px;
+                    height: 20px;
+                    width: 20px;
+                    opacity: 0;
+                }
+            }
+            .payWay {
+                float: left;
+                margin: 30px 0 20px 30px;
+                display: block;
             }
             p {
                 padding: 30px 0 0 30px;

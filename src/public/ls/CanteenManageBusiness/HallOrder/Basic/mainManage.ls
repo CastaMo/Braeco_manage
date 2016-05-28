@@ -5,7 +5,6 @@ main-manage = let
 	dayAry = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
 	test = 0
 	payAry = ["现金支付", "支付宝", "微信支付", "百度钱包"]
-	
 	_modifyForBus-dom = $ "\#modifyForBus"
 	_add-dom = $ "\.modifyAddTime"
 	_del-dom = $ "\.modifyDelTime"
@@ -14,6 +13,8 @@ main-manage = let
 	_finish-dom = $ "\.finBtn"
 	_run-dom = $ "\.run-btn"
 	_stop-dom = $ "\.stop-btn"
+	_weekday-dom = $ "\.weekday"
+	_payment-dom = $ "\.payment"
 
 	_init-all-event = !->
 		_modifyForBus-dom.click !->
@@ -58,6 +59,21 @@ main-manage = let
 			document.getElementById("stopMes").innerHTML = '业务已停用'
 			document.getElementById("previewBusiness").style.color = '#E7E7EB'
 			document.getElementById("previewBusiness").style.border-color = '#E7E7EB'
+		_weekday-dom.click !->
+			if $(this).hasClass("true")
+				$(this).removeClass "true"
+				$(this).addClass "false"
+			else if $(this).hasClass("false")
+				$(this).removeClass "false"
+				$(this).addClass "true"
+		_payment-dom.click !->
+			if $(this).hasClass("true")
+				$(this).removeClass "true"
+				$(this).addClass "false"
+			else if $(this).hasClass("false")
+				$(this).removeClass "false"
+				$(this).addClass "true"
+
 	_show-form-value = ->
 		x = document.getElementById("myForm")
 		pay = ''

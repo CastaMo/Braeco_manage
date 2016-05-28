@@ -10,7 +10,9 @@ let win = window, doc = document
 		_init-callback["success"]?(result)
 
 	_init-all-module = (result)!->
-		page = require "./pageManage.js";			page.initial!
-		main = require "./mainManage.js";		 	main.initial!
+		page		= require "./pageManage.js";			page.initial!
+		main		= require "./mainManage.js";		 	main.initial!
+		modify		= require "./modifyManage.js";			modify.initial!
+		recharge	= require "./rechargeManage.js";		recharge.initial!
 
 	_main-init!
