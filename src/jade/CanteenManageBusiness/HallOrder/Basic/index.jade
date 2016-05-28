@@ -44,7 +44,7 @@ block content
 					p 修改业务信息
 				#modifyTime
 					#orderDate
-						p 接单日期
+						span(id = "od") 接单日期
 							input(type = "checkbox" checked = "checked")
 							span 周一
 							input(type = "checkbox" checked = "checked")
@@ -60,7 +60,7 @@ block content
 							input(type = "checkbox" checked = "checked")
 							span 周日
 					#orderTimer
-						p 接单时间
+						span(id = "ss") 接单时间
 							#timerAll
 								#timerDiv
 									#timer
@@ -75,9 +75,9 @@ block content
 										span 至
 										input(type = "time")
 									.modifyDelTime.btn
-										.delete-imgs
-					.modifyAddTime.btn
-						p +添加时段
+										.delete-img
+							.modifyAddTime.btn
+								p +添加时段
 				#modifyPay
 					p 支付渠道
 						input(type = "checkbox" checked = "checked")
