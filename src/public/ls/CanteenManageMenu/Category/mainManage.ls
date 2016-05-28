@@ -42,7 +42,7 @@ main-manage = let
 					data 			:	 {
 						JSON 		:	JSON.stringify({id: @id})
 					}
-					callback		:	(result)~> @remove-self!
+					success			:	(result)~> @remove-self!
 					always 			:	!-> page.cover-page "exit"
 				}
 			(@dom.find ".top").click !~> 
@@ -53,7 +53,7 @@ main-manage = let
 						data 		:	{
 							id 		:	@id
 						}
-						callback 	:	(result)~> @top-self!
+						success 	:	(result)~> @top-self!
 						always 		:	!-> page.cover-page "exit"
 					}
 			(@dom.find ".edit").click !~>

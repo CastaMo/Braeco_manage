@@ -41,7 +41,7 @@ move-manage = let
 			data 		:		{
 				JSON 	:		_get-upload-JSON-for-copy current-dishes-id, new-category-id
 			}
-			callback 	: 		(result)!-> _success-callback!
+			success 	: 		(result)!-> _success-callback!
 			always 		:		!-> page.cover-page "exit"
 		}
 

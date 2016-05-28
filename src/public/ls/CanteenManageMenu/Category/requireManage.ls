@@ -86,10 +86,10 @@ require-manage = let
 	#	@{param}	result_:	返回值，即ResponseText
 	#	@{param}	callback:	当返回的message为success时执行的回调函数
 	###
-	_normal-handle = (name, result_, callback)->
+	_normal-handle = (name, result_, success)->
 		result = get-JSON result_
 		message = result.message
-		if message is "success" then callback?(result)
+		if message is "success" then success?(result)
 		else if message then _require-fail-callback[name][message]?!
 		else alert "系统错误"
 
@@ -135,7 +135,7 @@ require-manage = let
 			ajax-object.data = _get-require-data-str[name]? options.data
 			_correct-URL[name]? ajax-object, options.data
 			_set-header[name]? ajax-object, options.data
-			ajax-object.success = (result_)-> _normal-handle name, result_, options.callback
+			ajax-object.success = (result_)-> _normal-handle name, result_, options.success
 			ajax-object.always = options.always
 			ajax ajax-object
 

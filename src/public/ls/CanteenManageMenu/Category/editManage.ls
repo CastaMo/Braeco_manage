@@ -66,7 +66,7 @@ edit-manage = let
 						key 	:		btoa(_data.key).replace("+", "-").replace("/", "_")
 						url 	:		_base64-str
 					}
-					callback 	:		(result)->
+					success 	:		(result)->
 						_src 		:= "http://static.brae.co/#{_data.key}"
 						_base64-str := ""
 						_data 		:= {}
@@ -82,7 +82,7 @@ edit-manage = let
 				data 		:		{
 					id 		:		_current-category.id
 				}
-				callback 	:		(result)->
+				success 	:		(result)->
 					_data.token 	= 		result.token
 					_data.key 		= 		result.key
 					console.log "token ready"
@@ -126,7 +126,7 @@ edit-manage = let
 			data 		:		{
 				JSON 	:		JSON.stringify({name: _name, id: _current-category.id})
 			}
-			callback 	: 		(result)!-> _callback!
+			success 	: 		(result)!-> _callback!
 			always 		:		!-> page.cover-page "exit"
 		}
 
