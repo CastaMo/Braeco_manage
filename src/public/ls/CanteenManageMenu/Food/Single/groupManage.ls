@@ -16,7 +16,6 @@ group-manage = let
 
 	_init-all-group = (_get-group-JSON)!->
 		all-groups = get-JSON _get-group-JSON!
-		console.log all-groups
 		for group in all-groups
 			if group.type is "property" then property = new Property {
 				id 			:		group.id
@@ -24,7 +23,6 @@ group-manage = let
 				content 	: 		group.content
 				belong-to 	:		group.belong_to
 			}
-		console.log _groups
 
 	class Group
 
