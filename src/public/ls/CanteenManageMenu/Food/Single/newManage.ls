@@ -229,7 +229,7 @@ new-manange = let
 						key 	:		btoa(_data.key).replace("+", "-").replace("/", "_")
 						url 	:		_base64-str
 					}
-					callback 	:		(result)->
+					success 	:		(result)->
 						_src 		:= "http://static.brae.co/#{_data.key}"
 						_base64-str := ""
 						_data 		:= {}
@@ -245,7 +245,7 @@ new-manange = let
 				data 		:		{
 					id 		:		_new-id
 				}
-				callback 	:		(result)->
+				success 	:		(result)->
 					_data.token 	= 		result.token
 					_data.key 		= 		result.key
 					console.log "token ready"
@@ -276,7 +276,7 @@ new-manange = let
 				category-id 	:	_current-category-id
 				JSON 			: 	_get-upload-JSON-for-add!
 			}
-			callback 			: 	(result)!-> _new-id := result.id; _callback!
+			success 			: 	(result)!-> _new-id := result.id; _callback!
 			always 				:	!-> page.cover-page "exit"
 		}
 

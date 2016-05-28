@@ -253,7 +253,7 @@ edit-manange = let
 						key 	:		btoa(_data.key).replace("+", "-").replace("/", "_")
 						url 	:		_base64-str
 					}
-					callback 	:		(result)->
+					success 	:		(result)->
 						_src 		:= "http://static.brae.co/#{_data.key}"
 						_base64-str := ""
 						_data 		:= {}
@@ -269,7 +269,7 @@ edit-manange = let
 				data 		:		{
 					id 		:		_current-dish.id
 				}
-				callback 	:		(result)->
+				success 	:		(result)->
 					_data.token 	= 		result.token
 					_data.key 		= 		result.key
 					console.log "token ready"
@@ -300,7 +300,7 @@ edit-manange = let
 				dish-id 		:	_current-dish.id
 				JSON 			: 	_get-upload-JSON-for-edit!
 			}
-			callback 			: 	(result)!-> _callback!
+			success 			: 	(result)!-> _callback!
 			always 				:	!-> page.cover-page "exit"
 		}
 

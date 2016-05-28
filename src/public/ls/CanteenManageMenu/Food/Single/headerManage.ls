@@ -46,7 +46,7 @@ header-manage = let
 				data 		:		{
 					JSON 	: 		JSON.stringify(main.get-current-dishes-id!)
 				}
-				callback 	:		(result)!-> main.top-for-current-choose-dishes!
+				success 	:		(result)!-> main.top-for-current-choose-dishes!
 				always 		:		!-> page.cover-page "exit"
 			}
 		"copy" 			:		!-> page.cover-page "copy"
@@ -59,7 +59,7 @@ header-manage = let
 					JSON 	:		JSON.stringify(main.get-current-dishes-id!)
 					flag 	: 		flag
 				}
-				callback 	:		(result)!~> main.change-able-for-current-choose-dishes-by-given !@able
+				success 	:		(result)!~> main.change-able-for-current-choose-dishes-by-given !@able
 				always 		:		!-> page.cover-page "exit"
 			}
 		"remove" 		:		!-> if confirm "确定要删除餐品吗?(此操作无法恢复)"
@@ -68,7 +68,7 @@ header-manage = let
 				data 		: 		{
 					JSON 	:		JSON.stringify(main.get-current-dishes-id!)
 				}
-				callback 	: 		(result)!-> main.remove-for-current-choose-dishes!
+				success 	: 		(result)!-> main.remove-for-current-choose-dishes!
 				always 		:		!-> page.cover-page "exit"
 			}
 	}
