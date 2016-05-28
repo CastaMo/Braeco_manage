@@ -40,15 +40,36 @@ header-manage = let
 		"new" 			:		!-> main.toggle-to-new!
 		"edit" 			:		!-> main.toggle-to-edit-for-current-choose-dish!
 		"move" 			:		!-> page.cover-page "move"
-		"top" 			:		!-> main.top-for-current-choose-dishes!
+		"top" 			:		!->
+			page.cover-page "loading"
+			require_.get("top").require {
+				data 		:		{
+					JSON 	: 		JSON.stringify(main.get-current-dishes-id!)
+				}
+				callback 	:		(result)!-> main.top-for-current-choose-dishes!
+				always 		:		!-> page.cover-page "exit"
+			}
 		"copy" 			:		!-> page.cover-page "copy"
-		"show-or-hide" 	:		!-> main.change-able-for-current-choose-dishes-by-given !@able; console.log @able
+		"show-or-hide" 	:		!->
+			if @able then flag = 0
+			else flag = 1
+			page.cover-page "loading"
+			require_.get("able").require {
+				data 		:		{
+					JSON 	:		JSON.stringify(main.get-current-dishes-id!)
+					flag 	: 		flag
+				}
+				callback 	:		(result)!~> main.change-able-for-current-choose-dishes-by-given !@able
+				always 		:		!-> page.cover-page "exit"
+			}
 		"remove" 		:		!-> if confirm "确定要删除餐品吗?(此操作无法恢复)"
+			page.cover-page "loading"
 			require_.get("remove").require {
 				data 		: 		{
 					JSON 	:		JSON.stringify(main.get-current-dishes-id!)
 				}
-				callback 	: 		(result)-> main.remove-for-current-choose-dishes!
+				callback 	: 		(result)!-> main.remove-for-current-choose-dishes!
+				always 		:		!-> page.cover-page "exit"
 			}
 	}
 

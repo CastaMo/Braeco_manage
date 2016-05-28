@@ -1,79 +1,21 @@
-#category
-	.category-wrapper
-		#category-main.c-block
-			.category-new-field
-				#new-btn.btn
+#category-main.c-block
+	.category-new-field
+		#new-btn.btn
+			.new-btn-wrapper
+				.new-btn-contaier
+					.new-icon
 					p 新建品类
-				.clear
-			.category-all-field
-				#category-table
-					#t-header-field
-						.t-header
-							.t-first
-								p 品类名
-							.t-second
-								p 图片
-							.t-third
-								p 操作
-							.clear
-					#t-body-field
-		#category-new.c-block
-			#new-table.single-table
-				#t-header-field
-					.t-header
-						.t-content
-							p 新建品类
-				#t-body-field
-					.t-body
-						.t-content
-							.name-field
-								p 品类名
-								.input-field
-									input(name='new-name', id='new-name' type='text' maxlength='21')
-								.clear
-							.pic-field
-								p 图片
-								.input-field
-									label(for='new-pic')
-										.img-field
-											.img.default-category-image
-									input(name='new-pic', id='new-pic' type='file' class='hide')
-								.clear
-				#t-bottom-field
-					.t-bottom
-						.t-content
-							.cancel-btn.btn
-								p 取消
-							.save-btn.btn
-								p 保存
-							.clear
-		#category-edit.c-block
-			#edit-table.single-table
-				#t-header-field
-					.t-header
-						.t-content
-							p 修改品类
-				#t-body-field
-					.t-body
-						.t-content
-							.name-field
-								p 品类名
-								.input-field
-									input(name='edit-name', id='edit-name' type='text' maxlength='21')
-								.clear
-							.pic-field
-								p 图片
-								.input-field
-									label(for='edit-pic')
-										.img-field
-											.img.default-category-image
-									input(name='edit-pic', id='edit-pic' type='file' class='hide')
-								.clear
-				#t-bottom-field
-					.t-bottom
-						.t-content
-							.cancel-btn.btn
-								p 取消
-							.save-btn.btn
-								p 保存
-							.clear
+					.clear
+		.clear
+	.category-all-field
+		#category-table
+			#t-header-field
+				.t-header
+					.t-first
+						p 品类名
+					.t-second
+						p 图片
+					.t-third
+						p 操作
+					.clear
+			#t-body-field

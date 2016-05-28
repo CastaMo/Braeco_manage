@@ -1,7 +1,4 @@
-extends ../../../layout
-
-block mainHead
-	p.title 活动发布
+extends ../index
 
 block head
 	script(src="/Manage/Menu/Category/Data" type="text/javascript" async='async')
@@ -9,7 +6,8 @@ block head
 	title Braeco
 	block css
 
+
 '''这里是主体'''
 block content
-	//- include activityMain
+	include promotionSingle
 
