@@ -107,9 +107,9 @@ main-manage = let
 		page := require "./pageManage.js"
 
 	initial: !->
-		# _save-form-value!
-		# _show-form-value!
-		# _init-all-event!
-		# _init-depend-module!
+		_save-form-value!
+		_show-form-value!
+		_init-all-event!
+		_init-depend-module!
 
 module.exports = main-manage
