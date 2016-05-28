@@ -63,7 +63,7 @@ module.exports = function(passport) {
 
 	router.get('/Manage/Menu/Food/Data', function(req, res) {
 		setTimeout(function() {
-			res.send("var allData = '"+'{"message":"success","data":{"categories":[{"dishes":[{"id":545,"name":"红茶","name2":"milk tea","tag":null,"like":0,"dc_type":"sale","dc":1,"groups":[1,6],"pic":null,"detail":"呵呵呵","able":true,"default_price":12},{"id":544,"name":"奶茶","name2":"milk tea","tag":null,"like":0,"dc_type":"none","dc":null,"groups":[5],"pic":null,"detail":"呵呵呵","able":true,"default_price":12},{"id":539,"name":"咖啡","name2":"coffee","tag":"测试","like":0,"dc_type":"none","dc":null,"groups":[5,1],"pic":null,"detail":"啦啦啦啦啦啦","able":true,"default_price":10}],"id":236,"name":"品类一","pic":"http://static.brae.co/images/category/default.0.jpg"}],"groups":[{"id":1,"name":"温度","belong_to":[539,545],"type":"property","content":[{"name":"冷","price":0},{"name":"冰","price":1.5},{"name":"热","price":2}]},{"id":3,"name":"早餐饮品","belong_to":[],"type":"discount_combo","require":1,"discount":5000,"content":[]},{"id":5,"name":"午餐饮品","belong_to":[539,544],"type":"static_combo","require":1,"price":40,"content":[544,539]},{"id":6,"name":"包装","belong_to":[545],"type":"property","content":[{"name":"堂食","price":0},{"name":"外带","price":1}]}]}}'+"';"+
+			res.send("var allData = '"+'{"message":"success","data":{"categories":[{"dishes":[{"id":545,"name":"\u7ea2\u8336","name2":"milk tea","tag":null,"like":0,"dc_type":"sale","dc":1,"groups":[1,6],"pic":null,"detail":"\u5475\u5475\u5475","able":true,"default_price":12},{"id":558,"name":"sadsad","name2":"dadqw","tag":"\u5916\u5e26","like":0,"dc_type":"limit","dc":12,"groups":[1,6],"pic":"http:\/\/static.brae.co\/images\/dish\/cebc23ztvsqtwb7nv449b4inwuc8ex2q","detail":"\u554a\u662f\u7684\u7eef\u95fb\u554a\u5e08\u5085\u989d\u6211\u53d1","able":true,"default_price":12},{"id":561,"name":"\u963f\u65af\u8fbe","name2":"12","tag":"\u662f\u7684","like":0,"dc_type":"sale","dc":2,"groups":[1,6],"pic":null,"detail":"\u5b89\u9632","able":true,"default_price":12}],"id":236,"name":"\u6d4b\u8bd51","pic":"http:\/\/static.brae.co\/images\/category\/gaddhhtxi80tnnabfnl9fzxby7w6s299"},{"dishes":[{"id":559,"name":"\u5496\u5561","name2":"coffee","tag":"\u6d4b\u8bd5","like":0,"dc_type":"none","dc":null,"groups":[],"pic":null,"detail":"\u5566\u5566\u5566\u5566\u5566\u5566","able":true,"default_price":10},{"id":560,"name":"\u5976\u8336","name2":"milk tea","tag":null,"like":0,"dc_type":"none","dc":null,"groups":[],"pic":null,"detail":"\u5475\u5475\u5475","able":true,"default_price":12}],"id":264,"name":"asd","pic":"http:\/\/static.brae.co\/images\/category\/2z4h1xfwspa57r1xwx8vq07mrcbsjvwm"}],"groups":[{"id":1,"name":"\u6e29\u5ea6","belong_to":[545,558,561],"type":"property","content":[{"name":"\u51b7","price":0},{"name":"\u51b0","price":1.5},{"name":"\u70ed","price":2}]},{"id":3,"name":"\u65e9\u9910\u996e\u54c1","belong_to":[],"type":"discount_combo","require":1,"discount":5000,"content":[]},{"id":5,"name":"\u5348\u9910\u996e\u54c1","belong_to":[],"type":"static_combo","require":1,"price":20,"content":[]},{"id":6,"name":"\u5305\u88c5","belong_to":[545,558,561],"type":"property","content":[{"name":"\u5802\u98df","price":0},{"name":"\u5916\u5e26","price":1}]}]}}'+"';"+
 			"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
 		}, 0);
 	});
@@ -128,6 +128,47 @@ module.exports = function(passport) {
 	        message 	: 		"success"
 	    });
 	});	
+
+	router.post('/Dish/Copy', function(req, res) {
+		var _getNewDishIdMap = function(currentDishId) {
+			var newDishIdMap = {};
+			for (var id in currentDishId) {
+				if (currentDishId.hasOwnProperty(id)) {
+					newDishIdMap[id] = Number(Math.floor(100000 + Math.random() * 100000));
+				}
+			}
+			return newDishIdMap;
+		}
+		var newDishIdMap = _getNewDishIdMap(req.body);
+		res.json({
+			message 	: 		"success",
+			result 		: 		newDishIdMap
+		});
+	});
+
+	router.post('/Dish/Update/Top', function(req, res) {
+		res.json({
+			message 	: 		"success"
+		});
+	});
+
+	router.post('/Dish/Update/Category', function(req, res) {
+		res.json({
+			message 	: 		"success"
+		});
+	});
+
+	router.post('/Dish/Update/All/:dishId', function(req, res) {
+		res.json({
+			message 	: 		"success"
+		});
+	});
+
+	router.post('/Dish/Update/Able/:flag', function(req, res) {
+		res.json({
+			message 	: 		"success"
+		});
+	});
 
 	router.post('/pic/upload/token/dishupdate/:dishId', function(req, res) {
 		res.json({

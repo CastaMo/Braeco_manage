@@ -197,7 +197,7 @@ main-manage = let
 
 		copy-dish: (old-dish-id, new-category-id, new-dish-id)!->
 			dish = _dishes[@id][old-dish-id]
-			temp = dish.get-copy-for-options!; #temp.id = new-dish-id
+			temp = dish.get-copy-for-options!; temp.id = new-dish-id
 			_categories[new-category-id].add-dish temp
 
 		edit-dish: (dish-id, options)!->
@@ -314,7 +314,8 @@ main-manage = let
 				if @pic then @pic-dom.css {"background-image":"url('#{@pic}')"} else @pic-dom.css {"background-image":""}
 				if not @able then @cover-dom.fade-in 200
 				else @cover-dom.fade-out 200
-				@c-name-dom.html @c-name; @e-name-dom.html @e-name
+				@c-name-dom.html @c-name; @c-name-dom.attr {"title": @c-name}
+				@e-name-dom.html @e-name; @e-name-dom.attr {"title": @e-name}
 				@default-price-dom.html @default-price
 				_update-property-dom @
 				_update-dc-dom @
@@ -399,6 +400,8 @@ main-manage = let
 
 	get-current-dishes-id: -> return _current-dish-id
 
+	get-category-id-by-name: (category-name)-> return _map-category-name-to-id[category-name]
+
 
 	###
 	#	改变当前选中的dishes的able，判断是否显示到webAPP上
@@ -448,12 +451,12 @@ main-manage = let
 	#	复制当前选中的dishes到指定的品类中
 	#	@param 		{String} 		dest-category-name: 目标品类名
 	###
-	copy-for-current-choose-dishes-by-given: (dest-category-name, new-dish-id)!->
+	copy-for-current-choose-dishes-by-given: (dest-category-name, new-dish-id-map)!->
 		if not _current-category-id then alert "非法操作!"; return
 		dest-category-id = _map-category-name-to-id[dest-category-name]
 		_current-category = _categories[_current-category-id]
-		for old-id, i in _current-dish-id
-			_current-category.copy-dish old-id, dest-category-id, new-dish-id[i]
+		for old-id in _current-dish-id
+			_current-category.copy-dish old-id, dest-category-id, new-dish-id-map[old-id]
 		_general-callback!
 
 	###

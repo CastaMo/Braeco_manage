@@ -1,8 +1,10 @@
-main = page = group = null
+main = page = group = require_ = null
 edit-manange = let
 
-	[		getObjectURL, 		deep-copy, 			getStrAfterFilter] = 
-		[	util.getObjectURL, 	util.deep-copy, 	util.getStrAfterFilter]
+	[		getObjectURL, 		deep-copy, 			getStrAfterFilter,
+			converImgTobase64] = 
+		[	util.getObjectURL, 	util.deep-copy, 	util.getStrAfterFilter,
+			util.converImgTobase64]
 
 	_edit-dom  				= $ "\#food-single-edit"
 
@@ -121,7 +123,7 @@ edit-manange = let
 
 		_c-name  			:= getStrAfterFilter _c-name-dom.val!
 		_e-name 			:= getStrAfterFilter _e-name-dom.val!
-		_default-price 		:= parse-int _default-price-dom.val!
+		_default-price 		:= Number _default-price-dom.val!
 		_remark 			:= getStrAfterFilter _remark-dom.val!
 		_intro 				:= getStrAfterFilter _intro-dom.val!
 		_dc-type 			:= getStrAfterFilter _dc-type-select-dom.val!
@@ -188,6 +190,19 @@ edit-manange = let
 		page.toggle-page "main"
 		_reset!
 
+	_get-upload-JSON-for-edit = ->
+		_read-from-input!
+		return JSON.stringify {
+			dc_type 	:		_dc-type
+			dc 			:		_dc
+			price 		:		_default-price
+			name 		:		_c-name
+			name2 		:		_e-name
+			tag 		:		_remark
+			detail 		:		_intro
+			groups 		:		_groups	
+		}
+
 	###************ operation end **********###
 
 
@@ -230,6 +245,7 @@ edit-manange = let
 		_check-is-already-and-upload = !->
 			if _base64-str and _data.token and _data.key
 				#步骤③
+				page.cover-page "loading"
 				require_.get("picUpload").require {
 					data 		:		{
 						fsize 	:		-1
@@ -243,19 +259,23 @@ edit-manange = let
 						_data 		:= {}
 						console.log "success"
 						callback?!
+					always 		:		!-> page.cover-page "exit"
 				}
 
 		#步骤②
-		if _src then require_.get("picUploadPre").require {
-			data 		:		{
-				id 		:		_new-id
+		if _src
+			page.cover-page "loading"
+			require_.get("picUploadPre").require {
+				data 		:		{
+					id 		:		_current-dish.id
+				}
+				callback 	:		(result)->
+					_data.token 	= 		result.token
+					_data.key 		= 		result.key
+					console.log "token ready"
+					_check-is-already-and-upload!
+				always 		:		!-> page.cover-page "exit"
 			}
-			callback 	:		(result)->
-				_data.token 	= 		result.token
-				_data.key 		= 		result.key
-				console.log "token ready"
-				_check-is-already-and-upload!
-		}
 
 		#步骤①
 		if _src then converImgTobase64 _src, (data-URL)->
@@ -269,7 +289,20 @@ edit-manange = let
 		page.toggle-page "main"
 
 	_save-btn-click-event = !->
-		if _check-is-valid! then _success-callback!
+		if not _check-is-valid! then return
+		if _upload-flag
+			_callback = !-> _upload-pic-event !->
+				_success-callback!
+		else _callback = !-> _success-callback!
+		page.cover-page "loading"
+		require_.get("edit").require {
+			data 				:		{
+				dish-id 		:	_current-dish.id
+				JSON 			: 	_get-upload-JSON-for-edit!
+			}
+			callback 			: 	(result)!-> _callback!
+			always 				:	!-> page.cover-page "exit"
+		}
 
 
 	###************ event end **********###
@@ -288,9 +321,10 @@ edit-manange = let
 
 
 	_init-depend-module = !->
-		main  	:= require "./mainManage.js"
-		page 	:= require "./pageManage.js"
-		group 	:= require "./groupManage.js"
+		main  		:= require "./mainManage.js"
+		page 		:= require "./pageManage.js"
+		group 		:= require "./groupManage.js"
+		require_ 	:= require "./requireManage.js"
 
 
 	initial: !->
@@ -299,6 +333,7 @@ edit-manange = let
 		_init-depend-module!
 
 	toggle-callback: (dish, current-category-id)!->
+		_reset!
 		_current-dish := dish;
 		_read-from-current-dish!
 
