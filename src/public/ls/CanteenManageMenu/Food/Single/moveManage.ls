@@ -36,11 +36,13 @@ move-manage = let
 		_category-name := _select-dom.val!
 		if main.is-equal-for-category _category-name then alert "请选择其他品类"; return
 		current-dishes-id = main.get-current-dishes-id!; new-category-id = main.get-category-id-by-name _category-name
+		page.cover-page "loading"
 		require_.get("move").require {
 			data 		:		{
 				JSON 	:		_get-upload-JSON-for-copy current-dishes-id, new-category-id
 			}
 			callback 	: 		(result)!-> _success-callback!
+			always 		:		!-> page.cover-page "exit"
 		}
 
 	initial: !->

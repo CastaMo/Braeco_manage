@@ -35,11 +35,13 @@ copy-manage = let
 	_confirm-btn-click-event = !->
 		_category-name := _select-dom.val!
 		current-dishes-id = main.get-current-dishes-id!; new-category-id = main.get-category-id-by-name _category-name
+		page.cover-page "loading"
 		require_.get("copy").require {
 			data 	 	: 		{
 				JSON 	:		_get-upload-JSON-for-copy current-dishes-id, new-category-id
 			}
 			callback 	: 		(result)!-> _success-callback result.result
+			always 		:		!-> page.cover-page "exit"
 		}
 
 	initial: !->

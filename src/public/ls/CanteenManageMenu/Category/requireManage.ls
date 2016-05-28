@@ -136,6 +136,7 @@ require-manage = let
 			_correct-URL[name]? ajax-object, options.data
 			_set-header[name]? ajax-object, options.data
 			ajax-object.success = (result_)-> _normal-handle name, result_, options.callback
+			ajax-object.always = options.always
 			ajax ajax-object
 
 

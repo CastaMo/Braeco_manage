@@ -13,8 +13,10 @@ page-manage = let
 	_move-dom 			= _full-cover-dom.find ".move-field"
 	_copy-dom 			= _full-cover-dom.find ".copy-field"
 	_property-dom 		= _full-cover-dom.find ".property-field"
-	_all-cover-dom 		= [_move-dom, _copy-dom, _property-dom]
+	_loading-dom 		= _full-cover-dom.find ".loading-field"
+	_all-cover-dom 		= [_move-dom, _copy-dom, _property-dom, _loading-dom]
 	
+	_cover-state = 0
 
 	_unshow-all-toggle-dom-except-given = (dom_)->
 		for dom in _all-toggle-dom when dom isnt dom_
@@ -43,22 +45,32 @@ page-manage = let
 	_cover-page-callback = {
 		"move" 		:		let
 			->
+				_cover-state := 1
 				_unshow-all-cover-dom!
 				_move-dom.remove-class "hide"
 				_full-cover-dom.fade-in 100
 		"copy" 		:		let
 			->
+				_cover-state := 2
 				_unshow-all-cover-dom!
 				_copy-dom.remove-class "hide"
 				_full-cover-dom.fade-in 100
 		"property" : 		let
 			->
+				_cover-state := 3
 				_unshow-all-cover-dom!
 				_property-dom.remove-class "hide"
 				_full-cover-dom.fade-in 100
+		"loading" 	: 		let
+			->
+				_cover-state := 4
+				_unshow-all-cover-dom!
+				_loading-dom.remove-class "hide"
+				_full-cover-dom.fade-in 100
 		"exit" 		:		let
 			->
-				_full-cover-dom.fade-out 100, !-> _unshow-all-cover-dom!
+				_cover-state := 0
+				_full-cover-dom.fade-out 100, !-> if _cover-state is 0 then _unshow-all-cover-dom!
 
 	}
 

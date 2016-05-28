@@ -135,12 +135,12 @@ require-manage = let
 	###
 	_require-handle = (name, config)->
 		return (options)->
-			console.log options
 			ajax-object = _get-normal-ajax-object config
 			ajax-object.data = _get-require-data-str[name]? options.data
 			_correct-URL[name]? ajax-object, options.data
 			_set-header[name]? ajax-object, options.data
 			ajax-object.success = (result_)-> _normal-handle name, result_, options.callback
+			ajax-object.always = options.always
 			ajax ajax-object
 
 
