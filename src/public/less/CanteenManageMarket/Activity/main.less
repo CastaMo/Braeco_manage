@@ -1,1 +1,365 @@
 @import "../../common/common";
+@import "./base64.less";
+@activity-border-color: rgba(231, 231, 235, 1);
+@form-label-width: 90px;
+
+#category-main {
+  input, textarea {
+    font-size: 16px;
+  }
+  input:focus, textarea:focus {
+    outline-width: 0;
+  }
+
+  .braeco-activity-wrapper {
+    margin-left: 32px;
+    margin-right: 31px;
+    margin-top: 31px;
+    height: 779px;
+    vertical-align: center;
+
+    .left-menu-wrapper {
+      float: left;
+      width: 200px;
+      border: 1px solid @activity-border-color;
+      margin-right: 31px;
+
+      .upload-canteen-photo {
+        height: 107px;
+        border-bottom: 1px solid @activity-border-color;
+        line-height: 107px;
+        text-align: center;
+        color: rgba(161, 161, 161, 1);
+        transition: all 0.5s;
+
+        span {
+          display: inline-block;
+          width: 100%;
+          height: 100%;
+        }
+
+        #canteen-photo {
+          display: none;
+        }
+
+        &:hover, label:hover {
+          background-color: rgba(244, 245, 249, 1);
+          cursor: pointer;
+          color: black;
+          transition: all 0.5s;
+        }
+      }
+
+      .activity-items {
+        .promotion-activity, .theme-activity {
+          height: 30px;
+          background-color: rgba(244, 245, 249, 1);
+          border-bottom: 1px solid @activity-border-color;
+
+          p {
+            padding-left: 10px;
+            padding-bottom: 7px;
+          }
+        }
+        ul {
+          max-height: 244px;
+          overflow: scroll;
+
+          li {
+            height: 60px;
+            border-bottom: 1px solid @activity-border-color;
+            background-image: url(@right-arrow-url);
+            background-size: 6%;
+            background-repeat: no-repeat;
+            background-position: 180px 22px;
+            transition: all 0.5s;
+
+            .content {
+              padding: 7px;
+              .pic, .info {
+                display: inline-block;
+                float: left;
+              }
+              .pic {
+                width: 48px;
+                height: 46px;
+                margin-right: 7px;
+                border: 1px solid @activity-border-color;
+              }
+              .title {
+                width: 112px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+              }
+              .brief {
+                width: 112px;
+                font-size: 12px;
+                color: rgba(161, 161, 161, 1);
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+              }
+            }
+
+            &:hover {
+              background-color: #FFFCF6;
+              cursor: pointer;
+              transition: all 0.5s;
+            }
+          }
+        }
+
+        .new-activity {
+          height: 60px;
+          border-bottom: 1px solid @activity-border-color;
+          line-height: 60px;
+          text-align: center;
+        }
+        .new-theme-activity {
+          border: 0px;
+        }
+        .new-promotion-activity, .new-theme-activity {
+          color: rgba(161, 161, 161, 1);
+          background-image: url(@add-icon-url);
+          background-size: 10%;
+          background-repeat: no-repeat;
+          background-position: 25px 20px;
+          transition: all 0.5s;
+
+          &:hover {
+            background-color: rgba(244, 245, 249, 1);
+            cursor: pointer;
+            color: black;
+            transition: all 0.5s;
+          }
+        }
+      }
+    }
+
+    .right-content-wrapper {
+      float: left;
+      width: auto;
+      border: 1px solid @activity-border-color;
+      height: 100%;
+
+      input, select {
+        height: 30px;
+      }
+      input, textarea, select {
+        border: 1px solid @activity-border-color;
+      }
+
+      .form-container {
+        width: 428px;
+        padding: 21px;
+
+        .warn {
+          color: rgba(141, 141, 141, 1);
+        }
+
+        .form-item {
+          margin-bottom: 20px;
+          label {
+            display: inline-block;
+            width: @form-label-width;
+          }
+        }
+
+        .date-range {
+          label {
+            display: inline;
+          }
+          .date-range-label {
+            display: inline-block;
+            width: @form-label-width;
+          }
+          input {
+            width: 156px;
+          }
+          #activity-start-date {
+            margin-right: 5px;
+          }
+          #activity-end-date {
+            margin-left: 5px;
+          }
+        }
+
+        // .time-range {
+        //   .end-time-label {
+        //     display: inline;
+        //   }
+        //   #activity-start-time {
+        //     margin-right: 20px;
+        //   }
+        //   #activity-end-time {
+        //     margin-left: 20px;
+        //   }
+        // }
+
+        .activity-image {
+          .activity-image-label {
+            width: 302px;
+            cursor: pointer;
+
+            span {
+              display: inline-block;
+              width: @form-label-width;
+              position: relative;
+              bottom: 85px;
+            }
+            #activity-upload-image {
+              display: none;
+            }
+            .upload-image {
+              display: inline-block;
+              border: 1px solid @activity-border-color;
+              width: 180px;
+              height: 96px;
+              overflow: scroll;
+
+              #upload-image-preview {
+                width: 100%;
+                display: block;
+              }
+            }
+          }
+
+        }
+
+        .activity-name {
+          input {
+            width: 200px;
+          }
+          span {
+            display: inline-block;
+            margin-left: @form-label-width;
+            color: rgba(200, 199, 204, 1);
+          }
+        }
+
+        .activity-brief {
+          height: 60px;
+
+          textarea {
+            height: 100%;
+            width: 320px;
+            resize: none;
+            border: 1px solid @activity-border-color;
+          }
+
+          .activity-brief-label {
+            position: relative;
+            bottom: 45px;
+          }
+          .letter-number {
+            position: relative;
+            left: 350px;
+            bottom: 30px;
+            color: rgba(200, 199, 204, 1);
+          }
+        }
+
+        .activity-content {
+          height: 262px;
+
+          textarea {
+            height: 100%;
+            width: 320px;
+            resize: none;
+            border: 1px solid @activity-border-color;
+          }
+
+          .activity-content-label {
+            position: relative;
+            bottom: 250px;
+          }
+
+          .letter-number {
+            position: relative;
+            left: 350px;
+            bottom: 30px;
+            color: rgba(200, 199, 204, 1);
+          }
+        }
+
+        .action-buttons {
+          #activity-cancle, #activity-save {
+            width: 120px;
+            height: 32px;
+            border: 1px solid @activity-border-color;
+            background-color: white;
+            margin-right: 20px;
+            border-radius: 5px;
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+          #activity-save {
+            background-color: rgba(255, 193, 7, 1);
+          }
+          .info-message {
+            color: red;
+            font-size: 14px;
+          }
+          .delete-acvivity {
+            color: rgba(53, 150, 236, 1);
+            margin-left: 15px;
+            font-size: 14px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
+
+#upload-canteen-image {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  .upload-canteen-image-mask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .canteen-images-wrapper {
+    position: fixed;
+    width: 70%;
+    height: 70%;
+    left: 50%;
+    top: 50%;
+    background-color: white;
+    z-index: 100;
+    transform: translate(-50%, -50%);
+
+    .top-bar {
+      height: 64px;
+      line-height: 64px;
+      padding-left: 20px;
+      background-color: rgba(244, 245, 249, 1);
+    }
+  }
+}
+
+.activity-init {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.activity-fade-out {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s;
+}
+
+.activity-fade-in {
+  opacity: 1;
+  visibility: visible;
+  transition: all 0.5s;
+}
