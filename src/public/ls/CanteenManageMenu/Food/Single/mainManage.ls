@@ -29,17 +29,17 @@ main-manage = let
 
 	_init-all-food = (_get-food-JSON)!->
 		all-foods = get-JSON _get-food-JSON!
-		_fist-category = null
+		_first-category = null
 		for category, i in all-foods
 			category_ = new Category {
 				seqNum 		:		i
 				name 		:		category.name
 				id 			:		category.id
 			}
-			if i is 0 then _fist-category = category_
+			if i is 0 then _first-category = category_
 			for dish in category.dishes
 				category_.add-dish dish
-		_fist-category.select-self-event!
+		if _first-category then _first-category.select-self-event!
 
 	_init-all-event = !->
 		_food-single-select-dom.change !-> _categories[_map-category-name-to-id[@value]].select-self-event!
