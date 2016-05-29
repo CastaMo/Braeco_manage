@@ -8,9 +8,9 @@ main-manage = let
 		all-categories = getJSON _get-category-JSON!
 		for category, i in all-categories
 			category_ = new Category {
-				id 		:	category.categoryid
-				name	:	category.categoryname
-				pic 	:	category.categorypic
+				id 		:	category.id
+				name	:	category.name
+				pic 	:	category.pic
 				is-head	:	category.is-head || false
 			}
 
@@ -22,6 +22,7 @@ main-manage = let
 		page 		:= 	require "./pageManage.js"
 		edit 		:= 	require "./editManage.js"
 		require_	:=	require "./requireManage.js"
+
 
 	class Category
 		_category-main-container-dom = $ "\#category-main .category-all-field \#t-body-field"
@@ -36,20 +37,24 @@ main-manage = let
 
 		init-all-event: !->
 			(@dom.find ".remove").click !~> if confirm "确定要删除品类吗?(此操作无法恢复)" then
+				page.cover-page "loading"
 				require_.get("remove").require {
 					data 			:	 {
-						id 			:	@id
+						JSON 		:	JSON.stringify({id: @id})
 					}
-					callback		:	(result)~> @remove-self!
+					success			:	(result)~> @remove-self!
+					always 			:	!-> page.cover-page "exit"
 				}
 			(@dom.find ".top").click !~> 
 				if @dom.prev!.length is 0 then alert "已经位于顶部"
 				else 
+					page.cover-page "loading"
 					require_.get("top").require {
 						data 		:	{
 							id 		:	@id
 						}
-						callback 	:	(result)~> @top-self!
+						success 	:	(result)~> @top-self!
+						always 		:	!-> page.cover-page "exit"
 					}
 			(@dom.find ".edit").click !~>
 				edit.get-category-and-show @
@@ -63,19 +68,22 @@ main-manage = let
 								</div>
 								<div class='t-second'>
 									<div class='food-pic-field'>
-										<div class='img default-category-image' #{if category.pic then "style=background-image:url(#{category.pic}?imageView2/1/w/215/h/60)" else ""}></div>
+										<div class='img default-category-image' #{if category.pic then "style=background-image:url(#{category.pic}?imageView2/1/w/100/h/100)" else ""}></div>
 									</div>
 								</div>
 								<div class='t-third'>
 									<div class='oper-field'>
 										<div class='edit'>
+											<div class='icon edit-icon'></div>
 											<p>修改</p>
 										</div>
-										<div class='remove'>
-											<p>删除</p>
-										</div>
 										<div class='top'>
+											<div class='icon top-icon'></div>
 											<p>置顶</p>
+										</div>
+										<div class='remove'>
+											<div class='icon remove-icon'></div>
+											<p>删除</p>
 										</div>
 										<div class='clear'></div>
 									</div>

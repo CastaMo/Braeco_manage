@@ -1,4 +1,4 @@
-main = page = null
+main = page = require_ = null
 header-manage = let
 
 	[		deep-copy] =
@@ -37,18 +37,46 @@ header-manage = let
 	}
 
 	_all-control-header-click-event = {
-		"new" 			:		!-> page.toggle-page "new"
+		"new" 			:		!-> main.toggle-to-new!
 		"edit" 			:		!-> main.toggle-to-edit-for-current-choose-dish!
 		"move" 			:		!-> page.cover-page "move"
-		"top" 			:		!-> main.top-for-current-choose-dishes!
+		"top" 			:		!->
+			page.cover-page "loading"
+			require_.get("top").require {
+				data 		:		{
+					JSON 	: 		JSON.stringify(main.get-current-dishes-id!)
+				}
+				success 	:		(result)!-> main.top-for-current-choose-dishes!
+				always 		:		!-> page.cover-page "exit"
+			}
 		"copy" 			:		!-> page.cover-page "copy"
-		"show-or-hide" 	:		!-> main.change-able-for-current-choose-dishes-by-given !@able; console.log @able
-		"remove" 		:		!-> if confirm "确定要删除餐品吗?(此操作无法恢复)" then main.remove-for-current-choose-dishes!
+		"show-or-hide" 	:		!->
+			if @able then flag = 0
+			else flag = 1
+			page.cover-page "loading"
+			require_.get("able").require {
+				data 		:		{
+					JSON 	:		JSON.stringify(main.get-current-dishes-id!)
+					flag 	: 		flag
+				}
+				success 	:		(result)!~> main.change-able-for-current-choose-dishes-by-given !@able
+				always 		:		!-> page.cover-page "exit"
+			}
+		"remove" 		:		!-> if confirm "确定要删除餐品吗?(此操作无法恢复)"
+			page.cover-page "loading"
+			require_.get("remove").require {
+				data 		: 		{
+					JSON 	:		JSON.stringify(main.get-current-dishes-id!)
+				}
+				success 	: 		(result)!-> main.remove-for-current-choose-dishes!
+				always 		:		!-> page.cover-page "exit"
+			}
 	}
 
 	_init-depend-module = !->
 		main 		:= 	require "./mainManage.js"
 		page 		:= 	require "./pageManage.js"
+		require_ 	:= 	require "./requireManage.js"
 
 	_init-all-control-header = !->
 		for name in _all-control-header-name

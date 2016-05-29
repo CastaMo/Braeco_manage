@@ -3,3 +3,7 @@ node_modules/
 bin/
 
 dist/
+
+.editorconfig
+
+.sass-cache/

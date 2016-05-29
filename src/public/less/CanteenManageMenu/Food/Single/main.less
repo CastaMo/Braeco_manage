@@ -1,4 +1,5 @@
 @import "../main";
+@import "animation";
 #food {
     #food-single-new,
     #food-single-edit {
@@ -113,8 +114,12 @@
                                         position: relative;
                                         > * {
                                             .total-center;
-                                            &:not(.pic-field, .choose-field) {
-                                                width: 85%;
+                                            width: 85%;
+                                            &.choose-field {
+                                                width: 18px;
+                                            }
+                                            &.pic-field {
+                                                width: 100px;
                                             }
                                         }
                                         p {
@@ -590,6 +595,52 @@
                                     float: right;
                                     margin-right: 7px;
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        &.loading-field {
+            .animation-field {
+                .animation-wrapper {
+                    width: 250px;
+                    margin: 0 auto;
+                    .animation-container {
+                        padding: 40px 0;
+                        .logo-pic-field {
+                            width: 55px;
+                            height: 100px;
+                            margin: 0 auto;
+                            position: relative;
+                            .logo-pic {
+                                position: absolute;
+                                top: 0;
+                                left: 2.5px;
+                                .background-norm();
+                                .background-size(50px, 50px);
+                                .animation(animation-bounce 400ms cubic-bezier(0.165, 0.840, 0.440, 1.000) infinite alternate);
+                            }
+                            .shadow {
+                                width: 55px;
+                                height: 15px;
+                                position: absolute;
+                                left: 0;
+                                bottom: 0;
+                                background-color: #000;
+                                .rounded-corners(100%);
+                                opacity: 0.2;
+                                .animation(animation-shadow 400ms cubic-bezier(0.165, 0.840, 0.440, 1.000) infinite alternate);
+                            }
+                        }
+                        .word-field {
+                            margin-top: 40px;
+                            line-height: 40px;
+                            font-size: 20px;
+                            text-align: center;
+                            span.dot:before {
+                                content: "";
+                                .animation(animation-dot 2s infinite);
                             }
                         }
                     }

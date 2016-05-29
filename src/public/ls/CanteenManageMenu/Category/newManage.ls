@@ -38,7 +38,7 @@ new-manage = let
 			if _pic-input-dom[0].files[0].type.substr(0, 5) isnt "image" then alert "请上传正确的格式图片"; return false
 		return true
 
-		###
+	###
 	#	上传图片事件
 	#	需要完成三个步骤
 	#	①把将上传的图片转化为base64字符串
@@ -55,6 +55,7 @@ new-manage = let
 		_check-is-already-and-upload = !->
 			if _base64-str and _data.token and _data.key
 				#步骤③
+				page.cover-page "loading"
 				require_.get("picUpload").require {
 					data 		:		{
 						fsize 	:		-1
@@ -62,13 +63,29 @@ new-manage = let
 						key 	:		btoa(_data.key).replace("+", "-").replace("/", "_")
 						url 	:		_base64-str
 					}
-					callback 	:		(result)->
+					success 	:		(result)->
 						_src 		:= "http://static.brae.co/#{_data.key}"
 						_base64-str := ""
 						_data 		:= {}
 						console.log "success"
 						callback?!
+					always 		:		!-> page.cover-page "exit"
 				}
+
+		#步骤②
+		if _src
+			page.cover-page "loading"
+			require_.get("picUploadPre").require {
+				data 		:		{
+					id 		:		_new-id
+				}
+				success 	:		(result)->
+					_data.token 	= 		result.token
+					_data.key 		= 		result.key
+					console.log "token ready"
+					_check-is-already-and-upload!
+				always 		:		!-> page.cover-page "exit"
+			}
 
 		#步骤①
 		if _src then converImgTobase64 _src, (data-URL)->
@@ -77,20 +94,12 @@ new-manage = let
 			console.log "base64 ready"
 			_check-is-already-and-upload!
 
-		#步骤②
-		if _src then require_.get("picUploadPre").require {
-			data 		:		{
-				id 		:		_new-id
-			}
-			callback 	:		(result)->
-				_data.token 	= 		result.token
-				_data.key 		= 		result.key
-				console.log "token ready"
-				_check-is-already-and-upload!
+	_success-callback = !->
+		main.add-new-category {
+			name 	:	_name
+			pic 	:	_src
+			id 		:	_new-id
 		}
-
-	_success-callback = (options)!->
-		main.add-new-category options
 		_reset!
 		page.toggle-page "main"
 
@@ -101,23 +110,17 @@ new-manage = let
 	_save-btn-click-event = !->
 		if not _check-is-valid! then return
 		if _upload-flag
-			_callback = -> _upload-pic-event !->
-				_success-callback {
-					name 	:	_name
-					pic 	:	_src
-					id 		:	_new-id
-				}
+			_callback = !-> _upload-pic-event !->
+				_success-callback!
 		else
-			_callback = -> _success-callback {
-				name 	:	_name
-				pic 	:	_src
-				id 		:	_new-id
-			}
+			_callback = !-> _success-callback!
+		page.cover-page "loading"
 		require_.get("add").require {
 			data 		:		{
-				name  	:		_name
+				JSON  	:		JSON.stringify({name:_name})
 			}
-			callback 	: 		(result)!-> _new-id := result.id; _callback!
+			success 	: 		(result)!-> _new-id := result.id; _callback!
+			always 		:		!-> page.cover-page "exit"
 		}
 
 	_pic-input-change-event = (input)!->

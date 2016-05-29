@@ -1,8 +1,10 @@
-main = page = group = null
+main = page = group = require_ = null
 edit-manange = let
 
-	[		getObjectURL, 		deep-copy, 			getStrAfterFilter] = 
-		[	util.getObjectURL, 	util.deep-copy, 	util.getStrAfterFilter]
+	[		getObjectURL, 		deep-copy, 			getStrAfterFilter,
+			converImgTobase64] = 
+		[	util.getObjectURL, 	util.deep-copy, 	util.getStrAfterFilter,
+			util.converImgTobase64]
 
 	_edit-dom  				= $ "\#food-single-edit"
 
@@ -44,6 +46,7 @@ edit-manange = let
 	#	当前编辑的dish
 	###
 	_current-dish  			= null
+	_current-category-id 	= null
 
 	###
 	#	属性变量
@@ -109,6 +112,7 @@ edit-manange = let
 		_dc-type 				:= null
 		_dc 					:= null
 		_upload-flag 			:= null
+		_groups 				:= []
 
 		_current-dish 			:= null
 
@@ -119,11 +123,17 @@ edit-manange = let
 
 		_c-name  			:= getStrAfterFilter _c-name-dom.val!
 		_e-name 			:= getStrAfterFilter _e-name-dom.val!
-		_default-price 		:= parse-int _default-price-dom.val!
+		_default-price 		:= Number _default-price-dom.val!
 		_remark 			:= getStrAfterFilter _remark-dom.val!
 		_intro 				:= getStrAfterFilter _intro-dom.val!
 		_dc-type 			:= getStrAfterFilter _dc-type-select-dom.val!
 		_dc 				:= _get-dc-value!
+
+	_connect-property-to-groups = !->
+		group.set-current-property-sub-item-by-target {
+			property-sub-item-list-dom 		: 		_property-sub-item-list-dom
+			property-sub-item-array 		:		_groups
+		}
 
 	_read-from-current-dish = !->
 
@@ -139,12 +149,12 @@ edit-manange = let
 		_src 					:= _current-dish.pic
 		if _src then _pic-display-dom.css {"background-image" : "url('#{_src}')"}
 
+		###
+		#	连接当前属性组与当前餐品以及groupMange进行绑定
+		###
 		_groups 				:= []
 		deep-copy _current-dish.groups, _groups
-		group.set-current-property-sub-item-by-target {
-			property-sub-item-list-dom 		: 		_property-sub-item-list-dom
-			property-sub-item-array 		:		_groups
-		}
+		_connect-property-to-groups!		
 
 		_upload-flag 			:= null
 
@@ -166,7 +176,7 @@ edit-manange = let
 		alert _err-str; return _valid-flag
 
 	_success-callback = !->
-		_current-dish.edit-self {
+		main.edit-for-current-choose-dish-by-given _current-dish.id, {
 			default-price 		:		_default-price
 			detail 				: 		_intro
 			c-name 				:		_c-name
@@ -179,6 +189,19 @@ edit-manange = let
 		}
 		page.toggle-page "main"
 		_reset!
+
+	_get-upload-JSON-for-edit = ->
+		_read-from-input!
+		return JSON.stringify {
+			dc_type 	:		_dc-type
+			dc 			:		_dc
+			price 		:		_default-price
+			name 		:		_c-name
+			name2 		:		_e-name
+			tag 		:		_remark
+			detail 		:		_intro
+			groups 		:		_groups	
+		}
 
 	###************ operation end **********###
 
@@ -205,12 +228,81 @@ edit-manange = let
 
 	_property-add-btn-click-event = !-> page.cover-page "property"; group.set-current-property-active!
 
+	###
+	#	上传图片事件
+	#	需要完成三个步骤
+	#	①把将上传的图片转化为base64字符串
+	#	②从服务器获取token与key
+	#	③把图片(base64字符串)以及token一起上传给七牛服务器
+	#	其中①和②可以并发进行(一个是调用Ajax异步API，一个是调用canvas同步API)，这里用到了信号量的思想去实现并发处理
+	###
+	_upload-pic-event = (callback)!->
+
+		_base64-str = ""
+		_data = {}
+
+
+		_check-is-already-and-upload = !->
+			if _base64-str and _data.token and _data.key
+				#步骤③
+				page.cover-page "loading"
+				require_.get("picUpload").require {
+					data 		:		{
+						fsize 	:		-1
+						token 	:		_data.token
+						key 	:		btoa(_data.key).replace("+", "-").replace("/", "_")
+						url 	:		_base64-str
+					}
+					success 	:		(result)->
+						_src 		:= "http://static.brae.co/#{_data.key}"
+						_base64-str := ""
+						_data 		:= {}
+						console.log "success"
+						callback?!
+					always 		:		!-> page.cover-page "exit"
+				}
+
+		#步骤②
+		if _src
+			page.cover-page "loading"
+			require_.get("picUploadPre").require {
+				data 		:		{
+					id 		:		_current-dish.id
+				}
+				success 	:		(result)->
+					_data.token 	= 		result.token
+					_data.key 		= 		result.key
+					console.log "token ready"
+					_check-is-already-and-upload!
+				always 		:		!-> page.cover-page "exit"
+			}
+
+		#步骤①
+		if _src then converImgTobase64 _src, (data-URL)->
+			#图片base64字符串去除'data:image/png;base64,'后的字符串
+			_base64-str := data-URL.substr(22)
+			console.log "base64 ready"
+			_check-is-already-and-upload!
+
 	_cancel-btn-click-event = !->
 		_reset!
 		page.toggle-page "main"
 
 	_save-btn-click-event = !->
-		if _check-is-valid! then _success-callback!
+		if not _check-is-valid! then return
+		if _upload-flag
+			_callback = !-> _upload-pic-event !->
+				_success-callback!
+		else _callback = !-> _success-callback!
+		page.cover-page "loading"
+		require_.get("edit").require {
+			data 				:		{
+				dish-id 		:	_current-dish.id
+				JSON 			: 	_get-upload-JSON-for-edit!
+			}
+			success 			: 	(result)!-> _callback!
+			always 				:	!-> page.cover-page "exit"
+		}
 
 
 	###************ event end **********###
@@ -229,9 +321,10 @@ edit-manange = let
 
 
 	_init-depend-module = !->
-		main  	:= require "./mainManage.js"
-		page 	:= require "./pageManage.js"
-		group 	:= require "./groupManage.js"
+		main  		:= require "./mainManage.js"
+		page 		:= require "./pageManage.js"
+		group 		:= require "./groupManage.js"
+		require_ 	:= require "./requireManage.js"
 
 
 	initial: !->
@@ -239,7 +332,8 @@ edit-manange = let
 		_init-all-event!
 		_init-depend-module!
 
-	set-current-dish: (dish)!->
+	toggle-callback: (dish, current-category-id)!->
+		_reset!
 		_current-dish := dish;
 		_read-from-current-dish!
 

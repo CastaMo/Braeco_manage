@@ -5,8 +5,13 @@ var passport = require("passport");
 var route = require("./routes")(passport);
 var bodyParser = require('body-parser');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.set(function () {
+    app.use(express.bodyParser({ keepExtensions: true, uploadDir: '/tmp' }));
+});
+app.use(bodyParser.json({limit: '1mb'}));
+app.use(bodyParser.urlencoded({            //此项必须在 bodyParser.json 下面,为参数编码
+  extended: true
+}));
 
 app.use(express.static('bin'));
 app.set('views', './src/jade');

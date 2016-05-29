@@ -58,6 +58,7 @@ edit-manage = let
 		_check-is-already-and-upload = !->
 			if _base64-str and _data.token and _data.key
 				#步骤③
+				page.cover-page "loading"
 				require_.get("picUpload").require {
 					data 		:		{
 						fsize 	:		-1
@@ -65,13 +66,29 @@ edit-manage = let
 						key 	:		btoa(_data.key).replace("+", "-").replace("/", "_")
 						url 	:		_base64-str
 					}
-					callback 	:		(result)->
+					success 	:		(result)->
 						_src 		:= "http://static.brae.co/#{_data.key}"
 						_base64-str := ""
 						_data 		:= {}
 						console.log "success"
 						callback?!
+					always 		:		!-> page.cover-page "exit"
 				}
+
+		#步骤②
+		if _src
+			page.cover-page "loading"
+			require_.get("picUploadPre").require {
+				data 		:		{
+					id 		:		_current-category.id
+				}
+				success 	:		(result)->
+					_data.token 	= 		result.token
+					_data.key 		= 		result.key
+					console.log "token ready"
+					_check-is-already-and-upload!
+				always 		:		!-> page.cover-page "exit"
+			}
 
 		#步骤①
 		if _src then converImgTobase64 _src, (data-URL)->
@@ -79,18 +96,6 @@ edit-manage = let
 			_base64-str := data-URL.substr(22)
 			console.log "base64 ready"
 			_check-is-already-and-upload!
-
-		#步骤②
-		if _src then require_.get("picUploadPre").require {
-			data 		:		{
-				id 		:		_current-category.id
-			}
-			callback 	:		(result)->
-				_data.token 	= 		result.token
-				_data.key 		= 		result.key
-				console.log "token ready"
-				_check-is-already-and-upload!
-		}
 
 
 
@@ -116,12 +121,13 @@ edit-manage = let
 				name 	:	_name
 				pic 	:	_src
 			}
+		page.cover-page "loading"
 		require_.get("update").require {
 			data 		:		{
-				name  	:		_name
-				id 		:		_current-category.id
+				JSON 	:		JSON.stringify({name: _name, id: _current-category.id})
 			}
-			callback 	: 		(result)!-> _callback!
+			success 	: 		(result)!-> _callback!
+			always 		:		!-> page.cover-page "exit"
 		}
 
 	_pic-input-change-event = (input)!->

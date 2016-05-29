@@ -1,4 +1,4 @@
-header = group = page = edit = null
+header = group = page = edit = new_ = null
 main-manage = let
 	_state = null
 	[get-JSON, deep-copy] = [util.get-JSON, util.deep-copy]
@@ -25,6 +25,7 @@ main-manage = let
 		group 		:= require "./groupManage.js"
 		page 		:= require "./pageManage.js"
 		edit 		:= require "./editManage.js"
+		new_ 		:= require "./newManage.js"
 
 	_init-all-food = (_get-food-JSON)!->
 		all-foods = get-JSON _get-food-JSON!
@@ -189,15 +190,19 @@ main-manage = let
 		top-dish: (dish-id)!-> _dishes[@id][dish-id].top-self!
 
 		move-dish: (dish-id, new-category-id)!->
-			dish = _dishes[_current-category-id][dish-id]
+			dish = _dishes[@id][dish-id]
 			temp = dish.get-copy-for-options!
 			dish.remove-self!
 			_categories[new-category-id].add-dish temp
 
 		copy-dish: (old-dish-id, new-category-id, new-dish-id)!->
-			dish = _dishes[_current-category-id][old-dish-id]
-			temp = dish.get-copy-for-options!; #temp.id = new-dish-id
+			dish = _dishes[@id][old-dish-id]
+			temp = dish.get-copy-for-options!; temp.id = new-dish-id
 			_categories[new-category-id].add-dish temp
+
+		edit-dish: (dish-id, options)!->
+			dish = _dishes[@id][dish-id]
+			dish.edit-self options
 
 		###************ operation end **********###
 
@@ -309,7 +314,8 @@ main-manage = let
 				if @pic then @pic-dom.css {"background-image":"url('#{@pic}')"} else @pic-dom.css {"background-image":""}
 				if not @able then @cover-dom.fade-in 200
 				else @cover-dom.fade-out 200
-				@c-name-dom.html @c-name; @e-name-dom.html @e-name
+				@c-name-dom.html @c-name; @c-name-dom.attr {"title": @c-name}
+				@e-name-dom.html @e-name; @e-name-dom.attr {"title": @e-name}
 				@default-price-dom.html @default-price
 				_update-property-dom @
 				_update-dc-dom @
@@ -386,7 +392,16 @@ main-manage = let
 	toggle-to-edit-for-current-choose-dish: !->
 		if _current-dish-id.length isnt 1 then alert "非法操作"; return
 		page.toggle-page "edit"
-		edit.set-current-dish _dishes[_current-category-id][_current-dish-id[0]]
+		edit.toggle-callback _dishes[_current-category-id][_current-dish-id[0]], _current-category-id
+
+	toggle-to-new: !->
+		page.toggle-page "new"
+		new_.toggle-callback _current-category-id
+
+	get-current-dishes-id: -> return _current-dish-id
+
+	get-category-id-by-name: (category-name)-> return _map-category-name-to-id[category-name]
+
 
 	###
 	#	改变当前选中的dishes的able，判断是否显示到webAPP上
@@ -436,12 +451,33 @@ main-manage = let
 	#	复制当前选中的dishes到指定的品类中
 	#	@param 		{String} 		dest-category-name: 目标品类名
 	###
-	copy-for-current-choose-dishes-by-given: (dest-category-name, new-dish-id)!->
+	copy-for-current-choose-dishes-by-given: (dest-category-name, new-dish-id-map)!->
 		if not _current-category-id then alert "非法操作!"; return
 		dest-category-id = _map-category-name-to-id[dest-category-name]
 		_current-category = _categories[_current-category-id]
-		for old-id, i in _current-dish-id
-			_current-category.copy-dish old-id, dest-category-id, new-dish-id[i]
+		for old-id in _current-dish-id
+			_current-category.copy-dish old-id, dest-category-id, new-dish-id-map[old-id]
+		_general-callback!
+
+	###
+	#	编辑当前的餐品
+	#	@param 		{Number} 		dish-id: 目标餐品id
+	# 	@param 		{Object} 		options: 餐品的属性配置
+	###
+	edit-for-current-choose-dish-by-given: (dish-id, options)!->
+		if not _current-category-id or not dish-id then alert "非法操作!"; return
+		_current-category = _categories[_current-category-id]
+		_current-category.edit-dish dish-id, options
+		_general-callback!
+
+	###
+	#	新建一个新的餐品到当前的品类中
+	# 	@param 		{Object} 		options: 餐品的属性配置
+	###
+	create-dish-dish-by-given: (options)!->
+		if not _current-category-id then alert "非法操作!"; return
+		_current-category = _categories[_current-category-id]
+		_current-category.add-dish options
 		_general-callback!
 
 module.exports = main-manage
