@@ -1,4 +1,4 @@
-header = group = page = edit = new_ = null
+header = group = page = edit = new_ = image = null
 main-manage = let
 	_state = null
 	[get-JSON, deep-copy] = [util.get-JSON, util.deep-copy]
@@ -21,6 +21,7 @@ main-manage = let
 	_all-choose-dom 				= _all-choose-field-dom.find ".choose-pic"
 
 	_init-depend-module = !->
+		image 		:= require "./imageManage.js"
 		header 		:= require "./headerManage.js"
 		group 		:= require "./groupManage.js"
 		page 		:= require "./pageManage.js"
@@ -311,7 +312,12 @@ main-manage = let
 					inner-html = "<p>#{_get-dc-info dish.dc-type, dish.dc}</p>"
 					dish.dc-dom.html inner-html
 
-				if @pic then @pic-dom.css {"background-image":"url('#{@pic}')"} else @pic-dom.css {"background-image":""}
+				@pic-dom.css {"background-image":""}
+				if @pic then image.loading {
+					is-div 		:		true
+					url 		:		"#{@pic}"
+					target-dom 	: 		@pic-dom[0]
+				}
 				if not @able then @cover-dom.fade-in 200
 				else @cover-dom.fade-out 200
 				@c-name-dom.html @c-name; @c-name-dom.attr {"title": @c-name}

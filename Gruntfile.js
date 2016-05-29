@@ -180,12 +180,20 @@ module.exports = function(grunt) {
                         return content;
                     }
                 },
-                files: [{
+                files: [
+                {
                     cwd: './bin/module_static',
                     src: ["**/*.html"],
                     dest: './bin/views',
                     expand: true
-                }]
+                },
+                {
+                    cwd: './bin/module_dynamic',
+                    src: ["**/*.php"],
+                    dest: './bin/module',
+                    expand: true
+                }
+                ]
             }
         },
 
@@ -260,13 +268,13 @@ module.exports = function(grunt) {
             data_record_order_test: {
                 files: {
                     "<%= dirs.dest_path %>CanteenManageData/Record/Order/Order.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Order/develop.jade",
-                    "<%= dirs.dest_path %>module_static/Manage/Data/Record/Order.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Order/formal.jade"
+                    "<%= dirs.dest_path %>module_dynamic/Manage/Data/Record/Order.php": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Order/formal.jade"
                 }
             },
             data_record_refund_test: {
                 files: {
                     "<%= dirs.dest_path %>CanteenManageData/Record/Refund/Refund.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Refund/develop.jade",
-                    "<%= dirs.dest_path %>module_static/Manage/Data/Record/Refund.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Refund/formal.jade"
+                    "<%= dirs.dest_path %>module_dynamic/Manage/Data/Record/Refund.php": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Refund/formal.jade"
                 }
             }
         },
@@ -795,12 +803,20 @@ module.exports = function(grunt) {
                 port: '<%= secret.port %>',
                 createDirectories: true
             },
-            module: {
+            module_static: {
                 options: {
                     path: '<%= secret.path %>/application'
                 },
                 files: {
                     "./": ["<%= dirs.dest_path %>views/**/*.html"]
+                }
+            },
+            module_dynamic: {
+                options: {
+                    path: '<%= secret.path %>'
+                },
+                files: {
+                    "./": ["<%= dirs.dest_path %>module/**/*.php"]
                 }
             },
             config: {
