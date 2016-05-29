@@ -260,13 +260,13 @@ module.exports = function(grunt) {
             data_record_order_test: {
                 files: {
                     "<%= dirs.dest_path %>CanteenManageData/Record/Order/Order.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Order/develop.jade",
-                    "<%= dirs.dest_path %>module/Manage/Data/Record/Order/order.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Order/formal.jade"
+                    "<%= dirs.dest_path %>module_static/Manage/Data/Record/Order.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Order/formal.jade"
                 }
             },
             data_record_refund_test: {
                 files: {
-                    "<%= dirs.dest_path %>CanteenManageData/Record/Refund/Order.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Refund/develop.jade",
-                    "<%= dirs.dest_path %>module/Manage/Data/Record/Refund/order.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Refund/formal.jade"
+                    "<%= dirs.dest_path %>CanteenManageData/Record/Refund/Refund.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Refund/develop.jade",
+                    "<%= dirs.dest_path %>module_static/Manage/Data/Record/Refund.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Refund/formal.jade"
                 }
             }
         },
@@ -741,7 +741,9 @@ module.exports = function(grunt) {
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/main.js'],
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/main.js'],
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/main.js'],
-                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/main.js']
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/main.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Order/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Order/main.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Refund/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Refund/main.js']
                 }
             }
         },
@@ -775,9 +777,9 @@ module.exports = function(grunt) {
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/base64.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/main.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/base64.css'],
-                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/main.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/main.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/base64.css'],
-                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/main.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/main.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/base64.css']
                 }
             }
