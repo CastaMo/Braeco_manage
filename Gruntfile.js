@@ -238,6 +238,18 @@ module.exports = function(grunt) {
                     "<%= dirs.dest_path %>CanteenManageBusiness/HallOrder/Basic/Basic.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageBusiness/HallOrder/Basic/develop.jade",
                     "<%= dirs.dest_path %>module/Manage/Business/HallOrder/Basic.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageBusiness/HallOrder/Basic/formal.jade"
                 }
+            },
+            data_record_order_test: {
+                files: {
+                    "<%= dirs.dest_path %>CanteenManageData/Record/Order/Order.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Order/develop.jade",
+                    "<%= dirs.dest_path %>module/Manage/Data/Record/Order/order.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Order/formal.jade"
+                }
+            },
+            data_record_refund_test: {
+                files: {
+                    "<%= dirs.dest_path %>CanteenManageData/Record/Refund/Order.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Refund/develop.jade",
+                    "<%= dirs.dest_path %>module/Manage/Data/Record/Refund/order.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageData/Record/Refund/formal.jade"
+                }
             }
         },
         less: {
@@ -286,12 +298,25 @@ module.exports = function(grunt) {
                     "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMarket/Promotion/Single/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMarket/Promotion/Single/base64.less"
                 }
             },
+            data_record_order_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageData/Record/Order/main.less",
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageData/Record/Order/base64.less"
+                }
+            },
+            data_record_refund_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageData/Record/Refund/main.less",
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageData/Record/Refund/base64.less"
+                }
+            },
             business_hallOrder_basic_test: {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.css %>CanteenManageBusiness/HallOrder/Basic/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageBusiness/HallOrder/Basic/main.less",
                     "<%= dirs.dest_path %><%= dirs.css %>CanteenManageBusiness/HallOrder/Basic/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageBusiness/HallOrder/Basic/base64.less"
                 }
             }
+            
         },
         livescript: {
             options: {
@@ -334,7 +359,7 @@ module.exports = function(grunt) {
                 dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity',
                 ext: '.js'
             },
-            market_activity_test: {
+            market_promotion_single_test: {
                 expand: true,
                 cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMarket/Promotion/Single',
                 src: ['*.ls'],
@@ -346,6 +371,20 @@ module.exports = function(grunt) {
                 cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageBusiness/HallOrder/Basic',
                 src: ['*.ls'],
                 dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageBusiness/HallOrder/Basic',
+                ext: '.js'
+            },
+            data_record_order_test: {
+                expand: true,
+                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageData/Record/Order',
+                src: ['*.ls'],
+                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Order',
+                ext: '.js'
+            },
+            data_record_refund_test: {
+                expand: true,
+                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageData/Record/Refund',
+                src: ['*.ls'],
+                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Refund',
                 ext: '.js'
             }
         },
@@ -375,7 +414,7 @@ module.exports = function(grunt) {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/index.js"]
                 }
             },
-            market_activity_test: {
+            market_promotion_single_test: {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/index.js"]
                 }
@@ -383,6 +422,16 @@ module.exports = function(grunt) {
             business_hallOrder_basic_test: {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManageBusiness/HallOrder/Basic/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageBusiness/HallOrder/Basic/index.js"]
+                }
+            },
+            data_record_order_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Order/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Order/index.js"]
+                }
+            },
+            data_record_refund_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Refund/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Refund/index.js"]
                 }
             }
         },
@@ -489,6 +538,36 @@ module.exports = function(grunt) {
                     'jade:market_promotion_single_test'
                 ]
             },
+            data_record_order_test: {
+                options: {
+                    livereload: lrPort,
+                    debounceDelay: debounceDelay
+                },
+                files: [
+                    '<%= dirs.source_path %>**/CanteenManageData/Record/Order/**',
+                ],
+                tasks: [
+                    'less:data_record_order_test',
+                    'livescript:data_record_order_test',
+                    'browserify:data_record_order_test',
+                    'jade:data_record_order_test'
+                ]
+            },
+            data_refund_order_test: {
+                options: {
+                    livereload: lrPort,
+                    debounceDelay: debounceDelay
+                },
+                files: [
+                    '<%= dirs.source_path %>**/CanteenManageData/Record/Refund/**',
+                ],
+                tasks: [
+                    'less:data_record_refund_test',
+                    'livescript:data_record_refund_test',
+                    'browserify:data_record_refund_test',
+                    'jade:data_record_refund_test'
+                ]
+            },
             business_hallOrder_basic_test: {
                 options: {
                     livereload: lrPort,
@@ -569,7 +648,11 @@ module.exports = function(grunt) {
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/main.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/base64.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/main.css'],
-                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/base64.css']
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/base64.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/main.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/base64.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/main.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/base64.css']
                 }
             }
         },

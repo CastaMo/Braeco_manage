@@ -44,6 +44,14 @@ module.exports = function(passport) {
 	router.get('/Manage/Business/HallOrder/Basic', function(req, res) {
 		res.render('./CanteenManageBusiness/HallOrder/Basic/develop');
 	});
+	
+	router.get('/Manage/Data/Record/Order', function(req, res) {
+		res.render('./CanteenManageData/Record/Order/develop');
+	});
+	
+	router.get('/Manage/Data/Record/Refund', function(req, res) {
+		res.render('./CanteenManageData/Record/Refund/develop');
+	});
 
 	router.get('/renew', function(req, res) {
 		renew.renew(res);
@@ -75,6 +83,77 @@ module.exports = function(passport) {
 			res.send("var allData = '"+'{"message":"success","data":{"activities":[{"id":"142","title":"123","intro":"123","content":"123","pic":"http://static.brae.co/images/activity/avkqmrziunjzraodbu1mcmvu34d96phh.png","date_begin":"2016-05-05","date_end":"2016-05-25","is_valid":true,"type":"theme","detail":[]},{"id":"144","title":"123456","intro":"全场满<strong>123</strong>减<strong>23</strong>","content":"123","pic":"http://static.brae.co/images/activity/2qv2j38wna75yvp1mr8u2pxksg2r01s2.png","date_begin":"2016-05-04","date_end":"2016-05-27","is_valid":true,"type":"reduce","detail":[{"least":123,"reduce":23}]},{"id":"145","title":"2341","intro":"全场满<strong>123</strong>送<strong>海鲜披萨（双拼专用）</strong>","content":"123","pic":"http://static.brae.co/images/activity/4qhd0jimg4tipuc87by4uqp4jr1onkdr.png","date_begin":"2016-05-19","date_end":"2016-05-28","is_valid":false,"type":"give","detail":[{"least":123,"dish":"海鲜披萨（双拼专用）"}]},{"id":"146","title":"12323123","intro":"123123123123123","content":"123","pic":"http://static.brae.co/images/activity/so4crd8engklb9ny1wt4lqoe6r57tyam.png","date_begin":"2016-05-05","date_end":"2016-05-25","is_valid":true,"type":"other","detail":"123123123123123"}]}}'+"';"+
 			"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
 		}, 0);
+	});
+	
+	router.post('/dinner/printer/get', function(req, res, next) {
+		res.json({
+			"message": "success",
+			"printer": [
+				{
+			    "id": 159,
+				"width": 0,
+				"size": 18,
+				"page": 1,
+				"name": "815501495",
+				"remark": "杯口-无切刀",
+				"ban": [],
+				"ban_cat": [],
+				"offset": 0,
+				"separate": 0
+				},
+				{
+			    "id": 160,
+				"width": 0,
+				"size": 18,
+				"page": 1,
+				"name": "815501495",
+				"remark": "杯口-无切刀-分开",
+				"ban": [],
+				"ban_cat": [],
+				"offset": 0,
+				"separate": 1
+				},
+				{
+			    "id": 162,
+				"width": 0,
+				"size": 18,
+				"page": 1,
+				"name": "815502045",
+				"remark": "闲置2",
+				"ban": [],
+				"ban_cat": [],
+				"offset": 0,
+				"separate": 0
+				}
+			]
+		});
+	});
+	
+	router.post('/order/reprint/:orderid', function(req, res, next) {
+		var orderid = req.params.orderid;
+		var printer = req.body;
+		console.log(orderid);
+		console.log(printer);
+		res.json({'message':'sucess'});
+	});
+	
+	router.post('/order/refund/:orderid', function(req, res, next) {
+		var orderid = req.params.orderid;
+		var data = req.body;
+		console.log(orderid);
+		console.log(data);
+		setTimeout(function() {
+			var r = Math.floor(Math.random() * (3 - 0 + 1) + 0);
+			if (r == 0) {
+				res.json({"message":"success"});
+			} else if (r == 1) {
+				res.json({"message":"Order not found"});
+			} else if (r == 2) {
+				res.json({"message":"Invalid dish to refund"});
+			} else {
+				res.json({"message":"Need to upload cert of wx pay"});
+			}
+		}, 1000);
 	});
 
 	router.post('/Category/Add', function(req, res) {

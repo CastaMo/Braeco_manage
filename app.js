@@ -3,8 +3,10 @@ var app = express();
 var logger = require('morgan');
 var passport = require("passport");
 var route = require("./routes")(passport);
+var bodyParser = require('body-parser');
 
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static('bin'));
 app.set('views', './src/jade');
