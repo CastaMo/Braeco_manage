@@ -29,5 +29,5 @@ let win = window, doc = document
 		if window.all-data then _main-init JSON.parse window.all-data; window.all-data = null;
 		else window.main-init = _main-init
 
-	_test-is-data-ready!
+	_main-init {message:"success"}
 
