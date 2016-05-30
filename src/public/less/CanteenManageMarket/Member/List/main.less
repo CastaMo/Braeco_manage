@@ -4,10 +4,6 @@
 display: none;
 }
 
-#braeco-main #braeco-mainbar {
-    overflow: hidden;
-}
-
 #List {
 	.List-wrapper {
 		width: 710px;
@@ -103,7 +99,7 @@ display: none;
 		#page-select {
 			position: relative;
 			left: 415px;
-			clear: left;
+			float: left;
 			margin-top: 20px;
 			.lastPage {
 				float: left;
@@ -216,9 +212,13 @@ display: none;
                 .integral-field {
                 	margin-bottom: 30px;
                 	float: left;
-					width: 200px;
-					height: 14px;
+					width: 80px;
+					height: 20px;
                 }
+                .modifyIntegral {
+                    font-size: 14px;
+                }
+
 				.rechargeMoney-field,
                 .level-field {
                 	float: left;
@@ -246,6 +246,23 @@ display: none;
             	.preview-wrapper {
                 	float: left;
                 	height: 120px;
+                    ._txt1,
+                    ._txt3 {
+                    margin: 0 0 0 120px;
+                    padding: 0;
+                    float: left;
+                    }
+                    ._txt2,
+                    ._txt4 {
+                        margin: 0 0 0 20px;
+                        padding: 0;
+                        float: left;
+                    }
+                    span {
+                        height: 40px;
+                        width: 70px;
+                        font-size: 14px;
+                    }
 					p {
 						font-size: 14px;
                 		height: 30px;
@@ -253,15 +270,11 @@ display: none;
                 	}
                 	.WechatName,
                 	.memberID {
-                		margin: 0;
-                		padding: 5px 0 5px 130px;
-						float: left;
+
                 	}
                 	.phoneNumber,
                 	.parent {
-                		margin: 0;
-                		padding: 5px 0 5px 40px;
-						float: left;
+
                 	}
                 }
             }
@@ -300,28 +313,6 @@ display: none;
                     height: 190px;
                     overflow: auto;
                     border: solid 1px @border-grey-color;
-                    ul {
-                        li {
-                            border-bottom: solid 1px @border-grey-color;
-                            cursor: pointer;
-                            &:hover {
-                                background-color: @grey-color;
-                            }
-                            .property-content-wrapper {
-                                width: 100%;
-                                height: 30px;
-                                .name-field {
-                                    float: left;
-                                    margin-left: 7px;
-                                    line-height: 30px;
-                                }
-                                .tick-field {
-                                    float: right;
-                                    margin-right: 7px;
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
