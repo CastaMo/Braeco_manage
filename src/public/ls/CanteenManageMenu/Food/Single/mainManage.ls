@@ -151,6 +151,7 @@ main-manage = let
 				single-list-dom = $ "<ul class='single-list' id='single-list-#{category.seqNum}'></ul>"
 				_single-list-field-dom.append single-list-dom
 				single-list-dom.css {"display": "none"}
+				
 			@single-list-dom = _get-single-list-dom @
 
 		show-single-list-dom: !-> @single-list-dom.fade-in 100
@@ -169,7 +170,7 @@ main-manage = let
 
 		add-dish: (options)!->
 			dish = new Dish {
-				able 			:		options.able 		|| false
+				able 			:		options.able 		|| true
 				default-price 	:		options.default_price
 				detail 			:		options.detail 		|| ""
 				id 				:		options.id
@@ -313,6 +314,8 @@ main-manage = let
 					dish.dc-dom.html inner-html
 
 				@pic-dom.css {"background-image":""}
+				//if @pic then @pic-dom.css {"background-image":"url(#{@pic})"}
+				//
 				if @pic then image.loading {
 					is-div 		:		true
 					url 		:		"#{@pic}"

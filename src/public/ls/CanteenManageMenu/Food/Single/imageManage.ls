@@ -46,13 +46,12 @@ image-manage = let
 
 			#归还id给_indexArr，以便循环使用
 			_indexArr.push @id
-			console.log @id
 			delete _runningContainer[@id]
 			ImageBuffer.checkForLoading!
 
 
 
-		@initial = (length = 10)!->
+		@initial = (length = 3)!->
 			_maxLoadingNumber 	:= length
 			_indexArr  		 	:= [0 to _maxLoadingNumber - 1]
 

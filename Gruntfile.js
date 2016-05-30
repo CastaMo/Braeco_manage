@@ -244,7 +244,7 @@ module.exports = function(grunt) {
             market_member_list_test: {
                 files: {
                     "<%= dirs.dest_path %>CanteenManageMarket/Member/List/List.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/List/develop.jade",
-                    "<%= dirs.dest_path %>module_static/Manage/Market/Member/List.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/List/formal.jade"
+                    "<%= dirs.dest_path %>module_dynamic/Manage/Market/Member/List.php": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Member/List/formal.jade"
                 }
             },
             market_member_recharge_test: {
