@@ -1,4 +1,4 @@
-header = group = page = edit = new_ = null
+header = group = page = edit = new_ = image = null
 main-manage = let
 	_state = null
 	[get-JSON, deep-copy] = [util.get-JSON, util.deep-copy]
@@ -21,6 +21,7 @@ main-manage = let
 	_all-choose-dom 				= _all-choose-field-dom.find ".choose-pic"
 
 	_init-depend-module = !->
+		image 		:= require "./imageManage.js"
 		header 		:= require "./headerManage.js"
 		group 		:= require "./groupManage.js"
 		page 		:= require "./pageManage.js"
@@ -150,6 +151,7 @@ main-manage = let
 				single-list-dom = $ "<ul class='single-list' id='single-list-#{category.seqNum}'></ul>"
 				_single-list-field-dom.append single-list-dom
 				single-list-dom.css {"display": "none"}
+				
 			@single-list-dom = _get-single-list-dom @
 
 		show-single-list-dom: !-> @single-list-dom.fade-in 100
@@ -168,7 +170,7 @@ main-manage = let
 
 		add-dish: (options)!->
 			dish = new Dish {
-				able 			:		options.able 		|| false
+				able 			:		options.able 		|| true
 				default-price 	:		options.default_price
 				detail 			:		options.detail 		|| ""
 				id 				:		options.id
@@ -311,7 +313,14 @@ main-manage = let
 					inner-html = "<p>#{_get-dc-info dish.dc-type, dish.dc}</p>"
 					dish.dc-dom.html inner-html
 
-				if @pic then @pic-dom.css {"background-image":"url('#{@pic}')"} else @pic-dom.css {"background-image":""}
+				@pic-dom.css {"background-image":""}
+				//if @pic then @pic-dom.css {"background-image":"url(#{@pic})"}
+				//
+				if @pic then image.loading {
+					is-div 		:		true
+					url 		:		"#{@pic}"
+					target-dom 	: 		@pic-dom[0]
+				}
 				if not @able then @cover-dom.fade-in 200
 				else @cover-dom.fade-out 200
 				@c-name-dom.html @c-name; @c-name-dom.attr {"title": @c-name}
