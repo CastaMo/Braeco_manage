@@ -84,7 +84,7 @@ main-manage = let
 			console.log "recharge-input", recharge-input
 			request-object = {}
 			for i from 0 to _length-1 by 1
-				if _members[i].id == parentID and modify-input != ""
+				if Number(_members[i].id) is Number(parentID) and modify-input != ""
 					_members[i].EXP = modify-input
 					request-object.exp = modify-input;
 					require_.get("modify").require {
@@ -92,26 +92,27 @@ main-manage = let
 							JSON 	:		JSON.stringify(request-object)
 							user-id :		parentID;
 						}
-						success 	:		(result)!->console.log result
+						success 	:		(result)!-> location.reload!
 					}
-				else if _members[i].id == parentID and recharge-input != ""
+				else if Number(_members[i].id) is Number(parentID) and recharge-input != ""
 					console.log "111", 111
+					request-object.amount = recharge-input;
 					recharge-input = Number(_members[i].balance)+Number(recharge-input)
 					recharge-input = Number(recharge-input)
 					recharge-input = recharge-input.toFixed(2)
 					_members[i].balance = Number(recharge-input)
-					request-object.amount = recharge-input;
 					request-object.phone = $(".phoneNumber").html!
-					require_.get("modify").require {
+					require_.get("recharge").require {
 						data 		:		{
 							JSON 	:		JSON.stringify(request-object)
 							user-id :		parentID;
 						}
-						success 	:		(result)!->console.log result
+						success 	:		(result)!-> location.reload!
 					}
-			_update-members!
-			_init-table!
-			page.cover-page "exit"
+
+			#_update-members!
+			#_init-table!
+			#page.cover-page "exit"
 
 	class Member
 		(options)!->
@@ -176,6 +177,7 @@ main-manage = let
 				page.cover-page "modify"
 			_new-dom.find(".recharge").click !->
 				_now =	$(@).parent().parent()
+				$(".displayID").html(_now.find("._displayID").html!)
 				$(".modifyIntegral").html(_now.find("._balance").html!)
 				$(".WechatName").html(_now.find("._nick").html!)
 				$(".phoneNumber").html(_now.find("._phone").html!)

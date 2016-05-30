@@ -272,7 +272,7 @@ main-manage = let
 
 			init-all-dom: !->
 				@init-single-content-dom!
-				@init-detail-all-dom!
+				@init-all-detail-dom!
 
 			init-prepare: !->
 				@is-choose = false
@@ -280,7 +280,7 @@ main-manage = let
 			init-single-content-dom: !->
 				@single-content-dom = _get-single-content-dom @
 					
-			init-detail-all-dom: !->
+			init-all-detail-dom: !->
 				@choose-dom = @single-content-dom.find ".t-choose .choose-pic"
 				@pic-dom = @single-content-dom.find ".t-pic .pic"
 				@c-name-dom = @single-content-dom.find ".t-name p.c-name"

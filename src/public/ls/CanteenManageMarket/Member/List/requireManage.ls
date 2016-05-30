@@ -27,8 +27,8 @@ require-manage = let
 		}
 
 	_correct-URL = {
-		"modify"		:		(ajax-object,data)-> ajax-object.url += "#{data.user-id}"
-		"recharge"		:		(ajax-object,data)-> ajax-object.url += "#{data.}"
+		"modify"		:		(ajax-object,data)-> ajax-object.url += "/#{data.user-id}"
+		"recharge"		:		(ajax-object,data)-> ajax-object.url += "/#{data.user-id}"
 	}
 
 	_set-header = {}

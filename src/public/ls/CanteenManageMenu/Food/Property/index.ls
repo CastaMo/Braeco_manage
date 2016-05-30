@@ -1,7 +1,7 @@
 let win = window, doc = document
 	[getJSON] = [util.getJSON]
 
-	_get-food-JSON = null
+	_get-group-JSON = null
 
 	_init-callback = {
 		"Need to rescan qrcode" 	:	->	win.location.pathname = "/Table/Confirm/rescan"
@@ -11,7 +11,7 @@ let win = window, doc = document
 	}
 
 	_init-all-get-JSON-func = (data)->
-		_get-food-JSON := -> return JSON.stringify(data.dish)
+		_get-group-JSON := -> return data.groups
 
 
 	_main-init = (result)->
@@ -19,7 +19,7 @@ let win = window, doc = document
 
 	_init-all-module = !->
 		page = require "./pageManage.js";			page.initial!
-		main = require "./mainManage.js";		 	main.initial _get-food-JSON
+		main = require "./mainManage.js";		 	main.initial _get-group-JSON
 
 
 	_test-is-data-ready = ->
