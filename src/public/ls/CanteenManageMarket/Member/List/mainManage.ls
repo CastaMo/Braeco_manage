@@ -16,17 +16,34 @@ main-manage = let
 	_save-dom = $ "\.confirm-btn"
 
 	_init-all-event = !->
+		$("._searchInput").keydown (event)!->
+			if event.keyCode is 13 then _search-dom.trigger "click"
 		_search-dom.click !->
 			_location = "/Manage/Market/Member/List?search=" + $('._searchInput').val!
 			console.log "_location", _location
 			location.href = _location
 		_last-page-dom.click !->
-
+			pageArrJSON = $('#page-JSON-field').html!
+			pageArr = JSON.parse(pageArrJSON)
+			if pageArr.pn > 1 then pageArr.pn--
+			pageArrJSON = JSON.stringify(pageArr)
+			$('#page-JSON-field').html(pageArrJSON)
+			_init-table!
 		_next-page-dom.click !->
-
+			pageArrJSON = $('#page-JSON-field').html!
+			pageArr = JSON.parse(pageArrJSON)
+			if pageArr.pn < pageArr.sum_pages then pageArr.pn++
+			pageArrJSON = JSON.stringify(pageArr)
+			$('#page-JSON-field').html(pageArrJSON)
+			_init-table!
 		_jump-dom.click !->
-			jumpPage = document.getElementById("jump-input").lastChild.value
-
+			jumpPage = $("._jump-input").val!
+			pageArrJSON = $('#page-JSON-field').html!
+			pageArr = JSON.parse(pageArrJSON)
+			if jumpPage >= 1 and jumpPage <= pageArr.sum_pages then pageArr.pn = jumpPage
+			pageArrJSON = JSON.stringify(pageArr)
+			$('#page-JSON-field').html(pageArrJSON)
+			_init-table!
 		_close-dom.click !->
 			page.cover-page "exit"
 			_init-table!
@@ -39,7 +56,7 @@ main-manage = let
 			_length = _members.length
 			modify-input = $('#_input1').val!
 			console.log "modify-input", modify-input
-			parentID = $('.memberID').html!
+			parentID = $('.displayID').html!
 			console.log "parentID", parentID
 			recharge-input = $('#_input2').val!
 			console.log "recharge-input", recharge-input
@@ -100,6 +117,7 @@ main-manage = let
 		$("._line").remove!
 		for i from 0 to _length-1 by 1
 			_new-dom = $ "<tr class='_line'>
+							<td class='_displayID'></td>
 							<td class='_id'></td>
 							<td class='_phone'></td>
 							<td class='_nick'></td>
@@ -117,7 +135,8 @@ main-manage = let
 								</div>
 							</td>
 						</tr>"
-			_new-dom.find("._id").html(_members[i].id)
+			_new-dom.find("._displayID").html(_members[i].id)
+			_new-dom.find("._id").html(_members[i].id_of_dinner)
 			_new-dom.find("._phone").html(_members[i].phone)
 			_new-dom.find("._nick").html(_members[i].nick)
 			_new-dom.find("._level").html(_members[i].level)
@@ -126,6 +145,7 @@ main-manage = let
 			_table-dom.last().append _new-dom
 			_new-dom.find(".modify").click !->
 				_now =	$(@).parent().parent()
+				$(".displayID").html(_now.find("._displayID").html!)
 				$(".modifyIntegral").html(_now.find("._exp").html!)
 				$(".WechatName").html(_now.find("._nick").html!)
 				$(".phoneNumber").html(_now.find("._phone").html!)
@@ -140,6 +160,10 @@ main-manage = let
 				$(".memberID").html(_now.find("._id").html!)
 				$(".parent").html(_now.find("._exp").html!)
 				page.cover-page "recharge"
+		pageArrJSON = $('#page-JSON-field').html!
+		pageArr = JSON.parse(pageArrJSON)
+		console.log "pageArr", pageArr
+		$(".page").html(pageArr.pn + "/" + pageArr.sum_pages)
 
 
 	_init-depend-module = !->

@@ -1,7 +1,11 @@
 @import "../main";
 
 #json-field {
-display: none;
+    display: none;
+}
+
+#page-JSON-field {
+    display: none;
 }
 
 #List {
@@ -41,6 +45,9 @@ display: none;
 			}
 		}
 		#member-table {
+            ._displayID {
+                display: none;
+            }
 			margin: 15px 0 0 0;
 			table {
 				font-family: Hiragino Sans GB, Microsoft Yahei, sans-serif;
@@ -51,6 +58,9 @@ display: none;
 				.table-title {
 					background-color: #F4F5F9;
 					td {
+                        a {
+                            color: #8D8D8D;
+                        }
                         color: #8D8D8D;
 						height: 45px;
 						border-width: 1px 0 1px 0;	
@@ -268,14 +278,9 @@ display: none;
                 		height: 30px;
                 		width: 150px;
                 	}
-                	.WechatName,
-                	.memberID {
-
-                	}
-                	.phoneNumber,
-                	.parent {
-
-                	}
+                	.displayID {
+                        display: none;
+                    }
                 }
             }
         }

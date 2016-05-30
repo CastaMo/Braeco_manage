@@ -20,19 +20,24 @@ block content
 			#member-table
 				table#Info
 					tr.table-title
-						td(width = "74px") 会员ID
+						td(width = "80px") 
+							a(href = "?by=create_date&in=ASC&pn=1")会员编号
 						td(width = "120px") 电话号码
 						td(width = "110px") 微信昵称
-						td(width = "85px") 会员等级
-						td(width = "80px") 积分
-						td(width = "100px") 账户余额
+						td(width = "85px")
+							a(href = "?by=EXP&in=ASC&pn=1") 会员等级
+						td(width = "80px") 
+							a(href = "?by=EXP&in=ASC&pn=1") 积分
+						td(width = "100px") 
+							a(href = "?by=balance&in=ASC&pn=1") 账户余额
 						td(width = "150px") 操作
 			#page-select
 				.lastPage.btn
 					.last-btn-image
-				.page 1/1
+				.page
 				.nextPage.btn
 					.next-btn-image
 				#jump-input
-					input
+					input._jump-input
 				.jump-btn.btn 跳转
+			#page-JSON-field {"pn":2,"sum_pages":100,"by":"create_date","in":"DESC","search":15626470328}
