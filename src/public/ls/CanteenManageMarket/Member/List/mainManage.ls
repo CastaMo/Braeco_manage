@@ -32,6 +32,9 @@ main-manage = let
 		$('#_input2').keydown (event)!->
 			if event.keyCode is 13 then _save-dom.trigger "click"
 		
+		$("._jump-input").keydown (event)!->
+			if event.keyCode is 13 then _jump-dom.trigger "click"
+		
 		_search-dom.click !->
 			searchNum = $('._searchInput').val!
 			searchNum = Number(searchNum)
