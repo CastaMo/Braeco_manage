@@ -1,5 +1,5 @@
 main-manage = let
-	page = null
+	page = require_ = null
 	jumpPage = null
 	_length = ""
 	[get-JSON, deep-copy] = [util.get-JSON, util.deep-copy]
@@ -17,7 +17,9 @@ main-manage = let
 
 	_init-all-event = !->
 		_search-dom.click !->
-
+			_location = "/Manage/Market/Member/List?search=" + $('._searchInput').val!
+			console.log "_location", _location
+			location.href = _location
 		_last-page-dom.click !->
 
 		_next-page-dom.click !->
@@ -35,21 +37,39 @@ main-manage = let
 
 		_save-dom.click !->
 			_length = _members.length
-			_x = $('#_input1').val!
-			console.log "_x", _x
-			_y = $('.memberID').html!
-			console.log "_y", _y
-			_z = $('#_input2').val!
-			console.log "_z", _z
+			modify-input = $('#_input1').val!
+			console.log "modify-input", modify-input
+			parentID = $('.memberID').html!
+			console.log "parentID", parentID
+			recharge-input = $('#_input2').val!
+			console.log "recharge-input", recharge-input
+			request-object = {}
 			for i from 0 to _length-1 by 1
-				if _members[i].id == _y and _x != ""
-					_members[i].EXP = _x
-				else if _members[i].id == _y and _z != ""
+				if _members[i].id == parentID and modify-input != ""
+					_members[i].EXP = modify-input
+					request-object.exp = modify-input;
+					require_.get("modify").require {
+						data 		:		{
+							JSON 	:		JSON.stringify(request-object)
+							user-id :		parentID;
+						}
+						success 	:		(result)!->console.log result
+					}
+				else if _members[i].id == parentID and recharge-input != ""
 					console.log "111", 111
-					_z = Number(_members[i].balance)+Number(_z)
-					_z = Number(_z)
-					_z = _z.toFixed(2)
-					_members[i].balance = Number(_z)
+					recharge-input = Number(_members[i].balance)+Number(recharge-input)
+					recharge-input = Number(recharge-input)
+					recharge-input = recharge-input.toFixed(2)
+					_members[i].balance = Number(recharge-input)
+					request-object.amount = recharge-input;
+					request-object.phone = $(".phoneNumber").html!
+					require_.get("modify").require {
+						data 		:		{
+							JSON 	:		JSON.stringify(request-object)
+							user-id :		parentID;
+						}
+						success 	:		(result)!->console.log result
+					}
 			_update-members!
 			_init-table!
 			page.cover-page "exit"
@@ -124,6 +144,7 @@ main-manage = let
 
 	_init-depend-module = !->
 		page := require "./pageManage.js"
+		require_ := require "./requireManage.js"
 
 	initial: !->
 		_init-arry!

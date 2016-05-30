@@ -1,21 +1,22 @@
 require-manage = let
 
-	[	get-JSON,	ajax,	eep-copy] 		= 
+	[	get-JSON,	ajax,	deep-copy] 		= 
 		[	util.get-JSON, 	util.ajax,	util.deep-copy]
 
 	_all-require-name = [
-		'member'
+		'modify',		'recharge'
 	]
 
 	_all-require-URL = {
-		'member'		:		''
+		'modify'		:		'/Membership/Card/Setexp'
+		'recharge'		:		'/Membership/Card/Charge'
 	}
 
 	_requires = {}
 
 	_default-config = {
 		async	: 	true
-		typr	:	"POST"
+		type	:	"POST"
 	}
 
 	_get-normal-ajax-object = (config)->
@@ -26,13 +27,15 @@ require-manage = let
 		}
 
 	_correct-URL = {
-		"member"		:		(ajax-object,data)-> ajax-object.url += ""
+		"modify"		:		(ajax-object,data)-> ajax-object.url += "#{data.user-id}"
+		"recharge"		:		(ajax-object,data)-> ajax-object.url += "#{data.}"
 	}
 
 	_set-header = {}
 
 	_get-require-data-str = {
-		"member"		:		(data)-> return "#{data.JSON}"
+		"modify"		:		(data)-> return "#{data.JSON}"
+		"recharge"		:		(data)-> return "#{data.JSON}"
 	}
 
 	_normal-handle = (name, result_, callback)->
@@ -43,18 +46,19 @@ require-manage = let
 		else alert "系统错误"
 
 	_requires-fail-callback = {
-		"member"		:		{}
+		"modify"		:		{}
+		"result"		:		{}
 	}
 
 	_require-handle = (name, config)->
-	return (options)->
-		ajax-object = _get-normal-ajax-object config
-		ajax-object.data = _get-require-data-str[name]? options.data
-		_correct-URL[name]? ajax-object, options.data
-		_set-header[name]? ajax-object, options.data
-		ajax-object.success = (result_)-> _normal-handle name, result_, options.callback
-		ajax-object.always = options.always
-		ajax ajax-object
+		return (options)->
+			ajax-object = _get-normal-ajax-object config
+			ajax-object.data = _get-require-data-str[name]? options.data
+			_correct-URL[name]? ajax-object, options.data
+			_set-header[name]? ajax-object, options.data
+			ajax-object.success = (result_)-> _normal-handle name, result_, options.callback
+			ajax-object.always = options.always
+			ajax ajax-object
 
 	class Require
 
@@ -78,7 +82,6 @@ require-manage = let
 				name 		:		name
 				url 		:		_all-require-URL[name]
 			}
-
 
 	get: (name)-> return _requires[name]
 
