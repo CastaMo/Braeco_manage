@@ -32,28 +32,10 @@ main-manage = let
 		$('#_input2').keydown (event)!->
 			if event.keyCode is 13 then _save-dom.trigger "click"
 		
-		_loop-id-dom.click !->
-			_href = $(this).attr("href")
-			if _href.indexOf("ASC") > 0 then $(this).attr("href", "?by=create_date&in=DEC&pn=1")
-			else if _href.indexOf("ASC") <= 0 then $(this).attr("href", "?by=create_date&in=ASC&pn=1")
-		
-		_loop-level-dom.click !->
-			_href = $(this).attr("href")
-			if _href.indexOf("ASC") > 0 then $(this).attr("href", "?by=EXP&in=DEC&pn=1")
-			else if _href.indexOf("ASC") <= 0 then $(this).attr("href", "?by=EXP&in=ASC&pn=1")
-
-		_loop-exp-dom.click !->
-			_href = $(this).attr("href")
-			if _href.indexOf("ASC") > 0 then $(this).attr("href", "?by=EXP&in=DEC&pn=1")
-			else if _href.indexOf("ASC") <= 0 then $(this).attr("href", "?by=EXP&in=ASC&pn=1")
-
-		_loop-balance-dom.click !->
-			_href = $(this).attr("href")
-			if _href.indexOf("ASC") > 0 then $(this).attr("href", "?by=balance&in=DEC&pn=1")
-			else if _href.indexOf("ASC") <= 0 then $(this).attr("href", "?by=balance&in=ASC&pn=1")
-
 		_search-dom.click !->
-			_location = "/Manage/Market/Member/List?search=" + $('._searchInput').val!
+			searchNum = $('._searchInput').val!
+			searchNum = Number(searchNum)
+			_location = "/Manage/Market/Member/List?search=" + searchNum
 			console.log "_location", _location
 			location.href = _location
 
@@ -61,18 +43,14 @@ main-manage = let
 			pageArrJSON = $('#page-JSON-field').html!
 			pageArr = JSON.parse(pageArrJSON)
 			if pageArr.pn > 1 then pageArr.pn--
-			pageArrJSON = JSON.stringify(pageArr)
-			$('#page-JSON-field').html(pageArrJSON)
-			location.href = "/Manage/Market/Member/List?by=create_date&in=DEC&pn=" + pageArr.pn
+			location.href = "/Manage/Market/Member/List?by=create_date&in=#{pageArr.in}&pn=" + pageArr.pn
 			_init-table!
 
 		_next-page-dom.click !->
 			pageArrJSON = $('#page-JSON-field').html!
 			pageArr = JSON.parse(pageArrJSON)
 			if pageArr.pn < pageArr.sum_pages then pageArr.pn++
-			pageArrJSON = JSON.stringify(pageArr)
-			$('#page-JSON-field').html(pageArrJSON)
-			location.href = "/Manage/Market/Member/List?by=create_date&in=DEC&pn=" + pageArr.pn
+			location.href = "/Manage/Market/Member/List?by=create_date&in=#{pageArr.in}&pn=" + pageArr.pn
 			_init-table!
 
 		_jump-dom.click !->
@@ -82,7 +60,7 @@ main-manage = let
 			if jumpPage >= 1 and jumpPage <= pageArr.sum_pages then pageArr.pn = jumpPage
 			pageArrJSON = JSON.stringify(pageArr)
 			$('#page-JSON-field').html(pageArrJSON)
-			location.href = "/Manage/Market/Member/List?by=create_date&in=DEC&pn=" + pageArr.pn
+			location.href = "/Manage/Market/Member/List?by=create_date&in=#{pageArr.in}&pn=" + pageArr.pn
 			_init-table!
 
 		_close-dom.click !->
@@ -106,7 +84,6 @@ main-manage = let
 				if _members[i].id == parentID and modify-input != ""
 					_members[i].EXP = modify-input
 					request-object.exp = modify-input;
-					console.log "Gg"
 					require_.get("modify").require {
 						data 		:		{
 							JSON 	:		JSON.stringify(request-object)
@@ -204,9 +181,19 @@ main-manage = let
 				page.cover-page "recharge"
 		pageArrJSON = $('#page-JSON-field').html!
 		pageArr = JSON.parse(pageArrJSON)
-		console.log "pageArr", pageArr
 		$(".page").html(pageArr.pn + "/" + pageArr.sum_pages)
-
+		console.log "pageArr", pageArr
+		console.log "location.href", location.href
+		if pageArr.in is "DESC" then
+			_loop-id-dom.attr("href", "?by=create_date&in=ASC&pn=1");console.log "222", 222
+			_loop-level-dom.attr("href", "?by=EXP&in=ASC&pn=1")
+			_loop-exp-dom.attr("href", "?by=EXP&in=ASC&pn=1")
+			_loop-balance-dom.attr("href", "?by=balance&in=ASCC&pn=1")
+		else if pageArr.in is "ASC" then
+			_loop-id-dom.attr("href", "?by=create_date&in=DESC&pn=1");console.log "111", 111
+			_loop-level-dom.attr("href", "?by=EXP&in=DESC&pn=1")
+			_loop-exp-dom.attr("href", "?by=EXP&in=DESC&pn=1")
+			_loop-balance-dom.attr("href", "?by=balance&in=DESC&pn=1")
 
 	_init-depend-module = !->
 		page := require "./pageManage.js"

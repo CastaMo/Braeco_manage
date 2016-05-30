@@ -1,7 +1,6 @@
 extends ../index
 
 block head
-	script(src="/Manage/Market/Member/List/Data" type="text/javascript" async='async')
 	meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
 	title Braeco
 	block css
@@ -14,7 +13,7 @@ block content
 		.List-wrapper
 			#search
 				.search-input
-					input._searchInput(placeholder = "手机号(至少6位)或ID搜索")
+					input._searchInput(maxlength = "11" placeholder = "手机号(至少6位)或ID搜索")
 				.search-btn.btn
 					.search-btn-image
 			#member-table
@@ -26,9 +25,9 @@ block content
 						td(width = "110px") 微信昵称
 						td._loop-level(width = "85px")
 							a(href = "?by=EXP&in=ASC&pn=1") 会员等级
-						td._loop-exp(width = "80px") 
+						td._loop-exp(width = "80px")
 							a(href = "?by=EXP&in=ASC&pn=1") 积分
-						td._loop-balance(width = "100px") 
+						td._loop-balance(width = "100px")
 							a(href = "?by=balance&in=ASC&pn=1") 账户余额
 						td(width = "150px") 操作
 			#page-select
@@ -40,4 +39,4 @@ block content
 				#jump-input
 					input._jump-input
 				.jump-btn.btn 跳转
-			#page-JSON-field {"pn":2,"sum_pages":100,"by":"create_date","in":"DESC","search":15626470328}
+			block pageData
