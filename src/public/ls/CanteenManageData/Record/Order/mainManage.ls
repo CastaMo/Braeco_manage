@@ -13,38 +13,52 @@ main-manage = let
     _end-date-input-dom = $ '\#record-order-main .end-date'
     _search-btn-dom = $ "\#record-order-main .search-btn"
     
+    _pre-page-url-dom = $ ".ro-container-paginate .pre-page-url"
+    _current-page-dom = $ ".ro-container-paginate .current-page"
+    _total-page-dom = $ ".ro-container-paginate .total-page"
+    _next-page-url-dom = $ ".ro-container-paginate .next-page-url"
+    _target-page-input-dom = $ ".ro-container-paginate .target-page-input"
+    _jump-btn-dom = $ ".ro-container-paginate .jump-btn"
+    
     _table-body-dom = $ "\.ro-container-table > tbody"
     
     _hover-timer = null
     _leave-timer = null
     
+    _construct-url = (st,en,pn,type)->
+        "/Manage/Data/Record/Order?st="+st+"&en="+en+"&pn="+pn+"&type="+type
+    
     _type-filter-choose-event = !->
-        chosen-value = ($ "\#record-order-main .type-filter option:selected").text!
-        tr-doms = $ "\.ro-container-table > tbody > tr"
-        if chosen-value === '所有订单'
-            for tr in tr-doms
-                ($ tr).show!
-        else
-            for tr in tr-doms
-                td-type = ($ tr).find ".td-type"
-                if ($ td-type).text! !== chosen-value
-                    ($ tr).hide!
-                else
-                    ($ tr).show!
+        st = _page-data-obj.st
+        en = _page-data-obj.en
+        pn = 1
+        type = _type-filter-dom.val!
+        console.log st,en,pn,type
+        location.href = _construct-url st,en,pn,type
     
     _search-btn-click-event = !->
         start-date-value = _start-date-input-dom.val!
         end-date-value = _end-date-input-dom.val!
         if start-date-value === ''
-            console.log _today-date-to-unix-timestamp!
+            st = _today-date-to-unix-timestamp!
         else
             start-date = new Date start-date-value
-            console.log _date-to-unix-timestamp start-date
+            st = _date-to-unix-timestamp start-date
         if end-date-value === ''
-            console.log _today-date-to-unix-timestamp!
+            en = _today-date-to-unix-timestamp!
         else
             end-date = new Date end-date-value
-            console.log _date-to-unix-timestamp end-date
+            en = _date-to-unix-timestamp end-date
+        pn = 1
+        type = _type-filter-dom.val!
+        location.href = _construct-url st,en,pn,type
+        
+    _jump-btn-click-event = !->
+        st = _page-data-obj.st
+        en = _page-data-obj.en
+        type = _page-data-obj.type
+        pn = parse-int _target-page-input-dom.val!
+        location.href = _construct-url st,en,pn,type
     
     _tr-hover-event = (event) !->
         target = $ event.target
@@ -78,12 +92,15 @@ main-manage = let
         else
             description-dom.fade-out 100
     
-    _json-data-dom = $ "\#json-data"
+    _json-order-data-dom = $ "\#json-order-data"
+    _json-page-data-dom = $ "\#json-page-data"
     
-    _data-obj-array = null
+    _order-data-obj-array = null
+    _page-data-obj = null
     
-    _gene-data-obj-array = !->
-        _data-obj-array := $.parseJSON _json-data-dom.text!
+    _gene-data = !->
+        _order-data-obj-array := $.parseJSON _json-order-data-dom.text!
+        _page-data-obj := $.parseJSON _json-page-data-dom.text!
     
     _int-to-string =(number)->
         if number > 10
@@ -100,6 +117,13 @@ main-manage = let
         minute = _int-to-string d.get-minutes!
         second = _int-to-string d.get-seconds!
         year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second
+    
+    _unix-timestamp-to-only-date = (timestamp)->
+        d = new Date timestamp*1000
+        year = d.get-full-year!.to-string!
+        month = _int-to-string d.get-month!+1
+        date = _int-to-string d.get-date!
+        year+"-"+month+"-"+date
     
     _date-to-unix-timestamp = (date)->
         date.get-time! / 1000
@@ -238,14 +262,14 @@ main-manage = let
         refund-method-container-dom = $ "<div class='method-container'></div>"
         if data-obj.refund === '\u53d1\u8d77\u9000\u6b3e'
             refund-method-container-dom.add-class 'refund-method-container'
-            refund-method-container-dom.click !-> _refund-method-container-click-event data-obj
             refund-method-container-dom.append $ "<icon class='refund-icon'></icon>"
             refund-method-container-dom.append $ "<p>退款</p>"
+            refund-method-container-dom.click !-> _refund-method-container-click-event data-obj
         else
             refund-method-container-dom.append $ "<icon class='refund-disable-icon'></icon>"
             refund-method-container-dom.append $ "<p style='color: #8d8d8d'>退款</p>"
-            refund-method-container-dom.append $ "<div class='refund-disable-description'>"+data-obj.refund+"</div>"
-            refund-method-container-dom.hover !-> _refund-disable-container-hover-event event
+            refund-method-container-dom.append $ "<div class='refund-disable-description'><p>"+data-obj.refund+"</p></div>"
+            $(refund-method-container-dom.find "icon").hover !-> _refund-disable-container-hover-event event
         td-methods-dom.append refund-method-container-dom
         print-method-container-dom = $ "<div class='method-container'>
         <icon class='print-icon'></icon>
@@ -254,12 +278,12 @@ main-manage = let
         print-method-container-dom.click !-> _print-method-container-click-event data-obj.id
         td-methods-dom.append print-method-container-dom
         td-methods-dom.append "<div class='clear'></div>"
-        tr-dom.append td-methods-dom    
+        tr-dom.append td-methods-dom
         $ tr-dom
 
     _get-all-types = ->
         types-array = []
-        for data-obj in _data-obj-array
+        for data-obj in _order-data-obj-array
             is-exit = false
             for type in types-array
                 if type == data-obj.type
@@ -282,7 +306,17 @@ main-manage = let
     _init-all-event = !->
         _search-btn-dom.click !-> _search-btn-click-event!
         _type-filter-dom.change !-> _type-filter-choose-event!
+        _jump-btn-dom.click !-> _jump-btn-click-event!
 
+    _init-page-info = !->
+        if _page-data-obj.st !== null
+            _start-date-input-dom.val _unix-timestamp-to-only-date _page-data-obj.st
+        if _page-data-obj.en !== null
+            _end-date-input-dom.val _unix-timestamp-to-only-date _page-data-obj.en
+        _type-filter-dom.val _page-data-obj.type
+        _current-page-dom.text _page-data-obj.pn.to-string!
+        _total-page-dom.text _page-data-obj.sum_pages.to-string!
+        _target-page-input-dom.val _page-data-obj.pn
 
     _init-depend-module = !->
         page 	:= require "./pageManage.js"
@@ -291,10 +325,10 @@ main-manage = let
 
 
     initial: !->
-        _gene-data-obj-array!
-        for data-obj in _data-obj-array
+        _gene-data!
+        for data-obj in _order-data-obj-array
             _append-row-to-table _gene-tr-dom data-obj
-        _gene-type-filter-option!
+        _init-page-info!
         _init-depend-module!
         _init-all-event!
 
