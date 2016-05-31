@@ -24,7 +24,6 @@ refund-manage = let
         _set-current-num-by-sub-icon target,current-num
         _set-current-total _get-current-total!
         _unset-checkbox!
-        
     
     _add-icon-click-event = (event)!->
         target = $ event.target
@@ -36,7 +35,6 @@ refund-manage = let
         _set-current-total _get-current-total!
         if _get-current-sum! === _total-sum
             _set-checkbox!
-        
         
     _get-max-num-by-sub-icon = (sub-icon) ->
         sub-icon.next!.next!.text!
@@ -64,7 +62,7 @@ refund-manage = let
         while index < pri-tds.length
             j-cur-td = $ cur-tds[index]
             j-pri-td = $ pri-tds[index]
-            current-total = (parse-int j-cur-td.text!) * parse-float j-pri-td.text!
+            current-total += (parse-int j-cur-td.text!) * parse-float j-pri-td.text!
             index += 1
         Math.min current-total, parse-float _data-obj.price
     
@@ -86,7 +84,6 @@ refund-manage = let
     
     _set-password-comfirm-button-disable = !->
         password-comfirm-button = $ ".refund-block .password-comfirm-btn"
-        console.log password-comfirm-button
         password-comfirm-button.add-class 'password-comfirm-btn-disable'
         password-comfirm-button.prop 'disabled', true
    
@@ -243,7 +240,10 @@ refund-manage = let
     _gene-food-table-row = (single-food)->
         row-dom = $ "<tr></tr>"
         row-dom.append "<td class='id-td' style='display: none'>"+single-food.id+"</td>"
-        row-dom.append "<td class='table-cat-col cat-td'>"+single-food.name+"</td>"
+        td-name = $ "<td class='table-cat-col cat-td'>"+single-food.name+"</td>"
+        if single-food.property.length > 0
+            td-name.append $ "<span class='sub-food-item'>"+'（'+(single-food.property.join '、')+"）"+"</span>"
+        row-dom.append td-name
         row-dom.append _gene-food-table-num-col single-food.sum
         row-dom.append "<td class='table-pri-col pri-td'>"+single-food.price+"</td>"
         $ row-dom
@@ -273,7 +273,7 @@ refund-manage = let
         reason-block-dom = $ "<div class='refund-reason-block'></div>"
         reason-block-dom.append "<span>退款原因*</span>"
         description-input-dom = $ "<input id='description-input' type='text' placeholder='必填，否则无法退款'>"
-        description-input-dom.change !-> _description-input-change-event! 
+        description-input-dom.keyup !-> _description-input-change-event! 
         reason-block-dom.append description-input-dom
         reason-block-dom.append "<div class='clear'></div>"
         _refund-block-content-dom.append reason-block-dom

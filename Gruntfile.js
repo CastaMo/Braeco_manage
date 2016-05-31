@@ -114,7 +114,7 @@ module.exports = function(grunt) {
         copy: {
             test: {
                 cwd: '<%= dirs.lib_path %>',
-                src: ['<%= dirs.js %>common/*.js'],
+                src: ['<%= dirs.js %>common/*.js', '<%= dirs.css %>common/*.css'],
                 dest: '<%= dirs.dest_path %>',
                 expand: true
             },
@@ -764,7 +764,7 @@ module.exports = function(grunt) {
             },
             compress: {
                 files: {
-                    '<%= dirs.dest_path %><%= dirs.css %>common/extra.min.css': ['<%= dirs.dest_path %><%= dirs.css %>common/*.css', '!<%= dirs.dest_path %><%= dirs.css %>common/*.min.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>common/extra.min.css': ['<%= dirs.dest_path %><%= dirs.css %>common/*.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManage/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManage/main.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManage/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManage/base64.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageBusiness/HallOrder/Basic/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageBusiness/HallOrder/Basic/main.css'],
