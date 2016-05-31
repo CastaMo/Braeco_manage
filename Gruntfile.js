@@ -133,11 +133,17 @@ module.exports = function(grunt) {
                         var versionPrefix = "/public/version";
 
                         var commonMap = {
-                            utiljs: {
+                            commonJs: {
                                 reg: /(?:\/public\/js\/)(\S+)(?:\/extra\.min\.js)((\?v=)(\w+))?/g,
                                 path: 'bin/public/js/common/extra.min.js',
                                 prefix: '/public/js/common/extra.min_',
                                 type: '.js'
+                            },
+                            commonCss: {
+                                reg: /(?:\/public\/css\/)(\S+)(?:\/extra\.min\.css)((\?v=)(\w+))?/g,
+                                path: 'bin/public/css/common/extra.min.css',
+                                prefix: '/public/css/common/extra.min_',
+                                type: '.css'
                             }
                         };
 
@@ -282,11 +288,6 @@ module.exports = function(grunt) {
             options: {
                 compress: false,
                 yuicompress: false
-            },
-            common: {
-                files: {
-                    "<%= dirs.dest_path %><%= dirs.css %>common/common.css": "<%= dirs.source_path %><%= dirs.less %>common/common.less",
-                }
             },
             manage_test: {
                 files: {
@@ -516,18 +517,6 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            common: {
-                options: {
-                    livereload: lrPort,
-                    debounceDelay: debounceDelay
-                },
-                files: [
-                    "<%= dirs.source_path %><%= dirs.less %>common/**.less",
-                ],
-                tasks: [
-                    'less:common'
-                ]
-            },
             manage: {
                 options: {
                     livereload: lrPort,
@@ -827,6 +816,7 @@ module.exports = function(grunt) {
                     "./": ["<%= dirs.dest_path %>public/<%= dirs.version %>**/main.min*.js",
                         "<%= dirs.dest_path %>public/<%= dirs.version %>**/extra.min*.js",
                         "<%= dirs.dest_path %>public/<%= dirs.version %>**/main.min*.css",
+                        "<%= dirs.dest_path %>public/<%= dirs.version %>**/extra.min*.css",
                         "<%= dirs.dest_path %>public/<%= dirs.version %>**/base64.min*.css",
                         "<%= dirs.dest_path %>public/<%= dirs.version %>**/hash.json"
                     ]
