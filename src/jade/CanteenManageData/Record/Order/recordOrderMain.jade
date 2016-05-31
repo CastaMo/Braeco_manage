@@ -8,6 +8,10 @@
             button.search-btn 搜索
                 icon.search-icon
             select.type-filter
+                option(value="all") 所有订单
+                option(value="eatin") 堂食
+                option(value="takeout") 外带
+                option(value="membership") 会员卡充值
             input.export-btn(type="button" value="导出")
             .clear
     table.ro-container-table
@@ -30,6 +34,6 @@
         p.total-page 14
         a.next-page-url(href='#')
             icon.next-page-icon
-        input.target-page-input(type='number')
+        input.target-page-input(type='number' max="100" min="1")
         button.jump-btn 跳转
         .clear

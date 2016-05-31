@@ -197,10 +197,18 @@ refund-manage = let
         _set-password-comfirm-button-disable!
     
     _refund-post-success = (data)!->
-        console.log data
+        refund-error-message = $ "\#refund-error-message"
+        if data.message === 'success'
+            location.reload!
+        else if data.message === 'Wrong password'
+            refund-error-message.text "密码错误"
+        else if data.message === 'Invalid dish to refund'
+            refund-error-message.text "非法的退款"
+        else if data.message === 'Order not found'
+            refund-error-message.text "订单未找到"
+        else
+            refund-error-message.text "错误"
         _set-password-comfirm-button-able!
-        # if data.message == 'success'
-            # console.log
         
     
     _unset-checkbox = !->
@@ -297,6 +305,7 @@ refund-manage = let
         button-block-dom.append comfirm-btn-dom
         password-block-dom = $ "<div class='password-block' style='display: none'></div>"
         password-block-dom.append $ "<div class='password-block-info'>请输入密码，确认执行退款</div>"
+        password-block-dom.append $ "<div id='refund-error-message'></div>"
         password-block-dom.append $ "<div class='password-block-input'><input id='password-input' type='password'></div>"
         
         password-block-button =  $ "<div class='password-block-button'></div>"

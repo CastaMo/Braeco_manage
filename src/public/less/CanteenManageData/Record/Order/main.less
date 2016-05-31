@@ -106,9 +106,12 @@
                         > td {
                             border: 1px solid #E7E7EB;
                             .method-container {
+                                cursor: pointer;
+                                position: relative;
                                 float: left;
                                 margin: 0 15px;
-                                cursor: pointer;
+                                margin-top: 11px;
+                                padding-bottom: 11px;
                                 icon {
                                     float: left;
                                     width: 25px;
@@ -125,11 +128,13 @@
                                     width: 240px;
                                     height: 110px;
                                     margin-left: -108px;
-                                    margin-top: 5px;
                                     z-index: 50;
                                     background-size: 240px 110px;
                                     background-repeat: no-repeat;
                                     background-position: center;
+                                    p {
+                                        margin-top: 40px;
+                                    }
                                 }
                             }
                         }
@@ -389,12 +394,16 @@
                         background-color: rgba(235, 79, 16, 0.2);
                     }
                     .password-block {
-                        background-color: #fff;
                         width: 240px;
                         height: 195px;
                         position: absolute;
-                        margin-top: 20px;
-                        margin-left: 180px;
+                        margin-left: 190px;
+                        background-size: 240px 195px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                    }
+                    #refund-error-message {
+                        color: #eb4f10;
                     }
                     .password-block-info {
                         margin: 20px 0;
