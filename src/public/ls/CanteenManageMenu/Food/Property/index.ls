@@ -21,6 +21,7 @@ let win = window, doc = document
 		page 		= require "./pageManage.js";			page.initial!
 		main 		= require "./mainManage.js";		 	main.initial _get-group-JSON
 		new_ 		= require "./newManage.js"; 			new_.initial!
+		edit 		= require "./editManage.js"; 			edit.initial!
 		subItem 	= require "./subItemManage.js"; 		subItem.initial!
 		require_ 	= require "./requireManage.js"; 		require_.initial!
 

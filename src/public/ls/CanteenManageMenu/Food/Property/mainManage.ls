@@ -1,5 +1,7 @@
 page 		= null
 new_ 		= null
+edit 		= null
+require_ 	= null
 
 main-manage = let
 	[ 		deep-copy, 			get-JSON] =
@@ -13,6 +15,8 @@ main-manage = let
 	_init-depend-module = !->
 		page 		:= require "./pageManage.js"
 		new_ 		:= require "./newManage.js"
+		edit 		:= require "./editManage.js"
+		require_ 	:= require "./requireManage.js"
 
 	_init-all-event = !->
 
@@ -54,6 +58,19 @@ main-manage = let
 			@init-all-detail-dom!
 
 		init-all-event: !->
+
+			@edit-dom.click !~>
+				page.toggle-page "edit"
+				edit.toggle-callback @
+
+			@remove-dom.click !~>
+				if not confirm "确定要删除属性组吗?(此操作无法恢复)" then return
+				require_.get("remove").require {
+					data 				:		{
+						property-id 	:		@id	
+					}
+					success 			:		(result)!~> @remove-self!
+				}
 
 		init-property-dom: !->
 			_get-property-dom = (property)->
@@ -99,7 +116,17 @@ main-manage = let
 			@spread-dom 		= @property-dom.find ".t-spread .spread-field"
 			@using-num-dom 		= @property-dom.find ".t-using-num p"
 			@edit-dom 			= @property-dom.find ".t-oper .edit"
-			@remove-dom 		= @property-dom.find ".t-oper .logo"
+			@remove-dom 		= @property-dom.find ".t-oper .remove"
+
+		edit-self: (options)!->
+			deep-copy options, @
+			@update-self-dom!
+
+		remove-self: !->
+			@property-dom.fade-out 200, !~>
+				@property-dom.remove!; @property-dom = null
+				delete _properties[@id]
+				delete _groups[@id]
 
 		update-self-dom: !->
 
@@ -115,7 +142,7 @@ main-manage = let
 					choose-inner-html += "<p>#{choose-and-spread[i].name}</p>"
 					spread-inner-html += "<p>#{add-char}#{price}</p>"
 				if (len_ = choose-and-spread.length) > 3
-					choose-inner-html += "<p>余#{len_ - 3}项</p>"
+					choose-inner-html += "<p class='tail'>余#{len_ - 3}项</p>"
 					spread-inner-html += "<p class='tail'>余#{len_ - 3}项</p>"
 				property.choose-dom.html choose-inner-html
 				property.spread-dom.html spread-inner-html
@@ -138,5 +165,9 @@ main-manage = let
 			belong-to 	:		options.belong_to
 			remark 		:		options.remark
 		}
+
+	edit-property: (options, property-id)!->
+		_properties[property-id].edit-self options
+
 
 module.exports = main-manage

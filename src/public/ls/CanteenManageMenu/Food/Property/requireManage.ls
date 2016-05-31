@@ -63,6 +63,7 @@ require-manage = let
 	_get-require-data-str = {
 		"add" 			:		(data)-> return "#{data.JSON}"
 		"edit" 			:		(data)-> return "#{data.JSON}"
+		"remove" 		:		(data)-> return ""
 	}
 
 	###

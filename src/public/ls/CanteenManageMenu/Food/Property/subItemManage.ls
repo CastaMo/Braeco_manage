@@ -76,7 +76,7 @@ sub-item-manage = let
 
 		init-all-detail-dom: !->
 			@name-input-dom 	= @content-dom.find ".name-field input"; 	@name-input-dom.val @name
-			@price-input-dom 	= @content-dom.find ".price-field input"; 	@price-input-dom.val @price
+			@price-input-dom 	= @content-dom.find ".price-field input"; 	@price-input-dom.val @price; if Number(@price) is 0 then @price-input-dom.val 0
 			@top-dom 			= @content-dom.find ".top"
 			@remove-dom 		= @content-dom.find ".remove"
 
@@ -131,7 +131,7 @@ sub-item-manage = let
 		@set-current-property-sub-item-dom-by-target = (options)!->
 			_current-property-sub-item-list-dom 	:= options.property-sub-item-list-dom
 			if options.content
-				for property-sub-item in content
+				for property-sub-item in options.content
 					@add-proprety-sub-item property-sub-item
 			else @add-proprety-sub-item!
 
