@@ -32,7 +32,8 @@ print-manage = let
         ($ 'input:checkbox.printer-checkbox').each !->
             if this.checked
                 checked-printer-ids.push parse-int ($ this).val!
-        $.ajax {type: "POST", url: "/order/reprint/"+_order-id, data: {"printers": JSON.stringify checked-printer-ids}, success: _print-success}
+        checked-printer-ids-json = JSON.stringify checked-printer-ids
+        $.ajax {type: "POST", url: "/order/reprint/"+_order-id, data: { checked-printer-ids-json }, dataType: 'JSON', success: _print-success}
         _set-comfirm-button-disable!
     
     _print-success = (data)!->
@@ -51,14 +52,14 @@ print-manage = let
         printer-choose-block-dom = $ "\#full-cover .printer-choose-block"
         for printer in data.printer
             print-item-dom = $ "<div class='printer-item'></div>"
-            print-item-dom.append $ "<p>"+printer.name+"</p>"
+            print-item-dom.append $ "<p>"+printer.remark+"</p>"
             input-dom = $ "<input type='checkbox' class='printer-checkbox'>"
             input-dom.val printer.id
             print-item-dom.append input-dom
             printer-choose-block-dom.append print-item-dom
         
     _get-printer-infomation = !->
-        $.ajax {type: "POST", url: "/dinner/printer/get", success: _gene-printer-chooser}
+        $.ajax {type: "POST", url: "/dinner/printer/get", dataType: 'JSON', success: _gene-printer-chooser}
 
     _init-all-event = !->
         _close-button-dom.click !-> _close-button-dom-click-event!
