@@ -28,37 +28,25 @@ require-manage = let
 	#	请求名字(自己设)
 	###
 	_all-require-name = [
-		'add',							'copy',
-		'remove',						'top',
-		'move', 						'edit',
-		'able', 						'picUploadPre',
-		'picUpload'
+		'add',							'remove',
+		'edit'
 	]
 
 	###
 	#	请求名字与URL键值对(与后台进行商量)，名字需依赖于上述对象
 	###
 	_all-require-URL = {
-		'add' 			:		'/Dish/Add'
-		'copy' 			:		'/Dish/Copy'
-		'remove' 		:		'/Dish/Remove'
-		'top' 			:		'/Dish/Update/Top'
-		'move' 			:		'/Dish/Update/Category'
-		'edit' 			:		'/Dish/Update/All'
-		'able' 			:		'/Dish/Update/Able'
-		'picUploadPre' 	:		'/pic/upload/token/dishupdate'
-		'picUpload' 	:		'http://up.qiniu.com/putb64'
+		'add' 			:		'/Dish/Group/Add'
+		'remove' 		:		'/Dish/Group/Remove'
+		'edit' 			:		'/Dish/Group/Update'
 	}
 
 	###
 	#	校正ajax-object的url
 	###
 	_correct-URL = {
-		"add"			:		(ajax-object, data)-> ajax-object.url += "/#{data.category-id}"
-		"edit" 			:		(ajax-object, data)-> ajax-object.url += "/#{data.dish-id}"
-		"able" 			:		(ajax-object, data)-> ajax-object.url += "/#{data.flag}"
-		'picUploadPre' 	:		(ajax-object, data)-> ajax-object.url += "/#{data.id}"
-		'picUpload' 	:		(ajax-object, data)-> ajax-object.url += "/#{data.fsize}/key/#{data.key}"
+		"remove"			:		(ajax-object, data)-> ajax-object.url += "/#{data.property-id}"
+		"edit" 				:		(ajax-object, data)-> ajax-object.url += "/#{data.property-id}"
 	}
 
 
@@ -66,10 +54,6 @@ require-manage = let
 	#	按照需要设定header
 	###
 	_set-header = {
-		"picUpload" 		:		(ajax-object, data)-> ajax-object.header =  {
-			"Content-Type" 		:		"application/octet-stream"
-			"Authorization" 	:		"UpToken #{data.token}"
-		}
 	}
 
 
@@ -78,15 +62,7 @@ require-manage = let
 	###
 	_get-require-data-str = {
 		"add" 			:		(data)-> return "#{data.JSON}"
-		"copy" 			:		(data)-> return "#{data.JSON}"
-		"remove" 		:		(data)-> return "#{data.JSON}"
-		"top" 			: 		(data)-> return "#{data.JSON}"
-		"move" 			:		(data)-> return "#{data.JSON}"
 		"edit" 			:		(data)-> return "#{data.JSON}"
-		"able" 			:		(data)-> return "#{data.JSON}"
-		"picUploadPre" 	:		(data)-> return ""
-		"picUpload" 	:		(data)-> return "#{data.url}"
-
 	}
 
 	###

@@ -22,12 +22,7 @@ main-manage = let
 		all-groups = get-JSON _get-group-JSON!
 		console.log all-groups
 		for group in all-groups
-			if group.type is "property" then property = new Property {
-				id 			:		group.id
-				name 		:		group.name
-				content 	: 		group.content
-				belong-to 	:		group.belong_to
-			}
+			if group.type is "property" then main-manage.add-property group
 		console.log _properties
 
 	_new-btn-click-event = !-> page.toggle-page "new"; new_.toggle-callback!
@@ -119,9 +114,9 @@ main-manage = let
 					add-char = ""; if (price = choose-and-spread[i].price) > 0 then add-char = "+"
 					choose-inner-html += "<p>#{choose-and-spread[i].name}</p>"
 					spread-inner-html += "<p>#{add-char}#{price}</p>"
-				if choose-and-spread.length > 3
+				if (len_ = choose-and-spread.length) > 3
 					choose-inner-html += "<p>余#{len_ - 3}项</p>"
-					spread-inner-html += "<p>余#{len_ - 3}项</p>"
+					spread-inner-html += "<p class='tail'>余#{len_ - 3}项</p>"
 				property.choose-dom.html choose-inner-html
 				property.spread-dom.html spread-inner-html
 
@@ -134,5 +129,14 @@ main-manage = let
 		_init-depend-module!
 		_init-all-event!
 		_init-all-group _get-group-JSON
+
+	add-property: (options)!->
+		property = new Property {
+			id 			:		options.id
+			name 		:		options.name
+			content 	: 		options.content
+			belong-to 	:		options.belong_to
+			remark 		:		options.remark
+		}
 
 module.exports = main-manage
