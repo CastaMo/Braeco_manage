@@ -37,23 +37,24 @@ main-manage = let
 		
 		_search-dom.click !->
 			searchNum = $('._searchInput').val!
-			searchNum = Number(searchNum)
-			_location = "/Manage/Market/Member/List?search=" + searchNum
-			console.log "_location", _location
-			location.href = _location
+			if searchNum.length > 0 and /^[0-9]+$/.test(searchNum) or searchNum.length is 0
+				searchNum = Number(searchNum)
+				_location = "/Manage/Market/Member/List?search=" + searchNum
+				location.href = _location
+			else alert("只能输入电话或编号")
 
 		_last-page-dom.click !->
 			pageArrJSON = $('#page-JSON-field').html!
 			pageArr = JSON.parse(pageArrJSON)
 			if pageArr.pn > 1 then pageArr.pn--
-			location.href = "/Manage/Market/Member/List?by=create_date&in=#{pageArr.in}&pn=" + pageArr.pn
+			location.href = "/Manage/Market/Member/List?by=create_date&search=#{pageArr.search}&in=#{pageArr.in}&pn=" + pageArr.pn
 			_init-table!
 
 		_next-page-dom.click !->
 			pageArrJSON = $('#page-JSON-field').html!
 			pageArr = JSON.parse(pageArrJSON)
 			if pageArr.pn < pageArr.sum_pages then pageArr.pn++
-			location.href = "/Manage/Market/Member/List?by=create_date&in=#{pageArr.in}&pn=" + pageArr.pn
+			location.href = "/Manage/Market/Member/List?by=create_date&search=#{pageArr.search}&in=#{pageArr.in}&pn=" + pageArr.pn
 			_init-table!
 
 		_jump-dom.click !->
@@ -77,11 +78,8 @@ main-manage = let
 		_save-dom.click !->
 			_length = _members.length
 			modify-input = $('#_input1').val!
-			console.log "modify-input", modify-input
 			parentID = $('.displayID').html!
-			console.log "parentID", parentID
 			recharge-input = $('#_input2').val!
-			console.log "recharge-input", recharge-input
 			request-object = {}
 			for i from 0 to _length-1 by 1
 				if Number(_members[i].id) is Number(parentID) and modify-input != ""
@@ -95,7 +93,6 @@ main-manage = let
 						success 	:		(result)!-> location.reload!
 					}
 				else if Number(_members[i].id) is Number(parentID) and recharge-input != ""
-					console.log "111", 111
 					request-object.amount = recharge-input;
 					recharge-input = Number(_members[i].balance)+Number(recharge-input)
 					recharge-input = Number(recharge-input)
@@ -109,10 +106,9 @@ main-manage = let
 						}
 						success 	:		(result)!-> location.reload!
 					}
-
-			#_update-members!
-			#_init-table!
-			#page.cover-page "exit"
+			_update-members!
+			_init-table!
+			page.cover-page "exit"
 
 	class Member
 		(options)!->
@@ -122,7 +118,6 @@ main-manage = let
 	_update-members = !->
 		memberArrJSON = JSON.stringify(_members)
 		$('#json-field').html = memberArrJSON
-		console.log "memberArrJSON", memberArrJSON
 
 	_init-arry = !->
 		memberArrJSON = $('#json-field').html!
@@ -135,7 +130,6 @@ main-manage = let
 	_init-table = !->
 		$('#_input1').val("")
 		$('#_input2').val("")
-		console.log "_members", _members
 		_length = _members.length
 		$("._line").remove!
 		for i from 0 to _length-1 by 1
@@ -180,6 +174,12 @@ main-manage = let
 				$(".displayID").html(_now.find("._displayID").html!)
 				$(".modifyIntegral").html(_now.find("._balance").html!)
 				$(".WechatName").html(_now.find("._nick").html!)
+				if _now.find("._phone").html! == "-"
+					$(".preview-wrapper").removeClass "_hasphone"
+					$(".preview-wrapper").addClass "_nophone"
+				else
+					$(".preview-wrapper").removeClass "_nophone"
+					$(".preview-wrapper").addClass "_hasphone"
 				$(".phoneNumber").html(_now.find("._phone").html!)
 				$(".memberID").html(_now.find("._id").html!)
 				$(".parent").html(_now.find("._exp").html!)
@@ -187,18 +187,16 @@ main-manage = let
 		pageArrJSON = $('#page-JSON-field').html!
 		pageArr = JSON.parse(pageArrJSON)
 		$(".page").html(pageArr.pn + "/" + pageArr.sum_pages)
-		console.log "pageArr", pageArr
-		console.log "location.href", location.href
 		if pageArr.in is "DESC" then
-			_loop-id-dom.attr("href", "?by=create_date&in=ASC&pn=1");console.log "222", 222
-			_loop-level-dom.attr("href", "?by=EXP&in=ASC&pn=1")
-			_loop-exp-dom.attr("href", "?by=EXP&in=ASC&pn=1")
-			_loop-balance-dom.attr("href", "?by=balance&in=ASCC&pn=1")
+			_loop-id-dom.attr("href", "?by=create_date&in=ASC&search=#{pageArr.search}&pn=#{pageArr.pn}")
+			_loop-level-dom.attr("href", "?by=EXP&in=ASC&search=#{pageArr.search}&pn=#{pageArr.pn}")
+			_loop-exp-dom.attr("href", "?by=EXP&in=ASC&search=#{pageArr.search}&pn=#{pageArr.pn}")
+			_loop-balance-dom.attr("href", "?by=balance&in=ASCC&search=#{pageArr.search}&pn=#{pageArr.pn}")
 		else if pageArr.in is "ASC" then
-			_loop-id-dom.attr("href", "?by=create_date&in=DESC&pn=1");console.log "111", 111
-			_loop-level-dom.attr("href", "?by=EXP&in=DESC&pn=1")
-			_loop-exp-dom.attr("href", "?by=EXP&in=DESC&pn=1")
-			_loop-balance-dom.attr("href", "?by=balance&in=DESC&pn=1")
+			_loop-id-dom.attr("href", "?by=create_date&in=DESC&search=#{pageArr.search}&pn=#{pageArr.pn}")
+			_loop-level-dom.attr("href", "?by=EXP&in=DESC&search=#{pageArr.search}&pn=#{pageArr.pn}")
+			_loop-exp-dom.attr("href", "?by=EXP&in=DESC&search=#{pageArr.search}&pn=#{pageArr.pn}")
+			_loop-balance-dom.attr("href", "?by=balance&in=DESC&search=#{pageArr.search}&pn=#{pageArr.pn}")
 
 	_init-depend-module = !->
 		page := require "./pageManage.js"

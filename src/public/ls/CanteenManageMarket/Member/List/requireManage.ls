@@ -45,9 +45,11 @@ require-manage = let
 		else if message then _require-fail-callback[name][message]?!
 		else alert "系统错误"
 
-	_requires-fail-callback = {
-		"modify"		:		{}
-		"result"		:		{}
+	_require-fail-callback = {
+		"User not found"					:		-> alert "用户不存在"
+		"Membership card not exists"		:		-> alert "会员不存在"
+		"Need phone to charge"				:		-> alert "充值需要手机号码"
+		"Membership card not exists"		:		-> alert "会员卡不存在"
 	}
 
 	_require-handle = (name, config)->
