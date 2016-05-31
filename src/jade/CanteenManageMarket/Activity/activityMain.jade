@@ -1,4 +1,4 @@
-#category-main
+#category-main(ng-controller='category-main')
   .braeco-activity-wrapper
     .left-menu-wrapper
       .upload-canteen-photo
@@ -6,79 +6,75 @@
       .activity-items
         .promotion-activity
           p 促销活动
-        ul
-          li
+        ul.reduce-activities-list
+          li(ng-repeat='activity in salesActivities' ng-click='activityItemClickEvent($event)')
             .content
               .pic
+                img(ng-src='{{baseImageUrl + activity.pic}}')
               .info
-                .title 买一送一
-                .brief 这个就是介绍哈hahah
+                .title {{activity.title}}
+                .brief {{activity.intro}}
 
-        .new-promotion-activity.new-activity 添加促销活动
+        .new-promotion-activity.new-activity(ng-click='newPromotionActivity($event)') 添加促销活动
 
       .activity-items
         .theme-activity
           p 主题活动
-        ul
-          li
+        ul.theme-activities-list
+          li(ng-repeat='activity in themeActivities' ng-click='activityItemClickEvent($event)')
             .content
               .pic
+                img(ng-src='{{baseImageUrl + activity.pic}}')
               .info
-                .title 买一送三
-                .brief 这个就是介绍哈哈哈哈
+                .title {{activity.title}}
+                .brief {{activity.intro}}
 
-        .new-theme-activity.new-activity 添加主题活动
+        .new-theme-activity.new-activity(ng-click='newThemeActivity($event)') 添加主题活动
 
     .right-content-wrapper
       .form-container
-        form(name='newActivity' action)
+        form(name='activityForm' id='activityForm')
           .warn.form-item
             p 带 * 号为必填项
 
           .form-item.activity-name
             label(for='activity-name') 活动名称 *
-            input(type='text' id='activity-name' name='activity-name' required)
+            input(type='text' id='activity-name' name='activity-name' required ng-model='activityName')
             span 字数不超过5个汉字或10个字母
+            span.letter-number 0 / 10
 
           .form-item
             label(for='expiry-date') 有效期 *
-            select(id='expiry-date' name='expiry-date')
+            select(id='expiry-date' name='expiry-date' ng-model='expiryDate')
               option(value='0') 永久
               option(value='1') 日期区间
 
           .form-item.date-range
-            label.date-range-label 日期区间
+            label.date-range-label.disabled 日期区间
 
-            input(type='date' id='activity-start-date' name='activity-start-date')
-            label 至
-            input(type='date' id='activity-end-date' name='activity-end-date')
-
-          //- .form-item.time-range
-            label(for='activity-start-time') 启动时间
-            input(type='time' id='activity-start-time' name='activity-start-time' disabled)
-
-            label.end-time-label(for='activity-end-time') 停用时间
-            input(type='time' id='activity-end-time' name='activity-end-time' disabled)
+            input(type='date' id='activity-start-date' name='activity-start-date' ng-model='activityStartDate' disabled)
+            label.disabled 至
+            input(type='date' id='activity-end-date' name='activity-end-date' ng-model='activityEndDate' disabled)
 
           .form-item.activity-image
-            label.activity-image-label(for='activity-upload-image')
+            label.activity-image-label.image-uploader(for='activity-upload-image')
               span 图片 *
-              input(type='file' id='activity-upload-image' name='activity-upload-image' required)
               .upload-image
-                img#upload-image-preview
+                img#activity-image-preview(src='http://ww4.sinaimg.cn/large/ed796d65gw1f4etfd2bn8j20e807l0tw.jpg')
+            input(type='file' id='activity-upload-image' name='activity-upload-image' accept='image/*' required ng-model='activityUploadImage')
 
           .form-item.activity-brief
             label.activity-brief-label(for='activity-brief') 活动简介 *
-            textarea(type='text' id='activity-brief' name='activity-brief' required)
-            span.letter-number 25 / 40
+            textarea(type='text' id='activity-brief' name='activity-brief' required ng-model='activityBrief')
+            span.letter-number 0 / 40
 
           .form-item.activity-content
             label.activity-content-label(for='activity-content') 活动详情 *
-            textarea(type='text' id='activity-content' name='activity-content' required)
-            span.letter-number 25 / 200
+            textarea(type='text' id='activity-content' name='activity-content' required ng-model='activityContent')
+            span.letter-number 0 / 200
 
           .form-item.action-buttons
-            input(type='button' value='取消' name='activity-cancle' id='activity-cancle')
-            input(type='submit' value='保存' name='activity-save' id='activity-save')
-            span.info-message 保存成功
-            span.delete-acvivity 删除该活动
+            input(type='button' value='取消' name='activity-cancle' id='activity-cancle' )
+            input(type='submit' value='保存' name='activity-save' id='activity-save' )
+            span.activity-hide.info-message 保存成功
+            span.delete-acvivity.delete-acvivity-hide 删除该活动

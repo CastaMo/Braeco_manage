@@ -114,7 +114,7 @@ module.exports = function(grunt) {
         copy: {
             test: {
                 cwd: '<%= dirs.lib_path %>',
-                src: ['<%= dirs.js %>common/*.js'],
+                src: ['<%= dirs.js %>common/*.js', '<%= dirs.css %>common/*.css'],
                 dest: '<%= dirs.dest_path %>',
                 expand: true
             },
@@ -440,6 +440,11 @@ module.exports = function(grunt) {
             market_member_list_test: {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/List/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/List/index.js"]
+                }
+            },
+            market_activity_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/index.js"]
                 }
             },
             market_promotion_single_test: {

@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require('express');
 var app = express();
 var router = express.Router();
@@ -33,9 +35,9 @@ module.exports = function(passport) {
 		res.render('./CanteenManageMenu/Food/Shelves/develop');
 	});
 
-	router.get('/Manage/Market/Activity', function(req, res) {
-		res.render('./CanteenManageMarket/Activity/develop');
-	});
+	// router.get('/Manage/Market/Activity', function(req, res) {
+	// 	res.render('./CanteenManageMarket/Activity/develop');
+	// });
 
 	router.get('/Manage/Market/Member/Recharge', function(req, res) {
 		res.render('./CanteenManageMarket/Member/Recharge/develop');
@@ -48,13 +50,17 @@ module.exports = function(passport) {
 	router.get('/Manage/Market/Member/List', function(req, res) {
 		res.render('./CanteenManageMarket/Member/List/develop');
 	});
-	
+
 	router.get('/Manage/Market/Promotion/Single', function(req, res) {
 		res.render('./CanteenManageMarket/Promotion/Single/develop');
 	});
 
 	router.get('/Manage/Business/HallOrder/Basic', function(req, res) {
 		res.render('./CanteenManageBusiness/HallOrder/Basic/develop');
+	});
+
+	router.get('/Manage/Data/Statistics', function(req, res) {
+		res.render('./CanteenManageData/develop');
 	});
 
 	router.get('/renew', function(req, res) {
@@ -75,12 +81,12 @@ module.exports = function(passport) {
 		}, 0);
 	});
 
-	router.get('/Manage/Market/Activity/Data', function(req, res) {
-		setTimeout(function() {
-			res.send("var allData = '"+'{"message":"success","data":{"activities":[{"id":"142","title":"123","intro":"123","content":"123","pic":"http://static.brae.co/images/activity/avkqmrziunjzraodbu1mcmvu34d96phh.png","date_begin":"2016-05-05","date_end":"2016-05-25","is_valid":true,"type":"theme","detail":[]},{"id":"144","title":"123456","intro":"全场满<strong>123</strong>减<strong>23</strong>","content":"123","pic":"http://static.brae.co/images/activity/2qv2j38wna75yvp1mr8u2pxksg2r01s2.png","date_begin":"2016-05-04","date_end":"2016-05-27","is_valid":true,"type":"reduce","detail":[{"least":123,"reduce":23}]},{"id":"145","title":"2341","intro":"全场满<strong>123</strong>送<strong>海鲜披萨（双拼专用）</strong>","content":"123","pic":"http://static.brae.co/images/activity/4qhd0jimg4tipuc87by4uqp4jr1onkdr.png","date_begin":"2016-05-19","date_end":"2016-05-28","is_valid":false,"type":"give","detail":[{"least":123,"dish":"海鲜披萨（双拼专用）"}]},{"id":"146","title":"12323123","intro":"123123123123123","content":"123","pic":"http://static.brae.co/images/activity/so4crd8engklb9ny1wt4lqoe6r57tyam.png","date_begin":"2016-05-05","date_end":"2016-05-25","is_valid":true,"type":"other","detail":"123123123123123"}]}}'+"';"+
-			"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
-		}, 0);
-	});
+	// router.get('/Manage/Market/Activity/Data', function(req, res) {
+	// 	setTimeout(function() {
+	// 		res.send("var allData = '"+'{"message":"success","data":[{"id":1,"title":"圣诞狂欢1","intro":"\\u5723\\u8bde\\u8282\\u5feb\\u5230\\u5566\\uff0c\\u6709\\u6ca1\\u6709\\u51c6\\u5907\\u597d\\u793c\\u7269\\u5462~","content":"merry christmas ~","pic":"http://ww3.sinaimg.cn/large/ed796d65gw1f4de17pytwj205k02zt8v.jpg","date_begin":"2015-12-24","date_end":"2015-12-25","type":"theme"},{"id":2,"title":"圣诞狂欢2","intro":"\\u5723\\u8bde\\u8282\\u5feb\\u5230\\u5566\\uff0c\\u6709\\u6ca1\\u6709\\u51c6\\u5907\\u597d\\u793c\\u7269\\u5462~","content":"merry christmas ~","pic":"http://ww3.sinaimg.cn/large/ed796d65gw1f4de17pytwj205k02zt8v.jpg","date_begin":"2015-12-24","date_end":"2015-12-25","type":"theme"},{"id":3,"title":"圣诞狂欢3","intro":"\\u5723\\u8bde\\u8282\\u5feb\\u5230\\u5566\\uff0c\\u6709\\u6ca1\\u6709\\u51c6\\u5907\\u597d\\u793c\\u7269\\u5462~","content":"merry christmas ~","pic":"http://ww3.sinaimg.cn/large/ed796d65gw1f4de17pytwj205k02zt8v.jpg","date_begin":"2015-12-24","date_end":"2015-12-25","type":"theme"},{"id":4,"title":"圣诞狂欢4","intro":"\\u5723\\u8bde\\u8282\\u5feb\\u5230\\u5566\\uff0c\\u6709\\u6ca1\\u6709\\u51c6\\u5907\\u597d\\u793c\\u7269\\u5462~","content":"merry christmas ~","pic":"http://ww3.sinaimg.cn/large/ed796d65gw1f4de17pytwj205k02zt8v.jpg","date_begin":"2015-12-24","date_end":"2015-12-25","type":"reduce"}]}'+"';"+
+	// 		"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
+	// 	}, 0);
+	// });
 
 	router.post('/Category/Add', function(req, res) {
 	    res.json({
@@ -127,7 +133,7 @@ module.exports = function(passport) {
 		res.json({
 	        message 	: 		"success"
 	    });
-	});	
+	});
 
 	router.post('/Dish/Copy', function(req, res) {
 		var _getNewDishIdMap = function(currentDishId) {

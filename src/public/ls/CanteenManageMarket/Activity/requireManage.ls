@@ -1,218 +1,116 @@
 require-manage = let
-	_instance = null
 
-	class RequireManage
-		_allRequireName = ['login', 'bookOrder', 'recharge', 'getId', 'like', 'getAllData']
-		_allRequireUrl = ['/Eater/Login/Mobile', '/Order/Add', '/Membership/Card/Charge', '/server/captcha', '/Eater/Like/Dinner/', '/Table/Home']
+	[get-JSON, ajax, deep-copy] = [util.get-JSON, util.ajax, util.deep-copy]
 
-		_requires = {}
+	_requires = {}
 
-		_notNeedPingMoneyPaid = ['cash', 'prepayment', 'alipay_qr_f2f']
+	#	ajax请求基本配置，无特殊情况不要改
+	_default-config =
+		async: true
+		type:	"POST"
 
-		_needPingMoneyPaid = ['wx_pub', 'alipay_wap', 'bfb_wap']
+	#	获取一个基本的ajax请求对象，主要有url、type、async的配置
+	_get-normal-ajax-object = (config)->
+		return ao =
+			url: config.url
+			type: config.type
+			async: config.async
 
-		_defaultConfig = {
-			async 	:	true
-			type 	:	"POST"
-		}
+	#	请求名字(自己设)
+	_all-require-name = ['create', 'delete', 'update', 'picUploadPre', 'picUpload']
 
-		_loginFailCallBack = {
-			"Already login"					:	-> hashRoute.back()
-			"Captcha needed"				:	-> alert("需要验证码")
-			"Captcha not generated"			:	-> alert("尚未生成验证码")
-			"Captcha expired"				:	-> alert("验证码过期")
-			"Wrong captcha"					:	-> alert("验证码错误")
-			"This mobile has binded weixin" :	-> alert("该手机号已绑定其他微信账号")
-			"Need to rescan qrcode"			:	-> window.location.pathname = "/Table/Confirm/rescan"
-		}
+	#	请求名字与URL键值对(与后台进行商量)，名字需依赖于上述对象
+	_all-require-URL =
+		'create': '/Activity/Add'
+		'delete': '/Activity/Remove'
+		'update': '/Activity/Profile/Update'
+		# 'retrieve': '/Manage/Market/Activity/Data'
+		'picUploadPre': '/pic/upload/token/activityadd'
+		'picUpload': 'http://up.qiniu.com/putb64'
 
-		_bookFailCallBack = {
-			"The money given does not match database" 		:	-> alert("餐厅已更新了价格，请刷新后重新下单")
-			"Dinner not online" 							:	-> alert("下单失败, 餐厅端未开启,\n请联系服务员反馈情况")
-			"Order too large"								:	-> alert("订单过长")
-			"Need to rescan qrcode"							:	-> window.location.pathname = "/Table/Confirm/rescan"
-			"Some dish is beyond limit"						:	(arr)-> bookOrder.deleteDisabledDishes arr, "limit"
-			"Dish disabled"									:	(arr)-> bookOrder.deleteDisabledDishes arr, "disabled"
-		}
+	#	校正ajax-object的url
+	_correct-URL =
+		"create": (ajax-object, data)-> ajax-object.url += "/#{data.type}"
+		"delete":	(ajax-object, data)-> ajax-object.url += "/#{data.id}"
+		"update":	(ajax-object, data)-> ajax-object.url += "/#{data.id}"
+		'picUploadPre': (ajax-object, data)-> ajax-object.url
+		'picUpload': (ajax-object, data)-> ajax-object.url += "/#{data.fsize}/key/#{data.key}"
 
-		_getIdFailCallBack = {
-			"Invalid phone number"			:	-> alert("手机号码非法")
-			"Need to rescan qrcode"			:	-> window.location.pathname = "/Table/Confirm/rescan"
-			"Captcha needed"				:	-> user.isNeedPicIdChange true
-			"Captcha not generated"			:	-> alert "验证码尚未生成"
-			"Captcha expired"				:	-> alert "验证码过期"
-			"Wrong captcha"					:	-> alert "验证码错误"
-		}
+	#	按照需要设定header
+	_set-header =
+		"picUpload": (ajax-object, data) ->
+			ajax-object.header =
+				"Content-Type":	"application/octet-stream"
+				"Authorization": "UpToken #{data.token}"
 
-		_likeFailCallBack = {
-			"Need to rescan qrcode"			:	-> window.location.pathname = "/Table/Confirm/rescan"
-		}
+	#	ajax请求对象对应的数据请求属性，以键值对Object呈现于此
+	_get-require-data-str =
+		"create":	(data)-> return "#{data.JSON}"
+		# "retrieve": (data)-> return "#{data.JSON}"
+		"update": (data)-> return "#{data.JSON}"
+		"delete": (data)-> return ""
+		"picUploadPre":	(data)-> return ""
+		"picUpload": (data)-> return "#{data.url}"
 
-		_getAllDataFailCallback = {
-			"Need to rescan qrcode"			:	-> window.location.pathname = "/Table/Confirm/rescan"
-		}
+	#	在请求状态码为200且返回的message属性不为success时的处理方法
+	_require-fail-callback =
+		"create": {}
+		# "retrieve": {}
+		"update": {}
+		"delete": {}
+		"picUploadPre": {}
+		"picUpload": {}
 
-		_getGeneralFunc = (name, options)->
-			if name is "login"
-				return (id, callback, always)->
-					ajax({
-						data 	:	"captcha=#{id}"
-						url 	: 	options.url
-						type 	:	options.type
-						async 	:	options.async
-						success :	(result_)->
-							result = getJSON result_
-							message = result.message
-							if message is "success" then callback?(result)
-							else if message then _loginFailCallBack[message]?()
-							else alert("系统错误")
-						always 	:	always
-					})
+	#	在状态码为200，即请求成功返回时的处理
+	#	@{param}	name: 		请求对象的名字
+	#	@{param}	result_:	返回值，即ResponseText
+	#	@{param}	success:	当返回的message为success时执行的回调函数
+	_normal-handle = (name, result_, success)->
+		result = get-JSON result_
+		message = result.message
+		if message is "success" then success?(result)
+		else if message then _require-fail-callback[name][message]?!
+		else alert "系统错误"
 
-			else if name is "bookOrder"
-				return (contents, moneyPaid, callback, always, memo)->
-					memoStr = ""
-					if memo then memoStr = "&describtion=#{memo}"
-					ajax({
-						data 	:	"contents=#{contents}&moneypaid=#{moneyPaid}#{memoStr}"
-						url 	: 	options.url
-						type 	:	options.type
-						async 	:	options.async
-						success :	(result_)->
-							result = getJSON result_
-							message = result.message
-							if message is "success"
-								locStor.set("orderId", result.id)
-								if moneyPaid in _notNeedPingMoneyPaid then callback?()
-								else if moneyPaid in _needPingMoneyPaid
-									charge = result["pingxx"]
-									pingpp.createPayment(charge, (result, error)->
-										if result is "success" then callback?()
-									)
-								else if moneyPaid is "p2p_wx_pub"
-									callpay {
-										appid: result.appid
-										timestamp: result.timestamp
-										noncestr: result.noncestr
-										signature: result.signature
-										package: result.package
-										signMD: result.signMD
-										callback: callback
-									}
-							else if message then _bookFailCallBack[message]?(result.dishes)
-							else alert("系统错误")
-						always 	:	always
-					})
-			else if name is "recharge"
-				return (amount, channel, callback, always)->
-					ajax({
-						data 	:	"amount=#{amount}&channel=#{channel}"
-						url 	: 	options.url
-						type 	:	options.type
-						async 	:	options.async
-						success :	(result_)->
-							result = getJSON result_
-							message = result.message
-							if message is "success"
-								if channel in _notNeedPingMoneyPaid then callback?()
-								else if channel in _needPingMoneyPaid
-									charge = result["pingxx"]
-									pingpp.createPayment(charge, (result, error)->
-										if result is "success" then callback?()
-									)
-								else if channel is "p2p_wx_pub"
-									callpay {
-										appid: result.appid
-										timestamp: result.timestamp
-										noncestr: result.noncestr
-										signature: result.signature
-										package: result.package
-										signMD: result.signMD
-										callback: callback
-									}
-							else if message then _bookFailCallBack[message]?()
-							else alert("系统错误")
-						always 	:	always
-					})
-			else if name is "getId"
-				return (mobile, callback, always, picId)->
-					ajax({
-						data 	:	"type=testmsg&mobile=#{mobile}&captcha=#{picId}"
-						url 	:	options.url
-						type 	:	options.type
-						async	:	options.async
-						success :	(result_)->
-							result = getJSON result_
-							message = result.message
-							if message is "success" then callback?(result)
-							else if message then _getIdFailCallBack[message]?()
-							else alert("系统错误")
-						always 	:	always
-					})
-			else if name is "like"
-				return (x, callback, always)->
-					ajax({
-						url 	:	"#{options.url}#{x}"
-						type 	:	options.type
-						async	:	options.async
-						success :	(result_)->
-							result = getJSON result_
-							message = result.message
-							if message is "success" then callback?()
-							else if message then _likeFailCallBack[message]?()
-							else alert("系统错误")
-						always 	:	always
-					})
-			else if name is "getAllData"
-				return (callback, fail, always)->
-					ajax({
-						url 	:	options.url
-						type 	:	options.type
-						async 	:	options.async
-						success :	(result_)->
-							result = getJSON result_
-							message = result.message
-							if message is "success" then callback?(result)
-							else if message then _getAllDataFailCallback[message]?()
-							else fail?()
-						always :	always
-					})
-			else return -> alert("呵呵")
+	#	用于获取每个请求对象的require函数方法
+	#	@param	{String}	name:		请求对象的名字
+	#	@param	{Object}	config:		请求的基本配置
+	#	@return	{Fn}			执行ajax请求，需要依赖于上面的函数方法
+	_require-handle = (name, config)->
+		return (options)->
+			ajax-object = _get-normal-ajax-object config
+			ajax-object.data = _get-require-data-str[name]? options.data
+			_correct-URL[name]? ajax-object, options.data
+			_set-header[name]? ajax-object, options.data
+			ajax-object.success = (result_)-> _normal-handle name, result_, options.success
+			ajax-object.always = options.always
+			ajax ajax-object
 
+	class Require
 
-		class Require
+		(options)->
+			deep-copy options, @
+			@init()
+			_requires[@name] = @
 
-			constructor: (options)->
-				deepCopy options, @
-				@init()
-				_requires[@name] = @
+		init: !-> @init-require!
 
-			init: ->
-				@initRequire()
+		init-require: !->
+			config = {}
+			deep-copy _default-config, config
+			config.url = @url
+			@require = _require-handle @name, config
 
-			initRequire: ->
-				requireObj = {}
-				deepCopy _defaultConfig, requireObj
-				requireObj.url = @url
-				@require = _getGeneralFunc @name, requireObj
+	_init-all-require = ->
+		for name, i in _all-require-name
+			require = new Require conf =
+				name:	name
+				url: _all-require-URL[name]
 
-				
+		console.log _requires
 
-
-
-		constructor: ->
-			for name, i in _allRequireName
-				require = new  Require {
-					name 		:		name
-					url 		:		_allRequireUrl[i]
-				}
+	module =
 		get: (name)-> return _requires[name]
-
-	getInstance: ->
-		if _instance is null then _instance = new RequireManage()
-		return _instance
-
-	initial: ->
-		requireManage = RequireManageSingleton.getInstance()
+		initial: -> _init-all-require!
 
 module.exports = require-manage
