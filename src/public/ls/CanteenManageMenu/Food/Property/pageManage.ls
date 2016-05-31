@@ -34,6 +34,5 @@ page-manage = let
 
 	toggle-page: (page)->
 		_toggle-page-callback[page]?!
-		set-timeout "scrollTo(0, 0)", 0
 
 module.exports = page-manage

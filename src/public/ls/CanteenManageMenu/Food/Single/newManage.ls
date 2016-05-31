@@ -177,6 +177,7 @@ new-manange = let
 			tag 		:		_remark
 			detail 		:		_intro
 			groups 		:		_groups	
+			type 		:		"normal"
 		}
 
 	###************ operation end **********###
@@ -256,7 +257,7 @@ new-manange = let
 		#步骤①
 		if _src then converImgTobase64 _src, (data-URL)->
 			#图片base64字符串去除'data:image/png;base64,'后的字符串
-			_base64-str := data-URL.substr(22)
+			_base64-str := data-URL.substr(data-URL.index-of(";base64,") + 8)
 			console.log "base64 ready"
 			_check-is-already-and-upload!
 

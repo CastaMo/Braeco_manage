@@ -1,4 +1,5 @@
-page = null
+page 		= null
+new_ 		= null
 
 main-manage = let
 	[ 		deep-copy, 			get-JSON] =
@@ -11,6 +12,7 @@ main-manage = let
 
 	_init-depend-module = !->
 		page 		:= require "./pageManage.js"
+		new_ 		:= require "./newManage.js"
 
 	_init-all-event = !->
 
@@ -28,7 +30,7 @@ main-manage = let
 			}
 		console.log _properties
 
-	_new-btn-click-event = !-> page.toggle-page "new"
+	_new-btn-click-event = !-> page.toggle-page "new"; new_.toggle-callback!
 
 	class Group
 
@@ -40,8 +42,12 @@ main-manage = let
 		init: !->
 
 	class Property extends Group
+
+		_property-list-dom 			= $ "ul.t-property-list" 
+
 		(options)->
-			super options, @
+			super options
+			@update-self-dom!
 			_properties[@id] = @
 
 		init: !->
@@ -55,10 +61,74 @@ main-manage = let
 		init-all-event: !->
 
 		init-property-dom: !->
+			_get-property-dom = (property)->
+				dom = $ "<li class='property parallel-container'>
+							<div class='t-name'>
+								<div class='name-field total-center'>
+									<p></p>
+								</div>
+							</div>
+							<div class='t-choose left-right-border'>
+								<div class='choose-field total-center'></div>
+							</div>
+							<div class='t-spread'>
+								<div class='spread-field total-center'></div>
+							</div>
+							<div class='t-using-num left-right-border'>
+								<div class='using-num-field total-center'>
+									<p></p>
+								</div>
+							</div>
+							<div class='t-oper'>
+								<div class='oper-field'>
+									<div class='edit'>
+										<div class='logo'></div>
+										<p>修改</p>
+									</div>
+									<div class='remove'>
+										<div class='logo'></div>
+										<p>删除</p>
+									</div>
+									<div class='clear'></div>
+								</div>
+							</div>
+						</li>"
+				_property-list-dom.append dom
+				return dom
+			@property-dom = _get-property-dom @
 
 
 		init-all-detail-dom: !->
-			
+			@name-dom 			= @property-dom.find ".t-name p"
+			@choose-dom 		= @property-dom.find ".t-choose .choose-field"
+			@spread-dom 		= @property-dom.find ".t-spread .spread-field"
+			@using-num-dom 		= @property-dom.find ".t-using-num p"
+			@edit-dom 			= @property-dom.find ".t-oper .edit"
+			@remove-dom 		= @property-dom.find ".t-oper .logo"
+
+		update-self-dom: !->
+
+			_update-choose-and-spread-dom = (property)!->
+				property.choose-dom.html ""
+				property.spread-dom.html ""
+				choose-and-spread = property.content
+				choose-inner-html = ""
+				spread-inner-html = ""
+				for i in [0 to 2]
+					if not choose-and-spread[i] then break
+					add-char = ""; if (price = choose-and-spread[i].price) > 0 then add-char = "+"
+					choose-inner-html += "<p>#{choose-and-spread[i].name}</p>"
+					spread-inner-html += "<p>#{add-char}#{price}</p>"
+				if choose-and-spread.length > 3
+					choose-inner-html += "<p>余#{len_ - 3}项</p>"
+					spread-inner-html += "<p>余#{len_ - 3}项</p>"
+				property.choose-dom.html choose-inner-html
+				property.spread-dom.html spread-inner-html
+
+			@name-dom.html @name
+			_update-choose-and-spread-dom @
+			@using-num-dom.html @belong-to.length
+
 
 	initial: (_get-group-JSON)!->
 		_init-depend-module!
