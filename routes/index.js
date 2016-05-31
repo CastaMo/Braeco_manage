@@ -48,6 +48,14 @@ module.exports = function(passport) {
 	router.get('/Manage/Market/Member/List', function(req, res) {
 		res.render('./CanteenManageMarket/Member/List/develop');
 	});
+
+	router.get('/Manage/Market/Coupon/Basic', function(req, res) {
+		res.render('./CanteenManageMarket/Coupon/Basic/develop');
+	});
+
+	router.get('/Manage/Market/Coupon/Other', function(req, res) {
+		res.render('./CanteenManageMarket/Coupon/Other/develop');
+	});
 	
 	router.get('/Manage/Market/Promotion/Single', function(req, res) {
 		res.render('./CanteenManageMarket/Promotion/Single/develop');

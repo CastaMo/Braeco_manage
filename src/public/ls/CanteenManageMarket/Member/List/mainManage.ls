@@ -98,7 +98,10 @@ main-manage = let
 					recharge-input = Number(recharge-input)
 					recharge-input = recharge-input.toFixed(2)
 					_members[i].balance = Number(recharge-input)
-					request-object.phone = $(".phoneNumber").html!
+					if $(".phoneNumber").html! is "-"
+						request-object.phone = $("._suppPhone").val!
+					else
+						request-object.phone = $(".phoneNumber").html!
 					require_.get("recharge").require {
 						data 		:		{
 							JSON 	:		JSON.stringify(request-object)
@@ -108,6 +111,8 @@ main-manage = let
 					}
 			_update-members!
 			_init-table!
+			if $(".phoneNumber").html! is "-" and recharge-input != "" and /^[0-9]+$/.test($(".phoneNumber").val!) and $(".phoneNumber").val!.length is 11
+				alert("我们已经发送一条短信给会员，会员按照手机短信提示后回复短信即可充值成功，请提示会员留意手机信息!")
 			page.cover-page "exit"
 
 	class Member
@@ -158,7 +163,7 @@ main-manage = let
 			_new-dom.find("._nick").html(_members[i].nick)
 			_new-dom.find("._level").html(_members[i].level)
 			_new-dom.find("._exp").html(_members[i].EXP)
-			_new-dom.find("._balance").html(_members[i].balance)
+			_new-dom.find("._balance").html(_members[i].balance + "元")
 			_table-dom.last().append _new-dom
 			_new-dom.find(".modify").click !->
 				_now =	$(@).parent().parent()
@@ -167,12 +172,16 @@ main-manage = let
 				$(".WechatName").html(_now.find("._nick").html!)
 				$(".phoneNumber").html(_now.find("._phone").html!)
 				$(".memberID").html(_now.find("._id").html!)
+				_reduce = _now.find("._balance").html!
+				_reduce = _reduce.replace("元", "")
 				$(".parent").html(_now.find("._balance").html!)
 				page.cover-page "modify"
 			_new-dom.find(".recharge").click !->
 				_now =	$(@).parent().parent()
 				$(".displayID").html(_now.find("._displayID").html!)
-				$(".modifyIntegral").html(_now.find("._balance").html!)
+				_reduce = _now.find("._balance").html!
+				_reduce = _reduce.replace("元", "")
+				$(".modifyIntegral").html(_reduce)
 				$(".WechatName").html(_now.find("._nick").html!)
 				if _now.find("._phone").html! == "-"
 					$(".preview-wrapper").removeClass "_hasphone"
