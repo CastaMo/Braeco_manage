@@ -160,6 +160,11 @@ module.exports = function(passport) {
 			}
 		}, 1000);
 	});
+	
+	router.post('/Dinner/Manage/Orders/Excel', function(req, res, next) {
+		console.log(req.body);
+		res.send("hello world");
+	});
 
 	router.post('/Category/Add', function(req, res) {
 	    res.json({
