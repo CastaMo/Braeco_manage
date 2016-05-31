@@ -14,6 +14,13 @@
               .info
                 .title {{activity.title}}
                 .brief {{activity.intro}}
+          li(ng-if='isNewSaleActivity')
+            .content
+              .pic
+                img(ng-src='{{baseImageUrl + activity.pic}}')
+              .info
+                .title {{activity.title}}
+                .brief {{activity.intro}}
 
         .new-promotion-activity.new-activity(ng-click='newPromotionActivity($event)') 添加促销活动
 
@@ -22,6 +29,13 @@
           p 主题活动
         ul.theme-activities-list
           li(ng-repeat='activity in themeActivities' ng-click='activityItemClickEvent($event)')
+            .content
+              .pic
+                img(ng-src='{{baseImageUrl + activity.pic}}')
+              .info
+                .title {{activity.title}}
+                .brief {{activity.intro}}
+          li(ng-if='isNewThemeActivity')
             .content
               .pic
                 img(ng-src='{{baseImageUrl + activity.pic}}')
@@ -75,6 +89,6 @@
 
           .form-item.action-buttons
             input(type='button' value='取消' name='activity-cancle' id='activity-cancle' )
-            input(type='submit' value='保存' name='activity-save' id='activity-save' )
+            input(type='submit' value='保存' name='activity-save' id='activity-save' ng-disabled='true')
             span.activity-hide.info-message 保存成功
             span.delete-acvivity.delete-acvivity-hide 删除该活动

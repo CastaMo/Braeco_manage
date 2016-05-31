@@ -90,7 +90,11 @@ ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$location', 
 
   $scope.activity-item-click-event = (event)!->
     console.log @activity
+    console.log($ event.target)
     $scope.activityName = @activity.title
+
+    $ '.activity-items li' .remove-class 'activity-item-background-color'
+    $ event.target .add-class 'activity-item-background-color'
 
     if @activity.date_begin is '0' and @activity.date_end is '0'
       $scope.expiryDate = 0

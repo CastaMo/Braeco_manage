@@ -20,6 +20,7 @@ let win = window, doc = document
 		_init-callback[result.message]?(result)
 
 	_init-all-module = !->
+		image 		= require "./imageManage.js"; 			image.initial!
 		page 		= require "./pageManage.js";			page.initial!
 		group  		= require "./groupManage.js"; 			group.initial _get-group-JSON
 		main 		= require "./mainManage.js";		 	main.initial _get-food-JSON

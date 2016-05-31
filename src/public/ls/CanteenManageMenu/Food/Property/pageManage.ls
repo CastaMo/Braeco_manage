@@ -4,28 +4,28 @@ page-manage = let
 	$("\#Food-sub-menu").addClass "choose"
 	$("\#food-nav li\#Property").addClass "choose"
 
-	_main-dom = $ "\#category-main"
-	_new-dom = $ "\#category-new"
-	_edit-dom = $ "\#category-edit"
+	_main-dom = $ "\#property-main"
+	_new-dom = $ "\#property-new"
+	_edit-dom = $ "\#property-edit"
 	_all-dom = [_main-dom, _new-dom, _edit-dom]
 
 	_unshow-all-dom-except-given = (dom_)->
 		for dom in _all-dom when dom isnt dom_
-			dom.fade-out 200
+			dom.fade-out 100
 
 	_toggle-page-callback = {
 		"main"		:	 let
 			->
-				_main-dom.fade-in 200
+				set-timeout (-> _main-dom.fade-in 100), 100
 				_unshow-all-dom-except-given _main-dom
 		"new"		:	 let
 			->
-				_new-dom.fade-in 200
+				set-timeout (-> _new-dom.fade-in 100), 100
 				_unshow-all-dom-except-given _new-dom
 
-		"edit"		:	 do
+		"edit"		:	 let
 			->
-				_edit-dom.fade-in 200
+				set-timeout (-> _edit-dom.fade-in 100), 100
 				_unshow-all-dom-except-given _edit-dom
 	}
 
@@ -34,6 +34,5 @@ page-manage = let
 
 	toggle-page: (page)->
 		_toggle-page-callback[page]?!
-		set-timeout "scrollTo(0, 0)", 0
 
 module.exports = page-manage

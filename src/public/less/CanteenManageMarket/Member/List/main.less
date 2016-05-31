@@ -1,7 +1,11 @@
 @import "../main";
 
 #json-field {
-display: none;
+    display: none;
+}
+
+#page-JSON-field {
+    display: none;
 }
 
 #List {
@@ -41,6 +45,9 @@ display: none;
 			}
 		}
 		#member-table {
+            ._displayID {
+                display: none;
+            }
 			margin: 15px 0 0 0;
 			table {
 				font-family: Hiragino Sans GB, Microsoft Yahei, sans-serif;
@@ -51,6 +58,9 @@ display: none;
 				.table-title {
 					background-color: #F4F5F9;
 					td {
+                        a {
+                            color: #8D8D8D;
+                        }
                         color: #8D8D8D;
 						height: 45px;
 						border-width: 1px 0 1px 0;	
@@ -62,12 +72,13 @@ display: none;
 					td {
                         color: #4A4A4A;
 						text-align: center;
-						padding-left: 8px;
-						padding-right: 8px;
 						border: 1px solid #E7E7EB;
 						height: 85px;
 						clear: left;
 					}
+                    .modify {
+                        margin-left: 18px;
+                    }
 				}
 				.modify,
 				.recharge {
@@ -98,8 +109,8 @@ display: none;
 		}
 		#page-select {
 			position: relative;
-			left: 415px;
-			clear: left;
+			left: 375px;
+			float: left;
 			margin-top: 20px;
 			.lastPage {
 				float: left;
@@ -111,10 +122,12 @@ display: none;
 				}
 			}
 			.page {
+                text-align: center;
 				position: relative;
 				top: 4px;
 				float: left;
 				color: #4A4A4A;
+                width: 65px;
 			}
 			.nextPage {
 				float: left;
@@ -129,6 +142,7 @@ display: none;
 				margin-left: 10px;
 				float: left;
 				input {
+                    font-size: 14px;
 					padding-left: 5px;
 					border: 1px solid #E7E7EB;
 					border-radius: 3px;
@@ -212,9 +226,13 @@ display: none;
                 .integral-field {
                 	margin-bottom: 30px;
                 	float: left;
-					width: 200px;
-					height: 14px;
+					width: 80px;
+					height: 20px;
                 }
+                .modifyIntegral {
+                    font-size: 14px;
+                }
+
 				.rechargeMoney-field,
                 .level-field {
                 	float: left;
@@ -242,23 +260,31 @@ display: none;
             	.preview-wrapper {
                 	float: left;
                 	height: 120px;
+                    ._txt1,
+                    ._txt3 {
+                    margin: 0 0 0 120px;
+                    padding: 0;
+                    float: left;
+                    }
+                    ._txt2,
+                    ._txt4 {
+                        margin: 0 0 0 20px;
+                        padding: 0;
+                        float: left;
+                    }
+                    span {
+                        height: 40px;
+                        width: 70px;
+                        font-size: 14px;
+                    }
 					p {
 						font-size: 14px;
                 		height: 30px;
                 		width: 150px;
                 	}
-                	.WechatName,
-                	.memberID {
-                		margin: 0;
-                		padding: 5px 0 5px 130px;
-						float: left;
-                	}
-                	.phoneNumber,
-                	.parent {
-                		margin: 0;
-                		padding: 5px 0 5px 40px;
-						float: left;
-                	}
+                	.displayID {
+                        display: none;
+                    }
                 }
             }
         }
@@ -296,28 +322,6 @@ display: none;
                     height: 190px;
                     overflow: auto;
                     border: solid 1px @border-grey-color;
-                    ul {
-                        li {
-                            border-bottom: solid 1px @border-grey-color;
-                            cursor: pointer;
-                            &:hover {
-                                background-color: @grey-color;
-                            }
-                            .property-content-wrapper {
-                                width: 100%;
-                                height: 30px;
-                                .name-field {
-                                    float: left;
-                                    margin-left: 7px;
-                                    line-height: 30px;
-                                }
-                                .tick-field {
-                                    float: right;
-                                    margin-right: 7px;
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }

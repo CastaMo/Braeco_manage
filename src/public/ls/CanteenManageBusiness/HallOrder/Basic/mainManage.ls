@@ -52,7 +52,7 @@ main-manage = let
 			document.getElementById("previewBusiness").style.border-color = '#333333'
 		_stop-dom.click !->
 			$("\#runBusiness").removeClass "choose"
-			$("\#runBusiness").addClass "free"		
+			$("\#runBusiness").addClass "free"
 			$("\#stopBusiness").removeClass "free"
 			$("\#stopBusiness").addClass "choose"
 			document.getElementById("runMes").innerHTML = '启用本业务'

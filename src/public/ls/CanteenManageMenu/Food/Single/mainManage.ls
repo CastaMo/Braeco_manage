@@ -1,4 +1,4 @@
-header = group = page = edit = new_ = null
+header = group = page = edit = new_ = image = null
 main-manage = let
 	_state = null
 	[get-JSON, deep-copy] = [util.get-JSON, util.deep-copy]
@@ -21,6 +21,7 @@ main-manage = let
 	_all-choose-dom 				= _all-choose-field-dom.find ".choose-pic"
 
 	_init-depend-module = !->
+		image 		:= require "./imageManage.js"
 		header 		:= require "./headerManage.js"
 		group 		:= require "./groupManage.js"
 		page 		:= require "./pageManage.js"
@@ -29,17 +30,17 @@ main-manage = let
 
 	_init-all-food = (_get-food-JSON)!->
 		all-foods = get-JSON _get-food-JSON!
-		_fist-category = null
+		_first-category = null
 		for category, i in all-foods
 			category_ = new Category {
 				seqNum 		:		i
 				name 		:		category.name
 				id 			:		category.id
 			}
-			if i is 0 then _fist-category = category_
+			if i is 0 then _first-category = category_
 			for dish in category.dishes
-				category_.add-dish dish
-		_fist-category.select-self-event!
+				if dish.type is "normal" then category_.add-dish dish
+		if _first-category then _first-category.select-self-event!
 
 	_init-all-event = !->
 		_food-single-select-dom.change !-> _categories[_map-category-name-to-id[@value]].select-self-event!
@@ -150,6 +151,7 @@ main-manage = let
 				single-list-dom = $ "<ul class='single-list' id='single-list-#{category.seqNum}'></ul>"
 				_single-list-field-dom.append single-list-dom
 				single-list-dom.css {"display": "none"}
+				
 			@single-list-dom = _get-single-list-dom @
 
 		show-single-list-dom: !-> @single-list-dom.fade-in 100
@@ -168,7 +170,7 @@ main-manage = let
 
 		add-dish: (options)!->
 			dish = new Dish {
-				able 			:		options.able 		|| false
+				able 			:		options.able 		|| true
 				default-price 	:		options.default_price
 				detail 			:		options.detail 		|| ""
 				id 				:		options.id
@@ -181,6 +183,7 @@ main-manage = let
 				dc-type			:		options.dc_type		|| ""
 				dc 				:		options.dc 			|| 0
 				is-head 		:		options.is-head 	|| false
+				type 			:		options.type 		|| "normal"
 			}
 
 		change-able-dish: (dish-id, able)!-> _dishes[@id][dish-id].change-able-self able
@@ -270,7 +273,7 @@ main-manage = let
 
 			init-all-dom: !->
 				@init-single-content-dom!
-				@init-detail-all-dom!
+				@init-all-detail-dom!
 
 			init-prepare: !->
 				@is-choose = false
@@ -278,7 +281,7 @@ main-manage = let
 			init-single-content-dom: !->
 				@single-content-dom = _get-single-content-dom @
 					
-			init-detail-all-dom: !->
+			init-all-detail-dom: !->
 				@choose-dom = @single-content-dom.find ".t-choose .choose-pic"
 				@pic-dom = @single-content-dom.find ".t-pic .pic"
 				@c-name-dom = @single-content-dom.find ".t-name p.c-name"
@@ -311,7 +314,14 @@ main-manage = let
 					inner-html = "<p>#{_get-dc-info dish.dc-type, dish.dc}</p>"
 					dish.dc-dom.html inner-html
 
-				if @pic then @pic-dom.css {"background-image":"url('#{@pic}')"} else @pic-dom.css {"background-image":""}
+				@pic-dom.css {"background-image":""}
+				//if @pic then @pic-dom.css {"background-image":"url(#{@pic})"}
+				//
+				if @pic then image.loading {
+					is-div 		:		true
+					url 		:		"#{@pic}"
+					target-dom 	: 		@pic-dom[0]
+				}
 				if not @able then @cover-dom.fade-in 200
 				else @cover-dom.fade-out 200
 				@c-name-dom.html @c-name; @c-name-dom.attr {"title": @c-name}
