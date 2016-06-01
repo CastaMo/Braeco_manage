@@ -11,7 +11,7 @@ module.exports = function(router) {
   });
 
   router.get('/Manage/Market/Activity/Data', function(req, res) {
-    res.send("var allData = '"+'{"message":"success","data":[{"id":"208","title":"\u9648\u6653\u96c5","intro":"\u54c8\u54c8\u54c8","content":"\u54c8\u54c8\u54c8","pic":"cxtzea3pc4sq621hgty7pwab3jsxhvvu","date_begin":"0","date_end":"0","type":"sales"},{"id":"209","title":"111","intro":"222","content":"333","pic":"ochw2w5pmrgpvrgiuixivkwi7xyinrmb","date_begin":"0","date_end":"0","type":"sales"},{"id":"210","title":"\u5c0f\u96c5\u9648","intro":"kitty\u6653\u96c5","content":"kitty","pic":"43860dwm5cc04tiycgh70dq8aoqygc9k","date_begin":"0","date_end":"0","type":"theme"}]}'+"';"+
+    res.send("var allData = '"+'{"message":"success","data":[]}'+"';"+
       "if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
   });
 

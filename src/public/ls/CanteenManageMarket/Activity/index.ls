@@ -127,7 +127,7 @@ ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', 
       intro: $ '#activity-brief' .val!
       content: $ '#activity-content' .val!
 
-    if $scope.expiry-date is 0
+    if $scope.expiry-date is '0'
       data.date_begin = 0
       data.date_end = 0
     else
@@ -170,7 +170,7 @@ ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', 
       intro: $scope.activityBrief
       content: $scope.activityContent
 
-    if $scope.expiry-date is 0
+    if $scope.expiry-date is '0'
       data.date_begin = 0
       data.date_end = 0
     else
@@ -247,6 +247,7 @@ ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', 
     $scope.isNewActivity = false
     $rootScope.current-id = @activity.id
     $rootScope.current-activity = @activity
+    debugger
 
     $ '.activity-items li' .remove-class 'activity-item-background-color'
     $ event.current-target .add-class 'activity-item-background-color'
