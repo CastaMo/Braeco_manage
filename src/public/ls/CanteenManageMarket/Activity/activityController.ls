@@ -83,10 +83,13 @@ class Controller
       if @value is '0'
         $ '.date-range label' .add-class 'disabled'
         $ ".date-range input" .prop 'disabled', true
+        $ ".date-range input" .prop 'required', false
         $ ".date-range input" .val ''
+
       else
         $ '.date-range label' .remove-class 'disabled'
         $ ".date-range input" .prop 'disabled', false
+        $ ".date-range input" .prop 'required', true
 
   set-edit-panel-value: (activity-id)!->
     activity = null
@@ -218,7 +221,7 @@ class Controller
     @letter-number-limit-init!
     @date-range-init!
     @activity-list-item-init!
-    @form-event-init!
+    # @form-event-init!
     @delete-activity-init!
     # @create-activity-init!
     @cancle-activity-init!

@@ -11,7 +11,7 @@ module.exports = function(router) {
   });
 
   router.get('/Manage/Market/Activity/Data', function(req, res) {
-    res.send("var allData = '"+'{"message":"success","data":[{"id":"181","title":"\u4e70\u4e00\u9001\u4e00","intro":"\u6d3b\u52a8\u7b80\u4ecb","content":"\u6d3b\u52a8\u8be6\u60c5","pic":"mig8dtig5cwizz5iqykaakwdss8xavbx","date_begin":"0","date_end":"0","type":"theme"},{"id":"183","title":"\u9648\u6653\u96c52","intro":"\u54c8\u54c8\u54c8","content":"\u5566\u5566\u5566","pic":"lmkd5gglr5y5a0oma3ucnnz3g5h7pbib","date_begin":"0","date_end":"0","type":"theme"},{"id":"184","title":"333","intro":"222","content":"222","pic":"disleeb4tdgkk25adlaqypyht88nwnu9","date_begin":"0","date_end":"0","type":"theme"},{"id":"185","title":"111","intro":"111","content":"1111","pic":"0vh3iwsdvkrzn54zzrcyl4lvqojghnwh","date_begin":"0","date_end":"0","type":"theme"},{"id":"187","title":"test1","intro":"111","content":"111","pic":"erlm9q28jh5ss4xlt9120bvg9m1ej0ey","date_begin":"0","date_end":"0","type":"theme"},{"id":"188","title":"test2","intro":"111","content":"111","pic":"y37z1idzq6c6ue6uhvsf2y86y4nnoe4n","date_begin":"0","date_end":"0","type":"theme"},{"id":"189","title":"11","intro":"11","content":"111","pic":"r0l0qn994f2wjzid8jf9vbq4yrjisxgj","date_begin":"0","date_end":"0","type":"theme"},{"id":"190","title":"1111","intro":"11","content":"11","pic":"hcnju0jl7vr1axvrto7wng2lkq894dwm","date_begin":"0","date_end":"0","type":"theme"},{"id":"191","title":"111","intro":"111","content":"111","pic":"x1kopuyu90rtz978snioy8tx0cfs9wc7","date_begin":"0","date_end":"0","type":"theme"},{"id":"192","title":"11","intro":"1","content":"1","pic":"pj6kkp6rlysvwonpcvl0bolwet5j715x","date_begin":"0","date_end":"0","type":"theme"},{"id":"193","title":"111","intro":"11","content":"11","pic":"xwvnqth0t8uth12aokynsrls30ldwxku","date_begin":"0","date_end":"0","type":"theme"},{"id":"195","title":"\u80dc\u591a\u8d1f\u5c11","intro":"\u6536\u5230","content":"\u6c34\u7535\u8d39","pic":"tghk9zl37fwpgyz5jytbpe4tep7bms5g","date_begin":"0","date_end":"0","type":"sales"}]}'+"';"+
+    res.send("var allData = '"+'{"message":"success","data":[{"id":"208","title":"\u9648\u6653\u96c5","intro":"\u54c8\u54c8\u54c8","content":"\u54c8\u54c8\u54c8","pic":"cxtzea3pc4sq621hgty7pwab3jsxhvvu","date_begin":"0","date_end":"0","type":"sales"},{"id":"209","title":"111","intro":"222","content":"333","pic":"ochw2w5pmrgpvrgiuixivkwi7xyinrmb","date_begin":"0","date_end":"0","type":"sales"},{"id":"210","title":"\u5c0f\u96c5\u9648","intro":"kitty\u6653\u96c5","content":"kitty","pic":"43860dwm5cc04tiycgh70dq8aoqygc9k","date_begin":"0","date_end":"0","type":"theme"}]}'+"';"+
       "if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
   });
 
@@ -81,7 +81,7 @@ module.exports = function(router) {
     request.end();
   });
 
-  router.post('/Activity/Profile/Update/:activityId', function(req, res) {
+  router.post('/Activity/Profile/Update/:activity_id', function(req, res) {
     var options = {
       hostname: 'devel.brae.co',
       path: req.url,

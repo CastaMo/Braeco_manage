@@ -17,7 +17,7 @@ require-manage = let
 			async: config.async
 
 	#	请求名字(自己设)
-	_all-require-name = ['create', 'delete', 'update', 'picUploadPre', 'picUpload']
+	_all-require-name = ['create', 'delete', 'update', 'picUploadPre', 'picUpdatePre', 'picUpload']
 
 	#	请求名字与URL键值对(与后台进行商量)，名字需依赖于上述对象
 	_all-require-URL =
@@ -26,6 +26,7 @@ require-manage = let
 		'update': '/Activity/Profile/Update'
 		# 'retrieve': '/Manage/Market/Activity/Data'
 		'picUploadPre': '/pic/upload/token/activityadd'
+		'picUpdatePre': 'pic/upload/token/activityupdate'
 		'picUpload': 'http://up.qiniu.com/putb64'
 
 	#	校正ajax-object的url
@@ -34,6 +35,7 @@ require-manage = let
 		"delete":	(ajax-object, data)-> ajax-object.url += "/#{data.id}"
 		"update":	(ajax-object, data)-> ajax-object.url += "/#{data.id}"
 		'picUploadPre': (ajax-object, data)-> ajax-object.url
+		'picUpdatePre': (ajax-object, data)-> ajax-object.url += "/#{data.id}"
 		'picUpload': (ajax-object, data)-> ajax-object.url += "/#{data.fsize}/key/#{data.key}"
 
 	#	按照需要设定header
@@ -50,12 +52,12 @@ require-manage = let
 		"update": (data)-> return "#{data.JSON}"
 		"delete": (data)-> return ""
 		"picUploadPre":	(data)-> return ""
+		"picUpdatePre":	(data)-> return ""
 		"picUpload": (data)-> return "#{data.url}"
 
 	#	在请求状态码为200且返回的message属性不为success时的处理方法
 	_require-fail-callback =
 		"create": {}
-		# "retrieve": {}
 		"update": {}
 		"delete": {}
 		"picUploadPre": {}

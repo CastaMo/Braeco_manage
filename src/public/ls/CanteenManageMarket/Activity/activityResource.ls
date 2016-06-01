@@ -4,7 +4,7 @@
 
 class Resource
   ->
-    @data = JSON.parse window.all-data
+    # @data = JSON.parse window.all-data
     @require = require './requireManage.js'
     @require.initial!
 
@@ -64,7 +64,8 @@ class Resource
             token: token-and-key.token
             key: btoa(token-and-key.key).replace("+", "-").replace("/", "_")
             url: base64-str
-          success: success
+          success: !->
+            success token-and-key.key
           always: !->
 
         console.log opt
@@ -81,49 +82,71 @@ class Resource
         _check-is-already-and-upload!
       always: !->
 
-  create-activity: (data)!->
-    window.activity.view.go-to-state ['\#category-main', '\#activity-spinner']
+  update-image-as-base64-by-id: (id, base64-str, success)!->
+    base64-str = base64-str .substr base64-str.indexOf(';base64,') + 8
+    token-and-key = {}
+
+    _check-is-already-and-upload = !~>
+      if base64-str and token-and-key.token and token-and-key.key
+        opt =
+          data:
+            fsize: -1
+            token: token-and-key.token
+            key: btoa(token-and-key.key).replace("+", "-").replace("/", "_")
+            url: base64-str
+          success: !->
+            success token-and-key.key
+          always: !->
+
+        console.log opt
+
+        @require.get "picUpload" .require opt
+
+    @require.get "picUpdatePre" .require opt =
+      data:
+        id: id
+      success: (result)->
+        console.log result
+        token-and-key.token = result.token
+        token-and-key.key = result.key
+        console.log "token ready"
+        _check-is-already-and-upload!
+      always: !->
+
+  create-activity: (data, rootScope, success)!->
+    rootScope.view.go-to-state ['\#category-main', '\#activity-spinner']
 
     set-timeout !~>
       @require.get 'create' .require opt =
         data: data
-        success: (result)->
-          alert '活动创建成功！'
-          window.activity.controller.set-edit-panel-value!
+        success: success
+        # (result)->
+        #   alert '活动创建成功！'
+        #   window.activity.controller.set-edit-panel-value!
         always: !->
-          window.activity.view.go-to-state ['\#category-main']
+          rootScope.view.go-to-state ['\#category-main']
     , 500
 
-  delete-activity-by-id: (id)!->
-    debugger
+  delete-activity-by-id: (id, success, always)!->
     @require.get 'delete' .require opt =
       data: data =
         id: id
-      success: !->
-        console.log 'delete success'
-      always: !->
-        console.log 'delete always'
+      success: success
+      always: always
 
-  update-activity-by-id: (id)!->
-    data =
-      id: id
-      date_begin: 0
-      date_end: 0
-      title: 0
-      intro: 0
-      content: 0
+  update-activity: (data, rootScope, success)!->
+    rootScope.view.go-to-state ['\#category-main', '\#activity-spinner']
 
-    data.JSON = JSON.stringify data
-
-    @require.get 'update' .require opt =
-      data: data
-      success: !->
-        console.log 'update success'
-      always: !->
-        console.log 'update always'
+    set-timeout !~>
+      @require.get 'update' .require opt =
+        data: data
+        success: success
+        always: !->
+          rootScope.view.go-to-state ['\#category-main']
+    , 500
 
   action: ->
-    @render-all-data!
+    # @render-all-data!
 
     console.log 'Activity resource action!'
 
