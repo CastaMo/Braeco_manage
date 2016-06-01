@@ -114,7 +114,12 @@ module.exports = function(grunt) {
         copy: {
             test: {
                 cwd: '<%= dirs.lib_path %>',
-                src: ['<%= dirs.js %>common/*.js', '<%= dirs.css %>common/*.css'],
+                src: [
+                    '<%= dirs.js %>common/*.js',
+                    '<%= dirs.css %>common/*.css',
+                    '<%= dirs.js %>specialCommon/*.js',
+                    '<%= dirs.css %>specialCommon/*.css',
+                ],
                 dest: '<%= dirs.dest_path %>',
                 expand: true
             },
@@ -864,6 +869,7 @@ module.exports = function(grunt) {
                         "<%= dirs.dest_path %>public/<%= dirs.version %>**/main.min*.css",
                         "<%= dirs.dest_path %>public/<%= dirs.version %>**/extra.min*.css",
                         "<%= dirs.dest_path %>public/<%= dirs.version %>**/base64.min*.css",
+                        "<%= dirs.dest_path %>public/**/specialCommon/**",
                         "<%= dirs.dest_path %>public/<%= dirs.version %>**/hash.json"
                     ]
                 }
