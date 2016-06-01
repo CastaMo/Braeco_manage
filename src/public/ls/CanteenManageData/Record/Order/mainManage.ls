@@ -44,37 +44,15 @@ main-manage = let
         location.href = _construct-url st,en,pn,type
     
     _search-btn-click-event = !->
-        start-date-value = _start-date-input-dom.val!
-        end-date-value = _end-date-input-dom.val!
-        if start-date-value === ''
-            st = _today-date-to-unix-timestamp!
-        else
-            start-date = new Date start-date-value
-            st = _date-to-unix-timestamp start-date
-        if end-date-value === ''
-            en = _today-date-to-unix-timestamp!
-        else
-            end-date = new Date end-date-value
-            en = _date-to-unix-timestamp end-date
+        st = _page-data-obj.st
+        en = _page-data-obj.en
         pn = 1
         type = _type-filter-dom.val!
         location.href = _construct-url st,en,pn,type
     
     _export-btn-click-event = !->
-        start-date-value = _start-date-input-dom.val!
-        end-date-value = _end-date-input-dom.val!
-        if start-date-value === ''
-            st = _today-date-to-unix-timestamp!
-        else
-            start-date = new Date start-date-value
-            st = _date-to-unix-timestamp start-date
-        if end-date-value === ''
-            en = _today-date-to-unix-timestamp!
-        else
-            end-date = new Date end-date-value
-            en = _date-to-unix-timestamp end-date
-        _export-form-en-dom.val en
-        _export-form-st-dom.val st
+        _export-form-en-dom.val _page-data-obj.st
+        _export-form-st-dom.val _page-data-obj.en
         
     _jump-btn-click-event = !->
         st = _page-data-obj.st
@@ -82,6 +60,14 @@ main-manage = let
         type = _page-data-obj.type
         pn = parse-int _target-page-input-dom.val!
         location.href = _construct-url st,en,pn,type
+    
+    _start-date-input-dom-change-event = !->
+        start-date = _start-date-input-dom.val!
+        _page-data-obj.st = _date-to-unix-timestamp new Date start-date
+    
+    _end-date-input-dom-change-event = !->
+        end-date = _end-date-input-dom.val!
+        _page-data-obj.en = _date-to-unix-timestamp new Date end-date
     
     _tr-hover-event = (event) !->
         target = $ event.target
@@ -334,24 +320,20 @@ main-manage = let
         _export-btn-dom.click !-> _export-btn-click-event!
         _type-filter-dom.change !-> _type-filter-choose-event!
         _jump-btn-dom.click !-> _jump-btn-click-event!
-
-
-# _pre-page-url-dom = $ ".ro-container-paginate .pre-page-url"
-#     _current-page-dom = $ ".ro-container-paginate .current-page"
-#     _total-page-dom = $ ".ro-container-paginate .total-page"
-#     _next-page-url-dom = $ ".ro-container-paginate .next-page-url"
-#     _target-page-input-dom = $ ".ro-container-paginate .target-page-input"
-#     _jump-btn-dom = $ ".ro-container-paginate .jump-btn"
+        _start-date-input-dom.change !-> _start-date-input-dom-change-event!
+        _end-date-input-dom.change !-> _end-date-input-dom-change-event!
 
     _init-page-info = !->
         st = _page-data-obj.st
         en = _page-data-obj.en
         pn = parse-int _page-data-obj.pn
         type = _page-data-obj.type
-        if st !== null
-            _start-date-input-dom.val _unix-timestamp-to-only-date st
-        if en !== null
-            _end-date-input-dom.val _unix-timestamp-to-only-date en
+        if st === null
+            st := _page-data-obj.today
+        if en === null
+            en := _page-data-obj.today + 24*3600-1
+        _start-date-input-dom.val _unix-timestamp-to-only-date st
+        _end-date-input-dom.val _unix-timestamp-to-only-date en
         _type-filter-dom.val type
         _current-page-dom.text pn.to-string!
         _total-page-dom.text _page-data-obj.sum_pages.to-string!
@@ -360,12 +342,12 @@ main-manage = let
             pre-pn = pn-1
         else
             pre-pn = pn
-        _pre-page-url-dom.attr 'href', _construct-url st,en,pre-pn,type
+        _pre-page-url-dom.attr 'href', _construct-url _page-data-obj.st,_page-data-obj.en,pre-pn,type
         if pn < _page-data-obj.sum_pages
             next-pn = pn+1
         else
             next-pn = pn
-        _next-page-url-dom.attr 'href', _construct-url st,en,next-pn,type
+        _next-page-url-dom.attr 'href', _construct-url _page-data-obj.st,_page-data-obj.en,next-pn,type
 
     _init-depend-module = !->
         page 	:= require "./pageManage.js"
@@ -374,18 +356,16 @@ main-manage = let
 
 
     _init-datepicker = !->
-        current-date = _unix-timestamp-to-only-date _page-data-obj.today
         $('[data-toggle="datepicker"]').datepicker {format: 'yyyy-mm-dd'}
-        $('[data-toggle="datepicker"]').datepicker 'setDate', current-date
-        
 
     initial: !->
         _gene-data!
         for data-obj in _order-data-obj-array
             _append-row-to-table _gene-tr-dom data-obj
-        _init-page-info!
-        _init-depend-module!
-        _init-all-event!
         _init-datepicker!
+        _init-all-event!
+        _init-depend-module!
+        _init-page-info!
+        
 
 module.exports = main-manage
