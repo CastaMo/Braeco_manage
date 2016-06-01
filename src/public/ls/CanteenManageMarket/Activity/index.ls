@@ -62,7 +62,7 @@ ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', 
   datepicker-init = !->
     $('[data-toggle="datepicker"]').datepicker option =
       format: 'yyyy年mm月dd日'
-      startDate: new Date!
+      # startDate: new Date!
 
     $ '#activity-start-date' .change !->
       $ '#activity-end-date' .datepicker 'setStartDate', @value
@@ -100,7 +100,6 @@ ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', 
   $scope.deleteActivity = (event)!->
     if confirm '你确定删除该活动吗'
       success = !->
-        debugger
         new-activities-data = []
         $scope.activities-data.data.for-each (item)!->
           if parse-int(item.id) is not parse-int($scope.current-id)
@@ -146,15 +145,34 @@ ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', 
       empty-activity = {title: '', date_end: '0', date_begin: '0', intro: '', content: '', pic: $scope.pre-image-url}
       set-edit-area empty-activity, $scope
       $ '#activity-upload-image' .val ''
-      data.pic = key.substr(key.indexOf('activity/') + 9)
-      if $scope.createActivityType is 'sales'
-        $scope.sales-activities.push data
+
+      if typeof key isnt 'object'
+        data.pic = key.substr(key.indexOf('activity/') + 9)
+
+      if data.type is 'sales'
+        new-sale-activities = []
+        $scope.sales-activities.for-each (item, index, array)!->
+          if item.id is data.id
+            if !data.pic then data.pic = item.pic
+            new-sale-activities.push data
+          else
+            new-sale-activities.push item
+
+        $scope.sales-activities = new-sale-activities
+
       else
-        $scope.theme-activities.push data
+        new-theme-activities = []
+        $scope.theme-activities.for-each (item, index, array)!->
+          debugger
+          if item.id is data.id
+            if !data.pic then data.pic = item.pic
+            new-theme-activities.push data
+          else
+            new-theme-activities.push item
+        $scope.theme-activities = new-theme-activities
 
     if need-to-upload-image
       base64-src = $ '#activity-image-preview' .attr 'src'
-      debugger
 
       $rootScope.resource.update-image-as-base64-by-id data.id, base64-src, (key)!->
         console.log 'Upload image success'
@@ -180,7 +198,6 @@ ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', 
       data.date_end = parse-int((new Date($ '#activity-end-date' .datepicker 'getDate')).value-of! / 1000)
 
     console.log data
-    debugger
 
     data.JSON = JSON.stringify data
     data.type = $scope.createActivityType
@@ -188,8 +205,9 @@ ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', 
     $rootScope.resource.upload-image-as-base64 base64-src, (key)!->
       console.log 'Upload image success'
       console.log key
-      $rootScope.resource.create-activity data, $rootScope, !->
+      $rootScope.resource.create-activity data, $rootScope, (result)!->
         alert '活动创建成功'
+        data.id = result.id
         empty-activity = {title: '', date_end: '0', date_begin: '0', intro: '', content: '', pic: $scope.pre-image-url}
         set-edit-area empty-activity, $scope
         $ '#activity-upload-image' .val ''
@@ -249,7 +267,6 @@ ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', 
     $scope.isNewActivity = false
     $rootScope.current-id = @activity.id
     $rootScope.current-activity = @activity
-    debugger
 
     $ '.activity-items li' .remove-class 'activity-item-background-color'
     $ event.current-target .add-class 'activity-item-background-color'
@@ -283,14 +300,18 @@ set-edit-area = (activity, scope)!->
   else
     $ '#activity-image-preview' .attr 'src', activity.pic
 
-  if activity.date_begin is '0' and activity.date_end is '0'
+  if parse-int(activity.date_begin) is 0 and parse-int(activity.date_end) is 0
     $ '#expiry-date' .val 0
     $ '#activity-start-date' .val ''
     $ '#activity-end-date' .val ''
+    $ '.date-range label' .add-class 'disabled'
+    $ ".date-range input" .prop 'disabled', true
   else
     $ '#expiry-date' .val 1
-    $ '#activity-start-date' .datepicker 'setDate', activity.date_begin
-    $ '#activity-end-date' .datepicker 'setDate', activity.date_end
+    $ '.date-range label' .remove-class 'disabled'
+    $ ".date-range input" .prop 'disabled', false
+    $ '#activity-start-date' .datepicker 'setDate', new Date(parse-int(activity.date_begin + '000'))
+    $ '#activity-end-date' .datepicker 'setDate', new Date(parse-int(activity.date_end + '000'))
 
   set-letter-number-label activity.title, activity.intro, activity.content
 

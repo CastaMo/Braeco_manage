@@ -119,10 +119,8 @@ class Resource
     set-timeout !~>
       @require.get 'create' .require opt =
         data: data
-        success: success
-        # (result)->
-        #   alert '活动创建成功！'
-        #   window.activity.controller.set-edit-panel-value!
+        success: (result)!->
+          success result
         always: !->
           rootScope.view.go-to-state ['\#category-main']
     , 500
