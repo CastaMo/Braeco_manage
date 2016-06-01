@@ -51,7 +51,6 @@ module.exports = function(passport) {
 		res.render('./CanteenManageMarket/Member/List/develop');
 	});
 
-<<<<<<< HEAD
 	router.get('/Manage/Market/Coupon/Basic', function(req, res) {
 		res.render('./CanteenManageMarket/Coupon/Basic/develop');
 	});
@@ -60,8 +59,6 @@ module.exports = function(passport) {
 		res.render('./CanteenManageMarket/Coupon/Other/develop');
 	});
 	
-=======
->>>>>>> 64f38406aaf1d233bfeb0fe8a7aec6bc5b72cc1c
 	router.get('/Manage/Market/Promotion/Single', function(req, res) {
 		res.render('./CanteenManageMarket/Promotion/Single/develop');
 	});
