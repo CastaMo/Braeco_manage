@@ -109,6 +109,7 @@ require-manage = let
 
 		"Table not found" 						:		-> alert "桌位不存在"
 		"Used phone" 							: 		-> alert "（餐厅注册时）手机号已被使用"
+		"Already has other phone"				:		-> alert "已经绑定了其他手机号"
 		"User not found" 						:		-> alert "用户不存在"
 		"Is not waiter of any dinner" 			:		-> alert "用户不是任何餐厅的服务员"
 		"Already is waiter of current dinner" 	:		-> alert "（添加服务员时）用户已经是当前餐厅的服务员"

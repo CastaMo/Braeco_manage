@@ -11,6 +11,7 @@ class View
     @show-state = options.show-state.join ' '
     @hide-state = options.hide-state.join ' '
     @init-state = options.init-state.join ' '
+    @current-state = []
 
     @action!
 
@@ -29,7 +30,6 @@ class View
       [hook, event] = condition.split ' '
 
       $(hook)[event] !~>
-        console.log @views-dom
         for from-state in from-states
           @views-dom[from-state]
             .remove-class @init-state
@@ -42,15 +42,23 @@ class View
             .remove-class @hide-state
             .add-class @show-state
 
+        @current-state = to-states
+
   set-state-machine: !->
     for transition in @transitions
       @create-transition transition.from, transition.to, transition.on
+
+  go-to-state: (states)!->
+    for view in @views
+      @views-dom[view] .add-class @init-state .remove-class @show-state .remove-class @hide-state
+    for item in states
+      @views-dom[item] .remove-class @init-state .add-class @show-state
 
   action: ->
     @get-views-dom!
     @init-view!
     @set-state-machine!
 
-    console.log 'This is activity view action!'
+    console.log 'Activity view action!'
 
 module.exports = View

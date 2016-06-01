@@ -17,12 +17,14 @@
                         float: left;
                     }
                     .start-date {
-                        width: 140px;
+                        width: 120px;
+                        height: 36px;
                         margin-right: 10px;
                         border: 1px solid #e7e7eb;
                     }
                     .end-date {
-                        width: 140px;
+                        width: 120px;
+                        height: 36px;
                         margin-left: 10px;
                         margin-right: 15px;
                         border: 1px solid #e7e7eb;
@@ -48,8 +50,11 @@
                         padding: 7px 6px;
                         border: 1px solid #e7e7eb;
                     }
-                    .export-btn {
+                    #export-form {
+                        padding: 0;
                         float: right;
+                    }
+                    .export-btn {
                         height: 36px;
                         padding: 7px 15px;
                         background-color: #fff;
@@ -312,6 +317,10 @@
                     }
                     .cat-td {
                         text-align: left;
+                        .sub-food-item {
+                            display: none;
+                            font-size: 14px;
+                        }
                     }
                     .table-num-col {
                         text-align: center;
@@ -345,6 +354,9 @@
                 .refund-promotion-block {
                     margin: 20px 0px;
                     padding: 0px 60px;
+                    span {
+                        margin-bottom: 5px;
+                    }
                 }
                 .refund-reason-block {
                     margin: 20px 0px;

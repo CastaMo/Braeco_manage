@@ -9,6 +9,10 @@ class Activity
     @Controller = require './activityController.js'
     @Resource = require './activityResource.js'
 
+    @current-activity-id = null
+    @current-add-activity-type = null
+    @current-data-is-dirty = false
+
     @action!
 
   init-model: !->
@@ -17,7 +21,7 @@ class Activity
   init-view: !->
     @view = new @View options =
       initial: ['\#category-main']
-      views: ['\#category-main', '\#upload-canteen-image']
+      views: ['\#category-main', '\#upload-canteen-image', '\#activity-spinner']
       transitions: [
         {
           from: ['\#category-main']
@@ -27,7 +31,7 @@ class Activity
         {
           from: ['\#category-main', '\#upload-canteen-image']
           to: ['\#category-main']
-          on: ['.upload-canteen-image-mask click']
+          on: ['.upload-canteen-image-mask click', '.upload-canteen-image-close click', '\#canteen-image-cancel click']
         }
       ]
       show-state: ['activity-fade-in']
@@ -41,9 +45,9 @@ class Activity
     @resource = new @Resource
 
   action: !->
+    @init-resource!
     @init-model!
     @init-view!
     @init-controller!
-    @init-resource!
 
 module.exports = Activity

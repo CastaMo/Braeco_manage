@@ -2,9 +2,9 @@
     .ro-container-header
         .date-input-header 日期区间
         .input-field
-            input.start-date(type="date")
+            input.start-date(data-toggle="datepicker")
             p 至
-            input.end-date(type="date")
+            input.end-date(data-toggle="datepicker")
             button.search-btn 搜索
                 icon.search-icon
             select.type-filter
@@ -12,7 +12,10 @@
                 option(value="eatin") 堂食
                 option(value="takeout") 外带
                 option(value="membership") 会员卡充值
-            input.export-btn(type="button" value="导出")
+            form(id="export-form" action="/Dinner/Manage/Orders/Excel" method="POST" target="_blank")
+                input(id="export-form-st" name="st" type='number' value="0" style="display:none")
+                input(id="export-form-en" name="en" type='number' value="0" style="display:none")
+                input.export-btn(type="submit" value="导出")
             .clear
     table.ro-container-table
         thead
@@ -29,9 +32,9 @@
     .ro-container-paginate
         a.pre-page-url(href='#')
             icon.prev-page-icon
-        p.current-page 2
+        p.current-page
         p /
-        p.total-page 14
+        p.total-page
         a.next-page-url(href='#')
             icon.next-page-icon
         input.target-page-input(type='number' max="100" min="1")

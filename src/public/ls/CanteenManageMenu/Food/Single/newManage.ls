@@ -135,18 +135,17 @@ new-manange = let
 		}
 
 	_check-is-valid = ->
-		_read-from-input!
-		_valid-flag = true; _err-str = ""
-		if _c-name.length <= 0 or _c-name.length > 32 then _err-str += "单品名称长度应为1~32位\n"; _valid-flag = false
-		if _e-name.length > 32 then _err-str += "英文名长度应为0~32位\n"; _valid-flag = false
-		if _default-price-dom.val! is "" or _default-price < 0 or _default-price > 9999 then _err-str += "默认价格范围应为0~9999元\n"; _valid-flag = false
-		if _remark.length > 18 then _err-str += "标签长度应为0~18位\n"; _valid-flag = false
-		if _intro.length > 400 then _err-str += "详情长度应为0~400位\n"; _valid-flag = false
-		if _groups.length > 40 then _err-str += "属性组数量应为0~40个\n"; _valid-flag = false
+		_valid-flag = true; _err-msg = ""
+		if _c-name.length <= 0 or _c-name.length > 32 then _err-msg += "单品名称长度应为1~32位\n"; _valid-flag = false
+		if _e-name.length > 32 then _err-msg += "英文名长度应为0~32位\n"; _valid-flag = false
+		if _default-price-dom.val! is "" or _default-price < 0 or _default-price > 9999 then _err-msg += "默认价格范围应为0~9999元\n"; _valid-flag = false
+		if _remark.length > 18 then _err-msg += "标签长度应为0~18位\n"; _valid-flag = false
+		if _intro.length > 400 then _err-msg += "详情长度应为0~400位\n"; _valid-flag = false
+		if _groups.length > 40 then _err-msg += "属性组数量应为0~40个\n"; _valid-flag = false
 		if _dc
-			options = _dc-type-map-dc-options[_dc-type]; if _dc < options.min or _dc > options.max then _err-str += "优惠范围应在#{options.min}~#{options.max}之内\n"; _valid-flag = false
+			options = _dc-type-map-dc-options[_dc-type]; if _dc < options.min or _dc > options.max then _err-msg += "优惠范围应在#{options.min}~#{options.max}之内\n"; _valid-flag = false
 		if _valid-flag then return _valid-flag
-		alert _err-str; return _valid-flag
+		alert _err-msg; return _valid-flag
 
 	_success-callback = !->
 		main.create-dish-dish-by-given {
@@ -167,7 +166,6 @@ new-manange = let
 		_reset!
 
 	_get-upload-JSON-for-add = ->
-		_read-from-input!
 		return JSON.stringify {
 			dc_type 	:		_dc-type
 			dc 			:		_dc
@@ -177,6 +175,7 @@ new-manange = let
 			tag 		:		_remark
 			detail 		:		_intro
 			groups 		:		_groups	
+			type 		:		"normal"
 		}
 
 	###************ operation end **********###
@@ -256,7 +255,7 @@ new-manange = let
 		#步骤①
 		if _src then converImgTobase64 _src, (data-URL)->
 			#图片base64字符串去除'data:image/png;base64,'后的字符串
-			_base64-str := data-URL.substr(22)
+			_base64-str := data-URL.substr(data-URL.index-of(";base64,") + 8)
 			console.log "base64 ready"
 			_check-is-already-and-upload!
 
@@ -265,6 +264,7 @@ new-manange = let
 		page.toggle-page "main"
 
 	_save-btn-click-event = !->
+		_read-from-input!
 		if not _check-is-valid! then return
 		if _upload-flag
 			_callback = !-> _upload-pic-event !->

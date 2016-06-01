@@ -39,7 +39,7 @@ main-manage = let
 			}
 			if i is 0 then _first-category = category_
 			for dish in category.dishes
-				category_.add-dish dish
+				if dish.type is "normal" then category_.add-dish dish
 		if _first-category then _first-category.select-self-event!
 
 	_init-all-event = !->
@@ -183,6 +183,7 @@ main-manage = let
 				dc-type			:		options.dc_type		|| ""
 				dc 				:		options.dc 			|| 0
 				is-head 		:		options.is-head 	|| false
+				type 			:		options.type 		|| "normal"
 			}
 
 		change-able-dish: (dish-id, able)!-> _dishes[@id][dish-id].change-able-self able
