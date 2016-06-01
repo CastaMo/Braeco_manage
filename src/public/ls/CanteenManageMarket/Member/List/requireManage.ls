@@ -42,12 +42,13 @@ require-manage = let
 		result = get-JSON result_
 		message = result.message
 		if message is "success" then callback?(result)
-		else if message then _require-fail-callback[name][message]?!
+		else if message then _require-fail-callback[message]?!
 		else alert "系统错误"
 
-	_requires-fail-callback = {
-		"modify"		:		{}
-		"result"		:		{}
+	_require-fail-callback = {
+		"User not found"					:		-> alert "用户不存在"
+		"Membership card not exists"		:		-> alert "会员不存在"
+		"Need phone to charge"				:		-> alert "充值需要手机号码"
 	}
 
 	_require-handle = (name, config)->
