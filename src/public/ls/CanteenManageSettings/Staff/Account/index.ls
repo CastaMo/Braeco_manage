@@ -19,11 +19,9 @@ let win = window, doc = document
 
 	_init-all-module = !->
 		page = require "./pageManage.js";			page.initial!
-		main = require "./mainManage.js";           main.initial!
 
 	_test-is-data-ready = ->
 		if window.all-data then _main-init JSON.parse window.all-data; window.all-data = null;
 		else window.main-init = _main-init
 
 	_main-init {message:"success"}
-

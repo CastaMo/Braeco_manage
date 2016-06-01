@@ -66,6 +66,10 @@ module.exports = function(passport) {
 	router.get('/Manage/Data/Record/Refund', function(req, res) {
 		res.render('./CanteenManageData/Record/Refund/develop');
 	});
+	
+	router.get('/Manage/Settings/Staff/Account', function(req, res, next) {
+		res.render('./CanteenManageSettings/Staff/Account/develop');
+	});
 
 	router.get('/Manage/Data/Statistics', function(req, res) {
 		res.render('./CanteenManageData/develop');
