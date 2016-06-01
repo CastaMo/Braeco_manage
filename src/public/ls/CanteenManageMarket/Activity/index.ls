@@ -127,12 +127,12 @@ ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', 
       intro: $ '#activity-brief' .val!
       content: $ '#activity-content' .val!
 
-    if $scope.expiry-date is '0'
+    if parse-int($scope.expiry-date) is 0
       data.date_begin = 0
       data.date_end = 0
     else
-      data.date_begin = (new Date($ '#activity-start-date' .datepicker 'getDate')).value-of!
-      data.date_end = (new Date($ '#activity-end-date' .datepicker 'getDate')).value-of!
+      data.date_begin = parse-int((new Date($ '#activity-start-date' .datepicker 'getDate')).value-of! / 1000)
+      data.date_end = parse-int((new Date($ '#activity-end-date' .datepicker 'getDate')).value-of! / 1000)
 
     console.log data
     debugger
@@ -154,11 +154,13 @@ ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', 
 
     if need-to-upload-image
       base64-src = $ '#activity-image-preview' .attr 'src'
+      debugger
 
-      $rootScope.resource.update-image-as-base64-by-id base64-src, (key)!->
+      $rootScope.resource.update-image-as-base64-by-id data.id, base64-src, (key)!->
         console.log 'Upload image success'
         console.log key
         $rootScope.resource.update-activity data, $rootScope, !->
+          console.log key
           update-success-fun key
     else
       $rootScope.resource.update-activity data, $rootScope, update-success-fun
@@ -170,12 +172,12 @@ ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', 
       intro: $scope.activityBrief
       content: $scope.activityContent
 
-    if $scope.expiry-date is '0'
+    if parse-int($scope.expiry-date) is 0
       data.date_begin = 0
       data.date_end = 0
     else
-      data.date_begin = (new Date($ '#activity-start-date' .datepicker 'getDate')).value-of!
-      data.date_end = (new Date($ '#activity-end-date' .datepicker 'getDate')).value-of!
+      data.date_begin = parse-int((new Date($ '#activity-start-date' .datepicker 'getDate')).value-of! / 1000)
+      data.date_end = parse-int((new Date($ '#activity-end-date' .datepicker 'getDate')).value-of! / 1000)
 
     console.log data
     debugger

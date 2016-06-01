@@ -23,10 +23,10 @@ require-manage = let
 	_all-require-URL =
 		'create': '/Activity/Add'
 		'delete': '/Activity/Remove'
-		'update': '/Activity/Profile/Update'
+		'update': '/Activity/Update'
 		# 'retrieve': '/Manage/Market/Activity/Data'
 		'picUploadPre': '/pic/upload/token/activityadd'
-		'picUpdatePre': 'pic/upload/token/activityupdate'
+		'picUpdatePre': '/pic/upload/token/activityupdate'
 		'picUpload': 'http://up.qiniu.com/putb64'
 
 	#	校正ajax-object的url
