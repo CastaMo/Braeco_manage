@@ -490,6 +490,11 @@ module.exports = function(grunt) {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/List/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Member/List/index.js"]
                 }
             },
+            market_activity_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Activity/index.js"]
+                }
+            },
             market_promotion_single_test: {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMarket/Promotion/Single/index.js"]

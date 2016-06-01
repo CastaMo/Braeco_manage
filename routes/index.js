@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require('express');
 var app = express();
 var router = express.Router();
@@ -33,9 +35,9 @@ module.exports = function(passport) {
 		res.render('./CanteenManageMenu/Food/Shelves/develop');
 	});
 
-	router.get('/Manage/Market/Activity', function(req, res) {
-		res.render('./CanteenManageMarket/Activity/develop');
-	});
+	// router.get('/Manage/Market/Activity', function(req, res) {
+	// 	res.render('./CanteenManageMarket/Activity/develop');
+	// });
 
 	router.get('/Manage/Market/Member/Recharge', function(req, res) {
 		res.render('./CanteenManageMarket/Member/Recharge/develop');
@@ -48,7 +50,7 @@ module.exports = function(passport) {
 	router.get('/Manage/Market/Member/List', function(req, res) {
 		res.render('./CanteenManageMarket/Member/List/develop');
 	});
-	
+
 	router.get('/Manage/Market/Promotion/Single', function(req, res) {
 		res.render('./CanteenManageMarket/Promotion/Single/develop');
 	});
@@ -56,13 +58,17 @@ module.exports = function(passport) {
 	router.get('/Manage/Business/HallOrder/Basic', function(req, res) {
 		res.render('./CanteenManageBusiness/HallOrder/Basic/develop');
 	});
-	
+
 	router.get('/Manage/Data/Record/Order', function(req, res) {
 		res.render('./CanteenManageData/Record/Order/develop');
 	});
-	
+
 	router.get('/Manage/Data/Record/Refund', function(req, res) {
 		res.render('./CanteenManageData/Record/Refund/develop');
+	});
+
+	router.get('/Manage/Data/Statistics', function(req, res) {
+		res.render('./CanteenManageData/develop');
 	});
 
 	router.get('/renew', function(req, res) {
@@ -83,13 +89,13 @@ module.exports = function(passport) {
 		}, 0);
 	});
 
-	router.get('/Manage/Market/Activity/Data', function(req, res) {
-		setTimeout(function() {
-			res.send("var allData = '"+'{"message":"success","data":{"activities":[{"id":"142","title":"123","intro":"123","content":"123","pic":"http://static.brae.co/images/activity/avkqmrziunjzraodbu1mcmvu34d96phh.png","date_begin":"2016-05-05","date_end":"2016-05-25","is_valid":true,"type":"theme","detail":[]},{"id":"144","title":"123456","intro":"全场满<strong>123</strong>减<strong>23</strong>","content":"123","pic":"http://static.brae.co/images/activity/2qv2j38wna75yvp1mr8u2pxksg2r01s2.png","date_begin":"2016-05-04","date_end":"2016-05-27","is_valid":true,"type":"reduce","detail":[{"least":123,"reduce":23}]},{"id":"145","title":"2341","intro":"全场满<strong>123</strong>送<strong>海鲜披萨（双拼专用）</strong>","content":"123","pic":"http://static.brae.co/images/activity/4qhd0jimg4tipuc87by4uqp4jr1onkdr.png","date_begin":"2016-05-19","date_end":"2016-05-28","is_valid":false,"type":"give","detail":[{"least":123,"dish":"海鲜披萨（双拼专用）"}]},{"id":"146","title":"12323123","intro":"123123123123123","content":"123","pic":"http://static.brae.co/images/activity/so4crd8engklb9ny1wt4lqoe6r57tyam.png","date_begin":"2016-05-05","date_end":"2016-05-25","is_valid":true,"type":"other","detail":"123123123123123"}]}}'+"';"+
-			"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
-		}, 0);
-	});
-	
+	// router.get('/Manage/Market/Activity/Data', function(req, res) {
+	// 	setTimeout(function() {
+	// 		res.send("var allData = '"+'{"message":"success","data":{"activities":[{"id":"142","title":"123","intro":"123","content":"123","pic":"http://static.brae.co/images/activity/avkqmrziunjzraodbu1mcmvu34d96phh.png","date_begin":"2016-05-05","date_end":"2016-05-25","is_valid":true,"type":"theme","detail":[]},{"id":"144","title":"123456","intro":"全场满<strong>123</strong>减<strong>23</strong>","content":"123","pic":"http://static.brae.co/images/activity/2qv2j38wna75yvp1mr8u2pxksg2r01s2.png","date_begin":"2016-05-04","date_end":"2016-05-27","is_valid":true,"type":"reduce","detail":[{"least":123,"reduce":23}]},{"id":"145","title":"2341","intro":"全场满<strong>123</strong>送<strong>海鲜披萨（双拼专用）</strong>","content":"123","pic":"http://static.brae.co/images/activity/4qhd0jimg4tipuc87by4uqp4jr1onkdr.png","date_begin":"2016-05-19","date_end":"2016-05-28","is_valid":false,"type":"give","detail":[{"least":123,"dish":"海鲜披萨（双拼专用）"}]},{"id":"146","title":"12323123","intro":"123123123123123","content":"123","pic":"http://static.brae.co/images/activity/so4crd8engklb9ny1wt4lqoe6r57tyam.png","date_begin":"2016-05-05","date_end":"2016-05-25","is_valid":true,"type":"other","detail":"123123123123123"}]}}'+"';"+
+	// 		"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
+	// 	}, 0);
+	// });
+
 	router.post('/dinner/printer/get', function(req, res, next) {
 		res.json({
 			"message": "success",
@@ -133,7 +139,7 @@ module.exports = function(passport) {
 			]
 		});
 	});
-	
+
 	router.post('/order/reprint/:orderid', function(req, res, next) {
 		var orderid = req.params.orderid;
 		var printer = req.body;
@@ -141,7 +147,7 @@ module.exports = function(passport) {
 		console.log(printer);
 		res.json({'message':'sucess'});
 	});
-	
+
 	router.post('/order/refund/:orderid', function(req, res, next) {
 		var orderid = req.params.orderid;
 		var data = req.body;
@@ -160,7 +166,7 @@ module.exports = function(passport) {
 			}
 		}, 1000);
 	});
-	
+
 	router.post('/Dinner/Manage/Orders/Excel', function(req, res, next) {
 		console.log(req.body);
 		res.send("hello world");
@@ -211,7 +217,7 @@ module.exports = function(passport) {
 		res.json({
 	        message 	: 		"success"
 	    });
-	});	
+	});
 
 	router.post('/Dish/Copy', function(req, res) {
 		var _getNewDishIdMap = function(currentDishId) {

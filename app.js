@@ -1,9 +1,13 @@
+'use strict';
+
 var express = require('express');
 var app = express();
 var logger = require('morgan');
 var passport = require("passport");
 var route = require("./routes")(passport);
 var bodyParser = require('body-parser');
+
+route = require('./routes/activityRoute')(route);
 
 app.set(function () {
     app.use(express.bodyParser({ keepExtensions: true, uploadDir: '/tmp' }));
