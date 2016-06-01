@@ -8,6 +8,9 @@ var route = require("./routes")(passport);
 var bodyParser = require('body-parser');
 
 route = require('./routes/activityRoute')(route);
+route = require('./routes/comboRoute')(route);
+route = require('./routes/categoryRoute')(route);
+route = require('./routes/dishRoute')(route);
 
 app.set(function () {
     app.use(express.bodyParser({ keepExtensions: true, uploadDir: '/tmp' }));

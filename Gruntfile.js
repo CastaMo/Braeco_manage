@@ -240,6 +240,18 @@ module.exports = function(grunt) {
                     "<%= dirs.dest_path %>module_static/Manage/Menu/Food/Property.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Food/Property/formal.jade"
                 }
             },
+            menu_combo_single_test: {
+                files: {
+                    "<%= dirs.dest_path %>CanteenManageMenu/Combo/Single/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Combo/Single/develop.jade",
+                    "<%= dirs.dest_path %>module_static/Manage/Menu/Combo/Single.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Combo/Single/formal.jade"
+                }
+            },
+            menu_combo_property_test: {
+                files: {
+                    "<%= dirs.dest_path %>CanteenManageMenu/Combo/Property/Property.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Combo/Property/develop.jade",
+                    "<%= dirs.dest_path %>module_static/Manage/Menu/Combo/Property.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMenu/Combo/Property/formal.jade"
+                }
+            },
             market_activity_test: {
                 files: {
                     "<%= dirs.dest_path %>CanteenManageMarket/Activity/Activity.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageMarket/Activity/develop.jade",
@@ -334,6 +346,18 @@ module.exports = function(grunt) {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Food/Property/main.less",
                     "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Food/Property/base64.less"
+                }
+            },
+            menu_combo_single_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Combo/Single/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Combo/Single/main.less",
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Combo/Single/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Combo/Single/base64.less"
+                }
+            },
+            menu_combo_property_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Combo/Property/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Combo/Property/main.less",
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Combo/Property/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageMenu/Combo/Property/base64.less"
                 }
             },
             market_member_level_test: {
@@ -437,6 +461,20 @@ module.exports = function(grunt) {
                 dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property',
                 ext: '.js'
             },
+            menu_combo_single_test: {
+                expand: true,
+                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMenu/Combo/Single',
+                src: ['*.ls'],
+                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Combo/Single',
+                ext: '.js'
+            },
+            menu_combo_property_test: {
+                expand: true,
+                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMenu/Combo/Property',
+                src: ['*.ls'],
+                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Combo/Property',
+                ext: '.js'
+            },
             market_member_recharge_test: {
                 expand: true,
                 cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageMarket/Member/Recharge',
@@ -534,6 +572,16 @@ module.exports = function(grunt) {
             menu_food_property_test: {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/index.js"]
+                }
+            },
+            menu_combo_single_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Combo/Single/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Combo/Single/index.js"]
+                }
+            },
+            menu_combo_property_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Combo/Property/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Combo/Property/index.js"]
                 }
             },
             market_member_recharge_test: {
@@ -656,6 +704,36 @@ module.exports = function(grunt) {
                     'livescript:menu_food_property_test',
                     'browserify:menu_food_property_test',
                     'jade:menu_food_property_test'
+                ]
+            },
+            menu_combo_single: {
+                options: {
+                    livereload: lrPort,
+                    debounceDelay: debounceDelay
+                },
+                files: [
+                    '<%= dirs.source_path %>**/CanteenManageMenu/Combo/Single/**',
+                ],
+                tasks: [
+                    'less:menu_combo_single',
+                    'livescript:menu_combo_single',
+                    'browserify:menu_combo_single',
+                    'jade:menu_combo_single'
+                ]
+            },
+            menu_combo_property: {
+                options: {
+                    livereload: lrPort,
+                    debounceDelay: debounceDelay
+                },
+                files: [
+                    '<%= dirs.source_path %>**/CanteenManageMenu/Combo/Property/**',
+                ],
+                tasks: [
+                    'less:menu_combo_property',
+                    'livescript:menu_combo_property',
+                    'browserify:menu_combo_property',
+                    'jade:menu_combo_property'
                 ]
             },
             market_member_recharge_test: {
@@ -867,6 +945,8 @@ module.exports = function(grunt) {
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Category/main.js'],
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Single/main.js'],
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/main.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Combo/Single/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Combo/Single/main.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Combo/Property/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Combo/Property/main.js'],
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Order/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Order/main.js'],
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Refund/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Refund/main.js'],
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageSettings/Staff/Account/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageSettings/Staff/Account/main.js']
@@ -907,6 +987,10 @@ module.exports = function(grunt) {
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Single/base64.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/main.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Food/Property/base64.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Combo/Single/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Combo/Single/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Combo/Single/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Combo/Single/base64.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Combo/Property/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Combo/Property/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Combo/Property/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageMenu/Combo/Property/base64.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/main.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Order/base64.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/main.css'],
