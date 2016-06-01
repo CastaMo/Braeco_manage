@@ -23,6 +23,13 @@ Controller = require './activityController.js'
 Resource = require './activityResource.js'
 
 # =============== 控制器 ================
+
+ng-app-module.controller 'upload-canteen-image', ['$rootScope', '$scope', '$resource', ($rootScope, $scope, $location, $resource)!->
+
+  $scope.name = '陈晓雅'
+
+]
+
 ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', ($rootScope, $scope, $location, $resource)!->
 
   # ====== $rootScope定义变量 =======
@@ -329,7 +336,7 @@ init-activity-data = (scope)!->
 # 初始化view
 init-activity-view = ->
   view = new View options =
-    initial: ['\#category-main']
+    initial: ['\#category-main', '\#upload-canteen-image']
     views: ['\#category-main', '\#upload-canteen-image', '\#activity-spinner']
     transitions: [
       {

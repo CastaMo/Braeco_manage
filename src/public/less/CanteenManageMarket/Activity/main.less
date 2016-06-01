@@ -32,6 +32,7 @@
       width: 200px;
       border: 1px solid @activity-border-color;
       margin-right: 31px;
+      overflow: hidden;
 
       .upload-canteen-photo {
         height: 107px;
@@ -72,11 +73,14 @@
         }
         ul {
           max-height: 244px;
+          // padding-right: 10px;
+          width: 220px;
           overflow-y: scroll;
           overflow-x: hidden;
 
           li {
             height: 60px;
+            width: 200px;
             border-bottom: 1px solid @activity-border-color;
             background-image: url(@right-arrow-url);
             background-size: 6%;
