@@ -41,11 +41,13 @@
 						input(type="text" id="datepicker")
 						span._zhi 至
 						input(type="text" id="datepicker")
+					p._date-period-tip 有效期：2016-06-02 至 2016-06-03
 				#valid-day
 					span._content 有效天数*
 					.valid-day-input
 						input._valid-day
 						span._unit 天
+					p.valid-day-input-tip 领取后天有效，过期无效
 				#use-condition
 					span._content 使用门槛*
 					.use-condition-input
@@ -54,13 +56,23 @@
 						span._unit 元
 						span 可用
 			#down-field
+				#distribute-coupon
+					span._content 自动发券*
+					select._distribute-coupon
+						option 顾客点餐前发券
+						option 顾客支付下单后发券
 				#max-coupon
 					span._content 发放上限*
 					.max-coupon-input
 						input._max-coupon
 						span._unit 张
-				#max-own
+				#max-own-select
 					span._content 领取上限*
+					select._distribute-coupon
+						option 有效期内每人每天限领
+						option 整个有效期内每人限领
+				#max-own
+					span._content
 					#max-own-input
 						input._max-own
 						span._unit 张
@@ -80,6 +92,7 @@
 					.multiple-use-input
 						input._multiple-use
 						span._unit 张
+					p.multiple-use-tip 每笔订单最多可同时叠加使用张
 			#btn-filed
 				.cancel-btn.btn
 					p 取消
