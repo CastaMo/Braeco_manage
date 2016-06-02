@@ -3,36 +3,15 @@
 var express = require('express');
 var app = express();
 var router = express.Router();
-var renew = require('../renew');
 
 module.exports = function(passport) {
 
 	router.get('/', function(req, res) {
-		res.redirect('/Manage/Config');
+		res.redirect('/Manage/Extra/Config');
 	});
 
-	router.get('/Manage/Config', function(req, res) {
-		res.render('./CanteenManage/develop');
-	});
-
-	router.get('/Manage/Menu/Category', function(req, res) {
-		res.render('./CanteenManageMenu/Category/develop');
-	});
-
-	router.get('/Manage/Menu/Food', function(req, res) {
-		res.render('./CanteenManageMenu/Food/develop');
-	});
-
-	router.get('/Manage/Menu/Food/Single', function(req, res) {
-		res.render('./CanteenManageMenu/Food/Single/develop');
-	});
-
-	router.get('/Manage/Menu/Food/Property', function(req, res) {
-		res.render('./CanteenManageMenu/Food/Property/develop');
-	});
-
-	router.get('/Manage/Menu/Food/Shelves', function(req, res) {
-		res.render('./CanteenManageMenu/Food/Shelves/develop');
+	router.get('/Manage/Extra/Config', function(req, res) {
+		res.render('./CanteenManageExtra/Config/develop');
 	});
 
 	// router.get('/Manage/Market/Activity', function(req, res) {
@@ -81,10 +60,6 @@ module.exports = function(passport) {
 
 	router.get('/Manage/Data/Statistics', function(req, res) {
 		res.render('./CanteenManageData/develop');
-	});
-
-	router.get('/renew', function(req, res) {
-		renew.renew(res);
 	});
 
 	router.get('/Manage/Menu/Data', function(req, res) {
@@ -183,121 +158,7 @@ module.exports = function(passport) {
 		console.log(req.body);
 		res.send("hello world");
 	});
-
-	router.post('/Category/Add', function(req, res) {
-	    res.json({
-	        message 	: 		"success" 	,
-	        id 			: 		Number(Math.floor(100000 + Math.random() * 100000))
-	    });
-	});
-
-	router.post('/Category/Remove', function(req, res) {
-	    res.json({
-	        message: "success"
-	    });
-	});
-
-	router.post('/Category/Update/Profile', function(req, res) {
-	    res.json({
-	        message: "success"
-	    });
-	});
-
-
-	router.post('/Category/Update/Top/:id', function(req, res) {
-	    res.json({
-	        message: 	"success"
-	    });
-	});
-
-	router.post('/pic/upload/token/category/:id', function(req, res) {
-	    res.json({
-	        message 	: 		"success"	,
-	        key 		: 		100 		,
-	        token 		: 		"heihei"
-	    });
-	});
-
-	router.post('/Dish/Add/:categoryId', function(req, res) {
-		res.json({
-	        message 	: 		"success"	,
-	        id 			: 		Number(Math.floor(100000 + Math.random() * 100000))
-	    });
-	});
-
-	router.post('/Dish/Remove', function(req, res) {
-		res.json({
-	        message 	: 		"success"
-	    });
-	});
-
-	router.post('/Dish/Copy', function(req, res) {
-		var _getNewDishIdMap = function(currentDishId) {
-			var newDishIdMap = {};
-			for (var id in currentDishId) {
-				if (currentDishId.hasOwnProperty(id)) {
-					newDishIdMap[id] = Number(Math.floor(100000 + Math.random() * 100000));
-				}
-			}
-			return newDishIdMap;
-		}
-		var newDishIdMap = _getNewDishIdMap(req.body);
-		res.json({
-			message 	: 		"success",
-			result 		: 		newDishIdMap
-		});
-	});
-
-	router.post('/Dish/Update/Top', function(req, res) {
-		res.json({
-			message 	: 		"success"
-		});
-	});
-
-	router.post('/Dish/Update/Category', function(req, res) {
-		res.json({
-			message 	: 		"success"
-		});
-	});
-
-	router.post('/Dish/Update/All/:dishId', function(req, res) {
-		res.json({
-			message 	: 		"success"
-		});
-	});
-
-	router.post('/Dish/Update/Able/:flag', function(req, res) {
-		res.json({
-			message 	: 		"success"
-		});
-	});
-
-	router.post('/pic/upload/token/dishupdate/:dishId', function(req, res) {
-		res.json({
-	        message 	: 		"success"	,
-	        key 		: 		100 		,
-	        token 		: 		"heihei"
-	    });
-	});
-
-	router.post('/Dish/Group/Add', function(req, res) {
-		res.json({
-			message 	: 		"success",
-			id 			: 		Number(Math.floor(100000 + Math.random() * 100000))
-		});
-	});
-
-	router.post('/Dish/Group/Update/:propertyGroupId', function(req, res) {
-		res.json({
-			message 	: 		"success"
-		});
-	});
-
-	router.post('/Dish/Group/Remove/:propertyGroupId', function(req, res) {
-		res.json({
-			message 	: 		"success"
-		});
-	});
+	
 
 	return router;
 };
