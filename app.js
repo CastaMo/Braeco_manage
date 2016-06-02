@@ -1,16 +1,12 @@
 'use strict';
 
-var express = require('express');
-var app = express();
-var logger = require('morgan');
-var passport = require("passport");
-var route = require("./routes")(passport);
-var bodyParser = require('body-parser');
-
-route = require('./routes/activityRoute')(route);
-route = require('./routes/comboRoute')(route);
-route = require('./routes/categoryRoute')(route);
-route = require('./routes/dishRoute')(route);
+var express 		= require('express');
+var app 				= express();
+var logger 			= require('morgan');
+var bodyParser 	= require('body-parser');
+var passport 		= require("passport");
+var route 			= require("./routes")(passport);
+var readFiles 	= require("./common/readFiles");
 
 app.set(function () {
     app.use(express.bodyParser({ keepExtensions: true, uploadDir: '/tmp' }));
@@ -30,6 +26,10 @@ app.use(logger("dev"));
 app.use(require('connect-livereload')({
     port: 35729
 }));
+
+readFiles.getFileList("./routes/routeComponents", function(file) {
+	route = require(file.path)(route);
+});
 
 app.use(route);
 

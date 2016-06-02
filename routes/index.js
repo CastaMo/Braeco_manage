@@ -3,7 +3,6 @@
 var express = require('express');
 var app = express();
 var router = express.Router();
-var renew = require('../renew');
 
 module.exports = function(passport) {
 
@@ -61,10 +60,6 @@ module.exports = function(passport) {
 
 	router.get('/Manage/Data/Statistics', function(req, res) {
 		res.render('./CanteenManageData/develop');
-	});
-
-	router.get('/renew', function(req, res) {
-		renew.renew(res);
 	});
 
 	// router.get('/Manage/Menu/Data', function(req, res) {

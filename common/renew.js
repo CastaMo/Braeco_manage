@@ -1,5 +1,5 @@
 var path = require('path');
-var hashmap = require('../hashmap');
+var hashmap = require('./hashmap');
 var fs = require("fs");
 
 

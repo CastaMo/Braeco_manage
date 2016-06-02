@@ -7,7 +7,7 @@ module.exports = function(router) {
   router.post('/Dish/Group/Add', function(req, res) {
     res.json({
       message   :     "success",
-      id      :     Number(Math.floor(100000 + Math.random() * 100000))
+      id        :     Number(Math.floor(100000 + Math.random() * 100000))
     });
   });
 
