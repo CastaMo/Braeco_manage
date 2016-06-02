@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function(router) {
 
   router.get('/Manage/Menu/Food/Single', function(req, res) {

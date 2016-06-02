@@ -1,5 +1,6 @@
-module.exports = function(router) {
+'use strict';
 
+module.exports = function(router) {
   router.get('/Manage/Menu/Category', function(req, res) {
     res.render('./CanteenManageMenu/Category/develop');
   });

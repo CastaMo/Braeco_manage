@@ -60,7 +60,7 @@ module.exports = function(router) {
     }
   }
 
-  router.get('/Manage/Menu/Data', getCallbackHandleForRequest("GET"));
+  //router.get('/Manage/Menu/Data', getCallbackHandleForRequest("GET"));
 
   return router;
 };
