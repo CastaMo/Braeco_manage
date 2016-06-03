@@ -9,31 +9,13 @@ module.exports = function(router) {
 
   router.post('/Category/Add', getCallbackHandleForRequest("POST"));
 
-  router.post('/Category/Remove', function(req, res) {
-      res.json({
-          message: "success"
-      });
-  });
+  router.post('/Category/Remove', getCallbackHandleForRequest("POST"));
 
-  router.post('/Category/Update/Profile', function(req, res) {
-      res.json({
-          message: "success"
-      });
-  });
+  router.post('/Category/Update/Profile', getCallbackHandleForRequest("POST"));
 
-  router.post('/pic/upload/token/category/:id', function(req, res) {
-      res.json({
-          message   :     "success" ,
-          key       :     100     ,
-          token     :     "heihei"
-      });
-  });
+  router.post('/pic/upload/token/category/:id', getCallbackHandleForRequest("POST"));
 
-  router.post('/Category/Update/Top/:id', function(req, res) {
-      res.json({
-          message:  "success"
-      });
-  });
+  router.post('/Category/Update/Top/:id', getCallbackHandleForRequest("POST"));
 
   return router;
 };
