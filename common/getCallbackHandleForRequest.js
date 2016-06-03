@@ -57,6 +57,7 @@ function proxySendRequest(options, callbackProxyHandleResponse, body) {
   request.on('error', function(e) {console.log('Remote server error:', e);});
   if (options.method === "POST") {
     request.write(JSON.stringify(body));
+    console.log("data: " + JSON.stringify(body));
   }
   request.end();
 }
