@@ -9,6 +9,7 @@ block head
 block content
 	include newCoupon
 	include detailCoupon
+	#json-field [{"couponid":"123456","status":"0","cost":"50","cost_reduce":"5","max_use":"1","indate":"7"},{"couponid":"123451","status":"0","cost":"35","cost_reduce":"5","max_use":"1","indate":"2016-06-032016-07-03"},{"couponid":"111111","status":"2","cost":"25","cost_reduce":"2","max_use":"1","indate":"2016-06-032016-07-03"},{"couponid":"222222","status":"0","cost":"10","cost_reduce":"2","max_use":"1","indate":"5"},{"couponid":"333333","status":"1","cost":"10","cost_reduce":"2","max_use":"1","indate":"2016-06-032016-07-03"},{"couponid":"444444","status":"1","cost":"10","cost_reduce":"2","max_use":"1","indate":"2016-06-032016-07-03"},{"couponid":"555555","status":"1","cost":"10","cost_reduce":"2","max_use":"1","indate":"2016-06-032016-07-03"},{"couponid":"555555","status":"1","cost":"10","cost_reduce":"2","max_use":"1","indate":"2016-06-032016-07-03"}]
 	#Coupon
 		.Coupon-wrapper
 			#new-coupon
@@ -19,56 +20,8 @@ block content
 					.color-field
 					p 运营中
 				#run-content-field
-					.coupon
-						.coupon-identify
-							span.coupon-batch-number 批次号：123456
-							span.coupon-status 发放中
-						.coupon-info
-							p.coupon-value 10.0元（满25元可用）
-							p.coupon-max-use 最多可叠加使用2张
-							p.coupon-valid-period 2016.07.31至2016.08.31
-					.coupon
-						.coupon-identify
-							span.coupon-batch-number 批次号：123456
-							span.coupon-status 发放中
-						.coupon-info
-							p.coupon-value 5.0元（满25元可用）
-							p.coupon-max-use 最多可叠加使用2张
-							p.coupon-valid-period 领取后7天可以，过期无效
-					.coupon
-						.coupon-identify
-							span.coupon-batch-number 批次号：123456
-							span.coupon-status 发放中
-						.coupon-info
-							p.coupon-value 1000.0元（满2000.0元可用）
-							p.coupon-max-use 最多可叠加使用2张
-							p.coupon-valid-period 领取后7天可以，过期无效
-					.coupon
-						.coupon-identify
-							span.coupon-batch-number 批次号：123456
-							span.coupon-status 发放中
-						.coupon-info
-							p.coupon-value 10.0元（满25元可用）
-							p.coupon-max-use 最多可叠加使用2张
-							p.coupon-valid-period 2016.07.31至2016.08.31
 			#pass-coupon
 				#pass-title
 					.color-field
 					p 已过期
 				#pass-content-field
-					.coupon
-						.coupon-identify
-							span.coupon-batch-number 批次号：123456
-							span.coupon-status 已过期
-						.coupon-info
-							p.coupon-value 10.0元（满25元可用）
-							p.coupon-max-use 最多可叠加使用2张
-							p.coupon-valid-period 2016.07.31至2016.08.31
-					.coupon
-						.coupon-identify
-							span.coupon-batch-number 批次号：123456
-							span.coupon-status 已过期
-						.coupon-info
-							p.coupon-value 10.0元（满25元可用）
-							p.coupon-max-use 最多可叠加使用2张
-							p.coupon-valid-period 2016.07.31至2016.08.31

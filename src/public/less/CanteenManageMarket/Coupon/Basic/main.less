@@ -1,4 +1,7 @@
 @import "../../../common/common";
+#json-field {
+    display: none;
+}
 #Coupon {
     .Coupon-wrapper {
         font-size: 14px;
@@ -6,6 +9,7 @@
         width: 710px;
         height: 800px;
         .coupon {
+            cursor: pointer;
             margin-right: 15px;
             margin-bottom: 25px;
             float: left;
@@ -213,6 +217,7 @@
                 #date-period {
                     margin: 20px 0 0 30px;
                     input {
+                        autohide: true;
                         width: 140px;
                     }
                     ._zhi {
@@ -326,6 +331,69 @@
             width: 80px;
             text-align: left;
         }
+        &.run {
+            #pre-btn-field #run-coupon {
+                display: inline;
+                border: 1px solid #FFC107;
+                background: #FFC107;
+                color: #FFFFFF;
+            }
+             #pre-btn-field #stop-coupon {
+                display: inline;
+                border: 1px solid #E7E7EB;
+                background: #FFFFFF;
+                color: #4A4A4A;
+            }
+            #pre-btn-field .overdue {
+                display: none;
+            }
+            #detailCoupon-content {
+                color: #4A4A4A;
+                .test-coupon-code-image {
+                    opacity: 1;
+                }
+            }
+        }
+        &.stop {
+            #pre-btn-field #run-coupon {
+                display: inline;
+                border: 1px solid #E7E7EB;
+                background: #FFFFFF;
+                color: #4A4A4A;
+            }
+            #pre-btn-field #stop-coupon {
+                display: inline;
+                border: 1px solid #9B9B9B;
+                background: #9B9B9B;
+                color: #FFFFFF;
+            }
+            #pre-btn-field .overdue {
+                display: none;
+            }
+            #detailCoupon-content {
+                color: #9B9B9B;
+                .test-coupon-code-image {
+                    opacity: 0.4;
+                }
+            }
+        }
+        &.pass {
+            #pre-btn-field .overdue {
+                display: inline;
+            }
+            #pre-btn-field #run-coupon {
+                display: none;
+            }
+            #pre-btn-field #stop-coupon {
+                display: none;
+            }
+            #detailCoupon-content {
+                color: #9B9B9B;
+                .test-coupon-code-image {
+                    opacity: 0.4;
+                }
+            }
+        }
         #pre-btn-field {
             margin: 30px 0 0 30px;
             height: 60px;
@@ -349,16 +417,6 @@
                 .run-btn {
                     margin-left: 13px;
                 }
-                &.choose {
-                    border: 1px solid #FFC107;
-                    background: #FFC107;
-                    color: #FFFFFF;
-                }
-                &.free {
-                    border: 1px solid #E7E7EB;
-                    background: #FFFFFF;
-                    color: #4A4A4A;
-                }
             }
             #stop-coupon {
                 border: 1px solid #9B9B9B;
@@ -379,15 +437,43 @@
                 .stop-btn {
                     margin-left: 13px;
                 }
-                &.choose {
-                    border: 1px solid #9B9B9B;
-                    background: #9B9B9B;
-                    color: #FFFFFF;
+                .stop-confirm {
+                    display: none;
+                    font-size: 28px;
+                    position: relative;
+                    right: 110px;
+                    top: 8px;
+                    float: left;
+                    background-repeat: no-repeat;
+                    z-index: 9999;
+                    height: 282px;
+                    width: 482px;
+                    .confirm-ask {
+                        margin: 80px 0 0 30px;
+                    }
+                    #confirm-btn-field {
+                        margin: 40px 0 0 60px;
+                        .confirm-btn {
+                            border: 1px solid #FFC107;
+                            line-height: 64px;
+                            color: #FFFFFF;
+                            height: 64px;
+                            border-radius: 10px;
+                            width: 120px;
+                            background-color: #FFC107;
+                        }
+                        .confirm-cancel-btn {
+                            margin-left: 50px;
+                            line-height: 64px;
+                            border: 1px solid #E7E7EB;
+                            height: 64px;
+                            border-radius: 10px;
+                            width: 120px;
+                        }
+                    }
                 }
-                &.free {
-                    border: 1px solid #E7E7EB;
-                    background: #FFFFFF;
-                    color: #4A4A4A;
+                .stop-confirm-image {
+                    zoom: 0.5;
                 }
             }
             .overdue {
@@ -454,10 +540,9 @@
                     }
                 }
                 #pre-coupon-rule {
-                    height: 170px;
-                    #pre-apply-area {
-                        margin: 30px 0 0 30px;
-                        ._pre-apply-area {}
+                    height: 210px;
+                    #left-distribute-coupon {
+                        margin: 30px 0 0 30px;   
                     }
                     #pre-max-coupon {
                         margin: 20px 0 0 30px;
@@ -466,6 +551,10 @@
                     #pre-max-own {
                         margin: 20px 0 0 30px;
                         ._pre-max-own {}
+                    }
+                    #pre-apply-area {
+                        margin: 20px 0 0 30px;
+                        ._pre-apply-area {}
                     }
                     #pre-multiple-use {
                         margin: 20px 0 0 30px;
@@ -477,7 +566,7 @@
                 float: left;
                 border: 1px solid #E7E7EB;
                 border-width: 0 1px 1px 0;
-                height: 361px;
+                height: 401px;
                 width: 249px;
                 ._pre-content {
                     width: 200px;
