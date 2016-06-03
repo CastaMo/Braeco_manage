@@ -207,6 +207,8 @@ module.exports = function(grunt) {
         livescript :        gruntConfig.livescript,
         browserify :        gruntConfig.browserify,
         watch      :        gruntConfig.watch,
+        uglify     :        gruntConfig.uglify,
+        cssmin     :        gruntConfig.cssmin,
 
         hashmap: {
             options: {
@@ -228,12 +230,6 @@ module.exports = function(grunt) {
                 dest: '<%= dirs.dest_path %>public/<%= dirs.version %>'
             }
         },
-
-        /*压缩js，把dest_path中的js路径里所有js都压缩为一个main.min.js*/
-        uglify    : gruntConfig.uglify,
-
-        /*把dest_path中的css路径里所有css都压缩为一个main.min.css*/
-        cssmin: gruntConfig.cssmin,
 
         sftp: {
             options: {
