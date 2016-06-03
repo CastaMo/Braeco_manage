@@ -8,16 +8,67 @@ block head
 '''这里是主体'''
 block content
 	include newCoupon
+	include detailCoupon
 	#Coupon
 		.Coupon-wrapper
 			#new-coupon
 				.new-btn.btn
-					p +新建代金券
+					p + 新建代金券
 			#run-coupon
 				#run-title
+					.color-field
 					p 运营中
 				#run-content-field
+					.coupon
+						.coupon-identify
+							span.coupon-batch-number 批次号：123456
+							span.coupon-status 发放中
+						.coupon-info
+							p.coupon-value 10.0元（满25元可用）
+							p.coupon-max-use 最多可叠加使用2张
+							p.coupon-valid-period 2016.07.31至2016.08.31
+					.coupon
+						.coupon-identify
+							span.coupon-batch-number 批次号：123456
+							span.coupon-status 发放中
+						.coupon-info
+							p.coupon-value 5.0元（满25元可用）
+							p.coupon-max-use 最多可叠加使用2张
+							p.coupon-valid-period 领取后7天可以，过期无效
+					.coupon
+						.coupon-identify
+							span.coupon-batch-number 批次号：123456
+							span.coupon-status 发放中
+						.coupon-info
+							p.coupon-value 1000.0元（满2000.0元可用）
+							p.coupon-max-use 最多可叠加使用2张
+							p.coupon-valid-period 领取后7天可以，过期无效
+					.coupon
+						.coupon-identify
+							span.coupon-batch-number 批次号：123456
+							span.coupon-status 发放中
+						.coupon-info
+							p.coupon-value 10.0元（满25元可用）
+							p.coupon-max-use 最多可叠加使用2张
+							p.coupon-valid-period 2016.07.31至2016.08.31
 			#pass-coupon
 				#pass-title
+					.color-field
 					p 已过期
 				#pass-content-field
+					.coupon
+						.coupon-identify
+							span.coupon-batch-number 批次号：123456
+							span.coupon-status 已过期
+						.coupon-info
+							p.coupon-value 10.0元（满25元可用）
+							p.coupon-max-use 最多可叠加使用2张
+							p.coupon-valid-period 2016.07.31至2016.08.31
+					.coupon
+						.coupon-identify
+							span.coupon-batch-number 批次号：123456
+							span.coupon-status 已过期
+						.coupon-info
+							p.coupon-value 10.0元（满25元可用）
+							p.coupon-max-use 最多可叠加使用2张
+							p.coupon-valid-period 2016.07.31至2016.08.31
