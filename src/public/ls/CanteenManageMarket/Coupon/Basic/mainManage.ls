@@ -4,6 +4,15 @@ main-manage = let
 	_coupons = []
 	_length = ""
 	_apply-dom = $ "\.apply input"
+	_face-value-dom = $ "\._face-value"
+	_valid-period-dom = $ "\._valid-period"
+	_valid-day-dom = $ "\._valid-day"
+	_use-condition-dom = $ "\._use-condition"
+	_max-coupon-dom = $ "\._max-coupon"
+	_distribute-coupon-dom = $ "\._distribute-coupon"
+	_max-own-dom = $ "\._max-own"
+	_max-own-select-dom = $ "\.max-own-select"
+	_multiple-use-dom = $ "\._multiple-use"
 	_date-period-start-dom = $ "\._date-period-start"
 	_date-period-end-dom = $ "\._date-period-end"
 	_run-btn-dom = $ "\.run-btn"
@@ -81,19 +90,31 @@ main-manage = let
 							$(".detailCoupon-wrapper").removeClass "pass"
 							$(".detailCoupon-wrapper").addClass "stop"
 						$("._pre-batch-number").html("#{_coupons[j].couponid}")
-						$("._pre-coupon-inventory").html("#{_coupons[j].couponid}")
+						$("._pre-coupon-inventory").html("#{_coupons[j].remain}")
 						$("._pre-face-value").html("#{_coupons[j].cost_reduce}")
-						if _coupons[i].indate.length is 20
+						if _coupons[j].indate.length is 20
 							$("._pre-valid-period").html("#{_coupons[i].indate.substr(10)} 至 #{_coupons[i].indate.substr(10,20)}")
-						else if _coupons[i].indate.length isnt 20
+						else if _coupons[j].indate.length isnt 20
 							$("._pre-valid-period").html("领取后#{_coupons[i].indate}天有效，过期无效")
 						$("._pre-use-condition").html("订单额满#{_coupons[i].cost}元可使用")
-						$("._left-distribute-coupon").html("顾客点餐前弹出领取页面")
-						$("._pre-max-coupon").html("100000张")
-						$("._pre-max-own").html("每人最多领取1张")
-						$("._pre-apply-area").html("堂食 预订 外卖")
+						if Number(_coupons[j].pay) is 0
+							$("._left-distribute-coupon").html("顾客点餐前发券")
+							$("._pre-distribute-coupon").html("顾客点餐前发券")
+						else if Number(_coupons[j].pay) is 1
+							$("._left-distribute-coupon").html("顾客支付订单后发券")
+							$("._pre-distribute-coupon").html("顾客支付订单后发券")
+						$("._pre-max-coupon").html("#{_coupons[j].quantity}张")
+						$("._pre-max-own").html("每人最多领取#{_coupons[j].max}张")
+						_fun = ""
+						if Number(_coupons[j].fun[0]) is 1
+							_fun += "堂食 "
+						if Number(_coupons[j].fun[1]) is 1
+							_fun += "预订 "
+						if Number(_coupons[j].fun[2]) is 1
+							_fun += "外卖"
+						$("._pre-apply-area").html(_fun)
 						$("._pre-multiple-use").html("每笔订单最多同时叠加使用#{_coupons[j].max_use}张")
-						$("._pre-distribute-coupon").html("顾客点餐前弹出领取页面")
+						
 				page.toggle-page "detail"
 				
 
@@ -142,23 +163,38 @@ main-manage = let
 			$(".stop-confirm").fade-out 100
 
 	_init-all-keyup = !->
-		$("._face-value").keyup !->
+		_face-value-dom.keyup !->
 			$("._pre-face-value").html($("._face-value").val!)
-		$("._use-condition").keyup !->
+		_valid-period-dom.change !->
+			if Number($(@).val!) is 0
+				$('#valid-day').fade-out 100
+				$('#date-period').fade-in 100
+			else if Number($(@).val!) is 1
+				$('#date-period').fade-out 100
+				$('#valid-day').fade-in 100
+		_valid-day-dom.keyup !->
+			$(".valid-day-input-tip").html("领取后#{_valid-day-dom.val!}天有效，过期无效")
+		_use-condition-dom.keyup !->
 			$(".pre-condition-value").html($("._use-condition").val!)
 			$(".tip-3-content").html("3. 订单消费满 ￥#{$("._use-condition").val!} 可用，最多可同时使用 #{$("._multiple-use").val!} 张。")
-		$("._max-own").keyup !->
+		_distribute-coupon-dom.change !->
+			if Number($(@).val!) is 0
+				console.log "11", 11
+			else if Number($(@).val!) is 1
+				console.log "22", 22
+		_max-own-select-dom.change !->
+			if Number($(@).val!) is 0
+				console.log "11", 11
+			else if Number($(@).val!) is 1
+				console.log "22", 22
+		_max-own-dom.keyup !->
 			$(".tip-2-content").html("2. 每个微信号限领取 #{$("._max-own").val!} 张代金券；")
-		$("._multiple-use").keyup !->
+		_multiple-use-dom.keyup !->
 			$(".tip-3-content").html("3. 订单消费满 ￥#{$("._use-condition").val!} 可用，最多可同时使用 #{$("._multiple-use").val!} 张。")
-		_date-period-start-dom.mouseup !->
-			console.log "111", 111
-			if _date-period-start-dom.val! isnt ""
-				$("._date-period-tip").html("有效期：#{_date-period-start-dom.val!} 至 #{_date-period-end-dom.val!}")
-		_date-period-end-dom.mouseup !->
-			console.log "111", 111
-			if _date-period-end-dom.val! isnt ""
-				$("._date-period-tip").html("有效期：#{_date-period-start-dom.val!} 至 #{_date-period-end-dom.val!}")
+		_date-period-start-dom.change !->
+			$("._date-period-tip").html("有效期：#{_date-period-start-dom.val!} 至 #{_date-period-end-dom.val!}")
+		_date-period-end-dom.change !->
+			$("._date-period-tip").html("有效期：#{_date-period-start-dom.val!} 至 #{_date-period-end-dom.val!}")
 
 
 	_init-depend-module = !->
