@@ -5,6 +5,5 @@ page-manage = let
     
     
     initial: ->
-        console.log "hello world"
     
 module.exports = page-manage
