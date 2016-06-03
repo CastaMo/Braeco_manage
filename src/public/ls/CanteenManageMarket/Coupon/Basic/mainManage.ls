@@ -4,6 +4,8 @@ main-manage = let
 	_coupons = []
 	_length = ""
 	_apply-dom = $ "\.apply input"
+	_date-period-start-dom = $ "\._date-period-start"
+	_date-period-end-dom = $ "\._date-period-end"
 	_run-btn-dom = $ "\.run-btn"
 	_stop-btn-dom = $ "\.stop-btn"
 	_new-btn-dom = $ "\.new-btn"
@@ -96,7 +98,12 @@ main-manage = let
 				
 
 	_init-all-event = !->
-		$('[data-toggle="datepicker"]').datepicker!
+		$("._date-period input").datepicker ({
+			format: 'yyyy-mm-dd'
+			autohide: 'true'
+			autopick: 'true'
+		});
+		
 		_apply-dom.click !->
 			_apply = $(this).parent()
 			if _apply.hasClass("true")
@@ -144,7 +151,14 @@ main-manage = let
 			$(".tip-2-content").html("2. 每个微信号限领取 #{$("._max-own").val!} 张代金券；")
 		$("._multiple-use").keyup !->
 			$(".tip-3-content").html("3. 订单消费满 ￥#{$("._use-condition").val!} 可用，最多可同时使用 #{$("._multiple-use").val!} 张。")
-		
+		_date-period-start-dom.mouseup !->
+			console.log "111", 111
+			if _date-period-start-dom.val! isnt ""
+				$("._date-period-tip").html("有效期：#{_date-period-start-dom.val!} 至 #{_date-period-end-dom.val!}")
+		_date-period-end-dom.mouseup !->
+			console.log "111", 111
+			if _date-period-end-dom.val! isnt ""
+				$("._date-period-tip").html("有效期：#{_date-period-start-dom.val!} 至 #{_date-period-end-dom.val!}")
 
 
 	_init-depend-module = !->
