@@ -1,0 +1,68 @@
+main = null
+page = null
+edit-manage = let
+
+    _full-cover-dom = $ "\#full-cover"
+    
+    _full-cover-close-btn-dom = $ "\#full-cover .close-btn"
+    _full-cover-cancel-btn-dom = $ "\#full-cover .cancel-btn"
+    _full-cover-save-btn-dom = $ "\#full-cover .save-btn"
+
+    _edited-staff = null
+
+    _cancel-btn-dom = $ "\#staff-account-edit .cancel-btn"
+    _save-btn-dom = $ "\#staff-account-edit .save-btn"
+    
+    _name-input-dom = $ "\#staff-account-edit input[name='name']"
+    _gender-select-dom = $ "\#staff-account-edit select[name='name']"
+    _phone-input-dom = $ "\#staff-account-edit input[name='phone']"
+    _password-input-dom = $ "\#staff-account-edit input[name='password']"
+    _reset-password-btn-dom = $ "\#staff-account-edit button.reset-password-btn"
+    _role-select-dom = $ "\#staff-account-edit select[name='role']"
+    
+    _reset-password-btn-click-event = !->
+        _full-cover-dom.fade-in 100
+        
+    _full-cover-close-btn-click-event = !->
+        _full-cover-dom.fade-out 100
+        
+    _full-cover-cancel-btn-click-event = !->
+        _full-cover-dom.fade-out 100
+    
+    _full-cover-save-btn-click-event = !->
+        _full-cover-dom.fade-out 100
+    
+    _cancel-btn-click-event = !->
+        page.toggle-page "main"
+        
+    _save-btn-click-event = !->
+        page.toggle-page "main"
+        
+    _init-depend-module = !->
+        page := require "./pageManage.js"
+        
+    _init-event = !->
+        _cancel-btn-dom.click !-> _cancel-btn-click-event!
+        _save-btn-dom.click !-> _save-btn-click-event!
+        _reset-password-btn-dom.click !-> _reset-password-btn-click-event!
+        _full-cover-close-btn-dom.click !-> _full-cover-close-btn-click-event!
+        _full-cover-cancel-btn-dom.click !-> _full-cover-cancel-btn-click-event!
+        _full-cover-save-btn-dom.click !-> _full-cover-save-btn-click-event!
+        
+        
+        
+    _init-form-field = !->
+        _name-input-dom.val _edited-staff.name
+        _phone-input-dom.val _edited-staff.phone
+        _password-input-dom.val _edited-staff.password
+        
+
+    get-staff-and-init: (staff) !->
+        _edited-staff := staff
+        _init-form-field!
+
+    initial: !->
+        _init-depend-module!
+        _init-event!
+
+module.exports = edit-manage
