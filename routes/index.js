@@ -163,6 +163,26 @@ module.exports = function(passport) {
 		res.send("hello world");
 	});
 	
+	router.post('/Waiter/Role/Add', function(req, res, next) {
+		
+	});
+	router.post('/Waiter/Role/Remove/:waiter_role_id', function(req, res, next) {
+		
+	});
+	router.post('/Waiter/Role/Update/$waiter_role_id', function(req, res, next) {
+		
+	});
+	
+	router.post('/Waiter/Add/:waiter_role_id', function(req, res, next) {
+		
+	});
+	router.post('/Waiter/Remove/:waiter_id', function(req, res, next) {
+		
+	});
+	router.post('/Waiter/Role/Update/:waiter_role_id', function(req, res, next) {
+		
+	});
+
 
 	return router;
 };

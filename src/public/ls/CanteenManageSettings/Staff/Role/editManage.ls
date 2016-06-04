@@ -5,6 +5,7 @@ edit-manage = let
     _cancel-btn-dom = $ "\#staff-role-edit .cancel-btn"
     _save-btn-dom = $ "\#staff-role-edit .save-btn"
 
+    _name-input-dom = $ "\#staff-role-edit input[name='name']"
     _checkbox-dom = $ "\#staff-role-edit input[type='checkbox']"
     
     _checkbox-click-event = (event)!->
@@ -28,6 +29,18 @@ edit-manage = let
             else
                 _set-checkbox-unchecked $ par.parent!.parent!
     
+    _reset-dom = !->
+        _name-input-dom.val ''
+        for checkbox in _checkbox-dom
+            _set-checkbox-unchecked ($ checkbox).parent!
+    
+    _get-permission-value = ->
+        permission-value = 0
+        for checkbox in _checkbox-dom
+            if ($ checkbox).is ":checked"
+                permission-value += parse-int ($ checkbox).val!
+        permission-value
+    
     _set-checkbox-checked = (checkbox-par)!->
         ($ checkbox-par.find "> input[type='checkbox']").attr 'checked',true
         checkbox-par.remove-class "unchecked-icon"
@@ -39,9 +52,12 @@ edit-manage = let
         checkbox-par.add-class "unchecked-icon"
 
     _cancel-btn-click-event = !->
+        _reset-dom!
         page.toggle-page "main"
         
     _save-btn-click-event = !->
+        console.log _get-permission-value!
+        reset-dom!
         page.toggle-page "main"
         
     _init-depend-module = !->

@@ -158,7 +158,11 @@ main-manage = let
             for food in single-food.property
                 if food instanceof Array
                     for food-item in food
-                        td-name.append $ "<div class='sub-food-item'>"+food-item.name+"</div>"
+                        if food-item.p.length === 0
+                            td-name.append $ "<div class='sub-food-item'>"+food-item.name+"</div>"
+                        else
+                            td-name.append $ "<div class='sub-food-item'>"+food-item.name+"<span>"+'（'+(food-item.p.join '、')+"）"+"</span>"+"</div>"
+                            
             row-dom.append td-name
         row-dom.append "<td class='table-num-col'>"+single-food.sum+"</td>"
         row-dom.append "<td class='table-pri-col'>"+single-food.price+"</td>"
