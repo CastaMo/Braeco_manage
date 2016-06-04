@@ -3,7 +3,7 @@ eventbus = require "../eventbus.js"
 [		deep-copy] = 
 	[	util.deep-copy]
 
-class pageView
+class PageView
 	(options)->
 		deep-copy options, @
 		@init!
@@ -28,4 +28,4 @@ class pageView
 
 	toggle-page-callback: (page)!->
 
-module.exports = pageView
+module.exports = PageView

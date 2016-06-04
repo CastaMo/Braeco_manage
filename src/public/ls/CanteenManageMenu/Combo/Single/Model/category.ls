@@ -1,18 +1,15 @@
 eventbus = require "../eventbus"
 
-[		deep-copy] = 
-	[	util.deep-copy]
-
-class category extends EventEmitter2
+class Category
 
 	(options)->
-		deep-copy options, @
-		@init!
+		@assign options
 
-	init: !->
-		@init-all-prepare!
-		@add-listen-for-event-bus!
+	assign: (options)!->
+		@id 			= 		options.id
+		@name 		= 		options.name
+		@pic 			= 		options.pic
 
-	init-all-prepare: !->
-		@categories = {}
-	
+	get-name: -> return @name
+
+module.exports = Category
