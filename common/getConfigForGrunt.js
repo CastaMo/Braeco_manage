@@ -43,10 +43,10 @@ module.exports = function (options) {
 		var rootForFormalDest,
 				suffixForFormalDest;
 		if (isDynamic) {
-			rootForFormalDest 		= DYNAMIC_ROOT;
+			rootForFormalDest 		= DYNAMIC_ROOT + "/Manage";
 			suffixForFormalDest 	= DYNAMIC_SUFFIX; 
 		} else {
-			rootForFormalDest 		= STATIC_ROOT;
+			rootForFormalDest 		= STATIC_ROOT + "/Manage";
 			suffixForFormalDest 	= STATIC_SUFFIX;
 		}
 		return {
@@ -82,7 +82,7 @@ module.exports = function (options) {
 
 	function getWatchOptions(array, isDynamic, commonBackPath) {
 		return {
-			sourcePath 						: 		SOURCE_ROOT_PATH + "**/" + commonBackPath + "**/**"
+			sourcePath 						: 		SOURCE_ROOT_PATH + "**/" + commonBackPath + "/**/**"
 		};
 	}
 
