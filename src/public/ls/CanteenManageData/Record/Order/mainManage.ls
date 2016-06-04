@@ -224,7 +224,7 @@ main-manage = let
        order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"</p>"
        
        infomation-dom = $ "<div class='order-infomation info-number'></div>"
-       infomation-dom.append $ "<span>No： </span><span>"+data-obj.eaterid_of_dinner+"</span>"
+       infomation-dom.append $ "<span>会员编号： </span><span>"+data-obj.eaterid_of_dinner+"</span>"
        order-details-body-dom.append infomation-dom
        
        infomation-dom = $ "<div class='order-infomation info-order-pay-time'></div>"

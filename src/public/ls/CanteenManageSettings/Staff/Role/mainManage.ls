@@ -7,12 +7,22 @@ main-manage = let
     _new-btn-click-event = !->
         page.toggle-page 'new'
     
+    _edit-btn-click-event = (role)->
+        page.toggle-page 'edit'
+    
     class Role
         (name, type, permission) ->
             @name = name
             @type = type
             @permission = permission
             @gene-dom!
+            @set-dom-value!
+            @init-event!
+        
+        set-dom-value: !->
+            @name-dom.text @name
+            @type-dom.text @type
+            @permission-dom.text @permission
         
         gene-dom : !->
             @tr-dom = $ "<tr></tr>"
@@ -35,6 +45,9 @@ main-manage = let
             @method-dom.append @delete-method-dom
             @tr-dom.append @method-dom
             _table-body-dom.append @tr-dom
+        
+        init-event : !->
+            @edit-method-dom.click !~> _edit-btn-click-event @
     
     _init-depend-module = !->
         page := require "./pageManage.js"

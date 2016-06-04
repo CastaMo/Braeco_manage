@@ -9,7 +9,9 @@ edit-manage = let
     _full-cover-save-btn-dom = $ "\#full-cover .save-btn"
 
     _edited-staff = null
-
+    
+    _manage-permission-btn-dom = $ "\#staff-account-edit .manage-permission-btn"
+    
     _cancel-btn-dom = $ "\#staff-account-edit .cancel-btn"
     _save-btn-dom = $ "\#staff-account-edit .save-btn"
     
@@ -32,6 +34,13 @@ edit-manage = let
     _full-cover-save-btn-click-event = !->
         _full-cover-dom.fade-out 100
     
+    _manage-permission-btn-click-event = !->
+        current-url = location.href
+        sub-current-url = current-url.substr 0,current-url.lastIndexOf '/'
+        target-url = sub-current-url+'/Role'
+        win = window.open(target-url, '_blank')
+        win.focus!
+    
     _cancel-btn-click-event = !->
         page.toggle-page "main"
         
@@ -42,6 +51,7 @@ edit-manage = let
         page := require "./pageManage.js"
         
     _init-event = !->
+        _manage-permission-btn-dom.click !-> _manage-permission-btn-click-event!
         _cancel-btn-dom.click !-> _cancel-btn-click-event!
         _save-btn-dom.click !-> _save-btn-click-event!
         _reset-password-btn-dom.click !-> _reset-password-btn-click-event!
