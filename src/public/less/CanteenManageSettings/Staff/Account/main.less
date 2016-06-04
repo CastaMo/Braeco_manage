@@ -1,1 +1,92 @@
 @import "../../../common/common";
+#staff {
+    .staff-wrapper {
+        width: 710px;
+        margin: 0 auto;
+        font-size: 14px;
+        
+        #staff-account-main {
+            margin: 30px 0;
+            .sa-container-header {
+                .new-btn {
+                    cursor: pointer;
+                    width: 140px;
+                    height: 32px;
+                    background: #ffc107;
+                    border-radius: 5px;
+                    border: none;
+                    color: #fff;
+                    icon.add-icon {
+                        float: left;
+                        width: 14px;
+                        height: 14px;
+                        margin-top: 1px;
+                        margin-left: 28px;
+                        margin-right: -20px;
+                        background-size: 14px 14px;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                    }
+                }
+            }
+            table.sa-container-table {
+                width: 100%;
+                margin-top: 20px;
+                border-collapse: collapse;
+                > thead {
+                    background-color: #f4f5f9;
+                    color: #8d8d8d;
+                    border: 1px solid #E7E7EB;
+                    > tr {
+                        height: 47px;
+                        > th {
+                            font-weight: normal;
+                        }
+                        .name-column {
+                            width: 15%;
+                        }
+                        .gender-column {
+                            width: 15%;
+                        }
+                        .phone-column {
+                            width: 30%;
+                        }
+                        .role-column {
+                            width: 20%;
+                        }
+                        .method-column {
+                            width: 20%;
+                        }
+                    }
+                }
+                > tbody {
+                    border: 1px solid #E7E7EB;
+                    text-align: center;
+                    > tr {
+                        border: 1px solid #E7E7EB;
+                        height: 60px;
+                        > td {
+                            border: 1px solid #E7E7EB;
+                            .method-container {
+                                cursor: pointer;
+                                display: inline-block;
+                                margin: 0 10px;
+                                icon {
+                                    display: inline-block;
+                                    width: 20px;
+                                    height: 20px;
+                                    background-size: 20px 20px;
+                                    background-repeat: no-repeat;
+                                    background-position: center;
+                                }
+                                p {
+                                    display: block;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

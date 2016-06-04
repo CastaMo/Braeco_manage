@@ -1,0 +1,27 @@
+extends ../index
+
+block head
+	meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+	title Braeco
+	block css
+
+'''这里是主体'''
+block content
+	include newCoupon
+	include detailCoupon
+	#json-field [{"couponid":"123456","status":"0","cost":"50","cost_reduce":"5","max_use":"1","indate":"7"},{"couponid":"123451","status":"0","cost":"35","cost_reduce":"5","max_use":"1","indate":"2016-06-032016-07-03"},{"couponid":"111111","status":"2","cost":"25","cost_reduce":"2","max_use":"1","indate":"2016-06-032016-07-03"},{"couponid":"222222","status":"0","cost":"10","cost_reduce":"2","max_use":"1","indate":"5"},{"couponid":"333333","status":"1","cost":"10","cost_reduce":"2","max_use":"1","indate":"2016-06-032016-07-03"},{"couponid":"444444","status":"1","cost":"10","cost_reduce":"2","max_use":"1","indate":"2016-06-032016-07-03"},{"couponid":"555555","status":"1","cost":"10","cost_reduce":"2","max_use":"1","indate":"2016-06-032016-07-03"},{"couponid":"555555","status":"1","cost":"10","cost_reduce":"2","max_use":"1","indate":"2016-06-032016-07-03"}]
+	#Coupon
+		.Coupon-wrapper
+			#new-coupon
+				.new-btn.btn
+					p + 新建代金券
+			#run-coupon
+				#run-title
+					.color-field
+					p 运营中
+				#run-content-field
+			#pass-coupon
+				#pass-title
+					.color-field
+					p 已过期
+				#pass-content-field
