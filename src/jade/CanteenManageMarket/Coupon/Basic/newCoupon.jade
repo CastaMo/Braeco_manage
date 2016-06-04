@@ -33,21 +33,21 @@
 				#valid-period
 					span._content 有效期*
 					select._valid-period
-						option 日期区间
-						option 有效天数
+						option(value = "0") 日期区间
+						option(value = "1") 有效天数
 				#date-period
 					span._content 日期区间*
 					._date-period
 						input._date-period-start
 						span._zhi 至
 						input._date-period-end
-					p._date-period-tip 有效期
+					p._date-period-tip 有效期：2016-01-01 至 2016-12-31
 				#valid-day
 					span._content 有效天数*
 					.valid-day-input
 						input._valid-day
 						span._unit 天
-					p.valid-day-input-tip 领取后天有效，过期无效
+					p.valid-day-input-tip 领取后0天有效，过期无效
 				#use-condition
 					span._content 使用门槛*
 					.use-condition-input
@@ -59,8 +59,8 @@
 				#distribute-coupon
 					span._content 自动发券*
 					select._distribute-coupon
-						option 顾客点餐前发券
-						option 顾客支付下单后发券
+						option(value = "0") 顾客点餐前发券
+						option(value = "1") 顾客支付下单后发券
 				#max-coupon
 					span._content 发放上限*
 					.max-coupon-input
@@ -68,9 +68,9 @@
 						span._unit 张
 				#max-own-select
 					span._content 领取上限*
-					select._distribute-coupon
-						option 有效期内每人每天限领
-						option 整个有效期内每人限领
+					select._max-own-select
+						option(value = "0") 有效期内每人每天限领
+						option(value = "1") 整个有效期内每人限领
 				#max-own
 					span._content
 					#max-own-input

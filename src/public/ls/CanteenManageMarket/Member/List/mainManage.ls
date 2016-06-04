@@ -18,9 +18,6 @@ main-manage = let
 	_loop-level-dom = $ "\.table-title ._loop-level a"
 	_loop-exp-dom = $ "\.table-title ._loop-exp a"
 	_loop-balance-dom = $ "\.table-title ._loop-balance a"
-
-	_repalce-href = !->
-
 	
 	_init-all-event = !->
 		$("._searchInput").keydown (event)!->

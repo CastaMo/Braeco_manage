@@ -18,16 +18,12 @@ module.exports = function(passport) {
 	// 	res.render('./CanteenManageMarket/Activity/develop');
 	// });
 
-	router.get('/Manage/Market/Member/Recharge', function(req, res) {
-		res.render('./CanteenManageMarket/Member/Recharge/develop');
-	});
-
-	router.get('/Manage/Market/Member/Level', function(req, res) {
-		res.render('./CanteenManageMarket/Member/Level/develop');
-	});
-
 	router.get('/Manage/Market/Member/List', function(req, res) {
 		res.render('./CanteenManageMarket/Member/List/develop');
+	});
+
+	router.get('/Manage/Market/Member/Setting', function(req, res) {
+		res.render('./CanteenManageMarket/Member/Setting/develop');
 	});
 
 	router.get('/Manage/Market/Coupon/Basic', function(req, res) {

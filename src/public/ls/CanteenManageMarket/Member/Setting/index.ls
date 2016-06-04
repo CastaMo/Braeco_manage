@@ -1,4 +1,5 @@
 let win = window, doc = document
+	[getJSON] = [util.getJSON]
 
 	_init-callback = {
 		"Need to rescan qrcode" 	:	->	win.location.pathname = "/Table/Confirm/rescan"
@@ -14,3 +15,4 @@ let win = window, doc = document
 		main = require "./mainManage.js";		 	main.initial!
 
 	_main-init!
+	_test-is-data-ready!
