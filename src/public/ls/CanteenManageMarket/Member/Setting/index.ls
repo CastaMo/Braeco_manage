@@ -15,4 +15,3 @@ let win = window, doc = document
 		main = require "./mainManage.js";		 	main.initial!
 
 	_main-init!
-	_test-is-data-ready!

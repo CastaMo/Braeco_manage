@@ -28,14 +28,26 @@ main-manage = let
 	class Coupon
 		(options)!->
 			deep-copy options, @
+			@init!
 			_coupons.push @
+		init: !->
 
-	_init-arry = !->
-		couponArrJSON = $('#json-field').html!
-		couponArr = []
-		couponArr = JSON.parse(couponArrJSON)
-		for coupon in couponArr
-			new Coupon(coupon)
+	_init-all-coupon = (_get-coupon-JSON)!->
+		all-coupons = get-JSON _get-coupon-JSON!
+		for coupon in all-coupons
+			couponid 			:		coupon.couponid
+			status 				:		coupon.status
+			cost 				: 		coupon.cost
+			cost_reduce 		:		coupon.cost_reduce
+			max 				:		coupon.max
+			max_use 			:		coupon.max_use
+			indate 				:		coupon.indate
+			remain				:		coupon.remain
+			daily				:		coupon.daily
+			fun 				: 		coupon.fun
+			pay 				:		coupon.pay
+			quantity 			:		coupon.quantity
+			url					:		coupon.url
 
 	_init-coupon-view = !->
 		_length = _coupons.length
@@ -140,6 +152,7 @@ main-manage = let
 			page.toggle-page "basic"
 
 		_save-btn-dom.click !->
+			addCoupon = {}
 			page.toggle-page "basic"
 
 		_run-btn-dom.click !->
@@ -147,6 +160,18 @@ main-manage = let
 			$(".detailCoupon-wrapper").addClass "run"
 			$(".run-btn p").html("启用发放中")
 			$(".stop-btn p").html("停止发放")
+			request-object = {}
+			request-object.status = 0
+			_couponid = $("._pre-batch-number")html!
+			request-object.couponlist = []
+			_object = {"couponid":_couponid}
+			request-object.couponlist.push(_object)
+			require_.get("modify").require {
+				data 		:		{
+					JSON 	:		JSON.stringify(request-object)
+				}
+				success 	:		(result)!-> location.reload!
+			}
 
 		_stop-btn-dom.click !->
 			$(".stop-confirm").fade-in 100
@@ -156,20 +181,19 @@ main-manage = let
 			$(".detailCoupon-wrapper").addClass "stop"
 			$(".run-btn p").html("启用发放")
 			$(".stop-btn p").html("停止发放中")
+			$(".stop-confirm").fade-out 100
 			request-object = {}
 			request-object.status = 2
 			_couponid = $("._pre-batch-number")html!
 			request-object.couponlist = []
 			_object = {"couponid":_couponid}
 			request-object.couponlist.push(_object)
-			request-object.exp = modify-input;
 			require_.get("modify").require {
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
 				}
 				success 	:		(result)!-> location.reload!
 			}
-			$(".stop-confirm").fade-out 100
 
 		_confirm-cancel-btn.click !->
 			$(".stop-confirm").fade-out 100
@@ -211,10 +235,11 @@ main-manage = let
 
 	_init-depend-module = !->
 		page := require "./pageManage.js"
+		require_ := require "./requireManage.js"
 
 
-	initial: !->
-		_init-arry!
+	initial: (_get-coupon-JSON)!->
+		_init-all-coupon_get-coupon-JSON
 		_init-coupon-view!
 		_init-depend-module!
 		_init-all-event!
