@@ -1,12 +1,12 @@
 page-manage = let
 
     $("\#Staff-sub-menu").addClass "choose"
-    $("\#staff-nav li\#Account").addClass "choose"
+    $("\#staff-nav li\#Role").addClass "choose"
     
     
-    _main-dom = $ "\#staff-account-main"
-    _new-dom = $ "\#staff-account-new"
-    _edit-dom = $ "\#staff-account-edit"
+    _main-dom = $ "\#staff-role-main"
+    _new-dom = $ "\#staff-role-new"
+    _edit-dom = $ "\#staff-role-edit"
     
     _all-toggle-dom = [_main-dom, _new-dom, _edit-dom]
     
