@@ -1,5 +1,5 @@
 main-manage = let
-	page = null
+	page = require_ = null
 	[get-JSON, deep-copy] = [util.get-JSON, util.deep-copy]
 	_coupons = []
 	_length = ""
@@ -116,7 +116,6 @@ main-manage = let
 						$("._pre-multiple-use").html("每笔订单最多同时叠加使用#{_coupons[j].max_use}张")
 						
 				page.toggle-page "detail"
-				
 
 	_init-all-event = !->
 		$("._date-period input").datepicker ({
@@ -157,6 +156,19 @@ main-manage = let
 			$(".detailCoupon-wrapper").addClass "stop"
 			$(".run-btn p").html("启用发放")
 			$(".stop-btn p").html("停止发放中")
+			request-object = {}
+			request-object.status = 2
+			_couponid = $("._pre-batch-number")html!
+			request-object.couponlist = []
+			_object = {"couponid":_couponid}
+			request-object.couponlist.push(_object)
+			request-object.exp = modify-input;
+			require_.get("modify").require {
+				data 		:		{
+					JSON 	:		JSON.stringify(request-object)
+				}
+				success 	:		(result)!-> location.reload!
+			}
 			$(".stop-confirm").fade-out 100
 
 		_confirm-cancel-btn.click !->
