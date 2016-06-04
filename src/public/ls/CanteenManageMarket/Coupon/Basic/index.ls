@@ -11,7 +11,7 @@ let win = window, doc = document
 	}
 
 	_init-all-get-JSON-func = (data)->
-		_get-coupon-JSON 		:= -> return JSON.stringify(data.couponlist)
+		_get-coupon-JSON 		:= -> return data.couponlist
 
 	_main-init = (result)->
 		_init-callback[result.message]?(result)
@@ -23,6 +23,6 @@ let win = window, doc = document
 
 	_test-is-data-ready = ->
 		if window.all-data then _main-init JSON.parse window.all-data; window.all-data = null;
-		else window.main-init = _main-init
-
+		else window.main-init = _main-init;
+	
 	_test-is-data-ready!

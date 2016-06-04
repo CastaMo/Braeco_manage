@@ -26,7 +26,7 @@ main-manage = let
 	_confirm-cancel-btn = $ "\.confirm-cancel-btn"
 
 	class Coupon
-		(options)!->
+		(options)->
 			deep-copy options, @
 			@init!
 			_coupons.push @
@@ -35,19 +35,21 @@ main-manage = let
 	_init-all-coupon = (_get-coupon-JSON)!->
 		all-coupons = get-JSON _get-coupon-JSON!
 		for coupon in all-coupons
-			couponid 			:		coupon.couponid
-			status 				:		coupon.status
-			cost 				: 		coupon.cost
-			cost_reduce 		:		coupon.cost_reduce
-			max 				:		coupon.max
-			max_use 			:		coupon.max_use
-			indate 				:		coupon.indate
-			remain				:		coupon.remain
-			daily				:		coupon.daily
-			fun 				: 		coupon.fun
-			pay 				:		coupon.pay
-			quantity 			:		coupon.quantity
-			url					:		coupon.url
+			new Coupon {
+				couponid 			:		coupon.couponid
+				status 				:		coupon.status
+				cost 				: 		coupon.cost
+				cost_reduce 		:		coupon.cost_reduce
+				max 				:		coupon.max
+				max_use 			:		coupon.max_use
+				indate 				:		coupon.indate
+				remain				:		coupon.remain
+				daily				:		coupon.daily
+				fun 				: 		coupon.fun
+				pay 				:		coupon.pay
+				quantity 			:		coupon.quantity
+				url					:		coupon.url
+			}
 
 	_init-coupon-view = !->
 		_length = _coupons.length
@@ -68,7 +70,7 @@ main-manage = let
 			_new-dom.find(".coupon-value").html("#{_coupons[i].cost_reduce}元（满#{_coupons[i].cost}元可用）")
 			if _coupons[i].indate.length is 20
 				_new-dom.find(".coupon-valid-period").html("#{_coupons[i].indate.substr(10)} 至 #{_coupons[i].indate.substr(10,20)}")
-			else if _coupons[i].indate.length isnt 20
+			else if _coupons[i].indate.length < 10
 				_new-dom.find(".coupon-valid-period").html("领取后#{_coupons[i].indate}天有效，过期无效")
 			if _coupons[i].status == "0"
 				_new-dom.find(".coupon-status").html("发放中")
@@ -153,6 +155,40 @@ main-manage = let
 
 		_save-btn-dom.click !->
 			addCoupon = {}
+			fun = []
+			addCoupon.cost_reduce = $("._face-value").val!
+			addCoupon.cost = $("._use-condition").val!
+			if $("._valid-period").val! is "0"
+				addCoupon.indate = _date-period-start-dom.val!
+				addCoupon.indate += _date-period-end-dom.val!
+			else if $("._valid-period").val! is "1"
+				addCoupon.indate = $("._valid-day").val!
+			if $("._fun1").is(':checked') is true
+				fun.push(1)
+			else if $("._fun1").is(':checked') isnt true
+				fun.push(0)
+			if $("._fun2").is(':checked') is true
+				fun.push(1)
+			else if $("._fun2").is(':checked') isnt true
+				fun.push(0)
+			if $("._fun3").is(':checked') is true
+				fun.push(1)
+			else if $("._fun3").is(':checked') isnt true
+				fun.push(0)
+			addCoupon.fun = fun
+			addCoupon.quantity = $("._max-coupon").val!
+			addCoupon.max_use = $("._multiple-use").val!
+			addCoupon.max = $("._max-own").val!
+			addCoupon.daily = $("._max-own-select").val!
+			addCoupon.pay = $("._distribute-coupon").val!
+			request-object = {}
+			request-object = addCoupon
+			require_.get("add").require {
+				data 		:		{
+					JSON 	:		JSON.stringify(request-object)
+				}
+				success 	:		(result)!-> location.reload!
+			}
 			page.toggle-page "basic"
 
 		_run-btn-dom.click !->
@@ -163,9 +199,7 @@ main-manage = let
 			request-object = {}
 			request-object.status = 0
 			_couponid = $("._pre-batch-number")html!
-			request-object.couponlist = []
-			_object = {"couponid":_couponid}
-			request-object.couponlist.push(_object)
+			request-object.couponid = _couponid
 			require_.get("modify").require {
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
@@ -174,20 +208,19 @@ main-manage = let
 			}
 
 		_stop-btn-dom.click !->
-			$(".stop-confirm").fade-in 100
+			if $(".detailCoupon-wrapper").hasClass "run"
+				$(".stop-confirm").fade-in 100
 
 		_confirm-btn-dom.click !->
+			$(".stop-confirm").fade-out 100
 			$(".detailCoupon-wrapper").removeClass "run"
 			$(".detailCoupon-wrapper").addClass "stop"
 			$(".run-btn p").html("启用发放")
 			$(".stop-btn p").html("停止发放中")
-			$(".stop-confirm").fade-out 100
 			request-object = {}
 			request-object.status = 2
 			_couponid = $("._pre-batch-number")html!
-			request-object.couponlist = []
-			_object = {"couponid":_couponid}
-			request-object.couponlist.push(_object)
+			request-object.couponid = _couponid
 			require_.get("modify").require {
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
@@ -239,7 +272,7 @@ main-manage = let
 
 
 	initial: (_get-coupon-JSON)!->
-		_init-all-coupon_get-coupon-JSON
+		_init-all-coupon _get-coupon-JSON
 		_init-coupon-view!
 		_init-depend-module!
 		_init-all-event!
