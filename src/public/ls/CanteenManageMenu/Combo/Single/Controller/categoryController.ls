@@ -7,11 +7,13 @@ class CategoryController
 		@init!
 
 	assign: (options)!->
-		@datas = options.datas
+		@datas 								= options.datas
+		@all-default-states 	= options.all-default-states
 
 	init: !->
 		@init-all-prepare!
 		@init-all-data!
+		@set-default-state!
 
 	init-all-prepare: !->
 		@categories 								= {}
@@ -21,9 +23,12 @@ class CategoryController
 	init-all-data: !->
 		for data in @datas
 			category = new Category data
-			if not @current-category-id then @current-category-id = category.id
 			@category-map-name-to-id[category.name] = category.id
 			@categories[category.id] = category
+
+	set-default-state: !->
+		default-category-id 	= @all-default-states.shift!.default-category-id
+		@current-category-id 	= default-category-id
 
 	set-current-category-id-by-name: (category-name)!->
 		old-category-id 			= @current-category-id

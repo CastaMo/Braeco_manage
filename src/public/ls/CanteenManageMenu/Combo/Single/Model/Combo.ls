@@ -49,5 +49,7 @@ class Combo
 
 	get-type: -> return @type
 
+	get-id: -> return @id
+
 
 module.exports = Combo

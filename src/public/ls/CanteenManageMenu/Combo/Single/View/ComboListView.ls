@@ -71,7 +71,7 @@ class ComboListView
 
 
 	set-default-state: !->
-		current-category-id = @all-default-states.pop().default-category-id
+		current-category-id = @all-default-states.shift!.default-category-id
 		@only-show-combo-list-dom-by-given-id current-category-id
 
 	update-combo-dom-detail-from-data: (category-id, combo-id)!->

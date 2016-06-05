@@ -1,10 +1,12 @@
 PageView 							= require "./View/PageView.js"
 CategorySelectView 		= require "./View/CategorySelectView.js"
 ComboListView 				= require "./View/ComboListView.js"
+HeaderView 						= require "./View/HeaderView.js"
 
 
 CategoryController 		= require "./Controller/CategoryController.js"
 ComboController 			= require "./Controller/ComboController.js"
+HeaderController 			= require "./Controller/HeaderController.js"
 
 
 let win = window, doc = document
@@ -17,6 +19,9 @@ let win = window, doc = document
 		console.log data
 		category-controller 	= new CategoryController opt 	=
 			datas 								: 			data.categories
+			all-default-states 		:				[ 				opt 			=
+				default-category-id : 			data.categories[0].id
+			]
 
 		default-category-id = category-controller.get-current-category-id!
 
@@ -33,6 +38,50 @@ let win = window, doc = document
 			el-CSS-selector 			: 			"div.combo-list"
 			all-default-states 		:				[ 				opt 			=
 				default-category-id : 			default-category-id
+			]
+
+		header-controller 		= new HeaderController opt 		=
+			datas 								: 			["new", "edit", "move", "sort", "copy", "able", "remove"]
+			all-default-states 		: 			[ 				opt 			=
+				current-combo-ids 	: 			[]
+				current-combo-ables : 			[]
+			]
+
+		header-view 					= new HeaderView opt 					=
+			header-controller 		: 			header-controller
+			el-CSS-selector 			: 			"div.combo-oper"
+			all-default-states 		: 			[ 				opt 			=
+				[
+					{
+						name 							: 			"new"
+						able 							: 			true
+					}
+					{
+						name 							: 			"edit"
+						able 							: 			false
+					}
+					{
+						name 							: 			"move"
+						able 							: 			false
+					}
+					{
+						name 							: 			"sort"
+						able 							: 			true
+					}
+					{
+						name 							: 			"copy"
+						able 							: 			false
+					}
+					{
+						name 							: 			"able"
+						able 							: 			false
+					}
+					{
+						name 							: 			"remove"
+						able 							: 			false
+					}
+					
+				]
 			]
 
 	_init-page = !->

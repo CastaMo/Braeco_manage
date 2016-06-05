@@ -15,9 +15,10 @@ class ComboController
 		@init-all-event!
 
 	init-all-prepare: !->
-		@combos 						= {}
-		@current-combo-ids 	= []
-		@is-all-choose 			= false
+		@combos 							= {}
+		@current-combo-ids 		= []
+		@current-combo-ables 	= []
+		@is-all-choose 				= false
 
 	init-all-data: !->
 		for data in @datas
@@ -35,25 +36,31 @@ class ComboController
 
 	get-combo: (category-id, combo-id)->
 		for combo in @combos[category-id]
-			if Number(combo-id) is Number(combo.id) then return combo
+			if Number(combo-id) is Number(combo.get-id!) then return combo
 
 	get-combo-is-choose: (category-id, combo-id)->
 		for combo in @combos[category-id]
-			if Number(combo-id) is Number(combo.id) then return combo.is-choose
+			if Number(combo-id) is Number(combo.get-id!) then return combo.is-choose
 
 	set-is-choose: (category-id, combo-id, is-choose)!->
-		@current-combo-ids.length = 0
+		@current-combo-ids.length 		= 0
+		@current-combo-ables.length 	= 0
 		for combo in @combos[category-id]
-			if Number(combo-id) is Number(combo.id) then combo.is-choose = is-choose
-			if combo.is-choose then @current-combo-ids.push combo.id
-		eventbus.emit "controller:combo:current-combo-ids-change", @current-combo-ids
+			if Number(combo-id) is Number(combo.get-id!) then combo.is-choose = is-choose
+			if combo.is-choose
+				@current-combo-ids.push combo.get-id!
+				@current-combo-ables.push combo.get-able!
+		eventbus.emit "controller:combo:current-combo-ids-change", @current-combo-ids, @current-combo-ables
 
 	set-all-is-choose-by-category-id: (category-id, is-choose)!->
-		@current-combo-ids.length = 0
+		@current-combo-ids.length 		= 0
+		@current-combo-ables.length 	= 0
 		for combo in @combos[category-id]
 			combo.is-choose = is-choose
-			if is-choose then @current-combo-ids.push combo.id
-		eventbus.emit "controller:combo:current-combo-ids-change", @current-combo-ids
+			if combo.is-choose
+				@current-combo-ids.push combo.get-id!
+				@current-combo-ables.push combo.get-able!
+		eventbus.emit "controller:combo:current-combo-ids-change", @current-combo-ids, @current-combo-ables
 
 	get-is-all-choose: -> return @is-all-choose
 
