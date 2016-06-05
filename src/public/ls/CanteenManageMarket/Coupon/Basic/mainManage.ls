@@ -189,7 +189,7 @@ main-manage = let
 				}
 				success 	:		(result)!-> location.reload!
 			}
-			page.toggle-page "basic"
+			location.href = "/Manage/Market/Coupon/Basic"
 
 		_run-btn-dom.click !->
 			$(".detailCoupon-wrapper").removeClass "stop"
@@ -198,8 +198,11 @@ main-manage = let
 			$(".stop-btn p").html("停止发放")
 			request-object = {}
 			request-object.status = 0
+			_object = {}
 			_couponid = $("._pre-batch-number")html!
-			request-object.couponid = _couponid
+			request-object.couponlist = []
+			_object = {"couponid": _couponid}
+			request-object.couponlist.push(_object)
 			require_.get("modify").require {
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
@@ -220,7 +223,9 @@ main-manage = let
 			request-object = {}
 			request-object.status = 2
 			_couponid = $("._pre-batch-number")html!
-			request-object.couponid = _couponid
+			request-object.couponlist = []
+			_object = {"couponid": _couponid}
+			request-object.couponlist.push(_object)
 			require_.get("modify").require {
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
