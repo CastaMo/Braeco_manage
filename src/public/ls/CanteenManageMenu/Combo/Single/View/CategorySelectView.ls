@@ -14,12 +14,15 @@ class CategorySelectView
 		@init-all-event!
 
 	render-all-dom: !->
-		categories = @category-controller.get-all-categories!
-		for key, category of categories
-			dom = $ "<option value='#{category.get-name!}'>#{category.get-name!}</option>"
-			@$el.append dom
+		datas = @category-controller.get-datas!
+		for data in datas
+			select-option-dom = @create-select-option-dom data.name
+			@$el.append select-option-dom
 
 	init-all-event: !->
 		@$el.change !~> @category-controller.set-current-category-id-by-name @$el.val!
+
+	create-select-option-dom: (category-name)!->
+		return select-option-dom = $ "<option value='#{category-name}'>#{category-name}</option>"
 
 module.exports = CategorySelectView

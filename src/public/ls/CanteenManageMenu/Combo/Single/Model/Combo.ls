@@ -29,6 +29,25 @@ class Combo
 		deep-copy options, @
 		eventbus.emit("model:combo:config-change", @id, options)
 
+	get-c-name: -> return @c-name
+
+	get-e-name: -> return @e-name
+
+	get-pic: -> return @pic
+
+	get-default-price: -> return @default-price
+
+	get-groups: -> return @groups
+
+	get-dc-type: -> return @dc-type
+
+	get-dc: -> return @dc
+
+	get-detail: -> return @detail
+
+	get-able: -> return @able
+
+	get-type: -> return @type
 
 
 module.exports = Combo

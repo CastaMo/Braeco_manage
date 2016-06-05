@@ -10,6 +10,7 @@ class ComboListView
 		@combo-controller 		= 	options.combo-controller
 		@category-controller 	= 	options.category-controller
 		@$el 									= 	$ options.el-CSS-selector
+		@all-default-states 	= 	options.all-default-states
 
 	init: !->
 		@init-all-prepare!
@@ -20,26 +21,74 @@ class ComboListView
 	init-all-prepare: !->
 		@all-combo-list-doms 	= {}
 		@all-combo-doms 			= {}
+		@all-choose-dom 			= @$el.parent "\#combo-table"
+																.find 	".combo-head .choose-icon"
 
 	render-all-dom: !->
-		all-combos = @combo-controller.get-all-combos!
-		for category-id, combo-array of all-combos
-			combo-list-dom 											= @create-combo-list-dom!
+		datas = @combo-controller.get-datas!
+		for data in datas
+			combo-list-dom 									= @create-combo-list-dom!
 			@$el.append combo-list-dom
-			@all-combo-list-doms[category-id] 	= combo-list-dom
-			@all-combo-doms[category-id] 				= []
-			for combo in combo-array
-				combo-dom 												= @create-combo-dom combo-list-dom
-				combo-list-dom.append combo-dom
-				@all-combo-doms[category-id].push combo-dom
+			@all-combo-list-doms[data.id] 	= combo-list-dom
+			@all-combo-doms[data.id] 				= {}
+			for dish in data.dishes when dish.type isnt "normal"
+				combo-dom-object 									= {}
+				$el = combo-dom-object.$el 				= @create-combo-dom combo-list-dom
+				combo-dom-object.choose-dom 			= $el.find ".t-choose .choose-icon"
+				combo-dom-object.pic-dom 					= $el.find ".t-pic .pic"
+				combo-dom-object.name-dom 				= $el.find ".t-name .name-field"
+				combo-dom-object.price-dom 				= $el.find ".t-price p"
+				combo-dom-object.subitem-dom 			= $el.find ".t-subitem .subitem-field"
+				combo-dom-object.dc-dom 					= $el.find ".t-dc .dc-field"
+				combo-dom-object.remark-dom 			= $el.find ".t-remark p"
+				combo-dom-object.cover-dom 				= $el.find ".hide-cover"
+
+				combo-list-dom.append $el
+				@all-combo-doms[data.id][dish.id] = combo-dom-object
+				@update-combo-dom-detail-from-data data.id, dish.id
 
 
 	init-all-event: !->
-		eventbus.on "controller:category:toggle-current-category-id", (category-id)!~> @only-show-combo-list-dom-by-given-id category-id
+		@all-choose-dom	.parent ".t-choose"
+										.click !~>
+											is-all-choose 			= @combo-controller.get-is-all-choose!
+											current-category-id = @category-controller.get-current-category-id!
+											@combo-controller.set-is-all-choose current-category-id, !is-all-choose
+
+		eventbus.on "controller:category:current-category-id-change", (category-id, old-category-id)!~> @only-show-combo-list-dom-by-given-id category-id
+
+		eventbus.on "controller:combo:current-combo-ids-change", (current-combo-ids)!~> @show-choose-for-combo-doms-by-current-combo-ids current-combo-ids
+
+		eventbus.on "controller:combo:is-all-choose-change", (is-all-choose)!~> @show-is-all-choose is-all-choose
+
+		for let category-id, combos of @all-combo-doms
+			for let combo-id, combo-dom-object of combos
+				combo-dom-object.$el
+												.find ".t-choose"
+												.click !~>
+													current-is-choose = @combo-controller.get-combo-is-choose category-id, combo-id
+													@combo-controller.set-is-choose category-id, combo-id, !current-is-choose
+
 
 	set-default-state: !->
-		current-category-id = @category-controller.get-current-category-id!
+		current-category-id = @all-default-states.pop().default-category-id
 		@only-show-combo-list-dom-by-given-id current-category-id
+
+	update-combo-dom-detail-from-data: (category-id, combo-id)!->
+		combo 						= @combo-controller.get-combo category-id, combo-id
+		combo-dom-object 	= @all-combo-doms[category-id][combo-id]
+		combo-dom-object.pic-dom
+										.css {"background-image":""}
+		if combo.get-pic!
+			combo-dom-object.pic-dom.css {"background-image":"url(#{combo.get-pic!})"}
+		combo-dom-object.name-dom
+										.html "<p>#{combo.get-c-name!}</p><p>#{combo.get-e-name!}</p>"
+
+		combo-dom-object.price-dom
+										.html combo.get-default-price!
+
+		combo-dom-object.remark-dom
+										.html combo.get-detail!
 
 	hide-all-combo-list-doms-except-given-id: (category-id_)!->
 		for category-id, combo-list-dom of @all-combo-list-doms
@@ -51,6 +100,21 @@ class ComboListView
 	only-show-combo-list-dom-by-given-id: (category-id)!->
 		@hide-all-combo-list-doms-except-given-id category-id
 		set-timeout (!~> @show-combo-list-dom-by-given-id category-id), 100
+
+	show-choose-for-combo-doms-by-current-combo-ids: (current-combo-ids)!->
+		current-category-id = @category-controller.get-current-category-id!
+		for combo-id, combo-dom-object of @all-combo-doms[current-category-id]
+			combo-dom-object.choose-dom
+											.remove-class "choose"
+		for combo-id in current-combo-ids
+			combo-dom-object = @all-combo-doms[current-category-id][combo-id]
+			combo-dom-object.choose-dom
+											.add-class "choose"
+
+	show-is-all-choose: (is-all-choose)!->
+		if is-all-choose then @all-choose-dom.add-class "choose"
+		else @all-choose-dom.remove-class "choose"
+
 
 	create-combo-list-dom: !->
 		combo-list-dom = $ "<ul class='combo-list'></ul>"
@@ -70,9 +134,7 @@ class ComboListView
 																</div>
 															</div>
 															<div class='t-name'>
-																<div class='name-field total-center'>
-																	<p></p>
-																</div>
+																<div class='name-field total-center'></div>
 															</div>
 															<div class='t-price left-right-border'>
 																<div class='price-field total-center'>

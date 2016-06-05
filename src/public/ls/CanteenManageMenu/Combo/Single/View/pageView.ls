@@ -1,12 +1,12 @@
 eventbus = require "../eventbus.js"
 
-[		deep-copy] = 
-	[	util.deep-copy]
-
 class PageView
 	(options)->
-		deep-copy options, @
+		@assign options
 		@init!
+
+	assign: (options)!->
+		@all-default-states = options.all-default-states
 
 	init: !->
 		@init-all-dom!

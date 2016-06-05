@@ -18,17 +18,22 @@ let win = window, doc = document
 		category-controller 	= new CategoryController opt 	=
 			datas 								: 			data.categories
 
+		default-category-id = category-controller.get-current-category-id!
+
 		category-select-view 	= new CategorySelectView opt 	=
 			category-controller 	: 			category-controller
 			el-CSS-selector 			: 			"select.category-select"
 
 		combo-controller 			= new ComboController opt 		=
 			datas 								: 			data.categories
-		console.log combo-controller, category-controller
+
 		combo-list-view 			= new ComboListView opt 			=
 			combo-controller 			: 			combo-controller
 			category-controller 	: 			category-controller
 			el-CSS-selector 			: 			"div.combo-list"
+			all-default-states 		:				[ 				opt 			=
+				default-category-id : 			default-category-id
+			]
 
 	_init-page = !->
 		pageview = new PageView opt = 

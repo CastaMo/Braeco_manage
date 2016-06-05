@@ -58,6 +58,7 @@ text-align: center;
 
 .combo-list {
     ul {
+        .hide;
         li {
             &:hover {
                 background-color: @shallow-orange-color;
@@ -67,7 +68,7 @@ text-align: center;
                 > *:not(.clear) {
                     height: 160px;
                     position: relative;
-                    > *:not(.choose-field) {
+                    > *:not(.choose-field):not(.pic-field) {
                         width: 85%;
                     }
                     p {
