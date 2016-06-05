@@ -159,24 +159,28 @@ module.exports = function(passport) {
 		res.send("hello world");
 	});
 	
+	
+	router.get('/Manage/Settings/Staff/Data', function(req, res, next) {
+		res.json("var allData = '{\"message\":\"success\",\"data\":{\"waiters\":[{\"name\":null,\"role\":1,\"phone\":0,\"sex\":\"\u7537\"},{\"name\":null,\"role\":1,\"phone\":13824418410,\"sex\":\"\u7537\"},{\"name\":null,\"role\":1,\"phone\":18819442283,\"sex\":\"\u7537\"},{\"name\":null,\"role\":1,\"phone\":15626470862,\"sex\":\"\u7537\"},{\"name\":null,\"role\":1,\"phone\":15521030187,\"sex\":\"\u7537\"},{\"name\":null,\"role\":1,\"phone\":18819473306,\"sex\":\"\u7a7a\"},{\"name\":null,\"role\":1,\"phone\":18819421257,\"sex\":\"\u7a7a\"},{\"name\":null,\"role\":1,\"phone\":13929585358,\"sex\":\"\u7a7a\"}],\"roles\":[{\"name\":\"\u5e97\u957f\",\"auth\":16777215}]}}';if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
+	});
 	router.post('/Waiter/Role/Add', function(req, res, next) {
-		
+		res.json("hello world");
 	});
 	router.post('/Waiter/Role/Remove/:waiter_role_id', function(req, res, next) {
-		
+		res.json("hello world");
 	});
 	router.post('/Waiter/Role/Update/$waiter_role_id', function(req, res, next) {
-		
+		res.json("hello world");		
 	});
 	
 	router.post('/Waiter/Add/:waiter_role_id', function(req, res, next) {
-		
+		res.json("hello world");
 	});
 	router.post('/Waiter/Remove/:waiter_id', function(req, res, next) {
-		
+		res.json("hello world");
 	});
 	router.post('/Waiter/Role/Update/:waiter_role_id', function(req, res, next) {
-		
+		res.json("hello world");
 	});
 
 

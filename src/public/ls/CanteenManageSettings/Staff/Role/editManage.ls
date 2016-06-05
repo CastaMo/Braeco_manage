@@ -57,7 +57,7 @@ edit-manage = let
         
     _save-btn-click-event = !->
         console.log _get-permission-value!
-        reset-dom!
+        _reset-dom!
         page.toggle-page "main"
         
     _init-depend-module = !->
