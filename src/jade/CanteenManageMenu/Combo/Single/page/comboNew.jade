@@ -26,24 +26,54 @@
 						.price-field.inner-field
 							.left-part
 								p 总价 *
-							.right-part
-								select(name="new-select-price" id="new-select-price")
-									option(value="固定总价") 固定总价
-								input(type="number" class='combo-input')
+							.right-part.parallel-container
+								.select-field
+									select(name="new-select-price" id="new-select-price")
+										option(value="combo_sum") 固定总价
+										option(value="combo_static") 子项加权
+								.input-field
+									input(type="number" class='combo-input')
+								.clear
 							.clear
-					.right-part
+					.right-part.outer-field
 						.pic-field
-							label(for='new-pic')
+							label(for='new-pic' class='total-center')
 								.img-field
-									.img-field
-										.img
-									.word-field
-										p 点击上传图片
-										p 建议尺寸:
-										p 200像素 * 200像素
+									.img
+								.word-field.total-center
+									p 点击上传图片
+									p 建议尺寸:
+									p 200像素 * 200像素
 							input(name="new-pic", id="new-pic" type="file" class="hide")
 					.clear
-		.c-extend
+		.c-extend.top-bottom-border
+			.c-extend-wrapper.c-wrapper
+				.c-extend-container
+					.subitem-field
+						#subitem
+							ul.subitem-list
+								li.subitem
+									.left-part
+										.name-field
+											p 子项
+									.right-part
+										.basic-field.parallel-container
+											.select-field
+												select
+											.input-field.parallel-container
+												p 任选个数
+												input(type="number" min="0")
+												.clear
+											.oper-field.parallel-container
+												.top
+													icon
+												.remove
+													icon
+											.clear
+										.hint-field
+									.clear
+					.remark-field
+					.intro-field
 		.c-dc
 			.c-dc-wrapper.c-wrapper
 				.c-dc-container

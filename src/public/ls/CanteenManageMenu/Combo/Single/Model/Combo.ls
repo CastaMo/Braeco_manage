@@ -20,6 +20,7 @@ class Combo
 		@e-name 					= 		options.name2 					|| ""
 		@pic 							= 		options.pic 						|| ""
 		@type 						= 		options.type
+		@tag 							= 		options.tag 						|| ""
 
 	set-able: (able)!->
 		@able = able
