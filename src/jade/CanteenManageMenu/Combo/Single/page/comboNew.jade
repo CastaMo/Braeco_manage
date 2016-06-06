@@ -1,0 +1,74 @@
+#combo-new
+	.c-table.left-right-border
+		.c-header.top-bottom-border
+			.c-header-wrapper
+				.c-header-container
+					.title-field
+						p 新建套餐
+		.c-basic
+			.c-basic-wrapper.c-wrapper
+				.c-basic-container
+					.left-part
+						.warn-field
+							p 带 * 号的为必填项
+						.c-name-field.inner-field
+							.left-part
+								p 单品名称 *
+							.right-part
+								input(type="text" class='single-input')
+							.clear
+						.e-name-field.inner-field
+							.left-part
+								p 英文名
+							.right-part
+								input(type="text" class='single-input')
+							.clear
+						.price-field.inner-field
+							.left-part
+								p 总价 *
+							.right-part
+								select(name="new-select-price" id="new-select-price")
+									option(value="固定总价") 固定总价
+								input(type="number" class='combo-input')
+							.clear
+					.right-part
+						.pic-field
+							label(for='new-pic')
+								.img-field
+									.img-field
+										.img
+									.word-field
+										p 点击上传图片
+										p 建议尺寸:
+										p 200像素 * 200像素
+							input(name="new-pic", id="new-pic" type="file" class="hide")
+					.clear
+		.c-extend
+		.c-dc
+			.c-dc-wrapper.c-wrapper
+				.c-dc-container
+					.dc-field
+						.left-part
+							p 促销工具
+						.right-part.parallel-container
+							.select-field
+								select(name="new-select-dc-type" id="new-select-dc-type")
+									option(value='none') 无
+									option(value='sale') 减价优惠
+									option(value='discount') 折扣优惠
+									option(value='half') 第二杯半价
+									option(value='limit') 限量供应
+							.addtional.parallel-container
+								input(type="number" placeholder='(1-99)' max='99' min='1')
+								p 份
+								.clear
+							.clear
+						.clear
+		.c-oper
+			.c-oper-wrapper
+				.c-oper-container.parallel-container
+					.cancel-btn
+						p 取消
+					.save-btn
+						p 保存
+					.clear
