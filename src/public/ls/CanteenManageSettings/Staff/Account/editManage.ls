@@ -9,6 +9,7 @@ edit-manage = let
     _full-cover-save-btn-dom = $ "\#full-cover .save-btn"
 
     _edited-staff = null
+    _all-roles = null
     
     _manage-permission-btn-dom = $ "\#staff-account-edit .manage-permission-btn"
     
@@ -16,7 +17,7 @@ edit-manage = let
     _save-btn-dom = $ "\#staff-account-edit .save-btn"
     
     _name-input-dom = $ "\#staff-account-edit input[name='name']"
-    _gender-select-dom = $ "\#staff-account-edit select[name='name']"
+    _gender-select-dom = $ "\#staff-account-edit select[name='gender']"
     _phone-input-dom = $ "\#staff-account-edit input[name='phone']"
     _password-input-dom = $ "\#staff-account-edit input[name='password']"
     _reset-password-btn-dom = $ "\#staff-account-edit button.reset-password-btn"
@@ -59,16 +60,32 @@ edit-manage = let
         _full-cover-cancel-btn-dom.click !-> _full-cover-cancel-btn-click-event!
         _full-cover-save-btn-dom.click !-> _full-cover-save-btn-click-event!
         
-        
-        
+    _init-role-select-dom = !->
+        for role in _all-roles
+            _role-select-dom.append $ "<option value='"+role.id+"''>"+role.name+"</option>"
+    
     _init-form-field = !->
         _name-input-dom.val _edited-staff.name
+        selected = ($ _gender-select-dom.find "option").filter ->
+            if ($ this).text! === _edited-staff.gender
+                true
+            else
+                false
+        ($ selected).prop 'selected',true
         _phone-input-dom.val _edited-staff.phone
-        _password-input-dom.val _edited-staff.password
-        
+        _password-input-dom.val "*******"
+        selected = ($ _role-select-dom.find "option").filter ->
+            console.log ($ this).val!
+            if ($ this).val! === _edited-staff.role.id.to-string!
+                true
+            else
+                false
+        ($ selected).prop "selected",true
 
-    get-staff-and-init: (staff) !->
+    get-staff-and-init: (staff, roles) !->
+        _all-roles := roles
         _edited-staff := staff
+        _init-role-select-dom!
         _init-form-field!
 
     initial: !->

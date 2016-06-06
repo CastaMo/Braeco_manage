@@ -8,6 +8,8 @@ edit-manage = let
     _name-input-dom = $ "\#staff-role-edit input[name='name']"
     _checkbox-dom = $ "\#staff-role-edit input[type='checkbox']"
     
+    _edited-role = null
+
     _checkbox-click-event = (event)!->
         value = parse-int ($ event.target).val!
         par = ($ event.target).parent!
@@ -67,6 +69,22 @@ edit-manage = let
         _cancel-btn-dom.click !-> _cancel-btn-click-event!
         _save-btn-dom.click !-> _save-btn-click-event!
         _checkbox-dom.click !-> _checkbox-click-event event
+
+    _init-form-field = !->
+        permission-string = _edited-role.permission.to-string 2
+        permission-array = []
+        for i from 0 to permission-string.length-1 by 1
+            if permission-string[i] === '1'
+                console.log i
+                permission-array.push Math.pow 2,i
+        for i from 0 to permission-array.length-1 by 1
+            console.log permission-array[i]
+            _set-checkbox-checked ($ "\#staff-role-edit input[value='"+permission-array[i]+"']").parent!
+
+
+    get-role-and-init: (role)!->
+        _edited-role := role
+        _init-form-field!
 
     initial: !->
         _init-depend-module!

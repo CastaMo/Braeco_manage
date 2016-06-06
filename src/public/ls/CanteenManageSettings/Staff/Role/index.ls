@@ -1,7 +1,7 @@
 let win = window, doc = document
 	[getJSON] = [util.getJSON]
 
-	_get-activity-JSON = null
+	_get-role-JSON = null
 
 	_init-callback = {
 		"Need to rescan qrcode" 	:	->	win.location.pathname = "/Table/Confirm/rescan"
@@ -11,7 +11,7 @@ let win = window, doc = document
 	}
 
 	_init-all-get-JSON-func = (data)->
-		_get-activity-JSON := -> return JSON.stringify(data.category)
+		_get-role-JSON := -> return JSON.stringify(data.roles)
 
 
 	_main-init = (result)->
@@ -19,7 +19,7 @@ let win = window, doc = document
 
 	_init-all-module = !->
 		page = require "./pageManage.js";			page.initial!
-		main = require "./mainManage.js";           main.initial!
+		main = require "./mainManage.js";           main.initial _get-role-JSON
 		new-page = require "./newManage.js";        new-page.initial!
 		edit-page = require "./editManage.js";      edit-page.initial!
 
@@ -27,4 +27,4 @@ let win = window, doc = document
 		if window.all-data then _main-init JSON.parse window.all-data; window.all-data = null;
 		else window.main-init = _main-init
 
-	_main-init {message:"success"}
+	_test-is-data-ready!

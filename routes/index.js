@@ -161,7 +161,12 @@ module.exports = function(passport) {
 	
 	
 	router.get('/Manage/Settings/Staff/Data', function(req, res, next) {
-		res.json("var allData = '{\"message\":\"success\",\"data\":{\"waiters\":[{\"name\":null,\"role\":1,\"phone\":0,\"sex\":\"\u7537\"},{\"name\":null,\"role\":1,\"phone\":13824418410,\"sex\":\"\u7537\"},{\"name\":null,\"role\":1,\"phone\":18819442283,\"sex\":\"\u7537\"},{\"name\":null,\"role\":1,\"phone\":15626470862,\"sex\":\"\u7537\"},{\"name\":null,\"role\":1,\"phone\":15521030187,\"sex\":\"\u7537\"},{\"name\":null,\"role\":1,\"phone\":18819473306,\"sex\":\"\u7a7a\"},{\"name\":null,\"role\":1,\"phone\":18819421257,\"sex\":\"\u7a7a\"},{\"name\":null,\"role\":1,\"phone\":13929585358,\"sex\":\"\u7a7a\"}],\"roles\":[{\"name\":\"\u5e97\u957f\",\"auth\":16777215}]}}';if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
+		console.log("Settings/Staff/Data");
+		setTimeout(function() {
+			res.send("var allData = '"+'{"message":"success","data":{"waiters":[{"id":3,"name":"zjp","role":1,"phone":0,"sex":"\u7537"},{"id":5,"name":"mgz","role":1,"phone":13824418410,"sex":"女"},{"id":7,"name":"cjy","role":1,"phone":18819442283,"sex":"\u7537"},{"id":30,"name":"cxx","role":1,"phone":15626470862,"sex":"\u7537"},{"id":51,"name":"zzj","role":1,"phone":15521030187,"sex":"\u7537"},{"id":5673,"name":"null","role":1,"phone":18819473306,"sex":"\u7a7a"},{"id":5698,"name":"dingding","role":1,"phone":18819421257,"sex":"\u7a7a"},{"id":12777,"name":"szx","role":1,"phone":13929585358,"sex":"\u7a7a"}],"roles":[{"id":1,"name":"\u5e97\u957f","auth":533674483}]}}'+"';"+
+			"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
+		}, 0);
+		// res.json("var allData = '{\"message\":\"success\",\"data\":{\"waiters\":[{\"name\":null,\"role\":1,\"phone\":0,\"sex\":\"\u7537\"},{\"name\":null,\"role\":1,\"phone\":13824418410,\"sex\":\"\u7537\"},{\"name\":null,\"role\":1,\"phone\":18819442283,\"sex\":\"\u7537\"},{\"name\":null,\"role\":1,\"phone\":15626470862,\"sex\":\"\u7537\"},{\"name\":null,\"role\":1,\"phone\":15521030187,\"sex\":\"\u7537\"},{\"name\":null,\"role\":1,\"phone\":18819473306,\"sex\":\"\u7a7a\"},{\"name\":null,\"role\":1,\"phone\":18819421257,\"sex\":\"\u7a7a\"},{\"name\":null,\"role\":1,\"phone\":13929585358,\"sex\":\"\u7a7a\"}],\"roles\":[{\"name\":\"\u5e97\u957f\",\"auth\":16777215}]}}';if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
 	});
 	router.post('/Waiter/Role/Add', function(req, res, next) {
 		res.json("hello world");
@@ -169,7 +174,7 @@ module.exports = function(passport) {
 	router.post('/Waiter/Role/Remove/:waiter_role_id', function(req, res, next) {
 		res.json("hello world");
 	});
-	router.post('/Waiter/Role/Update/$waiter_role_id', function(req, res, next) {
+	router.post('/Waiter/Role/Update/:waiter_role_id', function(req, res, next) {
 		res.json("hello world");		
 	});
 	
