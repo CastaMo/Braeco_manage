@@ -60,6 +60,7 @@ text-align: center;
     ul {
         .hide;
         li {
+            position: relative;
             &:hover {
                 background-color: @shallow-orange-color;
             }
@@ -81,6 +82,19 @@ text-align: center;
                         .background-norm();
                         .background-size(100px, 100px);
                     }
+                }
+            }
+            .combo-cover {
+                .hide-cover {
+                    .hide;
+                    position: absolute;
+                    width: 653px;
+                    height: 160px;
+                    right: 0;
+                    top: 0;
+                    background-color: rgba(231, 231, 231, 0.75);
+                    line-height: 160px;
+                    font-size: 20px;
                 }
             }
         }

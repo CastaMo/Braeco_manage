@@ -7,7 +7,7 @@
 						p 新建套餐
 		.c-basic
 			.c-basic-wrapper.c-wrapper
-				.c-basic-container
+				.c-basic-container.outter-field
 					.left-part
 						.warn-field
 							p 带 * 号的为必填项
@@ -30,12 +30,12 @@
 								.select-field
 									select(name="new-select-price" id="new-select-price")
 										option(value="combo_sum") 固定总价
-										option(value="combo_static") 子项加权
+										option(value="combo_static") 子项加总
 								.input-field
 									input(type="number" class='combo-input')
 								.clear
 							.clear
-					.right-part.outer-field
+					.right-part
 						.pic-field
 							label(for='new-pic' class='total-center')
 								.img-field
@@ -50,30 +50,54 @@
 			.c-extend-wrapper.c-wrapper
 				.c-extend-container
 					.subitem-field
-						#subitem
-							ul.subitem-list
-								li.subitem
-									.left-part
-										.name-field
-											p 子项
-									.right-part
-										.basic-field.parallel-container
-											.select-field
-												select
-											.input-field.parallel-container
-												p 任选个数
-												input(type="number" min="0")
-												.clear
-											.oper-field.parallel-container
-												.top
-													icon
-												.remove
-													icon
+						ul.subitem-list
+							li.subitem
+								.left-part
+									.name-field
+										p 子项
+								.right-part
+									.basic-field.parallel-container
+										.select-field
+											select
+												option(value="test") 测试
+										.input-field.parallel-container
+											p 任选个数
+											input(type="number" min="0")
 											.clear
-										.hint-field
+										.oper-field.parallel-container
+											.top
+												.icon
+											.remove
+												.icon
+											.clear
+										.clear
+									.hint-field
+										p
+											span.choose-hint ( 20 款单品任选1个)
+											span.error-hint 请勿选择同一子项
+								.clear
+						.btn-field.parallel-container
+							.new-btn
+								.new-btn-wrapper
+									.add-icon
+									p 新建子项
 									.clear
+							.manage-btn
+								.manage-btn-wrapper
+									p 管理子项
+							.clear
 					.remark-field
+						.left-part
+							p 备注标签
+						.right-part
+							input(id="new-remark")
+						.clear
 					.intro-field
+						.left-part
+							p 详情介绍
+						.right-part
+							textarea(id="new-intro")
+						.clear
 		.c-dc
 			.c-dc-wrapper.c-wrapper
 				.c-dc-container
@@ -95,7 +119,7 @@
 							.clear
 						.clear
 		.c-oper
-			.c-oper-wrapper
+			.c-oper-wrapper.c-wrapper
 				.c-oper-container.parallel-container
 					.cancel-btn
 						p 取消

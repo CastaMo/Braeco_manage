@@ -69,6 +69,27 @@ class ComboController
 		@set-all-is-choose-by-category-id category-id, is-all-choose
 		eventbus.emit "controller:combo:is-all-choose-change", @is-all-choose
 
+	#========= operation for combo start ===============#
+	set-able-for-current-combos: (category-id, able)!->
+		for combo in @combos[category-id] when combo.id in @current-combo-ids
+			combo.set-able able
+			eventbus.emit "controller:combo:set-able", category-id, combo.id
+		@set-is-all-choose category-id, false
+
+	remove-for-current-combos: (category-id)!->
+		if not confirm "确定要删除套餐吗?(此操作无法恢复)" then return
+		temp = []
+		for combo in @combos[category-id] when combo.id in @current-combo-ids
+			temp.push combo
+		category-for-combos = @combos[category-id]
+		for combo in temp
+			category-for-combos.splice (category-for-combos.index-of combo), 1
+			eventbus.emit "controller:combo:remove", category-id, combo.id
+		temp = null
+		@set-is-all-choose category-id, false
+
+	#========= operation for combo end ===============#
+
 	get-datas: -> return @datas
 
 	clear-datas: !-> @datas = null

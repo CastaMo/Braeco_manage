@@ -61,6 +61,10 @@ class ComboListView
 
 		eventbus.on "controller:combo:is-all-choose-change", (is-all-choose)!~> @show-is-all-choose is-all-choose
 
+		eventbus.on "controller:combo:set-able", (category-id, combo-id)!~> @update-combo-dom-detail-from-data category-id, combo-id
+
+		eventbus.on "controller:combo:remove", (category-id, combo-id)!~> @remove-combo-dom category-id, combo-id
+
 		for let category-id, combos of @all-combo-doms
 			for let combo-id, combo-dom-object of combos
 				combo-dom-object.$el
@@ -84,11 +88,15 @@ class ComboListView
 		combo-dom-object.name-dom
 										.html "<p>#{combo.get-c-name!}</p><p>#{combo.get-e-name!}</p>"
 
-		combo-dom-object.price-dom
-										.html combo.get-default-price!
+		if combo.get-type! is "combo_sum"
+			combo-dom-object.price-dom.html "#{combo.get-default-price!}元"
+		else combo-dom-object.price-dom.html "子项加总"
 
 		combo-dom-object.remark-dom
 										.html combo.get-detail!
+
+		if combo.able then combo-dom-object	.cover-dom .fade-out 200
+		else combo-dom-object .cover-dom .fade-in 200
 
 	hide-all-combo-list-doms-except-given-id: (category-id_)!->
 		for category-id, combo-list-dom of @all-combo-list-doms
@@ -115,6 +123,11 @@ class ComboListView
 		if is-all-choose then @all-choose-dom.add-class "choose"
 		else @all-choose-dom.remove-class "choose"
 
+	remove-combo-dom: (category-id, combo-id)!->
+		combo-dom-object = @all-combo-doms[category-id][combo-id]
+		combo-dom-object.$el.fade-out 200, !~>
+			combo-dom-object.$el.remove!
+			delete @all-combo-doms[category-id][combo-id]
 
 	create-combo-list-dom: !->
 		combo-list-dom = $ "<ul class='combo-list'></ul>"
@@ -153,6 +166,11 @@ class ComboListView
 																</div>
 															</div>
 															<div class='clear'></div>
+														</div>
+														<div class='combo-cover'>
+															<div class='hide-cover'>
+																<p>售罄中</p>
+															</div>
 														</div>"
 		return combo-dom.html combo-dom-inner-html
 

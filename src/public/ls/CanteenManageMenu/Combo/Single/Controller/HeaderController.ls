@@ -68,6 +68,10 @@ class HeaderController
 		@combo-able = combo-able
 		eventbus.emit "controller:header:combo-able-change", @combo-able
 
+	get-combo-able: -> return @combo-able
+
+	get-able: (header-name)-> return @all-headers[header-name].able
+
 	get-datas: -> return @datas
 
 	clear-datas: !-> @datas = null

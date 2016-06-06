@@ -15,7 +15,7 @@ class Combo
 		@default-price 		= 		options.default_price
 		@detail 					= 		options.detail 					|| ""
 		@groups 					= 		options.groups 					|| []
-		@id 							= 		options.id
+		@id 							= 		Number(options.id)
 		@c-name 					= 		options.name
 		@e-name 					= 		options.name2 					|| ""
 		@pic 							= 		options.pic 						|| ""
@@ -24,7 +24,6 @@ class Combo
 
 	set-able: (able)!->
 		@able = able
-		eventbus.emit("model:combo:able-change", @id, @able)
 
 	set-config: (options)!->
 		deep-copy options, @

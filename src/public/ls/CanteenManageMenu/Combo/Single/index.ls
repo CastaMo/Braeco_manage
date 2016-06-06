@@ -48,6 +48,8 @@ let win = window, doc = document
 			]
 
 		header-view 					= new HeaderView opt 					=
+			category-controller 	: 			category-controller
+			combo-controller 			: 			combo-controller
 			header-controller 		: 			header-controller
 			el-CSS-selector 			: 			"div.combo-oper"
 			all-default-states 		: 			[ 				opt 			=
@@ -85,7 +87,11 @@ let win = window, doc = document
 			]
 
 	_init-page = !->
-		pageview = new PageView opt = 
+		page-view = new PageView opt = 
+			datas 					:
+				toggle 				: 	["new", "edit", "main"]
+				cover 				: 	["copy", "move"]
+
 			all-default-states 	: 	[
 				opt =
 					view 				: 	"li\#Combo-sub-menu"
