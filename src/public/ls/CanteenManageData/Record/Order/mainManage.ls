@@ -51,8 +51,8 @@ main-manage = let
         location.href = _construct-url st,en,pn,type
     
     _export-btn-click-event = !->
-        _export-form-en-dom.val _page-data-obj.st
-        _export-form-st-dom.val _page-data-obj.en
+        _export-form-en-dom.val _page-data-obj.en
+        _export-form-st-dom.val _page-data-obj.st
         
     _jump-btn-click-event = !->
         st = _page-data-obj.st
@@ -68,6 +68,7 @@ main-manage = let
     _end-date-input-dom-change-event = !->
         end-date = _end-date-input-dom.val!
         _page-data-obj.en = _date-to-unix-timestamp new Date end-date
+        _page-data-obj.en = _page-data-obj.en+24*3600-1
     
     _tr-hover-event = (event) !->
         target = $ event.target
@@ -336,6 +337,8 @@ main-manage = let
             st := _page-data-obj.today
         if en === null
             en := _page-data-obj.today + 24*3600-1
+        else
+            en := en + 24*3600-1
         _start-date-input-dom.val _unix-timestamp-to-only-date st
         _end-date-input-dom.val _unix-timestamp-to-only-date en
         _type-filter-dom.val type
