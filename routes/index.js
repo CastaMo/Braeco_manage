@@ -299,5 +299,9 @@ module.exports = function(passport) {
 		});
 	});
 
+	router.get('/Extra/log', function(req, res) {
+		res.render('./CanteenManageExtra/Log/develop');
+	});
+
 	return router;
 };

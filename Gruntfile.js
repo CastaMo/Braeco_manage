@@ -305,6 +305,12 @@ module.exports = function(grunt) {
                     "<%= dirs.dest_path %>CanteenManageSettings/Staff/Account/Account.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageSettings/Staff/Account/develop.jade",
                     "<%= dirs.dest_path %>module_dynamic/Manage/Settings/Staff/Account.php": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageSettings/Staff/Account/formal.jade"
                 }
+            },
+            extra_log_test: {
+                files: {
+                    "<%= dirs.dest_path %>CanteenManageExtra/Log/Log.html": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageExtra/Log/develop.jade",
+                    "<%= dirs.dest_path %>module_dynamic/Manage/Extra/Log.php": "<%= dirs.source_path %><%= dirs.jade %>CanteenManageExtra/Log/formal.jade"
+                }
             }
         },
         less: {
@@ -400,6 +406,12 @@ module.exports = function(grunt) {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.css %>CanteenManageSettings/Staff/Account/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageSettings/Staff/Account/main.less",
                     "<%= dirs.dest_path %><%= dirs.css %>CanteenManageSettings/Staff/Account/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageSettings/Staff/Account/base64.less"
+                }
+            },
+            extra_log_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageExtra/Log/main.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageExtra/Log/main.less",
+                    "<%= dirs.dest_path %><%= dirs.css %>CanteenManageExtra/Log/base64.css": "<%= dirs.source_path %><%= dirs.less %>CanteenManageExtra/Log/base64.less",
                 }
             }
         },
@@ -513,6 +525,13 @@ module.exports = function(grunt) {
                 src: ['*.ls'],
                 dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageSettings/Staff/Account',
                 ext: '.js'
+            },
+            extra_log_test: {
+                expand: true,
+                cwd: '<%= dirs.source_path %><%= dirs.ls %>CanteenManageExtra/Log',
+                src: ['*.ls'],
+                dest: '<%= dirs.dest_path %><%= dirs.js %>CanteenManageExtra/Log',
+                ext: '.js'
             }
         },
         browserify: {
@@ -594,6 +613,11 @@ module.exports = function(grunt) {
             settings_staff_account_test: {
                 files: {
                     "<%= dirs.dest_path %><%= dirs.js %>CanteenManageSettings/Staff/Account/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageSettings/Staff/Account/index.js"]
+                }
+            },
+            extra_log_test: {
+                files: {
+                    "<%= dirs.dest_path %><%= dirs.js %>CanteenManageExtra/Log/main.js": ["<%= dirs.dest_path %><%= dirs.js %>CanteenManageExtra/Log/index.js"]
                 }
             }
         },
@@ -822,6 +846,21 @@ module.exports = function(grunt) {
                     'browserify:settings_staff_account_test',
                     'jade:settings_staff_account_test'
                 ]
+            },
+            extra_log_test: {
+                options: {
+                    livereload: lrPort,
+                    debounceDelay: debounceDelay
+                },
+                files: [
+                    '<%= dirs.source_path %>**/CanteenManageExtra/Log/**',
+                ],
+                tasks: [
+                    'less:extra_log_test',
+                    'livescript:extra_log_test',
+                    'browserify:extra_log_test',
+                    'jade:extra_log_test'
+                ]
             }
         },
 
@@ -869,7 +908,8 @@ module.exports = function(grunt) {
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageMenu/Food/Property/main.js'],
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Order/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Order/main.js'],
                     '<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Refund/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageData/Record/Refund/main.js'],
-                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageSettings/Staff/Account/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageSettings/Staff/Account/main.js']
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageSettings/Staff/Account/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageSettings/Staff/Account/main.js'],
+                    '<%= dirs.dest_path %><%= dirs.js %>CanteenManageExtra/Log/main.min.js': ['<%= dirs.dest_path %><%= dirs.js %>CanteenManageExtra/Log/main.js']
                 }
             }
         },
@@ -912,7 +952,10 @@ module.exports = function(grunt) {
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/main.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageData/Record/Refund/base64.css'],
                     '<%= dirs.dest_path %><%= dirs.css %>CanteenManageSettings/Staff/Account/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageSettings/Staff/Account/main.css'],
-                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageSettings/Staff/Account/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageSettings/Staff/Account/base64.css']
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageSettings/Staff/Account/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageSettings/Staff/Account/base64.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageExtra/Log/main.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageExtra/Log/main.css'],
+                    '<%= dirs.dest_path %><%= dirs.css %>CanteenManageExtra/Log/base64.min.css': ['<%= dirs.dest_path %><%= dirs.css %>CanteenManageExtra/Log/base64.css']
+
                 }
             }
         },
