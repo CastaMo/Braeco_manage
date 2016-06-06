@@ -84,6 +84,7 @@ main-manage = let
 				_new-dom.find(".coupon-status").css("color","rgb(235,79,16)")
 				_run-content-dom.last().append _new-dom
 			_new-dom.click !->
+				_hello = 0
 				for j from 0 to _length-1 by 1
 					_checkid = $(@).find('.coupon-batch-number').html!
 					if Number(_checkid.substr(4,20)) is Number(_coupons[j].couponid)
@@ -107,10 +108,10 @@ main-manage = let
 						$("._pre-coupon-inventory").html("#{_coupons[j].remain}")
 						$("._pre-face-value").html("#{_coupons[j].cost_reduce}")
 						if _coupons[j].indate.length is 20
-							$("._pre-valid-period").html("#{_coupons[i].indate.substr(10)} 至 #{_coupons[i].indate.substr(10,20)}")
+							$("._pre-valid-period").html("#{_coupons[j].indate.substr(10)} 至 #{_coupons[j].indate.substr(10,20)}")
 						else if _coupons[j].indate.length isnt 20
-							$("._pre-valid-period").html("领取后#{_coupons[i].indate}天有效，过期无效")
-						$("._pre-use-condition").html("订单额满#{_coupons[i].cost}元可使用")
+							$("._pre-valid-period").html("领取后#{_coupons[j].indate}天有效，过期无效")
+						$("._pre-use-condition").html("订单额满#{_coupons[j].cost}元可使用")
 						if Number(_coupons[j].pay) is 0
 							$("._left-distribute-coupon").html("顾客点餐前发券")
 							$("._pre-distribute-coupon").html("顾客点餐前发券")
@@ -120,14 +121,14 @@ main-manage = let
 						$("._pre-max-coupon").html("#{_coupons[j].quantity}张")
 						$("._pre-max-own").html("每人最多领取#{_coupons[j].max}张")
 						_fun = ""
-						if Number(_coupons[j].fun[0]) is 1
-							_fun += "堂食 "
-						if Number(_coupons[j].fun[1]) is 1
-							_fun += "预订 "
-						if Number(_coupons[j].fun[2]) is 1
-							_fun += "外卖"
+						_func = ["堂食 ", "预订 ", "外卖 ", "外带"]
+						_hello = parseInt(_coupons[j].fun).toString(2)
+						for x from 0 to _hello.length-1 by 1
+							if _hello[x] is "1"
+								_fun += _func[x]
 						$("._pre-apply-area").html(_fun)
 						$("._pre-multiple-use").html("每笔订单最多同时叠加使用#{_coupons[j].max_use}张")
+						$("._QRcode").attr("src", "#{_coupons[j].url}")
 						
 				page.toggle-page "detail"
 
@@ -156,6 +157,7 @@ main-manage = let
 		_save-btn-dom.click !->
 			addCoupon = {}
 			fun = []
+			_sum = 0
 			addCoupon.cost_reduce = $("._face-value").val!
 			addCoupon.cost = $("._use-condition").val!
 			if $("._valid-period").val! is "0"
@@ -167,15 +169,23 @@ main-manage = let
 				fun.push(1)
 			else if $("._fun1").is(':checked') isnt true
 				fun.push(0)
+			_sum += fun[0]
 			if $("._fun2").is(':checked') is true
 				fun.push(1)
 			else if $("._fun2").is(':checked') isnt true
 				fun.push(0)
+			_sum += fun[1]*2
 			if $("._fun3").is(':checked') is true
 				fun.push(1)
 			else if $("._fun3").is(':checked') isnt true
 				fun.push(0)
-			addCoupon.fun = fun
+			_sum += fun[2]*4
+			if $("._fun4").is(':checked') is true
+				fun.push(1)
+			else if $("._fun4").is(':checked') isnt true
+				fun.push(0)
+			_sum += fun[3]*8
+			addCoupon.fun = _sum
 			addCoupon.quantity = $("._max-coupon").val!
 			addCoupon.max_use = $("._multiple-use").val!
 			addCoupon.max = $("._max-own").val!
@@ -189,7 +199,7 @@ main-manage = let
 				}
 				success 	:		(result)!-> location.reload!
 			}
-			location.href = "/Manage/Market/Coupon/Basic"
+			page.toggle-page "basic"
 
 		_run-btn-dom.click !->
 			$(".detailCoupon-wrapper").removeClass "stop"

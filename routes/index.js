@@ -54,6 +54,10 @@ module.exports = function(passport) {
 		res.render('./CanteenManageSettings/Staff/Account/develop');
 	});
 	
+	router.get('/Manage/Settings/Business/Basic', function(req, res, next) {
+		res.render('./CanteenManageSettings/Business/Basic/develop');
+	});
+
 	router.get('/Manage/Settings/Staff/Role', function(req, res, next) {
 		res.render('./CanteenManageSettings/Staff/Role/develop');
 	});
