@@ -26,7 +26,7 @@ main-manage = let
 	_confirm-cancel-btn = $ "\.confirm-cancel-btn"
 
 	class Coupon
-		(options)!->
+		(options)->
 			deep-copy options, @
 			@init!
 			_coupons.push @
@@ -35,19 +35,21 @@ main-manage = let
 	_init-all-coupon = (_get-coupon-JSON)!->
 		all-coupons = get-JSON _get-coupon-JSON!
 		for coupon in all-coupons
-			couponid 			:		coupon.couponid
-			status 				:		coupon.status
-			cost 				: 		coupon.cost
-			cost_reduce 		:		coupon.cost_reduce
-			max 				:		coupon.max
-			max_use 			:		coupon.max_use
-			indate 				:		coupon.indate
-			remain				:		coupon.remain
-			daily				:		coupon.daily
-			fun 				: 		coupon.fun
-			pay 				:		coupon.pay
-			quantity 			:		coupon.quantity
-			url					:		coupon.url
+			new Coupon {
+				couponid 			:		coupon.couponid
+				status 				:		coupon.status
+				cost 				: 		coupon.cost
+				cost_reduce 		:		coupon.cost_reduce
+				max 				:		coupon.max
+				max_use 			:		coupon.max_use
+				indate 				:		coupon.indate
+				remain				:		coupon.remain
+				daily				:		coupon.daily
+				fun 				: 		coupon.fun
+				pay 				:		coupon.pay
+				quantity 			:		coupon.quantity
+				url					:		coupon.url
+			}
 
 	_init-coupon-view = !->
 		_length = _coupons.length
@@ -68,7 +70,7 @@ main-manage = let
 			_new-dom.find(".coupon-value").html("#{_coupons[i].cost_reduce}元（满#{_coupons[i].cost}元可用）")
 			if _coupons[i].indate.length is 20
 				_new-dom.find(".coupon-valid-period").html("#{_coupons[i].indate.substr(10)} 至 #{_coupons[i].indate.substr(10,20)}")
-			else if _coupons[i].indate.length isnt 20
+			else if _coupons[i].indate.length < 10
 				_new-dom.find(".coupon-valid-period").html("领取后#{_coupons[i].indate}天有效，过期无效")
 			if _coupons[i].status == "0"
 				_new-dom.find(".coupon-status").html("发放中")
@@ -82,6 +84,7 @@ main-manage = let
 				_new-dom.find(".coupon-status").css("color","rgb(235,79,16)")
 				_run-content-dom.last().append _new-dom
 			_new-dom.click !->
+				_hello = 0
 				for j from 0 to _length-1 by 1
 					_checkid = $(@).find('.coupon-batch-number').html!
 					if Number(_checkid.substr(4,20)) is Number(_coupons[j].couponid)
@@ -105,10 +108,10 @@ main-manage = let
 						$("._pre-coupon-inventory").html("#{_coupons[j].remain}")
 						$("._pre-face-value").html("#{_coupons[j].cost_reduce}")
 						if _coupons[j].indate.length is 20
-							$("._pre-valid-period").html("#{_coupons[i].indate.substr(10)} 至 #{_coupons[i].indate.substr(10,20)}")
+							$("._pre-valid-period").html("#{_coupons[j].indate.substr(10)} 至 #{_coupons[j].indate.substr(10,20)}")
 						else if _coupons[j].indate.length isnt 20
-							$("._pre-valid-period").html("领取后#{_coupons[i].indate}天有效，过期无效")
-						$("._pre-use-condition").html("订单额满#{_coupons[i].cost}元可使用")
+							$("._pre-valid-period").html("领取后#{_coupons[j].indate}天有效，过期无效")
+						$("._pre-use-condition").html("订单额满#{_coupons[j].cost}元可使用")
 						if Number(_coupons[j].pay) is 0
 							$("._left-distribute-coupon").html("顾客点餐前发券")
 							$("._pre-distribute-coupon").html("顾客点餐前发券")
@@ -118,14 +121,14 @@ main-manage = let
 						$("._pre-max-coupon").html("#{_coupons[j].quantity}张")
 						$("._pre-max-own").html("每人最多领取#{_coupons[j].max}张")
 						_fun = ""
-						if Number(_coupons[j].fun[0]) is 1
-							_fun += "堂食 "
-						if Number(_coupons[j].fun[1]) is 1
-							_fun += "预订 "
-						if Number(_coupons[j].fun[2]) is 1
-							_fun += "外卖"
+						_func = ["堂食 ", "预订 ", "外卖 ", "外带"]
+						_hello = parseInt(_coupons[j].fun).toString(2)
+						for x from 0 to _hello.length-1 by 1
+							if _hello[x] is "1"
+								_fun += _func[x]
 						$("._pre-apply-area").html(_fun)
 						$("._pre-multiple-use").html("每笔订单最多同时叠加使用#{_coupons[j].max_use}张")
+						$("._QRcode").attr("src", "#{_coupons[j].url}")
 						
 				page.toggle-page "detail"
 
@@ -153,6 +156,49 @@ main-manage = let
 
 		_save-btn-dom.click !->
 			addCoupon = {}
+			fun = []
+			_sum = 0
+			addCoupon.cost_reduce = $("._face-value").val!
+			addCoupon.cost = $("._use-condition").val!
+			if $("._valid-period").val! is "0"
+				addCoupon.indate = _date-period-start-dom.val!
+				addCoupon.indate += _date-period-end-dom.val!
+			else if $("._valid-period").val! is "1"
+				addCoupon.indate = $("._valid-day").val!
+			if $("._fun1").is(':checked') is true
+				fun.push(1)
+			else if $("._fun1").is(':checked') isnt true
+				fun.push(0)
+			_sum += fun[0]
+			if $("._fun2").is(':checked') is true
+				fun.push(1)
+			else if $("._fun2").is(':checked') isnt true
+				fun.push(0)
+			_sum += fun[1]*2
+			if $("._fun3").is(':checked') is true
+				fun.push(1)
+			else if $("._fun3").is(':checked') isnt true
+				fun.push(0)
+			_sum += fun[2]*4
+			if $("._fun4").is(':checked') is true
+				fun.push(1)
+			else if $("._fun4").is(':checked') isnt true
+				fun.push(0)
+			_sum += fun[3]*8
+			addCoupon.fun = _sum
+			addCoupon.quantity = $("._max-coupon").val!
+			addCoupon.max_use = $("._multiple-use").val!
+			addCoupon.max = $("._max-own").val!
+			addCoupon.daily = $("._max-own-select").val!
+			addCoupon.pay = $("._distribute-coupon").val!
+			request-object = {}
+			request-object = addCoupon
+			require_.get("add").require {
+				data 		:		{
+					JSON 	:		JSON.stringify(request-object)
+				}
+				success 	:		(result)!-> location.reload!
+			}
 			page.toggle-page "basic"
 
 		_run-btn-dom.click !->
@@ -162,9 +208,10 @@ main-manage = let
 			$(".stop-btn p").html("停止发放")
 			request-object = {}
 			request-object.status = 0
+			_object = {}
 			_couponid = $("._pre-batch-number")html!
 			request-object.couponlist = []
-			_object = {"couponid":_couponid}
+			_object = {"couponid": _couponid}
 			request-object.couponlist.push(_object)
 			require_.get("modify").require {
 				data 		:		{
@@ -174,19 +221,20 @@ main-manage = let
 			}
 
 		_stop-btn-dom.click !->
-			$(".stop-confirm").fade-in 100
+			if $(".detailCoupon-wrapper").hasClass "run"
+				$(".stop-confirm").fade-in 100
 
 		_confirm-btn-dom.click !->
+			$(".stop-confirm").fade-out 100
 			$(".detailCoupon-wrapper").removeClass "run"
 			$(".detailCoupon-wrapper").addClass "stop"
 			$(".run-btn p").html("启用发放")
 			$(".stop-btn p").html("停止发放中")
-			$(".stop-confirm").fade-out 100
 			request-object = {}
 			request-object.status = 2
 			_couponid = $("._pre-batch-number")html!
 			request-object.couponlist = []
-			_object = {"couponid":_couponid}
+			_object = {"couponid": _couponid}
 			request-object.couponlist.push(_object)
 			require_.get("modify").require {
 				data 		:		{

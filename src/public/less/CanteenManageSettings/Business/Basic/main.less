@@ -1,11 +1,26 @@
-@import "../main";
-@import "../../../common/common";
+    @import "../../../common/common";
 @checkbox-false-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQAgMAAACNX3zMAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAJUExURf////Pz9eTk6GlTKiwAAAAXSURBVAjXY8hatWqVA0MAAwMjtUmwyQB+eA0/S/QgYAAAAABJRU5ErkJggg==";
 @checkbox-true-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQBAMAAAACH4lsAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAVUExURcnJzcjHzP///8zL0Pb29t/e4dHR1S1JgdkAAAABdFJOU3+AXLTLAAAAQklEQVQI12NgFIQABgbcLDMYS9glEcoyUTGEsISdnEGyooEgIRArSRUkBBZTCgEKgfUGKTlDzRMFCUHMCyZkL5AFAK/LC9Jxd5N6AAAAAElFTkSuQmCC";
-
 #business {
-    #selectBusiness {
+    #hall,
+    #takeOut,
+    #book,
+    #takePack {
+        margin-bottom: 50px;
+    }
+    #business-title {
         margin: 30px 0 0 30px;
+        .color-field {
+            float: left;
+            background-color: #FFC107;
+            width: 5px;
+            height: 19px;
+            margin-top: 2px;
+            margin-right: 10px;
+        }
+    }
+    #selectBusiness {
+        margin: 20px 0 0 30px;
         width: 710px;
         height: 32px;
         clear: left;
@@ -109,56 +124,70 @@
             color: #4A4A4A;
             text-align: left;
             p {
-                margin: 16px 0 16px 29px;
+                margin: 12px 0 10px 29px;
             }
         }
-        #modifyTime {
+        ._content {
+            margin: 0;
+            float: left;
+            font-size: 14px;
+        }
+        #previewContent {
+            padding: 30px 0 0 30px;
             border: 1px solid #E7E7EB;
             border-top-width: 0;
-            width: 709px;
-            overflow: hidden;
-            clear: left;
-            p {
-                margin: 10px 0 10px 20px;
-                font-size: 14px;
-            }
             font-size: 14px;
-            height: auto;
-            #hel {
-                padding: 30px 0 10px 30px;
-                float: left;
-                width: 70px;
+            height: 80px;
+            width: 679px;
+            #modifyTime {
+                margin-bottom: 15px;
             }
-            #iel {
-                padding: 10px 0 30px 30px;
-                float: left;
-                width: 70px;
-            }
-            #showDay {
-                word-wrap: break-word;
-                padding: 30px 0 10px 20px;
-                float: left;
-                width: 550px;
-            }
-            #showTime {
-                word-wrap: break-word;
-                padding: 10px 0 30px 20px;
-                float: left;
-                width: 480px;
+            #modifyPay {
+
             }
         }
-        #modifyMeal,
-        #modifyPay {
-            border: 1px solid #E7E7EB;
-            border-top-width: 0px;
+        #link-export {
+            font-size: 14px;
+            color: #4A4A4A;
             width: 709px;
-            overflow: hidden;
-            clear: left;
-            p {
-                margin: 30px 0 0 30px;
-                font-size: 14px;
+            height: 223px;
+            border: 1px solid #E7E7EB;
+            border-top-width: 0;
+            ._le-title {
+                float: left;
+                margin: 30px 0 20px 30px;
             }
-            height: 73px;
+            ._le-content {
+                margin-bottom: 20px;
+                width: 200px;
+                float: left;
+                color: #E7E7EB;
+            }
+            .link-btn,
+            .export-btn {
+                margin-top: 10px;
+                margin-left: 30px;
+                text-align: center;
+                height: 32px;
+                width: 127px;
+                border: 1px solid #E7E7EB;
+                border-radius: 5px;
+                float: left;
+            }
+            #left-field {
+                border-right: 1px solid #E7E7EB;
+                float: left;
+                width: 354px;
+                height: 223px;
+            }
+            #right-field {
+                a {
+                    margin-left: 30px;
+                }
+                float: left;
+                width: 354px;
+                height: 223px;
+            }
         }
     }
     #modifyBusiness {
@@ -188,7 +217,11 @@
                     margin-bottom: 20px;
                     float: left;
                     background-repeat: no-repeat;
-                    background-position: 29px 4px;
+                    background-position: 21px 2px;
+                    span {
+                        position: relative;
+                        bottom: 5px;
+                    }
                     &.true {
                         background-image: url(@checkbox-true-icon-url);
                     }
@@ -203,7 +236,7 @@
                 }
             }
             input {
-                margin: 0 8px 0 28px;
+                margin: 0 3px 0 20px;
                 border: 1px solid #E7E7EB;
                 color: #4A4A4A;
             }
@@ -225,56 +258,6 @@
                     display: block;
                 }
             }
-            #timerAll {
-                position: relative;
-                bottom: 20px;
-                left: 90px;
-                width: 350px;
-                #timerDiv {
-                    width: 350px;
-                    #timer {
-                        position: relative;
-                        right: 33px;
-                        float: left;
-                        input {
-                            margin: 0 27px 20px 27px;
-                            width: 75px;
-                            font-size: 14px;
-                            font-family: Hiragino Sans GB, Microsoft Yahei, sans-serif;
-                        }
-                    }
-                    .modifyDelTime {
-                        width: 16px;
-                        height: 20px;
-                        position: relative;
-                        left: -20px;
-                        top: 2px;
-                        color: #0066FF;
-                        font-style: Arial;
-                        .delete-img {
-                            height: 20px;
-                            width: 16px;
-                        }
-                    }
-                }
-            }
-            .modifyAddTime {
-                text-align: center;
-                padding: 0;
-                width: 160px;
-                height: 30px;
-                border: 1px solid #E7E7EB;
-                position: relative;
-                left: 84px;
-                bottom: 45px;
-                margin: 30px 0 0 0;
-                font-family: Hiragino Sans GB, Microsoft Yahei, sans-serif;
-                font-size: 14px;
-                color: #4A4A4A;
-                p {
-                    margin: 0;
-                }
-            }
         }
         #modifyPay {
             margin: 0;
@@ -289,7 +272,11 @@
                     margin-bottom: 20px;
                     float: left;
                     background-repeat: no-repeat;
-                    background-position: 29px 4px;
+                    background-position: 21px 2px;
+                    span {
+                        position: relative;
+                        bottom: 5px;
+                    }
                     &.true {
                         background-image: url(@checkbox-true-icon-url);
                     }
@@ -298,7 +285,7 @@
                     }
                 }
                 input {
-                    margin: 0 8px 0 28px;
+                    margin: 0 3px 0 20px;
                     height: 20px;
                     width: 20px;
                     opacity: 0;
@@ -311,22 +298,6 @@
             }
             p {
                 padding: 30px 0 0 30px;
-            }
-        }
-        #modifyMeal {
-            margin: 0;
-            border: 1px solid #E7E7EB;
-            border-top-width: 0;
-            width: 709px;
-            height: 150px;
-            p {
-                padding: 30px 0 0 30px;
-            }
-            select {
-                margin-left: 26px;
-                width: 200px;
-                border-color: #E7E7EB;
-                color: #4A4A4A;
             }
         }
         #modifyChoose {

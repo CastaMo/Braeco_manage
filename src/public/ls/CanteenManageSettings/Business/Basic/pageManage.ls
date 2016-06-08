@@ -1,7 +1,7 @@
 page-manage = let
 	main = null
-	$("\#Hall-Order-sub-menu").addClass "choose"
-	$("\#Hall-Order-nav li\#Basic").addClass "choose"
+	$("\#Business-sub-menu").addClass "choose"
+	$("\#Business-nav li\#Basic").addClass "choose"
 
 	_pre-dom = $ "\#previewBusiness"
 	_mod-dom = $ "\#modifyBusiness"
