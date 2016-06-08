@@ -7,7 +7,11 @@ edit-manage = let
 
     _name-input-dom = $ "\#staff-role-edit input[name='name']"
     _checkbox-dom = $ "\#staff-role-edit input[type='checkbox']"
-    
+
+    _error-message-block-dom = $ "\#staff-role-edit .error-message-block"
+
+    _all-tbd-index = [2, 3, 9, 10, 14, 15, 20, 21, 29, 30]
+
     _edited-role = null
 
     _checkbox-click-event = (event)!->
@@ -58,10 +62,51 @@ edit-manage = let
         page.toggle-page "main"
         
     _save-btn-click-event = !->
-        console.log _get-permission-value!
-        _reset-dom!
-        page.toggle-page "main"
-        
+        name = _name-input-dom.val!
+        auth = _get-permission-value!
+        if _check-input-field!
+            $.ajax {type: "POST", url: "/Waiter/Role/Update/"+_edited-role.id, data: {
+                "name": name,
+                "auth": auth
+            }, dataType: "JSON", success: _update-post-success}
+            _set-save-btn-disable!
+
+    _update-post-success = (data)!->
+        console.log data
+        _set-save-btn-able!
+        if data.message === "success"
+            location.reload!
+        else
+            _display-error-message ["修改失败"]
+    
+    _check-input-field = ->
+        error-message = []
+        name = _name-input-dom.val!
+        auth = _get-permission-value!
+        if name === ''
+            error-message.push "请输入角色名"
+        if auth === 0
+            error-message.push "请选择角色权限"
+        if error-message.length === 0
+            true
+        else
+            _display-error-message error-message
+            false
+
+    _display-error-message = (error-message)!->
+        _error-message-block-dom.show!
+        _error-message-block-dom.empty!
+        for err in error-message
+            _error-message-block-dom.append "<p>"+err+"</p>"
+
+    _set-save-btn-disable = !->
+        _save-btn-dom.prop "disabled",true
+        _save-btn-dom.add-class "save-btn-disable"
+
+    _set-save-btn-able = !->
+        _save-btn-dom.prop "disabled",false
+        _save-btn-dom.remove-class "save-btn-disable"
+
     _init-depend-module = !->
         page := require "./pageManage.js"
     
@@ -71,16 +116,19 @@ edit-manage = let
         _checkbox-dom.click !-> _checkbox-click-event event
 
     _init-form-field = !->
+        _name-input-dom.val _edited-role.name
         permission-string = _edited-role.permission.to-string 2
         permission-array = []
         for i from 0 to permission-string.length-1 by 1
+            if i in _all-tbd-index
+                continue
             if permission-string[i] === '1'
-                console.log i
                 permission-array.push Math.pow 2,i
         for i from 0 to permission-array.length-1 by 1
-            console.log permission-array[i]
-            _set-checkbox-checked ($ "\#staff-role-edit input[value='"+permission-array[i]+"']").parent!
-
+            par = ($ "\#staff-role-edit input[value='"+permission-array[i]+"']").parent!
+            _set-checkbox-checked par
+            if (par.siblings 'li.checkbox-item').length === (par.siblings 'li.checked-icon').length
+                _set-checkbox-checked $ par.parent!.parent!
 
     get-role-and-init: (role)!->
         _edited-role := role

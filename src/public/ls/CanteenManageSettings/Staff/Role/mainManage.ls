@@ -13,18 +13,33 @@ main-manage = let
     '业务管理','店员管理','餐厅信息修改','餐厅日志','（待定）','（待定）',
     '接单处理','辅助点餐','会员充值','修改积分','退款','重打某单','打印日结','（待定）','（待定）']
 
+    _all-tbd-index = [2, 3, 9, 10, 14, 15, 20, 21, 29, 30]
+
     _new-btn-click-event = !->
         page.toggle-page 'new'
     
     _edit-btn-click-event = (role)->
         edit-page.get-role-and-init role
         page.toggle-page 'edit'
+
+    _delete-btn-click-event = (role) ->
+        $.ajax {type: "POST", url: "/Waiter/Role/Remove/"+role.id, dataType: 'JSON', success: _delete-post-success}
+
+    _delete-post-success = (data) !->
+        if data.message === "success"
+            location.reload!
+        else if data.message === "Waiter role not found"
+            alert "未找到该角色"
+        else if data.message === "Cannot remove role with waiter still using"
+            alert "还有员工使用此角色，无法删除"
     
     class Role
-        (name, type, permission) ->
+        (id, name, type, permission, permanent) ->
+            @id = id
             @name = name
             @type = type
             @permission = permission
+            @permanent = permanent
             @gene-dom!
             @set-dom-value!
             @init-event!
@@ -33,15 +48,20 @@ main-manage = let
         gene-permission-string: !->
             permission-string = []
             binary-string = @permission.to-string 2
+            console.log binary-string
             for i from binary-string.length-1 to 0 by -1
+                if binary-string.length-1-i in _all-tbd-index
+                    continue
                 if binary-string[i] === '1'
-                    console.log i
                     permission-string.push _all-permission[binary-string.length-1-i]
             @permission-dom.text permission-string.join '，'
 
         set-dom-value: !->
             @name-dom.text @name
-            @type-dom.text @type
+            if @permanent
+                @type-dom.text "系统"
+            else
+                @type-dom.text "自定义"
             @permission-dom.text @permission
         
         gene-dom : !->
@@ -53,25 +73,29 @@ main-manage = let
             @permission-dom = $ "<td class='td-permission'></td>"
             @tr-dom.append @permission-dom
             @method-dom = $ "<td class='td-method'></td>"
-            @edit-method-dom = $ "<div class='method-container'>
-            <icon class='edit-icon'></icon>
-            <p>修改</p>
-            </div>"
-            @delete-method-dom = $ "<div class='method-container'>
-            <icon class='delete-icon'></icon>
-            <p>删除</p>
-            </div>"
-            @method-dom.append @edit-method-dom
-            @method-dom.append @delete-method-dom
+            if @permanent === false    
+                @edit-method-dom = $ "<div class='method-container'>
+                <icon class='edit-icon'></icon>
+                <p>修改</p>
+                </div>"
+                @delete-method-dom = $ "<div class='method-container'>
+                <icon class='delete-icon'></icon>
+                <p>删除</p>
+                </div>"
+                @method-dom.append @edit-method-dom
+                @method-dom.append @delete-method-dom
             @tr-dom.append @method-dom
             _table-body-dom.append @tr-dom
         
         init-event : !->
-            @edit-method-dom.click !~> _edit-btn-click-event @
+            if @permanent === false
+                @edit-method-dom.click !~> _edit-btn-click-event @
+                @delete-method-dom.click !~> _delete-btn-click-event @
     
     _init-all-role = !->
         for role in _all-roles
-            role_ = new Role role.name,role.type,role.auth
+            console.log role
+            role_ = new Role role.id,role.name,role.type,role.auth,role.permanent
 
     _init-depend-module = !->
         page := require "./pageManage.js"

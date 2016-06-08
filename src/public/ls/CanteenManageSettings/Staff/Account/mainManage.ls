@@ -16,6 +16,14 @@ main-manage = let
     _edit-btn-click-event = (staff)->
         edit-page.get-staff-and-init staff,_all-roles
         page.toggle-page 'edit'
+
+    _delete-btn-click-event = (staff)->
+        $.ajax {type: "POST", url: "/Waiter/Remove/"+staff.id, dataType: 'JSON', success: _delete-post-success}
+        staff.delete-method-dom.unbind "click"
+
+    _delete-post-success = (data)!->
+        # console.log data
+        location.reload!
     
     class Staff
         
@@ -61,6 +69,7 @@ main-manage = let
         
         init-event : !->
             @edit-method-dom.click !~> _edit-btn-click-event @
+            @delete-method-dom.click !~> _delete-btn-click-event @
     
     _init-all-staff = !->
         for staff in _all-staffs

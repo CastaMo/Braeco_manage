@@ -8,6 +8,8 @@ new-manage = let
     _name-input-dom = $ "\#staff-role-new input[name='name']"
     _checkbox-dom = $ "\#staff-role-new input[type='checkbox']"
     
+    _error-message-block-dom = $ "\#staff-role-new .error-message-block"
+
     _checkbox-click-event = (event)!->
         value = parse-int ($ event.target).val!
         par = ($ event.target).parent!
@@ -56,9 +58,50 @@ new-manage = let
         page.toggle-page "main"
     
     _save-btn-click-event = !->
-        console.log _get-permission-value!
-        _reset-dom!
-        page.toggle-page "main"
+        name = _name-input-dom.val!
+        auth = _get-permission-value!
+        if _check-input-field!
+            $.ajax {type: "POST", url: "/Waiter/Role/Add", data: {
+                "name": name,
+                "auth": auth
+            }, dataType: "JSON", success: _save-post-success}
+            _set-save-btn-disable!
+
+    _save-post-success = (data)!->
+        console.log data
+        _set-save-btn-able!
+        if data.message === "success"
+            location.reload!
+        else
+            _display-error-message ["添加失败"]
+
+    _check-input-field = ->
+        error-message = []
+        name = _name-input-dom.val!
+        auth = _get-permission-value!
+        if name === ''
+            error-message.push "请输入角色名"
+        if auth === 0
+            error-message.push "请选择角色权限"
+        if error-message.length === 0
+            true
+        else
+            _display-error-message error-message
+            false
+    
+    _display-error-message = (error-message)!->
+        _error-message-block-dom.show!
+        _error-message-block-dom.empty!
+        for err in error-message
+            _error-message-block-dom.append "<p>"+err+"</p>"
+
+    _set-save-btn-disable = !->
+        _save-btn-dom.prop "disabled",true
+        _save-btn-dom.add-class "save-btn-disable"
+
+    _set-save-btn-able = !->
+        _save-btn-dom.prop "disabled",false
+        _save-btn-dom.remove-class "save-btn-disable"
 
     _init-depend-module = !->
         page := require "./pageManage.js"

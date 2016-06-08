@@ -43,11 +43,15 @@ edit-manage = let
         win.focus!
     
     _cancel-btn-click-event = !->
+        _reset-dom!
         page.toggle-page "main"
         
     _save-btn-click-event = !->
         page.toggle-page "main"
         
+    _reset-dom = !->
+        _role-select-dom.empty!.append $ "<option value='default'>请选择角色</option>"
+
     _init-depend-module = !->
         page := require "./pageManage.js"
         
