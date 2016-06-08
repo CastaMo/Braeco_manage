@@ -1,7 +1,7 @@
 eventbus 				= require "../eventbus.js"
 
-[			get-object-URL] =
-	[		util.get-object-URL]
+[			getObjectURL] =
+	[		util.getObjectURL]
 
 class NewController
 	(options)->
@@ -13,7 +13,6 @@ class NewController
 	init: !->
 		@init-all-prepare!
 		@init-all-event!
-		@reset!
 
 	init-all-prepare: !->
 		@config-data 				= null
@@ -35,15 +34,17 @@ class NewController
 			detail 				: null
 			dc_type 			: null
 			dc 						: null
+		eventbus.emit "controller:new:reset"
+		@add-subitem!
 
 	pic-change: (file)!->
 		@upload-pic-flag 	= true
-		@pic 							= get-object-URL file
-		even.emit "controller:new:pic-change", @pic
+		@pic 							= getObjectURL file
+		eventbus.emit "controller:new:pic-change", @pic
 
 	add-subitem: !->
 		@config-data.groups.push {}
-		even.emit "controller:new:add-subitem"
+		eventbus.emit "controller:new:add-subitem"
 
 	top-subitem: (index)!->
 		if index <= 0 or index >= @groups.length then return alert "非法操作"

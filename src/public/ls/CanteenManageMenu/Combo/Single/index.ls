@@ -2,16 +2,36 @@ PageView 							= require "./View/PageView.js"
 CategorySelectView 		= require "./View/CategorySelectView.js"
 ComboListView 				= require "./View/ComboListView.js"
 HeaderView 						= require "./View/HeaderView.js"
+NewView 							= require "./View/NewView.js"
 
 
 CategoryController 		= require "./Controller/CategoryController.js"
 ComboController 			= require "./Controller/ComboController.js"
 HeaderController 			= require "./Controller/HeaderController.js"
 SubitemController 		= require "./Controller/SubitemController.js"
+NewController 				= require "./Controller/NewController.js"
 
 
 let win = window, doc = document
 	
+	dc-type-map-dc-options = {
+		"sale" 			: 			{
+			min 		: 			1
+			max 		:			50
+			word 		: 			"元"
+		}
+		"discount" 		:			{
+			min 		:			10
+			max 		:			99
+			word 		:			"%"
+		}
+		"limit" 		:			{
+			min 		:			1
+			max 		:			99
+			word 		:			"份"
+		}
+	}
+
 	_init-callback = {
 		"success" 			: 		(result)!-> _init-all-module result.data
 	}
@@ -37,6 +57,8 @@ let win = window, doc = document
 				current-combo-ables : 			[]
 			]
 
+		new-controller 				= new NewController
+
 		default-category-id = category-controller.get-current-category-id!
 
 		category-select-view 	= new CategorySelectView opt 	=
@@ -57,6 +79,7 @@ let win = window, doc = document
 			category-controller 	: 			category-controller
 			combo-controller 			: 			combo-controller
 			header-controller 		: 			header-controller
+			new-controller 				: 			new-controller
 			el-CSS-selector 			: 			"div.combo-oper"
 			all-default-states 		: 			[ 				opt 			=
 				[
@@ -91,6 +114,11 @@ let win = window, doc = document
 					
 				]
 			]
+
+		new-view 							= new NewView opt 						=
+			el-CSS-selector 			: 			"div\#combo-new"
+			new-controller 				: 			new-controller
+			dc-type-map-dc-options: 			dc-type-map-dc-options
 
 	_init-page = !->
 		page-view = new PageView opt = 
