@@ -34,8 +34,16 @@ module.exports = function(passport) {
 		res.render('./CanteenManageMarket/Coupon/Other/develop');
 	});
 	
-	router.get('/Manage/Market/Promotion/Single', function(req, res) {
-		res.render('./CanteenManageMarket/Promotion/Single/develop');
+	// router.get('/Manage/Market/Single', function(req, res) {
+	// 	res.render('./CanteenManageMarket/Promotion/Single/develop');
+	// });
+
+	router.get('/Manage/Market/Order/Reduce', function(req, res) {
+		res.render('./CanteenManageMarket/Order/Reduce/develop');
+	});
+
+	router.get('/Manage/Market/Order/Presentation', function(req, res) {
+		res.render('./CanteenManageMarket/Order/Presentation/develop');
 	});
 
 	router.get('/Manage/Business/HallOrder/Basic', function(req, res) {

@@ -20,11 +20,11 @@ edit-manage = let
     _gender-select-dom = $ "\#staff-account-edit select[name='gender']"
     _phone-input-dom = $ "\#staff-account-edit input[name='phone']"
     _password-input-dom = $ "\#staff-account-edit input[name='password']"
-    _reset-password-btn-dom = $ "\#staff-account-edit button.reset-password-btn"
+    # _reset-password-btn-dom = $ "\#staff-account-edit button.reset-password-btn"
     _role-select-dom = $ "\#staff-account-edit select[name='role']"
     
-    _reset-password-btn-click-event = !->
-        _full-cover-dom.fade-in 100
+    # _reset-password-btn-click-event = !->
+        # _full-cover-dom.fade-in 100
         
     _full-cover-close-btn-click-event = !->
         _full-cover-dom.fade-out 100
@@ -59,7 +59,7 @@ edit-manage = let
         _manage-permission-btn-dom.click !-> _manage-permission-btn-click-event!
         _cancel-btn-dom.click !-> _cancel-btn-click-event!
         _save-btn-dom.click !-> _save-btn-click-event!
-        _reset-password-btn-dom.click !-> _reset-password-btn-click-event!
+        # _reset-password-btn-dom.click !-> _reset-password-btn-click-event!
         _full-cover-close-btn-dom.click !-> _full-cover-close-btn-click-event!
         _full-cover-cancel-btn-dom.click !-> _full-cover-cancel-btn-click-event!
         _full-cover-save-btn-dom.click !-> _full-cover-save-btn-click-event!
@@ -77,7 +77,7 @@ edit-manage = let
                 false
         ($ selected).prop 'selected',true
         _phone-input-dom.val _edited-staff.phone
-        _password-input-dom.val "*******"
+        # _password-input-dom.val "*******"
         selected = ($ _role-select-dom.find "option").filter ->
             console.log ($ this).val!
             if ($ this).val! === _edited-staff.role.id.to-string!
