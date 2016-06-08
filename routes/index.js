@@ -45,13 +45,17 @@ module.exports = function(passport) {
 	router.get('/Manage/Data/Record/Refund', function(req, res) {
 		res.render('./CanteenManageData/Record/Refund/develop');
 	});
+
+	router.get('/Manage/Settings/Business/Basic', function(req, res) {
+		res.render('./CanteenManageSettings/Business/Basic/develop');
+	});
+
+	router.get('/Manage/Settings/Business/Print', function(req, res) {
+		res.render('./CanteenManageSettings/Business/Print/develop');
+	});
 	
 	router.get('/Manage/Settings/Staff/Account', function(req, res, next) {
 		res.render('./CanteenManageSettings/Staff/Account/develop');
-	});
-	
-	router.get('/Manage/Settings/Business/Basic', function(req, res) {
-		res.render('./CanteenManageSettings/Business/Basic/develop');
 	});
 
 	router.get('/Manage/Settings/Staff/Role', function(req, res, next) {

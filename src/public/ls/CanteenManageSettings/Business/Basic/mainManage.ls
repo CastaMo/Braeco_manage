@@ -4,17 +4,14 @@ main-manage = let
 	value = []
 	dayAry = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
 	test = 0
-	payAry = ["现金支付", "支付宝", "微信支付", "百度钱包"]
+	payAry = ["微信支付", "现金支付"]
 	_modifyForBus-dom = $ "\#modifyForBus"
-	_add-dom = $ "\.modifyAddTime"
-	_del-dom = $ "\.modifyDelTime"
-	_timerAll-dom = $"\#timerAll"
 	_cancel-dom = $ "\.canBtn"
 	_finish-dom = $ "\.finBtn"
 	_run-dom = $ "\.run-btn"
 	_stop-dom = $ "\.stop-btn"
-	_weekday-dom = $ "\.weekday"
-	_payment-dom = $ "\.payment"
+	_weekday-dom = $ "\.weekday input"
+	_payment-dom = $ "\.payment input"
 
 	_init-all-event = !->
 		_modifyForBus-dom.click !->
@@ -25,99 +22,44 @@ main-manage = let
 			page.toggle-page "pre"
 		_cancel-dom.click !->
 			page.toggle-page "pre"
-		_add-dom.click !->
-			faNode = document.getElementById("timerAll")
-			lastNode = faNode.lastChild
-			newLastNode = lastNode.cloneNode(true)
-			faNode.appendChild(newLastNode)
-			$("\.modifyDelTime").click !->
-				childNum = faNode.children.length
-				if childNum != 1
-					delNode = @parentNode
-					faNode.removeChild(delNode)
-		_del-dom.click !->
-				faNode = document.getElementById("timerAll")
-				childNum = faNode.children.length
-				if childNum != 1
-					delNode = @parentNode
-					faNode.removeChild(delNode)
 		_run-dom.click !->
 			$('#runBusiness').removeClass "free"
 			$('#runBusiness').addClass "choose"
 			$('#stopBusiness').removeClass "choose"
 			$('#stopBusiness').addClass "free"
-			document.getElementById("runMes").innerHTML = '业务已启用'
-			document.getElementById("stopMes").innerHTML = '停用本业务'
-			document.getElementById("previewBusiness").style.color = '#333333'
-			document.getElementById("previewBusiness").style.border-color = '#333333'
+			$('#runMes').html('业务已启用')
+			$('#stopMes').html('停用本业务')
+			$('#previewBusiness').css("color", '#333333')
+			$('#previewBusiness').css("border-color", '#333333')
 		_stop-dom.click !->
 			$('#runBusiness').removeClass "choose"
 			$('#runBusiness').addClass "free"
 			$('#stopBusiness').removeClass "free"
 			$('#stopBusiness').addClass "choose"
-			document.getElementById("runMes").innerHTML = '启用本业务'
-			document.getElementById("stopMes").innerHTML = '业务已停用'
-			document.getElementById("previewBusiness").style.color = '#E7E7EB'
-			document.getElementById("previewBusiness").style.border-color = '#E7E7EB'
+			$('#runMes').html('启用本业务')
+			$('#stopMes').html('业务已停用')
+			$('#previewBusiness').css("color", '#E7E7EB')
+			$('#previewBusiness').css("border-color", '#E7E7EB')
 		_weekday-dom.click !->
-			if $(this).hasClass("true")
-				$(this).removeClass "true"
-				$(this).addClass "false"
-			else if $(this).hasClass("false")
-				$(this).removeClass "false"
-				$(this).addClass "true"
+			_weekday = $(this).parent()
+			if $(_weekday).hasClass("true")
+				$(_weekday).removeClass "true"
+				$(_weekday).addClass "false"
+			else if $(_weekday).hasClass("false")
+				$(_weekday).removeClass "false"
+				$(_weekday).addClass "true"
 		_payment-dom.click !->
-			if $(this).hasClass("true")
-				$(this).removeClass "true"
-				$(this).addClass "false"
-			else if $(this).hasClass("false")
-				$(this).removeClass "false"
-				$(this).addClass "true"
+			_payment = $(this).parent()
+			if $(_payment).hasClass("true")
+				$(_payment).removeClass "true"
+				$(_payment).addClass "false"
+			else if $(_payment).hasClass("false")
+				$(_payment).removeClass "false"
+				$(_payment).addClass "true"
 
 	_show-form-value = ->
-		x = document.getElementById("myForm")
-		pay = ''
-		day = ''
-		time = ''
-		can = ''
-		count = 0
-		test = 0
-		for i from 0 to 6 by 1
-			if value[i] == 1
-				day += dayAry[i] + '&nbsp&nbsp'
-		document.getElementById("showDay").innerHTML = day
-		for i from 7 to x.length-6 by 1
-			if i%2 == 1
-				if value[i] == '' || value[i+1] == ''
-					time += ''
-				else time += value[i] + '~'
-			else if i%2 == 0
-				if value[i] == '' || value[i-1] == ''
-					time += ''
-				else time += value[i] + '&nbsp&nbsp&nbsp'
-		document.getElementById("showTime").innerHTML = time
-		for i from x.length-5 to x.length-2 by 1
-			if value[i] == 1
-				test = i-(x.length-5)
-				pay += payAry[test] + '&nbsp&nbsp'
-				value[i] = 1
-		document.getElementById("showPay").innerHTML = pay
-		selNum = $ "\#selNum"
-		can = selNum.find("option:selected").text()
-		document.getElementById("showCan").innerHTML = can
 
 	_save-form-value = ->
-		x = document.getElementById("myForm")
-		for i from 0 to 6 by 1
-			if x.elements[i].checked == true
-				value[i] = 1
-			else value[i] = 0
-		for i from 7 to x.length-6 by 1
-			value[i] = x.elements[i].value
-		for i from x.length-5 to x.length-2 by 1
-			if x.elements[i].checked == true
-				value[i] = 1
-			else value[i] = 0
 
 	_init-depend-module = !->
 		page := require "./pageManage.js"
