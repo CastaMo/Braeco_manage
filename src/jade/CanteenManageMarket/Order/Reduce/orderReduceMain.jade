@@ -1,0 +1,33 @@
+#order-reduce-main
+    .or-container-header
+        button.reduce-start-btn.reduce-start-btn-able 满减启用中
+        button.reduce-stop-btn.reduce-stop-btn-able 停止满减
+        button.edit-btn 修改规则
+        #start-alert-block.alert-block
+            p.alert-information 新建活动提醒顾客这项优惠？
+            .btn-block
+                button.cancel-btn 暂不
+                button.comfirm-btn 马上就去
+        #stop-alert-block.alert-block
+            p.alert-information 确认停止使用满减？
+            .btn-block
+                button.comfirm-btn 确认
+                button.cancel-btn 取消
+        .clear
+    .or-container-content
+        .content-header-block 优惠规则
+        .content-business-block
+            span.block-description 适用业务
+            span.business-content 堂食、预订、外卖
+            .clear
+        .content-ladder-block
+            span.block-description 优惠阶梯
+            .ladder-content
+                .ladder-content-item
+                    span.ladder-level 阶梯一
+                    span.ladder-description 订单消费满20元  立减2元
+                .ladder-content-item
+                    span.ladder-level 阶梯二
+                    span.ladder-description 订单消费满25元  立减3元
+            .clear
+            .edit-infomation-content 最多可再添加8个阶梯

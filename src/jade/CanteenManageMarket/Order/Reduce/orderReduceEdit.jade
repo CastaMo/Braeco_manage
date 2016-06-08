@@ -1,0 +1,44 @@
+#order-reduce-edit
+    .or-container-content
+        .content-header-block 修改规则
+        .content-business-block
+            span.block-description 适用业务
+            .business-content
+                span.checkbox-item
+                    input(type="checkbox")
+                    span 堂食
+                span.checkbox-item
+                    input(type="checkbox")
+                    span 预订
+                span.checkbox-item
+                    input(type="checkbox")
+                    span 外卖
+            .clear
+        .content-ladder-block
+            span.block-description 优惠阶梯
+            .ladder-content
+                .ladder-content-item
+                    span.ladder-level 阶梯一
+                    span 订单消费满
+                    input(type="text")
+                    span.money-content 元
+                    span 立减
+                    input(type="text")
+                    span.money-content 元
+                    icon.delete-icon
+                .ladder-content-item
+                    span.ladder-level 阶梯一
+                    span 订单消费满
+                    input(type="text")
+                    span.money-content 元
+                    span 立减
+                    input(type="text")
+                    span.money-content 元
+                    icon.delete-icon
+            .clear
+            button.add-ladder-btn
+                icon.add-icon
+                span 新建阶梯
+        .content-btn-block
+            button.cancel-btn 取消
+            button.save-btn 保存

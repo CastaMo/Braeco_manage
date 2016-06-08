@@ -1,0 +1,12 @@
+extends ../../layout
+
+block mainHead
+	p.title 可设置订单优惠吸引顾客下单，提高客单价
+	#order-nav.head-nav
+		.order-nav-wrapper.nav-wrapper
+			ul.order-nav-container.nav-container
+				a(href='/Manage/Market/Order/Reduce')
+					li#Reduce 满减
+				a(href='/Manage/Market/Order/Presentation')
+					li#Presentation 满送
+				.clear

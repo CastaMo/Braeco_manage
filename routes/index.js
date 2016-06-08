@@ -34,8 +34,16 @@ module.exports = function(passport) {
 		res.render('./CanteenManageMarket/Coupon/Other/develop');
 	});
 	
-	router.get('/Manage/Market/Promotion/Single', function(req, res) {
-		res.render('./CanteenManageMarket/Promotion/Single/develop');
+	// router.get('/Manage/Market/Single', function(req, res) {
+	// 	res.render('./CanteenManageMarket/Promotion/Single/develop');
+	// });
+
+	router.get('/Manage/Market/Order/Reduce', function(req, res) {
+		res.render('./CanteenManageMarket/Order/Reduce/develop');
+	});
+
+	router.get('/Manage/Market/Order/Presentation', function(req, res) {
+		res.render('./CanteenManageMarket/Order/Presentation/develop');
 	});
 
 	router.get('/Manage/Business/HallOrder/Basic', function(req, res) {
@@ -159,6 +167,89 @@ module.exports = function(passport) {
 		res.send("hello world");
 	});
 	
+	
+	router.get('/Manage/Settings/Staff/Data', function(req, res, next) {
+		console.log("Settings/Staff/Data");
+		// setTimeout(function() {
+		// 	res.send("var allData = '"+'{"message":"success","data":{"waiters":[{"id":3,"name":"zjp","role":1,"phone":0,"sex":"\u7537"},{"id":5,"name":"mgz","role":1,"phone":13824418410,"sex":"女"},{"id":7,"name":"cjy","role":1,"phone":18819442283,"sex":"\u7537"},{"id":30,"name":"cxx","role":1,"phone":15626470862,"sex":"\u7537"},{"id":51,"name":"zzj","role":1,"phone":15521030187,"sex":"\u7537"},{"id":5673,"name":"null","role":1,"phone":18819473306,"sex":"\u7a7a"},{"id":5698,"name":"dingding","role":1,"phone":18819421257,"sex":"\u7a7a"},{"id":12777,"name":"szx","role":1,"phone":13929585358,"sex":"\u7a7a"}],"roles":[{"id":1,"name":"\u5e97\u957f","auth":533674483}]}}'+"';"+
+		// 	"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
+		// }, 0);
+		setTimeout(function() {
+			res.send("var allData = '"+'{"message":"success","data":{"waiters":[{"id":3,"name":"\u676f\u53e3boss","role":129,"phone":15626470328,"sex":"\u7537"}],"roles":[{"id":125,"name":"\u5e97\u957f","auth":2147090431, "permanent":true},{"id":126,"name":"\u8d22\u52a1","auth":22528,"permanent":true},{"id":127,"name":"\u670d\u52a1\u5458","auth":532676608,"permanent":true},{"id":128,"name":"\u81ea\u5b9a\u4e49","auth":7,"permanent":false},{"id":129,"name":"\u7ba1\u7406\u5458","auth":2147483647,"permanent":true}]}}'+"';"+
+			"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
+		}, 0);
+	});
+	router.post('/Waiter/Role/Add', function(req, res, next) {
+		var role = req.body;
+		console.log(role);
+		setTimeout(function() {
+			var r = Math.floor(Math.random() * (1 - 0 + 1) + 0);
+			if (r == 0) {
+				res.json({"message":"success"});
+			} else if (r == 1) {
+				res.json({"message":"Used name"});
+			}
+		}, 1000);
+	});
+	router.post('/Waiter/Role/Remove/:waiter_role_id', function(req, res, next) {
+		var roleid = req.params.waiter_role_id;
+		console.log(roleid);
+		setTimeout(function() {
+			var r = Math.floor(Math.random() * (2 - 0 + 1) + 0);
+			if (r == 0) {
+				res.json({"message":"success"});
+			} else if (r == 1) {
+				res.json({"message":"Waiter role not found"});
+			} else if (r == 2) {
+				res.json({"message":"Used name"});
+			}
+		}, 1000);
+	});
+	router.post('/Waiter/Role/Update/:waiter_role_id', function(req, res, next) {
+		var waiter_id = req.params.waiter_role_id;
+		var role = req.body;
+		console.log(role);
+		setTimeout(function() {
+			var r = Math.floor(Math.random() * (2 - 0 + 1) + 0);
+			if (r == 0) {
+				res.json({"message":"success"});
+			} else if (r == 1) {
+				res.json({"message":"Waiter role not found"});
+			} else if (r == 2) {
+				res.json({"message":"Cannot remove role with waiter still using"});
+			}
+		}, 1000);
+	});
+	
+	router.post('/Waiter/Add/:waiter_role_id', function(req, res, next) {
+		var orderid = req.params.waiter_role_id;
+		var waiter = req.body;
+		console.log(orderid);
+		console.log(waiter);
+		setTimeout(function() {
+			var r = Math.floor(Math.random() * (3 - 0 + 1) + 0);
+			if (r == 0) {
+				res.json({"message":"success"});
+			} else if (r == 1) {
+				res.json({"message":"Order not found"});
+			} else if (r == 2) {
+				res.json({"message":"Invalid dish to refund"});
+			} else {
+				res.json({"message":"Need to upload cert of wx pay"});
+			}
+		}, 1000);
+	});
+	router.post('/Waiter/Remove/:waiter_id', function(req, res, next) {
+		var waiter_id = req.params.waiter_id;
+		console.log(waiter_id);
+		setTimeout(function() {
+			res.json({"message": "success"});
+		}, 1000);
+	});
+	router.post('/Waiter/Update/:waiter_id', function(req, res, next) {
+		res.json("hello world");
+	});
+
 
 	return router;
 };
