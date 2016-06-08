@@ -11,7 +11,7 @@ class ComboController
 
 	init: !->
 		@init-all-prepare!
-		@init-all-data!
+		@init-all-datas!
 		@init-all-event!
 
 	init-all-prepare: !->
@@ -20,7 +20,7 @@ class ComboController
 		@current-combo-ables 	= []
 		@is-all-choose 				= false
 
-	init-all-data: !->
+	init-all-datas: !->
 		for data in @datas
 			category-id = data.id
 			@combos[category-id] = []

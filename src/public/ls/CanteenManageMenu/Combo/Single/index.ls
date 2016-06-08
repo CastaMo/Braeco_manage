@@ -7,6 +7,7 @@ HeaderView 						= require "./View/HeaderView.js"
 CategoryController 		= require "./Controller/CategoryController.js"
 ComboController 			= require "./Controller/ComboController.js"
 HeaderController 			= require "./Controller/HeaderController.js"
+SubitemController 		= require "./Controller/SubitemController.js"
 
 
 let win = window, doc = document
@@ -23,28 +24,33 @@ let win = window, doc = document
 				default-category-id : 			data.categories[0].id
 			]
 
-		default-category-id = category-controller.get-current-category-id!
-
-		category-select-view 	= new CategorySelectView opt 	=
-			category-controller 	: 			category-controller
-			el-CSS-selector 			: 			"select.category-select"
-
 		combo-controller 			= new ComboController opt 		=
 			datas 								: 			data.categories
 
-		combo-list-view 			= new ComboListView opt 			=
-			combo-controller 			: 			combo-controller
-			category-controller 	: 			category-controller
-			el-CSS-selector 			: 			"div.combo-list"
-			all-default-states 		:				[ 				opt 			=
-				default-category-id : 			default-category-id
-			]
+		subitem-controller 		= new SubitemController opt 	=
+			datas 								: 			data.groups
 
 		header-controller 		= new HeaderController opt 		=
 			datas 								: 			["new", "edit", "move", "sort", "copy", "able", "remove"]
 			all-default-states 		: 			[ 				opt 			=
 				current-combo-ids 	: 			[]
 				current-combo-ables : 			[]
+			]
+
+		default-category-id = category-controller.get-current-category-id!
+
+		category-select-view 	= new CategorySelectView opt 	=
+			category-controller 	: 			category-controller
+			el-CSS-selector 			: 			"select.category-select"
+
+
+		combo-list-view 			= new ComboListView opt 			=
+			combo-controller 			: 			combo-controller
+			category-controller 	: 			category-controller
+			subitem-controller 		: 			subitem-controller
+			el-CSS-selector 			: 			"div.combo-list"
+			all-default-states 		:				[ 				opt 			=
+				default-category-id : 			default-category-id
 			]
 
 		header-view 					= new HeaderView opt 					=

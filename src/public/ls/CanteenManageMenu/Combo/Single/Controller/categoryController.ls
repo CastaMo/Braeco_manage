@@ -12,7 +12,7 @@ class CategoryController
 
 	init: !->
 		@init-all-prepare!
-		@init-all-data!
+		@init-all-datas!
 		@set-default-state!
 
 	init-all-prepare: !->
@@ -20,7 +20,7 @@ class CategoryController
 		@current-category-id 				= null
 		@category-map-name-to-id 		= {}
 
-	init-all-data: !->
+	init-all-datas: !->
 		for data in @datas
 			category = new Category data
 			@category-map-name-to-id[category.name] = category.id

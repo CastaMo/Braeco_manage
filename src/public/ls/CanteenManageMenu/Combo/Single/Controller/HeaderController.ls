@@ -28,7 +28,7 @@ class HeaderController
 
 	init: !->
 		@init-all-prepare!
-		@init-all-data!
+		@init-all-datas!
 		@init-all-event!
 		@set-default-state!
 
@@ -37,7 +37,7 @@ class HeaderController
 		@all-check-results 		= []
 		@combo-able 					= null
 
-	init-all-data: !->
+	init-all-datas: !->
 		for name in @datas
 			header = new Header opt =
 				name 		 						:		name

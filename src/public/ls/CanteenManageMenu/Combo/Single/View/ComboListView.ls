@@ -9,6 +9,7 @@ class ComboListView
 	assign: (options)!->
 		@combo-controller 		= 	options.combo-controller
 		@category-controller 	= 	options.category-controller
+		@subitem-controller 	= 	options.subitem-controller
 		@$el 									= 	$ options.el-CSS-selector
 		@all-default-states 	= 	options.all-default-states
 
@@ -91,6 +92,11 @@ class ComboListView
 		if combo.get-type! is "combo_sum"
 			combo-dom-object.price-dom.html "#{combo.get-default-price!}元"
 		else combo-dom-object.price-dom.html "子项加总"
+
+		combo-dom-object.subitem-dom.html ""
+		for subitem-id in combo.get-groups!
+			dom = $ "<p>#{@subitem-controller.get-subitem-name subitem-id}</p>"
+			combo-dom-object.subitem-dom.append dom
 
 		combo-dom-object.remark-dom
 										.html combo.get-detail!
