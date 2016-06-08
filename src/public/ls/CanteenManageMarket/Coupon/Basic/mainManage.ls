@@ -239,7 +239,7 @@ main-manage = let
 
 
 	initial: (_get-coupon-JSON)!->
-		_init-all-coupon_get-coupon-JSON
+		_init-all-coupon _get-coupon-JSON
 		_init-coupon-view!
 		_init-depend-module!
 		_init-all-event!
