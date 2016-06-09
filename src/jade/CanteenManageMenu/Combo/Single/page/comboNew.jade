@@ -1,0 +1,125 @@
+#combo-new
+	.c-table.left-right-border
+		.c-header.top-bottom-border
+			.c-header-wrapper
+				.c-header-container
+					.title-field
+						p 新建套餐
+		.c-basic
+			.c-basic-wrapper.c-wrapper
+				.c-basic-container.outter-field
+					.left-part
+						.warn-field
+							p 带 * 号的为必填项
+						.c-name-field.inner-field
+							.left-part
+								p 单品名称 *
+							.right-part
+								input(type="text" class='single-input')
+							.clear
+						.e-name-field.inner-field
+							.left-part
+								p 英文名
+							.right-part
+								input(type="text" class='single-input')
+							.clear
+						.price-field.inner-field
+							.left-part
+								p 总价 *
+							.right-part.parallel-container
+								.select-field
+									select(name="new-select-price" id="new-select-price")
+										option(value="combo_sum") 固定总价
+										option(value="combo_static") 子项加总
+								.input-field
+									input(type="number" class='combo-price')
+								.clear
+							.clear
+					.right-part
+						.pic-field
+							label(for='new-pic' class='total-center')
+								.img-field
+									.img
+								.word-field.total-center
+									p 点击上传图片
+									p 建议尺寸:
+									p 200像素 * 200像素
+							input(name="new-pic", id="new-pic" type="file" class="hide")
+					.clear
+		.c-extend.top-bottom-border
+			.c-extend-wrapper.c-wrapper
+				.c-extend-container
+					.subitem-field
+						ul.subitem-list
+							li.subitem
+								.left-part
+									.name-field
+										p 子项
+								.right-part
+									.basic-field.parallel-container
+										.select-field
+											select
+												option(value="test") 测试
+										.input-field.parallel-container
+											p 任选个数
+											input(type="number" min="0")
+											.clear
+										.oper-field.parallel-container
+											.top
+												.icon
+											.remove
+												.icon
+											.clear
+										.clear
+									.hint-field
+										p
+											span.choose-hint ( 20 款单品任选1个)
+											span.error-hint 请勿选择同一子项
+								.clear
+						.btn-field.parallel-container
+							.new-btn
+								.new-btn-wrapper
+									.add-icon
+									p 新建子项
+									.clear
+							.manage-btn
+								.manage-btn-wrapper
+									p 管理子项
+							.clear
+					.remark-field
+						.left-part
+							p 备注标签
+						.right-part
+							input(id="new-remark")
+						.clear
+					.intro-field
+						.left-part
+							p 详情介绍
+						.right-part
+							textarea(id="new-intro")
+						.clear
+		.c-dc
+			.c-dc-wrapper.c-wrapper
+				.c-dc-container
+					.dc-field
+						.left-part
+							p 促销工具
+						.right-part.parallel-container
+							.select-field
+								select(name="new-select-dc-type" id="new-select-dc-type")
+									option(value='none') 无
+									option(value='sale') 减价优惠
+									option(value='discount') 折扣优惠
+									option(value='half') 第二杯半价
+									option(value='limit') 限量供应
+							.addtional.parallel-container
+							.clear
+						.clear
+		.c-oper
+			.c-oper-wrapper.c-wrapper
+				.c-oper-container.parallel-container
+					.cancel-btn
+						p 取消
+					.save-btn
+						p 保存
+					.clear

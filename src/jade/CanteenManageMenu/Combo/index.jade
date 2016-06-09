@@ -1,0 +1,14 @@
+extends ../../layout
+
+block mainHead
+	p.title 菜单最基本单位，丰富信息将吸引顾客下单
+	#combo-nav.head-nav
+		.combo-nav-wrapper.nav-wrapper
+			ul.combo-nav-container.nav-container
+				a(href='/Manage/Menu/Combo/Single')
+					li#Single 套餐
+				a(href='/Manage/Menu/Combo/Subitem')
+					li#Property 子项
+				//a(href='/Manage/Menu/Combo/Shelves')
+					li#Shelves 上架时间
+				.clear

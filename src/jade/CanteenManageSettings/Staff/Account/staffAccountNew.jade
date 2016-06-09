@@ -1,0 +1,30 @@
+#staff-account-new
+    .block-header 添加员工
+    form.staff-form
+        p.form-description 带 * 号的为必填项
+        .input-field
+             p 员工名字 *
+             input(type="text" name="name" required)
+        .input-field
+            p 性别 *
+            select(name="gender")
+                option(value="male") 男
+                option(value="female") 女
+        .input-field
+            p 手机 *
+            input(type="text" name="phone" placeholder="手机号将作为登录账号" required)
+        .input-field
+            p 密码 *
+            input(type="password" name="password" required)
+        .input-field
+            p 确认密码 *
+            input(type="password" name="comfirm-password" required)
+        .input-field
+            p 角色 *
+            select(name="role")
+                option(value="default") 请选择角色
+            button.manage-permission-btn 管理权限
+        .error-message-block
+    .btn-container
+        button.cancel-btn 取消
+        button.save-btn 保存

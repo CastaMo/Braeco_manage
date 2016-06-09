@@ -1,0 +1,67 @@
+extends ../index
+
+block head
+	script(src="/Manage/Settings/Business/Print/Data" type="text/javascript" async='async')
+	meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+	title Braeco
+	block css
+
+'''这里是主体'''
+block content
+	#print
+		#print-wrapper
+			#preview-field
+				#btn-field
+					.test-btn.btn
+						p 下单测试
+				#table-field
+					table#Info
+						tr.table-title
+							th(width="17%") 打印机编号
+							th(width="23%") 备注
+							th(width="13%") 是否切单
+							th(width="13%") 每单联数
+							th(width="13%") 字号
+							th(width="21%") 操作
+			#modify-field
+				#modify-title
+					p 打印机设置
+				#modify-content
+					#printID
+						span._content 打印机编号
+						span._printID 12345678
+					#printRemark
+						span._content 备注
+						input._printRemark
+					#printCut
+						span._content 是否切单
+						select._printCut
+							option(value = "true") 是
+							option(value = "false") 否
+					#printUnit
+						span._content 每单联数
+						select._printUnit
+							option(value = 1) 1联
+							option(value = 2) 2联
+							option(value = 3) 3联
+							option(value = 4) 4联
+							option(value = 5) 5联
+							option(value = 6) 6联
+							option(value = 7) 7联
+							option(value = 8) 8联
+					#printFont
+						span._content 字号
+						select._printFont
+							option(value = 0) 小
+							option(value = 1) 大
+					#printBranch
+						span._content 分单设置
+						#categories-choose
+							ul.allChoose
+								li.shown-item 全选
+									input(type="checkbox")
+				#modify-btn-field
+					.cancel-btn.btn
+						p 取消
+					.save-btn.btn
+						p 保存

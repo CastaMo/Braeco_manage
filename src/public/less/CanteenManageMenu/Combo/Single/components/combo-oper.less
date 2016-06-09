@@ -1,0 +1,33 @@
+.combo-oper {
+    .combo-oper-wrapper {
+        .combo-oper-container {
+            padding-left: 21px;
+            height: 44px;
+            line-height: 44px;
+            > *:not(.clear) {
+                cursor: pointer;
+                margin-right: 40px;
+                width: 55px;
+                &:hover:not(.disabled) {
+                    p {
+                        color: @orange-color;
+                    }
+                }
+                &.disabled {
+                    p {
+                        color: @font-grey-color;
+                    }
+                }
+                icon {
+                    margin-top: 12px;
+                    float: left;
+                    .background-norm();
+                    .background-size(20px, 20px);
+                }
+                p {
+                    float: right;
+                }
+            }
+        }
+    }
+}

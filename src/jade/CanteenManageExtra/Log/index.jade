@@ -1,0 +1,43 @@
+extends ../../layout
+
+block mainHead
+	p.title 查看敏感操作日志
+
+block head
+	script(src="/Manage/Table/Data" type="text/javascript" async='async')
+	meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+	title 查看敏感操作日志
+	block css
+
+'''这里是主体'''
+block content
+	.mycenter
+		.top
+			span.mypicker
+				input.time(type='text' placeholder='开始')
+				span.datepicker_img
+			span.dao 到
+			span.mypicker
+				input.time(type='text' placeholder='结束')
+				span.datepicker_img
+			.mybtn 
+			select
+				option 全部类别
+				option 类别1
+				option 类别2
+				option 类别3
+				option 类别4
+		.center
+			table.ro-container-table
+				thead
+					th.short 操作时间
+					th.short 操作者
+					th 动作
+					th.short 动作类别
+				tbody
+					tr
+						td 2016-03-07 17:57:27
+						td 店长
+						td 将会员 于德强(15626473390) 的积分设置为120790(之前为120790)
+						td 会员修改
+block bottom

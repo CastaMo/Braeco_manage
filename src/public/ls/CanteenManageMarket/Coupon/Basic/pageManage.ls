@@ -1,10 +1,7 @@
 page-manage = let
-	main = null
 	$("\#Card-sub-menu").addClass "choose"
 	$("\#Coupon-sub-menu").addClass "choose"
 	$("\#Coupon-nav li\#Basic").addClass "choose"
-	_init-depend-module = !->
-		main := require "./mainManage.js"
 
 	_new-dom = $ "\#newCoupon"
 	_detail-dom = $ "\#detailCoupon"
@@ -31,7 +28,6 @@ page-manage = let
 	}
 
 	initial: ->
-		_init-depend-module!
 
 	toggle-page: (page)->
 		_toggle-page-callback[page]?!

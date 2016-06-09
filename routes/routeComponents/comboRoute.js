@@ -3,7 +3,7 @@
 var getCallbackHandleForRequest = require("../../common/getCallbackHandleForRequest.js");
 
 module.exports = function(router) {
-  router.get('/Manage/Menu/Combo/Sinlge', function(req, res) {
+  router.get('/Manage/Menu/Combo/Single', function(req, res) {
     res.render('./CanteenManageMenu/Combo/Single/develop');
   });
 

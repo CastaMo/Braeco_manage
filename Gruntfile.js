@@ -200,8 +200,6 @@ module.exports = function(grunt) {
                 ]
             }
         },
-
-        /*编译jade，源文件路径设为src的根目录，src/jade里面装jade的option部分(比如你把head和script分离出来)，编译后放在bin中*/
         jade       :        gruntConfig.jade,
         less       :        gruntConfig.less,
         livescript :        gruntConfig.livescript,
@@ -230,6 +228,7 @@ module.exports = function(grunt) {
                 dest: '<%= dirs.dest_path %>public/<%= dirs.version %>'
             }
         },
+
 
         sftp: {
             options: {

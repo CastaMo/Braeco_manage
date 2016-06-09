@@ -1,6 +1,7 @@
 extends ../index
 
 block head
+	script(src="/Manage/Market/Coupon/Data" type="text/javascript" async='async')
 	meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
 	title Braeco
 	block css
@@ -9,7 +10,7 @@ block head
 block content
 	include newCoupon
 	include detailCoupon
-	#json-field [{"couponid":"123456","status":"0","cost":"50","cost_reduce":"5","max_use":"1","indate":"7"},{"couponid":"123451","status":"0","cost":"35","cost_reduce":"5","max_use":"1","indate":"2016-06-032016-07-03"},{"couponid":"111111","status":"2","cost":"25","cost_reduce":"2","max_use":"1","indate":"2016-06-032016-07-03"},{"couponid":"222222","status":"0","cost":"10","cost_reduce":"2","max_use":"1","indate":"5"},{"couponid":"333333","status":"1","cost":"10","cost_reduce":"2","max_use":"1","indate":"2016-06-032016-07-03"},{"couponid":"444444","status":"1","cost":"10","cost_reduce":"2","max_use":"1","indate":"2016-06-032016-07-03"},{"couponid":"555555","status":"1","cost":"10","cost_reduce":"2","max_use":"1","indate":"2016-06-032016-07-03"},{"couponid":"555555","status":"1","cost":"10","cost_reduce":"2","max_use":"1","indate":"2016-06-032016-07-03"}]
+	#json-field [{"couponid":"100001","status":"0","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"2016-06-312016-07-31","remain":"99","daily":"1","fun":{"0":"1","1":"0","2":"0"},"pay":"0","quantity":"100000"},{"couponid":"100002","status":"0","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"7","remain":"9","daily":"1","fun":{"0":"1","1":"1","2":"1"},"pay":"0","quantity":"100"},{"couponid":"100003","status":"2","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"2016-06-312016-07-31","remain":"999","daily":"1","fun":{"0":"1","1":"1","2":"1"},"pay":"1","quantity":"10"},{"couponid":"100004","status":"1","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"7","remain":"9999","daily":"1","fun":{"0":"1","1":"1","2":"1"},"pay":"0","quantity":"1000"},{"couponid":"100005","status":"0","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"7","remain":"19","daily":"0","fun":{"0":"0","1":"1","2":"0"},"pay":"1","quantity":"100000"},{"couponid":"100006","status":"1","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"2016-06-312016-07-31","remain":"2","daily":"1","fun":{"0":"0","1":"1","2":"1"},"pay":"0","quantity":"100000"},{"couponid":"100007","status":"1","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"7","remain":"0","daily":"1","fun":{"0":"1","1":"1","2":"1"},"pay":"0","quantity":"100000"},{"couponid":"100008","status":"0","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"7","remain":"9999","daily":"0","fun":{"0":"1","1":"0","2":"1"},"pay":"1","quantity":"100000"}]
 	#Coupon
 		.Coupon-wrapper
 			#new-coupon

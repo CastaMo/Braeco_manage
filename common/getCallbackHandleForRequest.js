@@ -29,7 +29,7 @@ function getCallbackProxyHandleResponse(res) {
     //延时抛出异常
     var timer = setTimeout(function () {
       err(new Error('timeout'));
-    }, 5000);
+    }, 30000);
 
     var bufferHelper = new BufferHelper();
 

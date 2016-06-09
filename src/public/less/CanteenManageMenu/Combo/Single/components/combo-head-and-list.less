@@ -1,0 +1,102 @@
+text-align: center;
+.t-choose {
+    width: 55px;
+}
+
+.t-pic {
+    width: 128px;
+}
+
+.t-name {
+    width: 125px;
+}
+
+.t-price {
+    width: 89px;
+}
+
+.t-subitem {
+    width: 109px;
+}
+
+.t-dc {
+    width: 93px;
+}
+
+.t-remark {
+    width: 103px;
+}
+
+.t-choose {
+    position: relative;
+    .choose-icon {
+        .background-norm();
+        .background-size(15px, 15px);
+        border: solid 1px @border-grey-color;
+        background-color: #fff;
+    }
+}
+
+.combo-head {
+    line-height: 43px;
+    background-color: @grey-color;
+    color: #8D8D8D;
+    .combo-head-wrapper {
+        .combo-head-container {
+            > *:not(.clear) {
+                height: 43px;
+            }
+            .t-remark {
+            	float: right;
+            }
+            .t-dc {
+            	margin-left: 5px;
+            }
+        }
+    }
+}
+
+.combo-list {
+    ul {
+        .hide;
+        li {
+            position: relative;
+            &:hover {
+                background-color: @shallow-orange-color;
+            }
+            border-bottom: solid 1px @border-grey-color;
+            .combo-info {
+                > *:not(.clear) {
+                    height: 160px;
+                    position: relative;
+                    > *:not(.choose-field):not(.pic-field) {
+                        width: 85%;
+                    }
+                    p {
+                        line-height: 25px;
+                        .ellipsisWithLineNum(1);
+                    }
+                }
+                .t-pic {
+                    .pic {
+                        .background-norm();
+                        .background-size(100px, 100px);
+                    }
+                }
+            }
+            .combo-cover {
+                .hide-cover {
+                    .hide;
+                    position: absolute;
+                    width: 653px;
+                    height: 160px;
+                    right: 0;
+                    top: 0;
+                    background-color: rgba(231, 231, 231, 0.75);
+                    line-height: 160px;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+}

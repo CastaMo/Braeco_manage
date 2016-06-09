@@ -1,0 +1,126 @@
+#staff-role-edit
+    .block-header 修改角色
+    .role-form
+        p.form-description 带 * 号的为必填项
+        .input-field
+            p.role-name-context 角色名称 *
+            input(type="text" name="name")
+            .clear
+        .input-field
+            p.role-permission-context 角色权限 *
+            .permission-block
+                ul.permission-list
+                    li.checkbox-item.outer-unchecked-icon
+                        input(type="checkbox" value="0")
+                        p 菜单管理
+                        .clear
+                        ul
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="1")
+                                p 编辑餐牌
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="2")
+                                p 编辑餐品
+                                .clear
+                    li.checkbox-item.outer-unchecked-icon
+                        input(type="checkbox" value="0")
+                        p 营销管理
+                        .clear
+                        ul
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="16")
+                                p 活动发布
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="32")
+                                p 促销工具
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="64")
+                                p 会员
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="128")
+                                p 卡券
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="258")
+                                p 搭配推荐
+                                .clear
+                    li.checkbox-item.outer-unchecked-icon
+                        input(type="checkbox" value="0")
+                        p 数据管理
+                        .clear
+                        ul
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="2048")
+                                p 流水订单
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="4096")
+                                p 数据统计
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="8192")
+                                p 营销分析
+                                .clear
+                    li.checkbox-item.outer-unchecked-icon
+                        input(type="checkbox" value="0")
+                        p 餐厅管理
+                        .clear
+                        ul
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="65536")
+                                p 业务管理
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="131072")
+                                p 店员管理
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="262144")
+                                p 餐厅信息修改
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="524288")
+                                p 餐厅日志
+                                .clear
+                    li.checkbox-item.outer-unchecked-icon
+                        input(type="checkbox" value="0")
+                        p 日常经营
+                        .clear
+                        ul
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="4194304")
+                                p 按单处理
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="8388608")
+                                p 辅助点餐
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="16777216")
+                                p 会员充值
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="33554432")
+                                p 修改积分
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="67108864")
+                                p 退款
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="134217728")
+                                p 重打某单
+                                .clear
+                            li.checkbox-item.unchecked-icon
+                                input(type="checkbox" value="268435456")
+                                p 打印日结
+                                .clear
+            .clear
+            .error-message-block
+    .btn-container
+        button.cancel-btn 取消
+        button.save-btn 保存

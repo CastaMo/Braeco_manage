@@ -8,12 +8,12 @@ let win = window, doc = document
 		"Need to rescan qrcode" 	:	->	win.location.pathname = "/Table/Confirm/rescan"
 		"success" 					:	(result)->
 			_init-all-get-JSON-func result.data
-			_init-all-module!
+			_init-all-module()
 	}
 
 	_init-all-get-JSON-func = (data)->
-		_get-food-JSON 		:= -> return JSON.stringify(data.categories)
-		_get-group-JSON 	:= -> return JSON.stringify(data.groups)
+		_get-food-JSON 		:= -> return data.categories
+		_get-group-JSON 	:= -> return data.groups
 
 
 	_main-init = (result)->
@@ -30,7 +30,6 @@ let win = window, doc = document
 		new_ 		= require "./newManage.js"; 			new_.initial!
 		edit  		= require "./editManage.js"; 			edit.initial!
 		require_ 	= require "./requireManage.js";			require_.initial!
-
 
 	_test-is-data-ready = ->
 		if window.all-data then _main-init JSON.parse window.all-data; window.all-data = null;
