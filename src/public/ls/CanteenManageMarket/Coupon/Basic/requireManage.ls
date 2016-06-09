@@ -8,8 +8,8 @@ require-manage = let
 	]
 
 	_all-require-URL = {
-		'modify'		:		'/Coupon/change'
-		'add'			:		'/Coupon/add'
+		'modify'		:		'/Manage/Market/Coupon/change'
+		'add'			:		'/Manage/Market/Coupon/add'
 	}
 
 	_requires = {}
