@@ -69,6 +69,8 @@ class ComboController
 		@set-all-is-choose-by-category-id category-id, is-all-choose
 		eventbus.emit "controller:combo:is-all-choose-change", @is-all-choose
 
+
+
 	#========= operation for combo start ===============#
 	set-able-for-current-combos: (category-id, able)!->
 		for combo in @combos[category-id] when combo.id in @current-combo-ids
@@ -89,6 +91,9 @@ class ComboController
 		@set-is-all-choose category-id, false
 
 	#========= operation for combo end ===============#
+
+
+
 
 	get-datas: -> return @datas
 

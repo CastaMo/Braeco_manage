@@ -7,7 +7,6 @@ class Subitem
 		@name 				= 	options.name
 		@price 				= 	Number options.price 		|| 0
 		@remark 			= 	options.remark 					|| ""
-		@require 			= 	Number options.require
 		@type 				= 	options.type
 		@content 			= 	options.content 				|| []
 		@belong-to		= 	options.belong_to 			|| []
@@ -19,8 +18,6 @@ class Subitem
 	get-id: -> return @id
 
 	get-remark: -> return @remark
-
-	get-require: -> return @require
 
 	get-type: -> return @type
 

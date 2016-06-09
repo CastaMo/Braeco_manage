@@ -1,6 +1,6 @@
 eventbus = require "../eventbus.js"
 
-class NewView
+class EditView
 
 	(options)->
 		@assign options
@@ -210,4 +210,4 @@ class NewView
 		@remark-dom.val null; 										@intro-dom.val null
 		@dc-type-dom.val "none"; 									@dc-type-change-event "none"
 
-module.exports = NewView
+module.exports = EditView
