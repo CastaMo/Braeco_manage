@@ -19,6 +19,9 @@ let win = window, doc = document
 
 	_init-all-module = !->
 		page = require "./pageManage.js";			page.initial!
+		main = require "./mainManage.js";           main.initial!
+		new-page  = require "./newManage.js";       new-page.initial!
+		edit-page = require "./editManage.js";      edit-page.initial!
 
 	_test-is-data-ready = ->
 		if window.all-data then _main-init JSON.parse window.all-data; window.all-data = null;

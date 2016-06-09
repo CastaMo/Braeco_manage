@@ -1,0 +1,65 @@
+#detailCoupon
+	.detailCoupon-wrapper.run
+		#pre-btn-field
+			#run-coupon
+				.run-btn.btn
+					p 启用发放
+			#stop-coupon
+				.stop-btn.btn
+					p 停止发放中
+				.stop-confirm.stop-confirm-image
+					p.confirm-ask 确认停止发放此代金券？
+					#confirm-btn-field
+						.confirm-btn.btn
+							p 确认
+						.confirm-cancel-btn.btn
+							p 取消
+			.overdue
+				p 已过期
+		#detailCoupon-title
+			p 代金券信息
+		#detailCoupon-content
+			#detailCoupon-status
+				#pre-batch-number
+					span._pre-content 批次号
+					span._pre-batch-number 123456
+				#pre-coupon-inventory
+					span._pre-content 库存量
+					span._pre-coupon-inventory 99998
+			#pre-left-field
+				#pre-coupon-value
+					#pre-face-value
+						span._pre-content 面值
+						span._pre-face-value 1元
+					#pre-valid-period
+						span._pre-content 有效期：
+						span._pre-valid-period 领取后7天内可使用，过期无效
+					#pre-use-condition
+						span._pre-content 使用门槛
+						span._pre-use-condition 订单额满0元可使用（无门槛）
+				#pre-coupon-rule
+					#left-distribute-coupon
+						span._pre-content 自动发券
+						span._left-distribute-coupon 顾客点餐前弹出领取页面
+					#pre-max-coupon
+						span._pre-content 发放上限
+						span._pre-max-coupon 100000张
+					#pre-max-own
+						span._pre-content 领取上限
+						span._pre-max-own 每人最多领取1张
+					#pre-apply-area
+						span._pre-content 适用业务
+						span._pre-apply-area 堂食 预订 外卖
+					#pre-multiple-use
+						span._pre-content 叠加使用
+						span._pre-multiple-use 每笔订单最多同时叠加使用1张
+			#pre-right-field
+				#pre-distribute-coupon
+					p._pre-content 已启用自动发放
+					p._pre-distribute-coupon 顾客点餐前弹出领取页面
+				#pre-QRcode-coupon
+					p._pre-content 手动发放
+					p._pre-QRcode-content 分享下面二维码
+					p._pre-QRcode-content 可手动发放代金券
+					.test-coupon-code-image
+			.clear

@@ -42,19 +42,19 @@ main-manage = let
 					delNode = @parentNode
 					faNode.removeChild(delNode)
 		_run-dom.click !->
-			$("\#runBusiness").removeClass "free"
-			$("\#runBusiness").addClass "choose"
-			$("\#stopBusiness").removeClass "choose"
-			$("\#stopBusiness").addClass "free"
+			$('#runBusiness').removeClass "free"
+			$('#runBusiness').addClass "choose"
+			$('#stopBusiness').removeClass "choose"
+			$('#stopBusiness').addClass "free"
 			document.getElementById("runMes").innerHTML = '业务已启用'
 			document.getElementById("stopMes").innerHTML = '停用本业务'
 			document.getElementById("previewBusiness").style.color = '#333333'
 			document.getElementById("previewBusiness").style.border-color = '#333333'
 		_stop-dom.click !->
-			$("\#runBusiness").removeClass "choose"
-			$("\#runBusiness").addClass "free"
-			$("\#stopBusiness").removeClass "free"
-			$("\#stopBusiness").addClass "choose"
+			$('#runBusiness').removeClass "choose"
+			$('#runBusiness').addClass "free"
+			$('#stopBusiness').removeClass "free"
+			$('#stopBusiness').addClass "choose"
 			document.getElementById("runMes").innerHTML = '启用本业务'
 			document.getElementById("stopMes").innerHTML = '业务已停用'
 			document.getElementById("previewBusiness").style.color = '#E7E7EB'

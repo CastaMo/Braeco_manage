@@ -1,1 +1,254 @@
 @import "../../../common/common";
+#staff {
+    .staff-wrapper {
+        width: 710px;
+        margin: 0 auto;
+        font-size: 14px;
+        
+        #staff-account-main {
+            margin: 30px 0;
+            .sa-container-header {
+                .new-btn {
+                    cursor: pointer;
+                    width: 140px;
+                    height: 32px;
+                    background: #ffc107;
+                    border-radius: 5px;
+                    border: none;
+                    color: #fff;
+                    icon.add-icon {
+                        float: left;
+                        width: 14px;
+                        height: 14px;
+                        margin-top: 1px;
+                        margin-left: 28px;
+                        margin-right: -20px;
+                        background-size: 14px 14px;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                    }
+                }
+            }
+            table.sa-container-table {
+                width: 100%;
+                margin-top: 20px;
+                border-collapse: collapse;
+                > thead {
+                    background-color: #f4f5f9;
+                    color: #8d8d8d;
+                    border: 1px solid #E7E7EB;
+                    > tr {
+                        height: 47px;
+                        > th {
+                            font-weight: normal;
+                        }
+                        .name-column {
+                            width: 15%;
+                        }
+                        .gender-column {
+                            width: 15%;
+                        }
+                        .phone-column {
+                            width: 30%;
+                        }
+                        .role-column {
+                            width: 20%;
+                        }
+                        .method-column {
+                            width: 20%;
+                        }
+                    }
+                }
+                > tbody {
+                    border: 1px solid #E7E7EB;
+                    text-align: center;
+                    > tr {
+                        border: 1px solid #E7E7EB;
+                        height: 60px;
+                        > td {
+                            border: 1px solid #E7E7EB;
+                            .method-container {
+                                cursor: pointer;
+                                display: inline-block;
+                                margin: 0 10px;
+                                icon {
+                                    display: inline-block;
+                                    width: 20px;
+                                    height: 20px;
+                                    background-size: 20px 20px;
+                                    background-repeat: no-repeat;
+                                    background-position: center;
+                                }
+                                p {
+                                    display: block;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        #staff-account-new {
+            margin: 30px 0;
+            display: none;
+        }
+        #staff-account-edit {
+            margin: 30px 0;
+            display: none;
+            input[name="password"] {
+                width: 250px;
+                margin-right: 40px;
+            }
+            button.reset-password-btn {
+                background: #ffffff;
+                border: 1px solid #e7e7eb;
+                border-radius: 5px;
+                width: 160px;
+                height: 30px;
+            }
+        }
+        
+        .block-header {
+            background-color: #f4f5f9;
+            color: #8d8d8d;
+            border: 1px solid #E7E7EB;
+            padding: 14px;
+        }
+        
+        .staff-form {
+            padding: 32px;
+            border-left: 1px solid #E7E7EB;
+            border-right: 1px solid #E7E7EB;
+            border-bottom: 1px solid #E7E7EB;
+            .input-field {
+                margin: 20px 0px;
+                p {
+                    display: inline-block;
+                    min-width: 70px;
+                    margin-right: 40px;
+                }
+                input, select {
+                    width: 452px;
+                    height: 32px;
+                    padding-left: 7px;
+                    border: 1px solid #e7e7eb;
+                }
+                select[name="role"] {
+                    width: 250px;
+                    margin-right: 40px;
+                }
+                button.manage-permission-btn {
+                    background: #ffffff;
+                    border: 1px solid #e7e7eb;
+                    border-radius: 5px;
+                    width: 160px;
+                    height: 30px;
+                }
+            }
+        }
+        .form-description {
+            color: #8d8d8d;
+        }
+        
+        .btn-container {
+            padding: 20px 30px;
+            border-left: 1px solid #e7e7eb;
+            border-right: 1px solid #e7e7eb;
+            border-bottom: 1px solid #e7e7eb;
+            .cancel-btn {
+                background: #ffffff;
+                margin-right: 30px;
+                border: 1px solid #e7e7eb;
+                border-radius: 5px;
+                width: 118px;
+                height: 32px;
+            }
+            .save-btn {
+                color: #ffffff;
+                background: #ffc107;
+                border: none;
+                border-radius: 5px;
+                width: 120px;
+                height: 32px;
+            }
+        }
+    }
+}
+#full-cover {
+    .hide;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    .full-cover-container,
+    .full-cover-wrapper {
+        height: 100%;
+        width: 100%;
+    }
+    .full-cover-container {
+        background-color: rgba(0, 0, 0, 0.6);
+        .reset-password-block {
+            background-color: #fff;
+            .reset-block-header {
+                width: 600px;
+                height: 58px;
+                background-color: #f4f5f9;
+                p {
+                    float: left;
+                    font-size: 18px;
+                    margin-left: 20px;
+                    line-height: 3.5;
+                    color: #4a4a4a;
+                }
+                .close-btn {
+                    cursor: pointer;
+                    float: right;
+                    margin-top: 18px;
+                    margin-right: 18px;
+                    width: 23px;
+                    height: 23px;
+                    background-size: 23px 23px;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                }
+            }
+            .reset-block-content {
+                padding: 30px 100px;
+                .input-field {
+                    margin: 20px 0px;
+                    p {
+                        display: inline-block;
+                        min-width: 82px;
+                        margin-right: 18px;
+                    }
+                    input {
+                        width: 290px;
+                        height: 32px;
+                        padding-left: 7px;
+                        border: 1px solid #e7e7eb;
+                    }
+                }
+            }
+            .btn-container {
+                border: 1px solid #e7e7eb;
+                text-align: center;
+                .cancel-btn {
+                    background: #ffffff;
+                    border: 1px solid #e7e7eb;
+                    border-radius: 5px;
+                    width: 118px;
+                    height: 30px;
+                }
+                .save-btn {
+                    color: #ffffff;
+                    background: #ffc107;
+                    border-radius: 5px;
+                    width: 120px;
+                    height: 32px;
+                }
+            }
+        }
+    }
+}

@@ -1,6 +1,7 @@
 extends ../index
 
 block head
+	script(src="/Manage/Market/Coupon/Data" type="text/javascript" async='async')
 	meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
 	title Braeco
 	block css
@@ -8,16 +9,20 @@ block head
 '''这里是主体'''
 block content
 	include newCoupon
+	include detailCoupon
+	#json-field [{"couponid":"100001","status":"0","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"2016-06-312016-07-31","remain":"99","daily":"1","fun":{"0":"1","1":"0","2":"0"},"pay":"0","quantity":"100000"},{"couponid":"100002","status":"0","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"7","remain":"9","daily":"1","fun":{"0":"1","1":"1","2":"1"},"pay":"0","quantity":"100"},{"couponid":"100003","status":"2","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"2016-06-312016-07-31","remain":"999","daily":"1","fun":{"0":"1","1":"1","2":"1"},"pay":"1","quantity":"10"},{"couponid":"100004","status":"1","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"7","remain":"9999","daily":"1","fun":{"0":"1","1":"1","2":"1"},"pay":"0","quantity":"1000"},{"couponid":"100005","status":"0","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"7","remain":"19","daily":"0","fun":{"0":"0","1":"1","2":"0"},"pay":"1","quantity":"100000"},{"couponid":"100006","status":"1","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"2016-06-312016-07-31","remain":"2","daily":"1","fun":{"0":"0","1":"1","2":"1"},"pay":"0","quantity":"100000"},{"couponid":"100007","status":"1","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"7","remain":"0","daily":"1","fun":{"0":"1","1":"1","2":"1"},"pay":"0","quantity":"100000"},{"couponid":"100008","status":"0","cost":"50","cost_reduce":"5","max":"2","max_use":"1","indate":"7","remain":"9999","daily":"0","fun":{"0":"1","1":"0","2":"1"},"pay":"1","quantity":"100000"}]
 	#Coupon
 		.Coupon-wrapper
 			#new-coupon
 				.new-btn.btn
-					p +新建代金券
+					p + 新建代金券
 			#run-coupon
 				#run-title
+					.color-field
 					p 运营中
 				#run-content-field
 			#pass-coupon
 				#pass-title
+					.color-field
 					p 已过期
 				#pass-content-field

@@ -1,0 +1,110 @@
+extends ../../layout
+
+block mainHead
+	p.title 餐厅信息
+
+block head
+	script(src="/Manage/Table/Data" type="text/javascript" async='async')
+	meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+	title 餐厅信息
+	block css
+
+'''这里是主体'''
+block content
+	.mycenter
+		.myli
+			.myhead 账号信息
+			.infos
+				.info_li
+					.info_desc 账户名
+					.info_value 杯口咖啡
+				.info_li
+					.info_desc 账户名
+					.info_value 杯口咖啡
+					.blue#change_password 重置密码
+		.myli
+			.myhead 门店信息
+			.infos
+			.info_li
+				.info_desc 所属门店
+				.info_value 贝塔咖啡
+			.info_li
+				.info_desc 地址
+				.info_value 广州大学城
+				.blue#change_address 修改
+			.info_li
+				.info_desc 联系方式
+				.info_value 400-103-225
+				.blue#change_phone 设置
+			.info_li.big
+				.blue#change_pics 上传图片
+				.info_desc 门店图片
+				.info_value.info_img
+					img(src = 'http://static.brae.co/index/3-5.png')
+	#wrap_contianer
+		.wrap#wrap_password
+			.wrap_head 
+				span 修改密码
+				.close_wrap
+			.wrap_content
+				.wrap_inputs			
+					.wrap_input_li
+						.wrap_desc 输入旧密码
+						.wrap_input
+							input(type='password' name='origin_name')
+					.wrap_input_li
+						.wrap_desc 输入新密码
+						.wrap_input
+							input(type='password' name='new_name')
+					.wrap_input_li
+						.wrap_desc 确认密码
+						.wrap_input
+							input(type='password' name='confirm_name')
+				.btns
+					.btn.cancle 取消
+					.btn.confirm 保存
+		.wrap#wrap_address
+			.wrap_head 
+				span 修改餐厅地址
+				.close_wrap
+			.wrap_content
+				.wrap_inputs			
+					.wrap_input_li
+						.wrap_desc 原地址
+						.wrap_input
+							span 广州大学城
+					.wrap_input_li
+						.wrap_desc 新地址
+						.wrap_input
+							input(type='text' name='address')
+				.btns
+					.btn.cancle 取消
+					.btn.confirm 保存
+		.wrap#wrap_phone
+			.wrap_head 
+				span 修改联系方式
+				.close_wrap
+			.wrap_content
+				.wrap_inputs			
+					.wrap_input_li
+						.wrap_desc 原联系方式
+						.wrap_input
+							span 400-103-225
+					.wrap_input_li
+						.wrap_desc 新联系方式
+						.wrap_input
+							input(type='text' name='phone')
+				.btns
+					.btn.cancle 取消
+					.btn.confirm 保存
+		.wrap#wrap_pics
+			.wrap_head 
+				span 管理餐厅照片
+				.close_wrap
+			.wrap_content
+				.btns
+					.btn.cancle 取消
+					.btn.confirm 保存
+
+
+block bottom
