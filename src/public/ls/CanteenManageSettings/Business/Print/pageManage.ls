@@ -1,17 +1,22 @@
 page-manage = let
-	main = null
 	$("\#Business-sub-menu").addClass "choose"
 	$("\#Business-nav li\#Print").addClass "choose"
 
-	_toggle-page-callback = {
+	_basic-dom = $ "\#preview-field"
+	_modify-dom = $ "\#modify-field"
 
+	_toggle-page-callback = {
+		"basic"			:		let
+			->
+				_modify-dom.fade-out 100
+				_basic-dom.fade-in 100
+		"modify"		:		let
+			->
+				_basic-dom.fade-out 100
+				_modify-dom.fade-in 100
 	}
 
-	_init-depend-module = !->
-		main := require "./mainManage.js"
-
 	initial: ->
-		_init-depend-module!
 
 	toggle-page: (page)->
 		_toggle-page-callback[page]?!
