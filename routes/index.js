@@ -58,9 +58,9 @@ module.exports = function(passport) {
 		res.render('./CanteenManageSettings/Staff/Account/develop');
 	});
 
-	router.get('/Manage/Data/Statistics', function(req, res) {
-		res.render('./CanteenManageData/develop');
-	});
+	// router.get('/Manage/Data/Statistics', function(req, res) {
+	// 	res.render('./CanteenManageData/develop');
+	// });
 
 	// router.get('/Manage/Menu/Data', function(req, res) {
 	// 	setTimeout(function() {

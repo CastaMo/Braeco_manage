@@ -1,0 +1,86 @@
+#statistics-main(ng-controller='data-statistics')
+  .data-statistics-wrapper
+    .filter-wrapper
+      .filter-container
+        select.date-type
+          option 按日查看
+          option 按周查看
+          option 按月查看
+          option 按年查看
+
+        input.date-range.date-begin(data-toggle="datepicker")
+        span 至
+        input.date-range.date-end(data-toggle="datepicker")
+
+        select.data-type
+          option 堂食自助
+          option 外带
+          option 外卖
+
+        .print-small-ticket 打印日结小票
+
+    .statistics-type-wrapper
+      .statistics-type-container
+        .turnover-panel.data-box
+          .data-box-wrapper
+            .title 营业额
+            .total 
+              span 999
+              | &nbsp;元
+            .weixin-pay.data-box-item
+              span.left 微信支付: 
+              span.right 100 元
+            .baidu-pay.data-box-item
+              span.left 百度钱包: 
+              span.right 100 元
+            .ali-pay.data-box-item
+              span.left 支付宝: 
+              span.right 100 元
+            .member-remain.data-box-item 
+              span.left 会员余额: 
+              span.right 699 元
+            .refund.data-box-item
+              span.left 退款:
+              span.right 0 元
+        .orders-panel.data-box
+          .data-box-wrapper
+            .title 订单数
+            .total 
+              span 100 
+              | &nbsp;单
+            .weixin-pay.data-box-item
+              span.left 微信支付: 
+              span.right 45 单
+            .baidu-pay.data-box-item
+              span.left 百度钱包: 
+              span.right 3 单
+            .ali-pay.data-box-item
+              span.left 支付宝: 
+              span.right 30 单
+            .member-remain.data-box-item
+              span.left 会员余额: 
+              span.right 22 单
+        .sales-volume-panel.data-box
+          .data-box-wrapper
+            .title 销量排行
+            ul
+              li 
+                span.left 1 
+                span.right 杯口咖啡
+              li 
+                span.left 2 
+                span.right 口碑咖啡
+              li 
+                span.left 3 
+                span.right 巧克力蛋糕
+
+    .graph-wrapper
+      .graph-container
+        .graph-triangle
+        .graph-type
+          ul
+            li 微信支付
+            li 支付宝
+            li 现金支付
+        .graph
+          canvas#myChart(width="400" height="400")

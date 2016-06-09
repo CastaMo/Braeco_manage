@@ -7,7 +7,7 @@
 # 为了开发效率和可维护性，activity模块改用angular框架
 
 # ========== 初始化 =========
-ng-app = 'BraecoActivity'
+ng-app = 'ManageMarketActivity'
 ng-app-module = angular.module ng-app, ['ngResource']
 ng-app-module.config ['$resourceProvider', ($resourceProvider)->
   $resourceProvider.defaults.stripTrailingSlashes = false;

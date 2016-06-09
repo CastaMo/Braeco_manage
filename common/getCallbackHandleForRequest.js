@@ -62,7 +62,9 @@ function proxySendRequest(options, callbackProxyHandleResponse, body) {
   request.end();
 }
 
-function getCallbackHandleForRequest(method) {
+function getCallbackHandleForRequest(method, devCookie) {
+  if (devCookie) cookie = devCookie;
+  
   return function(req, res) {
     var options = getOptionsForProxySendRequestConfig(req.url, method),
         callback = getCallbackProxyHandleResponse(res);
