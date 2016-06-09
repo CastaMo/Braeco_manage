@@ -146,8 +146,3 @@ module.exports = function (options) {
 		cssmin 				: 		CSSMinOptions
 	}
 }
-
-module.exports({
-	array 			: 	["menu","food","single"],
-	isDynamic 	: 	false
-});

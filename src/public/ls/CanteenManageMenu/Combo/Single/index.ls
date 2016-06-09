@@ -1,8 +1,11 @@
+require_ 							= require "./requireManage.js"
+
 PageView 							= require "./View/PageView.js"
 CategorySelectView 		= require "./View/CategorySelectView.js"
 ComboListView 				= require "./View/ComboListView.js"
 HeaderView 						= require "./View/HeaderView.js"
 NewView 							= require "./View/NewView.js"
+EditView							= require "./View/EditView.js"
 
 
 CategoryController 		= require "./Controller/CategoryController.js"
@@ -10,6 +13,7 @@ ComboController 			= require "./Controller/ComboController.js"
 HeaderController 			= require "./Controller/HeaderController.js"
 SubitemController 		= require "./Controller/SubitemController.js"
 NewController 				= require "./Controller/NewController.js"
+EditController				= require "./Controller/EditController.js"
 
 
 let win = window, doc = document
@@ -38,6 +42,7 @@ let win = window, doc = document
 
 	_init-all-module = (data)!->
 		console.log data
+		require_.initial!
 		category-controller 	= new CategoryController opt 	=
 			datas 								: 			data.categories
 			all-default-states 		:				[ 				opt 			=
@@ -57,7 +62,8 @@ let win = window, doc = document
 				current-combo-ables : 			[]
 			]
 
-		new-controller 				= new NewController
+		new-controller 				= new NewController opt 			=
+			dc-type-map-dc-options: 			dc-type-map-dc-options
 
 		default-category-id = category-controller.get-current-category-id!
 
@@ -117,6 +123,8 @@ let win = window, doc = document
 
 		new-view 							= new NewView opt 						=
 			el-CSS-selector 			: 			"div\#combo-new"
+			category-controller 	: 			category-controller
+			subitem-controller 		: 			subitem-controller
 			new-controller 				: 			new-controller
 			dc-type-map-dc-options: 			dc-type-map-dc-options
 
