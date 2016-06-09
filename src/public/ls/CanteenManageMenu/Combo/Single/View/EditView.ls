@@ -9,7 +9,7 @@ class EditView
 	assign: (options)!->
 		@category-controller 			= options.category-controller
 		@subitem-controller 			= options.subitem-controller
-		@new-controller 					= options.new-controller
+		@edit-controller 					= options.edit-controller
 		@$el 											= $ options.el-CSS-selector
 		@dc-type-map-dc-options 	= options.dc-type-map-dc-options 
 
@@ -22,7 +22,7 @@ class EditView
 		@e-name-dom 							= @$el.find ".e-name-field input"
 		@type-dom 								= @$el.find ".price-field select"
 		@price-dom 								= @$el.find ".price-field input"
-		@pic-upload-dom 					= @$el.find ".pic-field input\#new-pic"
+		@pic-upload-dom 					= @$el.find ".pic-field input\#edit-pic"
 		@pic-dom 									= @$el.find ".pic-field .img"
 		@subitem-list-dom 				= @$el.find "ul.subitem-list"
 		@subitem-new-btn-dom 			= @$el.find ".new-btn"
@@ -41,7 +41,7 @@ class EditView
 
 		@pic-upload-dom.change !~> @pic-upload-event @pic-upload-dom[0].files[0]
 
-		@subitem-new-btn-dom.click !~> @new-controller.add-subitem!
+		@subitem-new-btn-dom.click !~> @edit-controller.add-subitem!
 
 		@dc-type-dom.change !~> @dc-type-change-event @dc-type-dom.val!
 
@@ -49,11 +49,13 @@ class EditView
 
 		@save-btn-dom.click !~> @save-btn-click-event!
 
-		eventbus.on "controller:new:pic-change", (URL)!~> @apply-URL-to-pic URL
+		eventbus.on "controller:edit:pic-change", (URL)!~> @apply-URL-to-pic URL
 
-		eventbus.on "controller:new:reset", !~> @reset!
+		eventbus.on "controller:edit:reset", !~> @reset!
 
-		eventbus.on "controller:new:add-subitem", !~> @add-subitem-dom!; @update-all-subitem-dom!
+		eventbus.on "controller:edit:add-subitem", !~> @add-subitem-dom!; @update-all-subitem-dom!
+
+		eventbus.on "controller:edit:read-from-combo", (combo)!~> @read-from-combo combo
 
 	type-dom-change-event: (type)!->
 		if type is "combo_sum" then @price-dom.fade-in 200
@@ -62,7 +64,7 @@ class EditView
 	pic-upload-event: (file)!->
 		if parse-int(file.size / 1024) > 4097 then return alert "图片大小不能超过4M"
 		if file.type.substr(0, 5) isnt "image" then return alert "请上传正确的图片格式"
-		@new-controller.pic-change file
+		@edit-controller.pic-change file
 
 	dc-type-change-event: (dc-type)!->
 		@dc-dom.html ""
@@ -74,15 +76,15 @@ class EditView
 	cancel-btn-click-event: !-> eventbus.emit "view:page:toggle-page", "main"
 
 	save-btn-click-event: !->
-		@new-controller.set-config-data @get-config-data-by-input!
-		if not @new-controller.check-is-valid! then return
+		@edit-controller.set-config-data @get-config-data-by-input!
+		if not @edit-controller.check-is-valid! then return
 		current-category-id = @category-controller.get-current-category-id!
-		@new-controller.require-for-new-combo current-category-id
+		@edit-controller.require-for-edit-combo current-category-id
 
 	apply-URL-to-pic: (URL)!->
 		@pic-dom.css {"background-image": "url(#{URL})"}
 
-	add-subitem-dom: !->
+	add-subitem-dom: (default-data)!->
 		subitem-dom-object = {}
 		$el = subitem-dom-object.$el 						= @create-subitem-dom!
 		subitem-dom-object.select-dom 					= $el.find "select"
@@ -92,7 +94,7 @@ class EditView
 		subitem-dom-object.subitem-length-dom 	= $el.find ".subitem-length"
 		subitem-dom-object.subitem-require-dom 	= $el.find ".subitem-require"
 		@subitem-list-dom.append subitem-dom-object.$el
-		@improve-for-subitem-dom-object subitem-dom-object
+		@improve-for-subitem-dom-object subitem-dom-object, default-data
 		@all-subitem-doms.push subitem-dom-object
 
 	create-subitem-dom: ->
@@ -106,9 +108,7 @@ class EditView
 			<div class='right-part'>
 				<div class='basic-field parallel-container'>
 					<div class='select-field'>
-						<select>
-							<options value='test'>测试</options>
-						</select>
+						<select></select>
 					</div>
 					<div class='input-field parallel-container'>
 						<p>任选个数</p>
@@ -138,7 +138,7 @@ class EditView
 			<div class='clear'></div>"
 		subitem-dom.html subitem-dom-inner-html
 
-	improve-for-subitem-dom-object: (subitem-dom-object)!->
+	improve-for-subitem-dom-object: (subitem-dom-object, default-data)!->
 		select-dom 						= subitem-dom-object.select-dom
 		input-dom 						= subitem-dom-object.input-dom
 		top-dom 							= subitem-dom-object.top-dom
@@ -173,6 +173,8 @@ class EditView
 			@all-subitem-doms.splice subitem-dom-object.index, 1
 			@update-all-subitem-dom!
 
+		if default-data then select-dom.val default-data.subitem-id; input-dom.val default-data.require
+
 		subitem-length-dom.html @subitem-controller.get-subitem-length(select-dom.val!)
 		subitem-require-dom.html parse-int input-dom.val!
 
@@ -200,6 +202,19 @@ class EditView
 			groups 				: groups
 			require 			: require
 		return config-data
+
+	read-from-combo: (combo)!->
+		@c-name-dom.val combo.c-name
+		@e-name-dom.val combo.e-name
+		@price-dom.val combo.default-price
+		@type-dom.val combo.type; 	@type-dom-change-event combo.type
+		@remark-dom.val combo.tag
+		@intro-dom.val combo.detail
+		@dc-type-dom.val combo.dc-type; 	@dc-type-change-event combo.dc-type
+		@dc-dom .find "input" .val combo.dc
+		for subitem-id, i in combo.groups
+			@add-subitem-dom {subitem-id: subitem-id, require: combo.require[i]}
+		@update-all-subitem-dom!
 
 	reset: !->
 		@c-name-dom.val null; 										@e-name-dom.val null
