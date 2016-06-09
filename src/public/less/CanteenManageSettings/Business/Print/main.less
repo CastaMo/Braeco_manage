@@ -6,7 +6,6 @@
 		font-size: 14px;
 		width: 712px;
 		#preview-field {
-			display: none;
 			#btn-field {
 				height: 32px;
 				.test-btn {
@@ -39,15 +38,15 @@
 				td {
 					border: 1px solid #E7E7EB;
 					height: 82px;
-				}
-				.btn {
-					padding-left: 10px;
-					padding-right: 10px;
-				}
-				.test-icon {
-					margin-left: 20px;
-					height: 20px;
-					width: 20px;
+					.btn {
+						padding-left: 10px;
+						padding-right: 10px;
+					}
+					.test-icon {
+						margin-left: 20px;
+						height: 20px;
+						width: 20px;
+					}
 				}
 				p {
 					margin-left: 15px;
@@ -55,6 +54,7 @@
 			}
 		}
 		#modify-field {
+			display: none;
 			margin: 30px 0 0 30px;
 			#modify-title {
 				height: 46px;
@@ -65,7 +65,7 @@
 				}
 			}
 			#modify-content {
-				height: 705px;
+				height: 755px;
 				border: 1px solid #E7E7EB;
 				border-top-width: 0;
 				input {
@@ -77,6 +77,7 @@
 					font-size: 14px;
 				}
 				select {
+					padding-left: 5px;
 					color: #4A4A4A;
 					font-family: Hiragino Sans GB, Microsoft Yahei, sans-serif;
 					height: 32px;
@@ -84,11 +85,16 @@
 					font-size: 14px;
 				}
 				._content {
+					margin-top: 5px;
 					float: left;
 					width: 100px;
 				}
 				#printID {
 					padding: 30px 0 0 30px;
+					._printID {
+						position: relative;
+						top: 5px;
+					}
 				}
 				#printRemark {
 					padding: 30px 0 0 30px;
@@ -104,6 +110,68 @@
 				}
 				#printBranch {
 					padding: 30px 0 0 30px;
+					width: 370px;
+					input {
+						height: 16px;
+						width: 16px;
+					}
+					#categories-choose {
+						border: 1px solid #E7E7EB;
+						position: relative;
+						right: 22px;
+						float: right;
+						height: 382px;
+						width: 247px;
+						overflow: auto;
+						li.shown-item:hover {
+							background-color: #F4F5F9;
+						}
+						li.shown-item {
+							cursor: pointer;
+	                        padding-left: 30px;
+	                        line-height: 2.5;
+	                        height: 32px;
+	                        border-bottom: 1px solid #E7E7EB;
+	                        input[type=checkbox] {
+	                            float: right;
+	                            margin-top: 8px;
+	                            margin-right: 5px;
+	                        }
+	                    }
+	                    li.inner-shown-item {
+	                        padding-left: 45px;
+	                        line-height: 2.5;
+	                        height: 32px;
+	                        border-bottom: 1px solid #E7E7EB;
+	                        input[type=checkbox] {
+	                            float: right;
+	                            margin-top: 8px;
+	                            margin-right: 5px;
+	                        }
+	                    }
+					}
+				}
+			}
+			#modify-btn-field {
+				text-align: center;
+				height: 70px;
+				border: 1px solid #E7E7EB;
+				border-top-width: 0;
+				.btn {
+					border-radius: 5px;
+					margin-left: 30px;
+					margin-top: 20px;
+					padding: 0;
+					width: 120px;
+					height: 32px;
+				}
+				.cancel-btn {
+					border: 1px solid #E7E7EB;
+				}
+				.save-btn {
+					background-color: #FFC107;
+					color: #FFFFFF;
+					border: 1px solid #FFC107;
 				}
 			}
 		}
