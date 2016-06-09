@@ -1,15 +1,45 @@
 @test-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAbUExURQAAAEpKSkpKSk1NTUtLS0xMTExMTEpKSk5OTm81PO0AAAAJdFJOUwD93zpTiqKlGubZFsEAAABoSURBVAjXY2BgYHBXFCphAAMnQSFFQRUQi1UwmYHBTDAAyAxUBgkYiTIwsAg1gJgcig4MTMIQHYYKDI4JECabCEOhAYTJLM6gyAAFQkAIBYrITCQFSNqQDEOyAsliJOcgOxLJ6XAPAQDK+A1r186o5gAAAABJRU5ErkJggg==";
 @open-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAMBAMAAACU11D1AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAVUExURQAAAMnIzcjIzcrIzMvLzsnJ0MjHzFs/5jcAAAAGdFJOUwDKlWpEJkTFp3cAAABMSURBVAjXY2BKgwEFBgYxKDORgYGBEcoWALJZoewAIJvBDcxMATEZmMFsAzCbQQ3ITIIwwboFoGygsYkwJkNYWiqczZLmAGczGINJAL45F6Xh/lnGAAAAAElFTkSuQmCC";
 @close-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAUBAMAAABPKxEfAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAYUExURQAAAMnIzcrIzMvLzsnJ0NLS0sjIzcjHzMiPbMIAAAAHdFJOUwDKakQmEZXNnwmFAAAAPElEQVQI12NgY4AAdlEoXegAocuLoXS5ApQug9LlolAapBREg5SCaaBSFLoYVZ0oqjkKKPbA7IW6A+ouAAQcGXMQpW2pAAAAAElFTkSuQmCC";
-
 .test-icon {
-	background-image: url(@test-icon-url);
+    background-image: url(@test-icon-url);
 }
 
-.open-icon {
-	background-image: url(@open-icon-url);
-}
-
-.close-icon {
-	background-image: url(@close-icon-url);
+#categories-choose {
+    border: 1px solid #E7E7EB;
+    position: relative;
+    right: 22px;
+    float: right;
+    height: 382px;
+    width: 247px;
+    overflow: auto;
+    li.shown-item:hover {
+        background-color: #F4F5F9;
+    }
+    li.shown-item {
+        cursor: pointer;
+        padding-left: 10px;
+        line-height: 2.5;
+        height: 32px;
+        border-bottom: 1px solid #E7E7EB;
+        input[type=checkbox] {
+            float: right;
+            margin-top: 8px;
+            margin-right: 5px;
+        }
+        &.open {
+            .open-icon {
+                zoom: 50%;
+                background-image: url(@open-icon-url);
+                background-position: 0 25px;
+            }
+        }
+        &.close {
+            .open-icon {
+                zoom: 50%;
+                background-image: url(@close-icon-url);
+                background-position: 5px 20px;
+            }
+        }
+    }
 }
