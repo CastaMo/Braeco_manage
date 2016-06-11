@@ -33,6 +33,7 @@ edit-manage = let
 
     _update-presentation-success = (data)!->
         console.log data
+        location.reload!
 
     _reset-dom =!->
         _ladder-content-dom.empty!

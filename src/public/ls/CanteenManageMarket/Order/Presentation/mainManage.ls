@@ -37,8 +37,8 @@ main-manage = let
         _stop-presentation-event!
 
     _start-comfirm-btn-click-event = !->
-        console.log "马上就去"
-
+        location.href = "/Manage/Market/Activity"
+        
     _start-presentation-event = !->
         $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Give/Turn/On",
         dataType: "JSON", success: _start-presentation-success}

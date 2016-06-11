@@ -37,7 +37,7 @@ main-manage = let
         _stop-reduce-event!
 
     _start-comfirm-btn-click-event = !->
-        console.log "马上就去"
+        location.href = "/Manage/Market/Activity"
 
     _start-reduce-event = !->
         $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Reduce/Turn/On",
