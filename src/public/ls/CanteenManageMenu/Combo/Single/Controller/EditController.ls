@@ -4,7 +4,7 @@ require_ 				= require "../requireManage.js"
 [			getObjectURL] =
 	[		util.getObjectURL]
 
-class NewController
+class EditController
 	(options)->
 		@assign options
 		@init!
@@ -91,4 +91,4 @@ class NewController
 		}
 
 
-module.exports = NewController
+module.exports = EditController

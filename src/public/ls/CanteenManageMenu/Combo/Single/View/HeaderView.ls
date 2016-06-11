@@ -4,6 +4,7 @@ class HeaderView
 
 	all-headers-click-event = 
 		"new" 					:		!->
+			@new-controller.reset!
 			eventbus.emit "view:page:toggle-page", "new"
 		"edit" 					:		!-> 
 		"move" 					:		!-> 
@@ -25,6 +26,7 @@ class HeaderView
 		@category-controller 	= options.category-controller
 		@combo-controller 		= options.combo-controller
 		@header-controller  	= options.header-controller
+		@new-controller 			= options.new-controller
 		@$el 									= $ options.el-CSS-selector
 		@all-default-states 	= options.all-default-states
 

@@ -1,6 +1,7 @@
 extends ../index
 
 block head
+	script(src="/Manage/Settings/Business/Print/Data" type="text/javascript" async='async')
 	meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
 	title Braeco
 	block css
@@ -22,58 +23,6 @@ block content
 							th(width="13%") 每单联数
 							th(width="13%") 字号
 							th(width="21%") 操作
-						tr
-							td 12345678
-							td 一二三四五六七八九十
-							td 否
-							td 2联
-							td 小
-							td
-								.setting-btn.btn
-									.test-icon
-									p 设置
-								.switch-btn.btn
-									.test-icon
-									p 启用
-						tr
-							td 12345678
-							td 一二三四五六七八九十
-							td 是
-							td 1联
-							td 大
-							td
-								.setting-btn.btn
-									.test-icon
-									p 设置
-								.switch-btn.btn
-									.test-icon
-									p 启用
-						tr
-							td 12345678
-							td 一二三四五六七八九十
-							td 是
-							td 1联
-							td 大
-							td
-								.setting-btn.btn
-									.test-icon
-									p 设置
-								.switch-btn.btn
-									.test-icon
-									p 启用
-						tr
-							td 12345678
-							td 一二三四五六七八九十
-							td 是
-							td 1联
-							td 大
-							td
-								.setting-btn.btn
-									.test-icon
-									p 设置
-								.switch-btn.btn
-									.test-icon
-									p 启用
 			#modify-field
 				#modify-title
 					p 打印机设置
@@ -83,27 +32,36 @@ block content
 						span._printID 12345678
 					#printRemark
 						span._content 备注
-						input._printRemark
+						input._printRemark(maxlength = 12)
 					#printCut
 						span._content 是否切单
 						select._printCut
-							option 是
-							option 否
+							option(value = "true") 是
+							option(value = "false") 否
 					#printUnit
 						span._content 每单联数
 						select._printUnit
-							option 1联
-							option 2联
-							option 3联
-							option 4联
-							option 5联
-							option 6联
-							option 7联
-							option 8联
+							option(value = 1) 1联
+							option(value = 2) 2联
+							option(value = 3) 3联
+							option(value = 4) 4联
+							option(value = 5) 5联
+							option(value = 6) 6联
+							option(value = 7) 7联
+							option(value = 8) 8联
 					#printFont
 						span._content 字号
 						select._printFont
-							option 小
-							option 大
+							option(value = 0) 小
+							option(value = 1) 大
 					#printBranch
 						span._content 分单设置
+						#categories-choose
+							ul.allChoose
+								li.shown-item 全选
+									input(type="checkbox")
+				#modify-btn-field
+					.cancel-btn.btn
+						p 取消
+					.save-btn.btn
+						p 保存

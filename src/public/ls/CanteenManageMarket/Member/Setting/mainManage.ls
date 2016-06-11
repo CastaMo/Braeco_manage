@@ -1,7 +1,6 @@
 main-manage = let
 	page = require_ = null
 	[get-JSON, deep-copy] = [util.get-JSON, util.deep-copy]
-	window["_ladder"] = []
 	charge_ladder = []
 	cashEXP = ""
 	_ladder = {}
