@@ -28,7 +28,7 @@ edit-manage = let
         else
             console.log JSON.stringify result
             json-result = JSON.stringify result
-            $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Reduce/Update", data: json-result,
+            $.ajax {type: "POST", contentType: "application/json", url: "/Dinner/Manage/Discount/Reduce/Update", data: json-result,
             dataType: "JSON", success: _update-reduce-success}
 
     _update-reduce-success = (data)!->
