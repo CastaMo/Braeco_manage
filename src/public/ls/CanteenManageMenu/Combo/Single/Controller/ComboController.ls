@@ -1,5 +1,6 @@
-Combo 		= require "../Model/Combo"
-eventbus 	= require "../eventbus"
+Combo 		= require "../Model/Combo.js"
+eventbus 	= require "../eventbus.js"
+require_ 	= require "../requireManage.js"
 
 class ComboController
 	(options)->
@@ -33,6 +34,19 @@ class ComboController
 	init-all-event: !->
 		eventbus.on "controller:category:current-category-id-change", (category-id, old-category-id)!~>
 			@set-is-all-choose old-category-id, false
+
+		eventbus.on "controller:new:add-combo", (category-id, combo)!~>
+			combo 					= new Combo combo
+			combo.is-choose = false
+			@combos[category-id].push combo
+			eventbus.emit "controller:combo:add-combo", category-id, combo.id
+			@set-is-all-choose category-id, false
+
+		eventbus.on "controller:edit:edit-combo", (category-id, combo-id, config-data)!~>
+			@set-config-for-combo category-id, combo-id, config-data
+			@set-is-all-choose category-id, false
+
+	get-current-combo-ids: -> return @current-combo-ids
 
 	get-combo: (category-id, combo-id)->
 		for combo in @combos[category-id]
@@ -69,6 +83,10 @@ class ComboController
 		@set-all-is-choose-by-category-id category-id, is-all-choose
 		eventbus.emit "controller:combo:is-all-choose-change", @is-all-choose
 
+	set-config-for-combo: (category-id, combo-id, config-data)!->
+		for combo in @combos[category-id] when Number(combo-id) is Number(combo.id)
+			combo.set-config config-data
+			eventbus.emit "controller:combo:edit-combo", category-id, combo-id
 
 
 	#========= operation for combo start ===============#
@@ -79,7 +97,6 @@ class ComboController
 		@set-is-all-choose category-id, false
 
 	remove-for-current-combos: (category-id)!->
-		if not confirm "确定要删除套餐吗?(此操作无法恢复)" then return
 		temp = []
 		for combo in @combos[category-id] when combo.id in @current-combo-ids
 			temp.push combo
@@ -92,7 +109,24 @@ class ComboController
 
 	#========= operation for combo end ===============#
 
+	require-for-set-able-for-current-combos: (category-id, able)!->
+		if able then flag = 1
+		else flag = 0
+		require_.get("able").require {
+			data 			: 			{
+				JSON		: 			JSON.stringify(@current-combo-ids)
+				flag 		:				flag				
+			}
+			success 	:				(result)!~> @set-able-for-current-combos category-id, able
+		}
 
+	require-for-remove-for-current-combos: (category-id)!->
+		require_.get("remove").require {
+			data 			: 			{
+				JSON 		:				JSON.stringify(@current-combo-ids)
+			}
+			success 	: 			(result)!~> @remove-for-current-combos category-id
+		}
 
 
 	get-datas: -> return @datas

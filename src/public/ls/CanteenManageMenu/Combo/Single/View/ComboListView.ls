@@ -2,6 +2,18 @@ eventbus 						= require "../eventbus.js"
 
 class ComboListView
 
+	num-to-chinese = ["零","一","二","三","四","五","六","七","八","九","十"]
+
+	get-dc-info = (dc-type, dc)->
+		if dc-type is "discount"
+			if dc % 10 is 0 then num = num-to-chinese[Math.round dc/10]
+			else num = dc / 10
+			return "#{num}折"
+		else if dc-type is "sale" then return "减#{dc}元"
+		else if dc-type is "half" then return "第二份半价"
+		else if dc-type is "limit" then return "剩#{dc}件"
+		""
+
 	(options)->
 		@assign options
 		@init!
@@ -33,20 +45,7 @@ class ComboListView
 			@all-combo-list-doms[data.id] 	= combo-list-dom
 			@all-combo-doms[data.id] 				= {}
 			for dish in data.dishes when dish.type isnt "normal"
-				combo-dom-object 									= {}
-				$el = combo-dom-object.$el 				= @create-combo-dom combo-list-dom
-				combo-dom-object.choose-dom 			= $el.find ".t-choose .choose-icon"
-				combo-dom-object.pic-dom 					= $el.find ".t-pic .pic"
-				combo-dom-object.name-dom 				= $el.find ".t-name .name-field"
-				combo-dom-object.price-dom 				= $el.find ".t-price p"
-				combo-dom-object.subitem-dom 			= $el.find ".t-subitem .subitem-field"
-				combo-dom-object.dc-dom 					= $el.find ".t-dc .dc-field"
-				combo-dom-object.remark-dom 			= $el.find ".t-remark p"
-				combo-dom-object.cover-dom 				= $el.find ".hide-cover"
-
-				combo-list-dom.append $el
-				@all-combo-doms[data.id][dish.id] = combo-dom-object
-				@update-combo-dom-detail-from-data data.id, dish.id
+				@add-combo-dom data.id, dish.id
 
 
 	init-all-event: !->
@@ -66,18 +65,35 @@ class ComboListView
 
 		eventbus.on "controller:combo:remove", (category-id, combo-id)!~> @remove-combo-dom category-id, combo-id
 
-		for let category-id, combos of @all-combo-doms
-			for let combo-id, combo-dom-object of combos
-				combo-dom-object.$el
-												.find ".t-choose"
-												.click !~>
-													current-is-choose = @combo-controller.get-combo-is-choose category-id, combo-id
-													@combo-controller.set-is-choose category-id, combo-id, !current-is-choose
+		eventbus.on "controller:combo:add-combo", (category-id, combo-id)!~> @add-combo-dom category-id, combo-id
 
+		eventbus.on "controller:combo:edit-combo", (category-id, combo-id)!~> @update-combo-dom-detail-from-data category-id, combo-id
 
 	set-default-state: !->
 		current-category-id = @all-default-states.shift!.default-category-id
 		@only-show-combo-list-dom-by-given-id current-category-id
+
+	add-combo-dom: (category-id, combo-id)!->
+		combo-list-dom = @all-combo-list-doms[category-id]
+		combo-dom-object 									= {}
+		$el = combo-dom-object.$el 				= @create-combo-dom combo-list-dom
+		combo-dom-object.choose-dom 			= $el.find ".t-choose .choose-icon"
+		combo-dom-object.pic-dom 					= $el.find ".t-pic .pic"
+		combo-dom-object.name-dom 				= $el.find ".t-name .name-field"
+		combo-dom-object.price-dom 				= $el.find ".t-price p"
+		combo-dom-object.subitem-dom 			= $el.find ".t-subitem .subitem-field"
+		combo-dom-object.dc-dom 					= $el.find ".t-dc .dc-field"
+		combo-dom-object.remark-dom 			= $el.find ".t-remark p"
+		combo-dom-object.cover-dom 				= $el.find ".hide-cover"
+		combo-dom-object.$el
+										.find ".t-choose"
+										.click !~>
+											current-is-choose = @combo-controller.get-combo-is-choose category-id, combo-id
+											@combo-controller.set-is-choose category-id, combo-id, !current-is-choose
+
+		combo-list-dom.append $el
+		@all-combo-doms[category-id][combo-id] = combo-dom-object
+		@update-combo-dom-detail-from-data category-id, combo-id
 
 	update-combo-dom-detail-from-data: (category-id, combo-id)!->
 		combo 						= @combo-controller.get-combo category-id, combo-id
@@ -97,6 +113,8 @@ class ComboListView
 		for subitem-id in combo.get-groups!
 			dom = $ "<p>#{@subitem-controller.get-subitem-name subitem-id}</p>"
 			combo-dom-object.subitem-dom.append dom
+
+		combo-dom-object.dc-dom.html "<p>#{get-dc-info combo.dc-type, combo.dc}</p>"
 
 		combo-dom-object.remark-dom
 										.html combo.get-detail!
@@ -164,7 +182,7 @@ class ComboListView
 																<div class='subitem-field total-center'></div>
 															</div>
 															<div class='t-dc left-right-border'>
-																<div class='dc-field'></div>
+																<div class='dc-field total-center'></div>
 															</div>
 															<div class='t-remark'>
 																<div class='remark-field total-center'>

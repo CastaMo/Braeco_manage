@@ -9,12 +9,13 @@ class Combo
 		@assign options
 
 	assign: (options)!->
-		@able  						= 		options.able 						|| true
+		@able  						= 		options.able
 		@dc 							= 		options.dc 							|| 0
 		@dc-type 					= 		options.dc_type 				|| "none"
 		@default-price 		= 		options.default_price
 		@detail 					= 		options.detail 					|| ""
 		@groups 					= 		options.groups 					|| []
+		@require 					= 		options.require 				|| []
 		@id 							= 		Number(options.id)
 		@c-name 					= 		options.name
 		@e-name 					= 		options.name2 					|| ""
@@ -27,7 +28,6 @@ class Combo
 
 	set-config: (options)!->
 		deep-copy options, @
-		eventbus.emit("model:combo:config-change", @id, options)
 
 	get-c-name: -> return @c-name
 
@@ -38,6 +38,8 @@ class Combo
 	get-default-price: -> return @default-price
 
 	get-groups: -> return @groups
+
+	get-require: -> return @require
 
 	get-dc-type: -> return @dc-type
 
