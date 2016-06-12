@@ -74,6 +74,8 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
 
     $scope.statistic-chart = null
 
+    $scope.selected-sales-type = 'dish' # 'dish' or 'category'
+
   # ====== 2 $rootScope变量初始化 ======
   init-rootScope-variable = !->
 
@@ -108,7 +110,7 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
       set-orders-data!
 
       console.log $scope.statistic
-      init-line-chart!
+      init-chart!
       set-ready-state!
 
     switch $scope.statistics-filter.date-type
@@ -122,16 +124,11 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
     $ '.data-box' .remove-class 'choose'
     $ event.current-target .add-class 'choose'
     $scope.current-data-box = type
+    set-triangle-position type
 
-    left = 0
     switch type
-    | 'turnover'     => left = '108px'
-    | 'orders'       => left = '345px'
-    | 'sales-volume' => left = '580px'
-
-    $ '.graph-triangle' .css 'left', left
-
-    init-line-chart!
+    | 'turnover', 'orders' => init-line-chart!
+    | 'sales-volume'       => init-pie-chart!
 
   $scope.printSmallTicket = (event)!->
     alert '打印日结小票功能还没实现哦'
@@ -140,6 +137,24 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
     set-turnover-data!
     set-orders-data!
     init-line-chart!
+
+  $scope.set-selected-sales-type = (event, type)!->
+
+    set-dish-sales-li = !->
+      $ '.sales-volume-type .category-sales' .remove-class 'choose'
+      $ '.sales-volume-type .dish-sales' .add-class 'choose'
+      $scope.selected-sales-type = 'dish'
+
+    set-category-sales-li = !->
+      $ '.sales-volume-type .category-sales' .add-class 'choose'
+      $ '.sales-volume-type .dish-sales' .remove-class 'choose'
+      $scope.selected-sales-type = 'category'
+
+    switch type
+    | 'dish'     => set-dish-sales-li!
+    | 'category' => set-category-sales-li!
+
+    init-pie-chart!
 
   # ====== 7 controller初始化接口 ======
   init-data-statistics = !->
@@ -172,22 +187,52 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
       $scope.datepicker.date-begin.datepicker 'setDate', new Date
     , 500
 
-  init-line-chart = !->
-    set-chart-global-defaults!
-    options = get-chart-options!
-    data = get-chart-data!
-    ctx = document.getElementById "statistics-chart"
+  init-chart = !->
+    type = $scope.current-data-box
 
-    chart-option =
-      type: 'line'
+    switch type
+    | 'turnover', 'orders' => init-line-chart!
+    | 'sales-volume'       => init-pie-chart!
+
+  init-pie-chart = !->
+    set-pie-chart-global-defaults!
+    options = get-pie-chart-options!
+    data = get-pie-chart-data!
+    ctx = document.getElementById "statistics-pie-chart"
+
+    pie-chart-option =
+      type: 'pie'
       data: data
       options: options
+
+    $ '\#statistics-line-chart' .css 'display', 'none'
+    $ '\#statistics-pie-chart' .css 'display', ''
 
     if $scope.statistic-chart isnt null
       $scope.statistic-chart.destroy!
       $scope.statistic-chart = null
 
-    $scope.statistic-chart = new Chart ctx, chart-option
+    $scope.statistic-chart = new Chart ctx, pie-chart-option
+
+  init-line-chart = !->
+    set-line-chart-global-defaults!
+    options = get-line-chart-options!
+    data = get-line-chart-data!
+    ctx = document.getElementById "statistics-line-chart"
+
+    line-chart-option =
+      type: 'line'
+      data: data
+      options: options
+
+    $ '\#statistics-line-chart' .css 'display', ''
+    $ '\#statistics-pie-chart' .css 'display', 'none'
+
+    if $scope.statistic-chart isnt null
+      $scope.statistic-chart.destroy!
+      $scope.statistic-chart = null
+
+    $scope.statistic-chart = new Chart ctx, line-chart-option
 
   init-all-years-and-all-month = !->
     if $scope.register-time is null
@@ -295,7 +340,7 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
       bfb_wap: orders?.bfb_wap?.sum
       prepayment: orders?.prepayment?.sum
 
-  set-chart-global-defaults = !->
+  set-line-chart-global-defaults = !->
     Chart.defaults.global.legend.position = 'bottom'
     Chart.defaults.global.hover.mode = 'dataset'
     Chart.defaults.global.tooltips.enabled = true
@@ -304,7 +349,7 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
 
   set-scope-chart-data = !->
     color-settings = get-line-chart-color-settings!
-    data = get-line-chart-data!
+    data = get-line-chart-raw-data!
     legends = get-line-chart-legends!
     dataset-item = get-dataset-item!
 
@@ -324,6 +369,18 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
             beginAtZero: true
           }
         }]
+
+  set-triangle-position = (type)!->
+    left = 0
+    switch type
+    | 'turnover'     => left = '108px'
+    | 'orders'       => left = '345px'
+    | 'sales-volume' => left = '580px'
+
+    $ '.graph-triangle' .css 'left', left
+
+  set-pie-chart-global-defaults = !->
+
 
   # {register-year-month-gap:, year-gap:, now-year-month-gap:}
   get-total-months-obj = (register-time-date-obj, now-date-obj)->
@@ -360,11 +417,11 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
   get-select-date-object-from-date-and-week-type = ->
     get-date-object $scope.datepicker.date-begin.datepicker('getDate')
 
-  get-chart-options = ->
+  get-line-chart-options = ->
     set-scope-chart-options!
     $scope.chart.options
 
-  get-chart-data = ->
+  get-line-chart-data = ->
     set-scope-chart-data!
     $scope.chart.data
 
@@ -429,7 +486,7 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
         'rgba(233, 30, 99, 1)'
       ]
 
-  get-line-chart-data = ->
+  get-line-chart-raw-data = ->
     current-data-box = $scope.current-data-box
     date-type = $scope.statistics-filter.date-type
     data-type = $scope.statistics-filter.data-type
@@ -437,7 +494,6 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
     detail-data = get-detail-data current-data-box
     detail-data-types = get-detail-data-type!
 
-    debugger
     chart-data = get-chart-datasets-data date-type, detail-data-types, detail-data[data-type]
 
     chart-data
@@ -544,6 +600,81 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
       datasets.push temp
 
     datasets
+
+  get-pie-chart-options = ->
+    {}
+
+  get-pie-chart-data = ->
+    debugger
+    labels = get-pie-chart-data-labels!
+    datasets = get-pie-chart-data-datasets!
+    data =
+      labels: labels
+      datasets: datasets
+
+  get-pie-chart-data-labels = ->
+    type = $scope.selected-sales-type
+    labels = []
+
+    if type is 'dish'
+      data-details = $scope.statistic.dish_detail
+      data-details.for-each (item)!->
+        labels.push item.name
+    else if type is 'category'
+      data-details = $scope.statistic.category_detail
+      data-details.for-each (item)!->
+        labels.push item.name
+
+    labels
+
+  get-pie-chart-data-datasets = ->
+    backgroundColor = get-pie-chart-data-datasets-backgroundColor-and-hoverBackgroundColor!
+    dataset-item =
+      data: get-pie-chart-data-datasets-data!
+      backgroundColor: backgroundColor
+      hoverBackgroundColor: backgroundColor
+
+    datasets = []
+    datasets.push dataset-item
+    datasets
+
+  get-pie-chart-data-datasets-data = ->
+    type = $scope.selected-sales-type
+    data = []
+
+    if type is 'dish'
+      data-details = $scope.statistic.dish_detail
+      data-details.for-each (item)!->
+        data.push item.sum
+    else if type is 'category'
+      data-details = $scope.statistic.category_detail
+      data-details.for-each (item)!->
+        data.push item.sum
+    data
+
+  get-pie-chart-data-datasets-backgroundColor-and-hoverBackgroundColor = ->
+    type = $scope.selected-sales-type
+    colors = []
+    length = 0
+
+    if type is 'dish'
+      length = $scope.statistic.dish_detail.length
+    else if type is 'category'
+      length = $scope.statistic.category_detail.length
+
+    for i from 1 to length
+      colors.push get-rand-color(4)
+
+    colors
+
+  # http://stackoverflow.com/a/7352887
+  get-rand-color = (brightness)->
+    # 6 levels of brightness from 0 to 5, 0 being the darkest
+    rgb = [Math.random() * 256, Math.random() * 256, Math.random() * 256]
+    mix = [brightness*51, brightness*51, brightness*51]; # 51 => 255/5
+    mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map (x)-> Math.round(x/2.0)
+
+    "rgb(" + mixedrgb.join(",") + ")"
 
   # ====== 9 数据访问函数 ======
 

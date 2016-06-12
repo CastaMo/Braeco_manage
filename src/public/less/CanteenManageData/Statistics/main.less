@@ -172,10 +172,12 @@
           left: 108px;
           top: -13px;
         }
-        .graph-type {
+
+        .sales-volume-type {
           height: 50px;
           background-color: @statistics-type-hover-color;
           border: 1px @statistics-border-color solid;
+          border-bottom: 0px;
           text-align: center;
 
           ul {
@@ -196,17 +198,77 @@
                 color: white;
                 background-color: @statistics-type-choose-color;
               }
+
+            }
+            .choose {
+              cursor: pointer;
+              color: white;
+              background-color: @statistics-type-choose-color;
             }
           }
         }
+
         .graph {
           border: 1px @statistics-border-color solid;
           height: 380px;
           padding: 10px;
           padding-top: 30px;
 
-          canvas {
+          #statistics-line-chart {
             height: 370px !important;
+          }
+          #statistics-pie-chart {
+            width: 100% !important;
+          }
+        }
+      }
+    }
+    .sales-volume-wrapper {
+      border: 1px solid @statistics-border-color;
+      margin-top: 30px;
+      margin-bottom: 30px;
+
+      .sales-volume-container {
+        .dish-list-head, .category-list-head {
+          background-color: @statistics-type-hover-color;
+        }
+        .dish-list-item, .category-list-item {
+          .list-item {
+            border-top: 1px @statistics-border-color solid;
+            border-right: 1px @statistics-border-color solid;
+          }
+          &:hover {
+            background-color: @statistics-type-hover-color;
+            cursor: pointer;
+          }
+        }
+        .dish-list-head, .dish-list-item, .category-list-head, .category-list-item {
+          .list-item {
+            display: inline-block;
+            height: 45px;
+            line-height: 45px;
+            text-align: center;
+          }
+          .rank {
+            width: 100px;
+          }
+          .category-name {
+            width: 199px;
+          }
+          .dish-name {
+            width: 199px;
+          }
+          .sales-sum {
+            width: 100px;
+          }
+          .sales-amount {
+            width: 101px;
+            border-right: 0px;
+          }
+        }
+        .category-list-head, .category-list-item {
+          .category-name {
+            width: 399px;
           }
         }
       }

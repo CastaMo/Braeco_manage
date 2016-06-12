@@ -116,10 +116,40 @@
     .graph-wrapper
       .graph-container
         .graph-triangle
-        //- .graph-type
+        .sales-volume-type(ng-show='currentDataBox == "sales-volume"')
           ul
-            li 微信支付
-            li 支付宝
-            li 现金支付
+            li.choose.dish-sales(ng-click='setSelectedSalesType($event, "dish")') 单品销量
+            li.category-sales(ng-click='setSelectedSalesType($event, "category")') 品类销量
         .graph
-          canvas#statistics-chart
+          canvas#statistics-line-chart
+          canvas#statistics-pie-chart
+
+    .sales-volume-wrapper(ng-show='currentDataBox == "sales-volume"')
+      .sales-volume-container
+        .dish-list(ng-show='selectedSalesType == "dish" && currentDataBox == "sales-volume"')
+          .dish-list-head
+            .rank.list-item 销量排行
+            .category-name.list-item 品类名称
+            .dish-name.list-item 餐品名称
+            .sales-sum.list-item 销量（份）
+            .sales-amount.list-item 销售额（元）
+
+          .dish-list-item(ng-repeat='item in statistic.dish_detail')
+            .rank.list-item {{ $index + 1 }}
+            .category-name.list-item {{ item.catname }}
+            .dish-name.list-item {{ item.name }}
+            .sales-sum.list-item {{ item.sum }}
+            .sales-amount.list-item {{ item.amount }}
+
+        .category-list(ng-show='selectedSalesType == "category" && currentDataBox == "sales-volume"')
+          .category-list-head
+            .rank.list-item 销量排行
+            .category-name.list-item 品类名称
+            .sales-sum.list-item 销量（份）
+            .sales-amount.list-item 销售额（元）
+
+          .category-list-item(ng-repeat='item in statistic.category_detail')
+            .rank.list-item {{ $index + 1 }}
+            .category-name.list-item {{ item.name }}
+            .sales-sum.list-item {{ item.sum }}
+            .sales-amount.list-item {{ item.amount }}
