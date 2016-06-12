@@ -72,6 +72,8 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
     $scope.chart.options = null
     $scope.chart.data = null
 
+    $scope.statistic-chart = null
+
   # ====== 2 $rootScope变量初始化 ======
   init-rootScope-variable = !->
 
@@ -104,9 +106,9 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
       $scope.statistic = result.statistic
       set-turnover-data!
       set-orders-data!
-      init-chart!
-      console.log $scope.statistic
 
+      console.log $scope.statistic
+      init-line-chart!
       set-ready-state!
 
     switch $scope.statistics-filter.date-type
@@ -129,13 +131,15 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
 
     $ '.graph-triangle' .css 'left', left
 
+    init-line-chart!
+
   $scope.printSmallTicket = (event)!->
     alert '打印日结小票功能还没实现哦'
 
   $scope.set-data-by-data-type = (event)!->
-    console.log 'statistic', $scope.statistic
     set-turnover-data!
     set-orders-data!
+    init-line-chart!
 
   # ====== 7 controller初始化接口 ======
   init-data-statistics = !->
@@ -168,7 +172,7 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
       $scope.datepicker.date-begin.datepicker 'setDate', new Date
     , 500
 
-  init-chart = !->
+  init-line-chart = !->
     set-chart-global-defaults!
     options = get-chart-options!
     data = get-chart-data!
@@ -179,7 +183,11 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
       data: data
       options: options
 
-    statistic-chart = new Chart ctx, chart-option
+    if $scope.statistic-chart isnt null
+      $scope.statistic-chart.destroy!
+      $scope.statistic-chart = null
+
+    $scope.statistic-chart = new Chart ctx, chart-option
 
   init-all-years-and-all-month = !->
     if $scope.register-time is null
@@ -429,15 +437,25 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
     detail-data = get-detail-data current-data-box
     detail-data-types = get-detail-data-type!
 
-    chart-data = generate-chart-data detail-data-types, detail-data[data-type]
+    debugger
+    chart-data = get-chart-datasets-data date-type, detail-data-types, detail-data[data-type]
 
     chart-data
 
-  generate-chart-data = (detail-data-types, detail-data)->
+  get-chart-datasets-data = (date-type, detail-data-types, detail-data)->
+    chart-data = []
+
     detail-data-types.for-each (item)!->
-      console.log item
-      console.log detail-data[item]
-    []
+      if detail-data[item] isnt undefined
+        chart-data.push detail-data[item].detail
+      else
+        switch date-type
+        | 'day'   => chart-data.push [i - i for i from 0 to 23]
+        | 'week'  => chart-data.push [i - i for i from 0 to 6]
+        | 'month' => chart-data.push [i - i for i from 0 to 29] # 临时
+        | 'year'  => chart-data.push [i - i for i from 0 to 11]
+
+    chart-data
 
   get-detail-data-type = ->
     ['all', 'cash', 'p2p_wx_pub', 'wx_pub', 'alipay_wap', 'alipay_qr_f2f', 'bfb_wap', 'prepayment']
@@ -477,10 +495,34 @@ ng-app-module.controller 'data-statistics', ['$scope', '$resource', '$timeout', 
     labels
 
   get-week-labels = ->
-    []
+    date-object = get-select-date-object-from-date-and-week-type!
+    days-of-month = get-days-number-of-month date-object.year, date-object.month
+
+    week-labels = []
+    month = date-object.month
+    day = date-object.day
+
+    for i from 0 to 6
+      if day > days-of-month
+        day = 1
+        month++
+
+        if month > 12
+          month = 1
+      item = month + '月' + day + '日'
+      week-labels.push item
+      day++
+
+    week-labels
 
   get-month-labels = ->
-    []
+    date-object = get-date-object-from-zh-cn-string $scope.statistics-filter.selected-month
+    day-number = get-days-number-of-month date-object.year, date-object.month
+
+    [i + '日' for i from 1 to day-number]
+
+  get-days-number-of-month = (year, month)->
+    new Date(year, month, 0).getDate!
 
   get-year-labels = ->
     ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
