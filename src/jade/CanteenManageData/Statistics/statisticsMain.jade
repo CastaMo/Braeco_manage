@@ -2,85 +2,124 @@
   .data-statistics-wrapper
     .filter-wrapper
       .filter-container
-        select.date-type
-          option 按日查看
-          option 按周查看
-          option 按月查看
-          option 按年查看
+        select.date-type(ng-model='statisticsFilter.dateType' ng-change='getStatisticsByUnit($event)')
+          option(value='day') 按日查看
+          option(value='week') 按周查看
+          option(value='month') 按月查看
+          option(value='year') 按年查看
 
-        input.date-range.date-begin(data-toggle="datepicker")
-        span 至
-        input.date-range.date-end(data-toggle="datepicker")
+        //- day and week
+        input.date-range.date-begin(data-toggle="datepicker" ng-model='statisticsFilter.dateBegin' ng-show='statisticsFilter.dateType == "day" || statisticsFilter.dateType == "week"'  ng-change='getStatisticsByUnit($event)')
 
-        select.data-type
-          option 堂食自助
-          option 外带
-          option 外卖
+        //- month
+        select.month-select(ng-show='statisticsFilter.dateType == "month"' ng-model='statisticsFilter.selectedMonth'  ng-change='getStatisticsByUnit($event)')
+          option(ng-repeat='year in statisticsFilter.allMonths' value='{{year}}') {{year}}
 
-        .print-small-ticket 打印日结小票
+        //- year
+        select.year-select(ng-show='statisticsFilter.dateType == "year"' ng-model='statisticsFilter.selectedYear'  ng-change='getStatisticsByUnit($event)')
+          option(ng-repeat='month in statisticsFilter.allYears' value='{{month}}') {{month}}
+
+        select.data-type(ng-model='statisticsFilter.dataType' ng-change='setDataByDataType($event)')
+          option(value='all') 所有
+          option(value='eatin') 堂食
+          option(value='takeout') 外带
+          option(value='takeaway') 外卖
+          option(value='membership') 会员卡充值
+
+        //- Reference: http://tobiasahlin.com/spinkit/
+        #statistics-spinner-circle
+          .sk-circle
+            .sk-circle1.sk-child
+            .sk-circle2.sk-child
+            .sk-circle3.sk-child
+            .sk-circle4.sk-child
+            .sk-circle5.sk-child
+            .sk-circle6.sk-child
+            .sk-circle7.sk-child
+            .sk-circle8.sk-child
+            .sk-circle9.sk-child
+            .sk-circle10.sk-child
+            .sk-circle11.sk-child
+            .sk-circle12.sk-child
+
+        .print-small-ticket(ng-click='printSmallTicket($event)' ng-show='statisticsFilter.dateType == "day"') 打印日结小票
 
     .statistics-type-wrapper
       .statistics-type-container
-        .turnover-panel.data-box
+        .turnover-panel.data-box.choose(ng-click='selectStatisticsType($event, "turnover")')
           .data-box-wrapper
             .title 营业额
-            .total 
-              span 999
+            .total
+              span {{ turnover.all | datafilter }}
               | &nbsp;元
-            .weixin-pay.data-box-item
-              span.left 微信支付: 
-              span.right 100 元
-            .baidu-pay.data-box-item
-              span.left 百度钱包: 
-              span.right 100 元
-            .ali-pay.data-box-item
-              span.left 支付宝: 
-              span.right 100 元
-            .member-remain.data-box-item 
-              span.left 会员余额: 
-              span.right 699 元
-            .refund.data-box-item
+
+            .cash-pay.data-box-item
+              span.left 现金:
+              span.right {{ turnover.cash | datafilter }} 元
+            .p2p_wx_pub-pay.data-box-item
+              span.left 微信P2P:
+              span.right {{ turnover.p2p_wx_pub | datafilter }} 元
+            .wx_pub-pay.data-box-item
+              span.left 微信代收:
+              span.right {{ turnover.wx_pub | datafilter }} 元
+            .alipay_wap-pay.data-box-item
+              span.left 支付宝网页付:
+              span.right {{ turnover.alipay_wap | datafilter }} 元
+            .alipay_qr_f2f-pay.data-box-item
+              span.left 支付宝扫码:
+              span.right {{ turnover.alipay_qr_f2f | datafilter }} 元
+            .bfb_wap-pay.data-box-item
+              span.left 百度钱包:
+              span.right {{ turnover.bfb_wap | datafilter }} 元
+            .prepayment.data-box-item
+              span.left 会员余额:
+              span.right {{ turnover.prepayment | datafilter }} 元
+            //- .refund.data-box-item
               span.left 退款:
               span.right 0 元
-        .orders-panel.data-box
+        .orders-panel.data-box(ng-click='selectStatisticsType($event, "orders")')
           .data-box-wrapper
             .title 订单数
-            .total 
-              span 100 
+            .total
+              span {{ orders.all | datafilter }}
               | &nbsp;单
-            .weixin-pay.data-box-item
-              span.left 微信支付: 
-              span.right 45 单
-            .baidu-pay.data-box-item
-              span.left 百度钱包: 
-              span.right 3 单
-            .ali-pay.data-box-item
-              span.left 支付宝: 
-              span.right 30 单
-            .member-remain.data-box-item
-              span.left 会员余额: 
-              span.right 22 单
-        .sales-volume-panel.data-box
+            .cash-pay.data-box-item
+              span.left 现金:
+              span.right {{ orders.cash | datafilter }} 单
+            .p2p_wx_pub-pay.data-box-item
+              span.left 微信P2P:
+              span.right {{ orders.p2p_wx_pub | datafilter }} 单
+            .wx_pub-pay.data-box-item
+              span.left 微信代收:
+              span.right {{ orders.wx_pub | datafilter }} 单
+            .alipay_wap-pay.data-box-item
+              span.left 支付宝网页付:
+              span.right {{ orders.alipay_wap | datafilter }} 单
+            .alipay_qr_f2f-pay.data-box-item
+              span.left 支付宝扫码:
+              span.right {{ orders.alipay_qr_f2f | datafilter }} 单
+            .bfb_wap-pay.data-box-item
+              span.left 百度钱包:
+              span.right {{ orders.bfb_wap | datafilter }} 单
+            .prepayment.data-box-item
+              span.left 会员余额:
+              span.right {{ orders.prepayment | datafilter }} 单
+
+        .sales-volume-panel.data-box(ng-click='selectStatisticsType($event, "sales-volume")')
           .data-box-wrapper
             .title 销量排行
             ul
-              li 
-                span.left 1 
-                span.right 杯口咖啡
-              li 
-                span.left 2 
-                span.right 口碑咖啡
-              li 
-                span.left 3 
-                span.right 巧克力蛋糕
+              li(ng-repeat='dish in statistic.dish_detail | limitTo: 7')
+                span.left {{ $index + 1 }}
+                span.right {{ dish.name }}
 
     .graph-wrapper
       .graph-container
         .graph-triangle
-        .graph-type
+        //- .graph-type
           ul
             li 微信支付
             li 支付宝
             li 现金支付
         .graph
-          canvas#myChart(width="400" height="400")
+          canvas#statistics-chart

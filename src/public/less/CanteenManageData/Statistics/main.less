@@ -18,7 +18,7 @@
       // height: 30px;
 
       .filter-container {
-        .date-type, .date-range, .data-type, .print-small-ticket {
+        .date-type, .date-range, .data-type, .print-small-ticket, .month-select, .year-select {
           display: inline-block;
           border: @statistics-border-color 1px solid;
           height: 30px;
@@ -27,7 +27,7 @@
           width: 100px;
           margin-right: 20px;
         }
-        .date-range {
+        .date-range, .month-select, .year-select {
           margin-right: 10px;
         }
         .date-end {
@@ -35,6 +35,7 @@
         }
         .data-type {
           width: 100px;
+          margin-right: 20px;
         }
 
         .print-small-ticket {
@@ -59,13 +60,23 @@
 
       .statistics-type-container {
         border: 1px @statistics-border-color solid;
-        height: 221px;
+        height: 270px;
+
+        .choose {
+          background-color: @statistics-type-choose-color;
+          color: white;
+          &:hover {
+            background-color: @statistics-type-choose-color !important;
+          }
+        }
+
         .data-box {
-          height: 221px;
+          height: 270px;
           width: 233px;
           display: inline-block;
           float: left;
           border-right: 1px @statistics-border-color solid;
+          overflow: hidden;
 
           .data-box-wrapper {
             margin-top: 20px;
@@ -82,7 +93,7 @@
 
             .data-box-item {
               display: inline-block;
-              width: 60%;
+              min-width: 60%;
               span.left {
                 float: left;
               }
@@ -99,9 +110,9 @@
               display: inline-block;
               margin-left: auto;
               margin-right: auto;
-              width: 60%;
+              min-width: 60%;
               font-weight: bold;
-              
+
               span {
                 display: inline-block;
               }
@@ -128,6 +139,20 @@
         .sales-volume-panel {
           border-right: 0px;
           width: 235px;
+
+          .data-box-wrapper {
+            ul {
+              li {
+                min-width: 80%;
+                .left {
+                  float: left;
+                }
+                .right {
+                  float: right;
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -137,15 +162,15 @@
         .graph-triangle {
           height: 15px;
           width: 15px;
-          border: 1px @statistics-border-color solid;
-          background-color: @statistics-type-hover-color;
+          // border: 1px @statistics-border-color solid;
+          background-color: @statistics-type-choose-color;
           border-right: 0px;
           border-bottom: 0px;
           z-index: 10;
           transform: rotate(45deg);
           position: relative;
-          left: 100px;
-          top: 8px;
+          left: 108px;
+          top: -13px;
         }
         .graph-type {
           height: 50px;
@@ -176,7 +201,13 @@
         }
         .graph {
           border: 1px @statistics-border-color solid;
-          border-top: 0px;
+          height: 380px;
+          padding: 10px;
+          padding-top: 30px;
+
+          canvas {
+            height: 370px !important;
+          }
         }
       }
     }
@@ -243,6 +274,133 @@
     }  20% {
       transform: scaleY(1.0);
       -webkit-transform: scaleY(1.0);
+    }
+  }
+}
+
+#statistics-spinner-circle {
+  display: inline-block;
+  position: absolute;
+
+  .sk-circle {
+    // margin: 100px auto;
+    width: 40px;
+    height: 40px;
+    position: relative;
+  }
+  .sk-circle .sk-child {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .sk-circle .sk-child:before {
+    content: '';
+    display: block;
+    margin: 0 auto;
+    width: 15%;
+    height: 15%;
+    background-color: #333;
+    border-radius: 100%;
+    -webkit-animation: sk-circleBounceDelay 1.2s infinite ease-in-out both;
+            animation: sk-circleBounceDelay 1.2s infinite ease-in-out both;
+  }
+  .sk-circle .sk-circle2 {
+    -webkit-transform: rotate(30deg);
+        -ms-transform: rotate(30deg);
+            transform: rotate(30deg); }
+  .sk-circle .sk-circle3 {
+    -webkit-transform: rotate(60deg);
+        -ms-transform: rotate(60deg);
+            transform: rotate(60deg); }
+  .sk-circle .sk-circle4 {
+    -webkit-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+            transform: rotate(90deg); }
+  .sk-circle .sk-circle5 {
+    -webkit-transform: rotate(120deg);
+        -ms-transform: rotate(120deg);
+            transform: rotate(120deg); }
+  .sk-circle .sk-circle6 {
+    -webkit-transform: rotate(150deg);
+        -ms-transform: rotate(150deg);
+            transform: rotate(150deg); }
+  .sk-circle .sk-circle7 {
+    -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+            transform: rotate(180deg); }
+  .sk-circle .sk-circle8 {
+    -webkit-transform: rotate(210deg);
+        -ms-transform: rotate(210deg);
+            transform: rotate(210deg); }
+  .sk-circle .sk-circle9 {
+    -webkit-transform: rotate(240deg);
+        -ms-transform: rotate(240deg);
+            transform: rotate(240deg); }
+  .sk-circle .sk-circle10 {
+    -webkit-transform: rotate(270deg);
+        -ms-transform: rotate(270deg);
+            transform: rotate(270deg); }
+  .sk-circle .sk-circle11 {
+    -webkit-transform: rotate(300deg);
+        -ms-transform: rotate(300deg);
+            transform: rotate(300deg); }
+  .sk-circle .sk-circle12 {
+    -webkit-transform: rotate(330deg);
+        -ms-transform: rotate(330deg);
+            transform: rotate(330deg); }
+  .sk-circle .sk-circle2:before {
+    -webkit-animation-delay: -1.1s;
+            animation-delay: -1.1s; }
+  .sk-circle .sk-circle3:before {
+    -webkit-animation-delay: -1s;
+            animation-delay: -1s; }
+  .sk-circle .sk-circle4:before {
+    -webkit-animation-delay: -0.9s;
+            animation-delay: -0.9s; }
+  .sk-circle .sk-circle5:before {
+    -webkit-animation-delay: -0.8s;
+            animation-delay: -0.8s; }
+  .sk-circle .sk-circle6:before {
+    -webkit-animation-delay: -0.7s;
+            animation-delay: -0.7s; }
+  .sk-circle .sk-circle7:before {
+    -webkit-animation-delay: -0.6s;
+            animation-delay: -0.6s; }
+  .sk-circle .sk-circle8:before {
+    -webkit-animation-delay: -0.5s;
+            animation-delay: -0.5s; }
+  .sk-circle .sk-circle9:before {
+    -webkit-animation-delay: -0.4s;
+            animation-delay: -0.4s; }
+  .sk-circle .sk-circle10:before {
+    -webkit-animation-delay: -0.3s;
+            animation-delay: -0.3s; }
+  .sk-circle .sk-circle11:before {
+    -webkit-animation-delay: -0.2s;
+            animation-delay: -0.2s; }
+  .sk-circle .sk-circle12:before {
+    -webkit-animation-delay: -0.1s;
+            animation-delay: -0.1s; }
+
+  @-webkit-keyframes sk-circleBounceDelay {
+    0%, 80%, 100% {
+      -webkit-transform: scale(0);
+              transform: scale(0);
+    } 40% {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+    }
+  }
+
+  @keyframes sk-circleBounceDelay {
+    0%, 80%, 100% {
+      -webkit-transform: scale(0);
+              transform: scale(0);
+    } 40% {
+      -webkit-transform: scale(1);
+              transform: scale(1);
     }
   }
 }

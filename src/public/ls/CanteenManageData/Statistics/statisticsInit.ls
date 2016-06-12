@@ -2,16 +2,12 @@
 View = require './statisticsView.js'
 
 statistics-init = let
-  
-  module = 
-    page-init: !->
-      $ '[data-toggle="datepicker"]' .datepicker {language: 'zh-CN'}
-      $ "\#Data-sub-menu" .add-class "choose"
 
+  module =
     get-statistics-view: ->
       view = new View options =
-        initial: ['\#statistics-main']
-        views: ['\#statistics-main', '\#statistics-spinner']
+        initial: ['\#statistics-main', '\#statistics-spinner-circle']
+        views: ['\#statistics-main', '\#statistics-spinner-circle']
         transitions: []
         show-state: ['statistics-fade-in']
         hide-state: ['statistics-fade-out']
