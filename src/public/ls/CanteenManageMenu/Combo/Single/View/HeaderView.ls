@@ -6,17 +6,24 @@ class HeaderView
 		"new" 					:		!->
 			@new-controller.reset!
 			eventbus.emit "view:page:toggle-page", "new"
-		"edit" 					:		!-> 
+		"edit" 					:		!->
+			@edit-controller.reset!
+			current-category-id = @category-controller.get-current-category-id!
+			current-combo-id 		= @combo-controller.get-current-combo-ids![0]
+			current-combo 			= @combo-controller.get-combo current-category-id, current-combo-id
+			@edit-controller.read-from-combo current-combo
+			eventbus.emit "view:page:toggle-page", "edit"
 		"move" 					:		!-> 
 		"sort" 					:		!->
 		"copy" 					:		!-> 
 		"able" 					:		!->
 			current-category-id 	= @category-controller.get-current-category-id!
 			combo-able 						= @header-controller.get-combo-able!
-			@combo-controller.set-able-for-current-combos current-category-id, !combo-able
+			@combo-controller.require-for-set-able-for-current-combos current-category-id, !combo-able
 		"remove" 				:		!->
+			if not confirm "确定要删除套餐吗?(此操作无法恢复)" then return
 			current-category-id 	= @category-controller.get-current-category-id!
-			@combo-controller.remove-for-current-combos current-category-id
+			@combo-controller.require-for-remove-for-current-combos current-category-id
 
 	(options)->
 		@assign options
@@ -27,6 +34,7 @@ class HeaderView
 		@combo-controller 		= options.combo-controller
 		@header-controller  	= options.header-controller
 		@new-controller 			= options.new-controller
+		@edit-controller 			= options.edit-controller
 		@$el 									= $ options.el-CSS-selector
 		@all-default-states 	= options.all-default-states
 

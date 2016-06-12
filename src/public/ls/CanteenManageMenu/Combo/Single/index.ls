@@ -65,6 +65,9 @@ let win = window, doc = document
 		new-controller 				= new NewController opt 			=
 			dc-type-map-dc-options: 			dc-type-map-dc-options
 
+		edit-controller 			= new EditController opt 			=
+			dc-type-map-dc-options: 			dc-type-map-dc-options
+
 		default-category-id = category-controller.get-current-category-id!
 
 		category-select-view 	= new CategorySelectView opt 	=
@@ -86,6 +89,7 @@ let win = window, doc = document
 			combo-controller 			: 			combo-controller
 			header-controller 		: 			header-controller
 			new-controller 				: 			new-controller
+			edit-controller 			: 			edit-controller
 			el-CSS-selector 			: 			"div.combo-oper"
 			all-default-states 		: 			[ 				opt 			=
 				[
@@ -126,6 +130,13 @@ let win = window, doc = document
 			category-controller 	: 			category-controller
 			subitem-controller 		: 			subitem-controller
 			new-controller 				: 			new-controller
+			dc-type-map-dc-options: 			dc-type-map-dc-options
+
+		edit-view 						= new EditView opt 						=
+			el-CSS-selector 			: 			"div\#combo-edit"
+			category-controller 	: 			category-controller
+			subitem-controller 		: 			subitem-controller
+			edit-controller 			: 			edit-controller
 			dc-type-map-dc-options: 			dc-type-map-dc-options
 
 	_init-page = !->
