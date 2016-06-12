@@ -17,7 +17,7 @@ require-manage = let
 			async: config.async
 
 	#	请求名字(自己设)
-	_all-require-name = ['create', 'delete', 'update', 'picUploadPre', 'picUpdatePre', 'picUpload']
+	_all-require-name = ['create', 'delete', 'update', 'picUploadPre', 'picUpdatePre', 'picUpload', 'cover']
 
 	#	请求名字与URL键值对(与后台进行商量)，名字需依赖于上述对象
 	_all-require-URL =
@@ -25,6 +25,7 @@ require-manage = let
 		'delete': '/Activity/Remove'
 		'update': '/Activity/Update'
 		# 'retrieve': '/Manage/Market/Activity/Data'
+		'coverUploadPre': '/pic/upload/token/cover'
 		'picUploadPre': '/pic/upload/token/activityadd'
 		'picUpdatePre': '/pic/upload/token/activityupdate'
 		'picUpload': 'http://up.qiniu.com/putb64'

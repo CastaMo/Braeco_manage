@@ -33,7 +33,7 @@ module.exports = function(passport) {
 	router.get('/Manage/Market/Coupon/Other', function(req, res) {
 		res.render('./CanteenManageMarket/Coupon/Other/develop');
 	});
-	
+
 	// router.get('/Manage/Market/Single', function(req, res) {
 	// 	res.render('./CanteenManageMarket/Promotion/Single/develop');
 	// });
@@ -61,17 +61,16 @@ module.exports = function(passport) {
 	router.get('/Manage/Settings/Business/Print', function(req, res) {
 		res.render('./CanteenManageSettings/Business/Print/develop');
 	});
-	
+
 	router.get('/Manage/Settings/Staff/Account', function(req, res, next) {
 		res.render('./CanteenManageSettings/Staff/Account/develop');
 	});
 
+	// router.get('/Manage/Data/Statistics', function(req, res) {
+	// 	res.render('./CanteenManageData/develop');
+	// });
 	router.get('/Manage/Settings/Staff/Role', function(req, res, next) {
 		res.render('./CanteenManageSettings/Staff/Role/develop');
-	});
-
-	router.get('/Manage/Data/Statistics', function(req, res) {
-		res.render('./CanteenManageData/develop');
 	});
 
 	// router.get('/Manage/Menu/Data', function(req, res) {
@@ -164,8 +163,8 @@ module.exports = function(passport) {
 		console.log(req.body);
 		res.send("hello world");
 	});
-	
-	
+
+
 	router.get('/Manage/Settings/Staff/Data', function(req, res, next) {
 		console.log("Settings/Staff/Data");
 		// setTimeout(function() {
@@ -218,7 +217,7 @@ module.exports = function(passport) {
 			}
 		}, 1000);
 	});
-	
+
 	router.post('/Waiter/Add/:waiter_role_id', function(req, res, next) {
 		var orderid = req.params.waiter_role_id;
 		var waiter = req.body;

@@ -7,7 +7,7 @@
 # 为了开发效率和可维护性，activity模块改用angular框架
 
 # ========== 初始化 =========
-ng-app = 'BraecoActivity'
+ng-app = 'ManageMarketActivity'
 ng-app-module = angular.module ng-app, ['ngResource']
 ng-app-module.config ['$resourceProvider', ($resourceProvider)->
   $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -23,6 +23,13 @@ Controller = require './activityController.js'
 Resource = require './activityResource.js'
 
 # =============== 控制器 ================
+
+ng-app-module.controller 'upload-canteen-image', ['$rootScope', '$scope', '$resource', ($rootScope, $scope, $location, $resource)!->
+
+  $scope.name = '陈晓雅'
+
+]
+
 ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', ($rootScope, $scope, $location, $resource)!->
 
   # ====== $rootScope定义变量 =======
@@ -329,7 +336,7 @@ init-activity-data = (scope)!->
 # 初始化view
 init-activity-view = ->
   view = new View options =
-    initial: ['\#category-main']
+    initial: ['\#category-main', '\#upload-canteen-image']
     views: ['\#category-main', '\#upload-canteen-image', '\#activity-spinner']
     transitions: [
       {
