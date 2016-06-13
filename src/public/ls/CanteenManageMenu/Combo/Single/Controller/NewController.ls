@@ -1,7 +1,7 @@
 eventbus 				= require "../eventbus.js"
 
-[			get-object-URL] =
-	[		util.get-object-URL]
+[			getObjectURL] =
+	[		util.getObjectURL]
 
 class NewController
 	(options)->
@@ -38,7 +38,7 @@ class NewController
 
 	pic-change: (file)!->
 		@upload-pic-flag 	= true
-		@pic 							= get-object-URL file
+		@pic 							= getObjectURL file
 		even.emit "controller:new:pic-change", @pic
 
 	add-subitem: !->
