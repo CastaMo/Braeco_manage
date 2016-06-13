@@ -1,0 +1,13 @@
+extends ../../layout
+
+block mainHead
+  p.title 根据统计数据，进行科学决策
+
+block head
+  meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+  title Braeco
+  block css
+
+block content
+  include statisticsMain
+  include statisticsSpinner

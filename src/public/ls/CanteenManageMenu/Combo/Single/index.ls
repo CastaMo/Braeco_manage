@@ -1,23 +1,48 @@
+require_ 							= require "./requireManage.js"
+
 PageView 							= require "./View/PageView.js"
 CategorySelectView 		= require "./View/CategorySelectView.js"
 ComboListView 				= require "./View/ComboListView.js"
 HeaderView 						= require "./View/HeaderView.js"
+NewView 							= require "./View/NewView.js"
+EditView							= require "./View/EditView.js"
 
 
 CategoryController 		= require "./Controller/CategoryController.js"
 ComboController 			= require "./Controller/ComboController.js"
 HeaderController 			= require "./Controller/HeaderController.js"
 SubitemController 		= require "./Controller/SubitemController.js"
+NewController 				= require "./Controller/NewController.js"
+EditController				= require "./Controller/EditController.js"
 
 
 let win = window, doc = document
 	
+	dc-type-map-dc-options = {
+		"sale" 			: 			{
+			min 		: 			1
+			max 		:			50
+			word 		: 			"元"
+		}
+		"discount" 		:			{
+			min 		:			10
+			max 		:			99
+			word 		:			"%"
+		}
+		"limit" 		:			{
+			min 		:			1
+			max 		:			99
+			word 		:			"份"
+		}
+	}
+
 	_init-callback = {
 		"success" 			: 		(result)!-> _init-all-module result.data
 	}
 
 	_init-all-module = (data)!->
 		console.log data
+		require_.initial!
 		category-controller 	= new CategoryController opt 	=
 			datas 								: 			data.categories
 			all-default-states 		:				[ 				opt 			=
@@ -36,6 +61,12 @@ let win = window, doc = document
 				current-combo-ids 	: 			[]
 				current-combo-ables : 			[]
 			]
+
+		new-controller 				= new NewController opt 			=
+			dc-type-map-dc-options: 			dc-type-map-dc-options
+
+		edit-controller 			= new EditController opt 			=
+			dc-type-map-dc-options: 			dc-type-map-dc-options
 
 		default-category-id = category-controller.get-current-category-id!
 
@@ -57,6 +88,8 @@ let win = window, doc = document
 			category-controller 	: 			category-controller
 			combo-controller 			: 			combo-controller
 			header-controller 		: 			header-controller
+			new-controller 				: 			new-controller
+			edit-controller 			: 			edit-controller
 			el-CSS-selector 			: 			"div.combo-oper"
 			all-default-states 		: 			[ 				opt 			=
 				[
@@ -91,6 +124,20 @@ let win = window, doc = document
 					
 				]
 			]
+
+		new-view 							= new NewView opt 						=
+			el-CSS-selector 			: 			"div\#combo-new"
+			category-controller 	: 			category-controller
+			subitem-controller 		: 			subitem-controller
+			new-controller 				: 			new-controller
+			dc-type-map-dc-options: 			dc-type-map-dc-options
+
+		edit-view 						= new EditView opt 						=
+			el-CSS-selector 			: 			"div\#combo-edit"
+			category-controller 	: 			category-controller
+			subitem-controller 		: 			subitem-controller
+			edit-controller 			: 			edit-controller
+			dc-type-map-dc-options: 			dc-type-map-dc-options
 
 	_init-page = !->
 		page-view = new PageView opt = 

@@ -22,11 +22,13 @@ class SubitemController
 			@subitems[data.id] = subitem
 		console.log @subitems
 
+	get-subitem-length: (subitem-id)-> return @subitems[subitem-id].get-content!.length
+
 	get-subitem-name: (subitem-id)-> return @subitems[subitem-id].get-name!
 
 	get-subitem-content: (subitem-id)-> return @subitems[subitem-id].get-content!
 
-	get-subitem-require: (subitem-id)-> return @subitems[subitem-id].get-require!
+	get-all-subitems: -> return @subitems
 
 
 module.exports = SubitemController
