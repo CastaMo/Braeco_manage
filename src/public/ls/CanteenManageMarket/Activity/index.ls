@@ -1,10 +1,3 @@
-# 'use strict';
-
-# let win = window
-	# Activity = require './activity.js'
-	# win.activity = new Activity
-
-# 为了开发效率和可维护性，activity模块改用angular框架
 
 # ========== 初始化 =========
 ng-app = 'ManageMarketActivity'
@@ -26,84 +19,71 @@ Resource = require './activityResource.js'
 
 ng-app-module.controller 'upload-canteen-image', ['$rootScope', '$scope', '$resource', ($rootScope, $scope, $location, $resource)!->
 
-  $scope.name = '陈晓雅'
-
 ]
 
-ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', ($rootScope, $scope, $location, $resource)!->
+ng-app-module.controller 'activity-main', ['$rootScope', '$scope', '$resource', ($rootScope, $scope, $location, $resource)!->
+  # ====== 1 $scope变量初始化 ======
+  init-scope-variable = !->
+    $scope.sales-activities = []
+    $scope.theme-activities = []
+    $scope.base-image-url = 'http://static.brae.co/images/activity/'
+    $scope.activityName = ''
+    $scope.expiryDate = 0
+    $scope.activityStartDate
+    $scope.activityEndDate
+    $scope.activityUploadImage
+    $scope.activityBrief = ''
+    $scope.activityContent = ''
+    $scope.is-addding-activity = false
 
-  # ====== $rootScope定义变量 =======
-  $rootScope.view = init-activity-view!
-  $rootScope.resource = new Resource!
-  $rootScope.controller = new Controller
-  $rootScope.current-id = null
-  $rootScope.current-activity = null
+    $scope.isNewThemeActivity = false
+    $scope.isNewSaleActivity = false
 
-  # ======= $scope 定义变量 =======
-  $scope.sales-activities = []
-  $scope.theme-activities = []
-  $scope.base-image-url = 'http://static.brae.co/images/activity/'
-  $scope.activityName = ''
-  $scope.expiryDate = 0
-  $scope.activityStartDate
-  $scope.activityEndDate
-  $scope.activityUploadImage
-  $scope.activityBrief = ''
-  $scope.activityContent = ''
-  $scope.is-addding-activity = false
+    $scope.isEditActivity = true
+    $scope.isNewActivity = false
+    $scope.isImageChange = false
 
-  $scope.isNewThemeActivity = false
-  $scope.isNewSaleActivity = false
+    $scope.activities-data = JSON.parse window.all-data
 
-  $scope.isEditActivity = true
-  $scope.isNewActivity = false
-  $scope.isImageChange = false
+    $scope.pre-image-url = 'http://ww4.sinaimg.cn/large/ed796d65gw1f4etfd2bn8j20e807l0tw.jpg'
 
-  $scope.activities-data = JSON.parse window.all-data
+    $scope.createActivityType = 'sales'
 
-  $scope.pre-image-url = 'http://ww4.sinaimg.cn/large/ed796d65gw1f4etfd2bn8j20e807l0tw.jpg'
+  # ====== 2 $rootScope变量初始化 ======
+  init-rootScope-variable = !->
+    $rootScope.view = init-activity-view!
+    $rootScope.resource = new Resource!
+    $rootScope.controller = new Controller
+    $rootScope.current-id = null
+    $rootScope.current-activity = null
 
-  $scope.createActivityType = 'sales'
+  # ====== 3 $resource变量初始化 ======
+  init-resource-variable = !->
 
-  # ======= 初始化函数定义 =======
-  datepicker-init = !->
-    $('[data-toggle="datepicker"]').datepicker option =
-      format: 'yyyy年mm月dd日'
-      # startDate: new Date!
+  # ====== 4 页面元素初始化 ======
+  init-page-dom = !->
 
-    $ '#activity-start-date' .change !->
-      $ '#activity-end-date' .datepicker 'setStartDate', @value
+  # ====== 5 页面数据初始化 ======
+  init-page-data = !->
 
+  # ====== 6 controller初始化接口 ======
+  init-activity-main = !->
+    init-scope-variable!
+    init-rootScope-variable!
+    init-resource-variable!
 
-  edit-area-init = !->
-    set-timeout !->
-      if $scope.sales-activities.length > 0
-        set-edit-area $scope.sales-activities[0], $scope
-        $($ '.reduce-activities-list li' .0) .add-class 'activity-item-background-color'
-        $rootScope.current-id = $scope.sales-activities[0].id
-        $rootScope.current-activity = $scope.sales-activities[0]
-      else if $scope.theme-activities.length > 0
-        set-edit-area $scope.theme-activities[0], $scope
-        $($ '.theme-activities-list li' .0) .add-class 'activity-item-background-color'
-        $rootScope.current-id = $scope.theme-activities[0].id
-        $scope.sales-activities[0] = $scope.theme-activities[0]
-    , 0
+    init-page-data!
+    init-page-dom!
 
-  new-activity-image-preview-init = !->
-    # $ '#activity-upload-image' .change !->
-    #   debugger
-    #   $scope.pre-image-url = $ '#activity-image-preview' .attr 'src'
+    init-activity-data $scope
+    $rootScope.controller.page-init!
+    $rootScope.controller.letter-number-limit-init!
+    $rootScope.controller.date-range-init!
+    datepicker-init!
+    edit-area-init!
+    new-activity-image-preview-init!
 
-  # ======= 初始化操作 ========
-  init-activity-data $scope
-  $rootScope.controller.page-init!
-  $rootScope.controller.letter-number-limit-init!
-  $rootScope.controller.date-range-init!
-  datepicker-init!
-  edit-area-init!
-  new-activity-image-preview-init!
-
-  # ====== scope函数定义 ========
+  # ====== 7 $scope事件函数定义 ======
   $scope.deleteActivity = (event)!->
     if confirm '你确定删除该活动吗'
       success = !->
@@ -116,9 +96,9 @@ ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', 
         alert '活动删除成功'
 
       always = !->
-        $rootScope.view.go-to-state ['\#category-main']
+        $rootScope.view.go-to-state ['\#activity-main']
 
-      $rootScope.view.go-to-state ['\#category-main', '\#activity-spinner']
+      $rootScope.view.go-to-state ['\#activity-main', '\#activity-spinner']
       set-timeout !->
         $rootScope.resource.delete-activity-by-id $scope.current-id, success, always
       , 0
@@ -280,77 +260,111 @@ ng-app-module.controller 'category-main', ['$rootScope', '$scope', '$resource', 
 
     set-edit-area @activity, $scope
 
-]
+  # ====== 8 工具函数定义 ======
+  datepicker-init = !->
+    $('[data-toggle="datepicker"]').datepicker option =
+      format: 'yyyy年mm月dd日'
+      # startDate: new Date!
 
-# 统计中英文字符个数
-get-total-num-length-of-cn-and-en-text = (str)->
-  chineses = str.match(/[\u4E00-\u9FA5\uF900-\uFA2D]/g)
-  cn-len = if chineses then chineses.length else 0
-  other-len = str.length - cn-len
-  total = cnLen * 2 + other-len
-  total
-
-# 设置字数统计标签的值
-set-letter-number-label = (title, intro, content)!->
-  $ '.activity-name .letter-number' .text get-total-num-length-of-cn-and-en-text(title) + ' / 10'
-  $ '.activity-brief .letter-number' .text get-total-num-length-of-cn-and-en-text(intro) + ' / 40'
-  $ '.activity-content .letter-number' .text get-total-num-length-of-cn-and-en-text(content) + ' / 200'
-
-# 设置编辑区的值
-set-edit-area = (activity, scope)!->
-  $ '#activity-name' .val activity.title
-  $ '#activity-brief' .val activity.intro
-  $ '#activity-content' .val activity.content
-
-  if activity.pic.index-of('http://') is -1
-    $ '#activity-image-preview' .attr 'src', scope.base-image-url + activity.pic
-  else
-    $ '#activity-image-preview' .attr 'src', activity.pic
-
-  if parse-int(activity.date_begin) is 0 and parse-int(activity.date_end) is 0
-    $ '#expiry-date' .val 0
-    $ '#activity-start-date' .val ''
-    $ '#activity-end-date' .val ''
-    $ '.date-range label' .add-class 'disabled'
-    $ ".date-range input" .prop 'disabled', true
-  else
-    $ '#expiry-date' .val 1
-    $ '.date-range label' .remove-class 'disabled'
-    $ ".date-range input" .prop 'disabled', false
-    $ '#activity-start-date' .datepicker 'setDate', new Date(parse-int(activity.date_begin + '000'))
-    $ '#activity-end-date' .datepicker 'setDate', new Date(parse-int(activity.date_end + '000'))
-
-  set-letter-number-label activity.title, activity.intro, activity.content
+    $ '#activity-start-date' .change !->
+      $ '#activity-end-date' .datepicker 'setStartDate', @value
 
 
-# 初始化活动数据
-init-activity-data = (scope)!->
-  scope.theme-activities = []
-  scope.sales-activities = []
-  scope.activities-data.data.for-each (item)!->
-    if item.type is 'theme'
-      scope.theme-activities.push item
+  edit-area-init = !->
+    set-timeout !->
+      if $scope.sales-activities.length > 0
+        set-edit-area $scope.sales-activities[0], $scope
+        $($ '.reduce-activities-list li' .0) .add-class 'activity-item-background-color'
+        $rootScope.current-id = $scope.sales-activities[0].id
+        $rootScope.current-activity = $scope.sales-activities[0]
+      else if $scope.theme-activities.length > 0
+        set-edit-area $scope.theme-activities[0], $scope
+        $($ '.theme-activities-list li' .0) .add-class 'activity-item-background-color'
+        $rootScope.current-id = $scope.theme-activities[0].id
+        $scope.sales-activities[0] = $scope.theme-activities[0]
+    , 0
+
+  new-activity-image-preview-init = !->
+    # $ '#activity-upload-image' .change !->
+    #   debugger
+    #   $scope.pre-image-url = $ '#activity-image-preview' .attr 'src'
+
+  # 统计中英文字符个数
+  get-total-num-length-of-cn-and-en-text = (str)->
+    chineses = str.match(/[\u4E00-\u9FA5\uF900-\uFA2D]/g)
+    cn-len = if chineses then chineses.length else 0
+    other-len = str.length - cn-len
+    total = cnLen * 2 + other-len
+    total
+
+  # 设置字数统计标签的值
+  set-letter-number-label = (title, intro, content)!->
+    $ '.activity-name .letter-number' .text get-total-num-length-of-cn-and-en-text(title) + ' / 10'
+    $ '.activity-brief .letter-number' .text get-total-num-length-of-cn-and-en-text(intro) + ' / 40'
+    $ '.activity-content .letter-number' .text get-total-num-length-of-cn-and-en-text(content) + ' / 200'
+
+  # 设置编辑区的值
+  set-edit-area = (activity, scope)!->
+    $ '#activity-name' .val activity.title
+    $ '#activity-brief' .val activity.intro
+    $ '#activity-content' .val activity.content
+
+    if activity.pic.index-of('http://') is -1
+      $ '#activity-image-preview' .attr 'src', scope.base-image-url + activity.pic
     else
-      scope.sales-activities.push item
+      $ '#activity-image-preview' .attr 'src', activity.pic
 
-# 初始化view
-init-activity-view = ->
-  view = new View options =
-    initial: ['\#category-main', '\#upload-canteen-image']
-    views: ['\#category-main', '\#upload-canteen-image', '\#activity-spinner']
-    transitions: [
-      {
-        from: ['\#category-main']
-        to: ['\#category-main', '\#upload-canteen-image']
-        on: ['.upload-canteen-photo click']
-      },
-      {
-        from: ['\#category-main', '\#upload-canteen-image']
-        to: ['\#category-main']
-        on: ['.upload-canteen-image-mask click', '.upload-canteen-image-close click', '\#canteen-image-cancel click']
-      }
-    ]
-    show-state: ['activity-fade-in']
-    hide-state: ['activity-fade-out']
-    init-state: ['activity-init']
-  view
+    if parse-int(activity.date_begin) is 0 and parse-int(activity.date_end) is 0
+      $ '#expiry-date' .val 0
+      $ '#activity-start-date' .val ''
+      $ '#activity-end-date' .val ''
+      $ '.date-range label' .add-class 'disabled'
+      $ ".date-range input" .prop 'disabled', true
+    else
+      $ '#expiry-date' .val 1
+      $ '.date-range label' .remove-class 'disabled'
+      $ ".date-range input" .prop 'disabled', false
+      $ '#activity-start-date' .datepicker 'setDate', new Date(parse-int(activity.date_begin + '000'))
+      $ '#activity-end-date' .datepicker 'setDate', new Date(parse-int(activity.date_end + '000'))
+
+    set-letter-number-label activity.title, activity.intro, activity.content
+
+
+  # 初始化活动数据
+  init-activity-data = (scope)!->
+    scope.theme-activities = []
+    scope.sales-activities = []
+    scope.activities-data.data.for-each (item)!->
+      if item.type is 'theme'
+        scope.theme-activities.push item
+      else
+        scope.sales-activities.push item
+
+  # 初始化view
+  init-activity-view = ->
+    view = new View options =
+      initial: ['\#activity-main']
+      views: ['\#activity-main', '\#upload-canteen-image', '\#activity-spinner']
+      transitions: [
+        {
+          from: ['\#activity-main']
+          to: ['\#activity-main', '\#upload-canteen-image']
+          on: ['.upload-canteen-photo click']
+        },
+        {
+          from: ['\#activity-main', '\#upload-canteen-image']
+          to: ['\#activity-main']
+          on: ['.upload-canteen-image-mask click', '.upload-canteen-image-close click', '\#canteen-image-cancel click']
+        }
+      ]
+      show-state: ['activity-fade-in']
+      hide-state: ['activity-fade-out']
+      init-state: ['activity-init']
+    view
+
+  # ====== 9 数据访问函数 ======
+
+  # ====== 10 初始化函数执行 ======
+  init-activity-main!
+
+]

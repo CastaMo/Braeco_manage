@@ -159,17 +159,25 @@ init-resource-variable = !->
 # ====== 4 页面元素初始化 ======
 init-page-dom = !->
 
-# ====== 5 工具函数定义 ======
+# ====== 5 页面数据初始化 ======
+init-page-data = !->
+
+# ====== 6 controller初始化接口 ======
 init-* = !->
   init-scope-variable!
   init-rootScope-variable!
   init-resource-variable!
 
+  init-page-data!
   init-page-dom!
 
-# ====== 6 $scope事件函数定义 ======
+# ====== 7 $scope事件函数定义 ======
 
-# ====== 7 初始化函数执行 ======
+# ====== 8 工具函数定义 ======
+
+# ====== 9 数据访问函数 ======
+
+# ====== 10 初始化函数执行 ======
 init-*!
 
 ```
