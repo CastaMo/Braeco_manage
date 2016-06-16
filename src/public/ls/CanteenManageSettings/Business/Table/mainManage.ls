@@ -1,73 +1,190 @@
 main-manage = let
-	[get-JSON, deep-copy] = [util.get-JSON, util.deep-copy]
-	page = null
-	value = []
-	dayAry = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
-	test = 0
-	payAry = ["微信支付", "现金支付"]
-	_modifyForBus-dom = $ "\#modifyForBus"
-	_cancel-dom = $ "\.canBtn"
-	_finish-dom = $ "\.finBtn"
-	_run-dom = $ "\.run-btn"
-	_stop-dom = $ "\.stop-btn"
-	_weekday-dom = $ "\.weekday input"
-	_payment-dom = $ "\.payment input"
+	Tables = !->
+		tables = []
+		operations = []
+		for x in $ '.table_qr:not(.add_new)' 
+			tables.push(new Table x )
+		for x in $ '.table_operation'
+			operations.push(new Operation x)
+		add-table = new Add-new($ '.table_qr.add_new' .get 0)
 
-	_init-all-event = !->
-		_modifyForBus-dom.click !->
-			page.toggle-page "mod"
-		_finish-dom.click !->
-			_save-form-value!
-			_show-form-value!
-			page.toggle-page "pre"
-		_cancel-dom.click !->
-			page.toggle-page "pre"
-		_run-dom.click !->
-			$('#runBusiness').removeClass "free"
-			$('#runBusiness').addClass "choose"
-			$('#stopBusiness').removeClass "choose"
-			$('#stopBusiness').addClass "free"
-			$('#runMes').html('业务已启用')
-			$('#stopMes').html('停用本业务')
-			$('#previewBusiness').css("color", '#333333')
-			$('#previewBusiness').css("border-color", '#333333')
-		_stop-dom.click !->
-			$('#runBusiness').removeClass "choose"
-			$('#runBusiness').addClass "free"
-			$('#stopBusiness').removeClass "free"
-			$('#stopBusiness').addClass "choose"
-			$('#runMes').html('启用本业务')
-			$('#stopMes').html('业务已停用')
-			$('#previewBusiness').css("color", '#E7E7EB')
-			$('#previewBusiness').css("border-color", '#E7E7EB')
-		_weekday-dom.click !->
-			_weekday = $(this).parent()
-			if $(_weekday).hasClass("true")
-				$(_weekday).removeClass "true"
-				$(_weekday).addClass "false"
-			else if $(_weekday).hasClass("false")
-				$(_weekday).removeClass "false"
-				$(_weekday).addClass "true"
-		_payment-dom.click !->
-			_payment = $(this).parent()
-			if $(_payment).hasClass("true")
-				$(_payment).removeClass "true"
-				$(_payment).addClass "false"
-			else if $(_payment).hasClass("false")
-				$(_payment).removeClass "false"
-				$(_payment).addClass "true"
+		# 选择所有
+		$ operations[0].dom .click ->
+			operations[0].change-click-state!
+			select_all operations[0].able
+		# 添加、修改、导出、删除
+		# 先确定已经选择座位，再显示弹出框
+		for let i from 1 to 4
+			$ operations[i].dom .click ->
+				# 添加
+				if(i == 1)
+					show-wrap 0,0
+				else
+					if get-disabled-table-num! >0
+						switch $ @ .index!
+						case 2  then  show-wrap 1,get-first-disabled-table!,'.edit'
+						case 3  then  show-wrap 0,1
+						case 4  then  show-wrap 0,4
+					else
+						show-global-message '要先点击选择桌位哦！'
+		$ '.wrap' .find '.btn.cancle' .click !->
+			close-wrap(0,$ @ .parents '.wrap' .index!)
+		$ '.popup' .find '.btn.cancle' .click !->
+			dom = $ @ .parents '.popup'
+			if dom.hasClass 'edit'
+				close-wrap 1,dom.get(0),'edit'
+			else if dom.hasClass 'delete'
+				close-wrap 1,dom.get(0),'delete'
+		$ '.imgli' .click ->
+			$ '.imgli' .removeClass 'selected'
+			$ @ .addClass 'selected'
+		$ '.wrap.batch_export1 .confirm' .click !->
+			i = $ '.imgli.selected' .index!
+			if i>=0
+				if i == 0
+					show-wrap 0,3
+				else
+					show-wrap 0,2,i
+			else
+				show-global-message '要先点击选择模板哦！'
+		select_all = (flag)!->
+			for x in tables
+				x.prototype.change-click-state flag 
+		# i = 0 : arg1表示wrap的下标
+		# i = 1 : arg1表示 table_tr 的dom，arg2 表示'edit'或者'delete'
+		show-wrap = (i,arg1,arg2)!->
+			switch i
+			case 0 then 
+				wrap = $ '.wrap' .eq arg1
+				$ '.wrap' .hide!
+				$ '#wrap' .show! 
+				wrap.fadeIn 300
+				switch arg1
+				case 0,3 then 
+					wrap.find 'input' .val ''
+				case 1 then wrap.find '.imgli' .removeClass 'selected'
+				case 2 then
+					arr = ['squre','circle','card']
+					wrap.attr('type',arr[arg2+1])
+					wrap.find 'input' .val ''
+					wrap.find 'select' .val ''
+					wrap.find '.wrap_right img' .attr('src',$ '.batch_export1 .imgli.selected img' .attr 'src' )
+			case 1 then
+				$ '#popup_cover' .show!
+				little-wrap = $ arg1 .find arg2
+				if(arg2 == '.edit')
+					little-wrap.find 'input' .val($ arg1 .find '.num' .text!)
+				little-wrap.fadeIn 300
 
-	_show-form-value = ->
+		# i = 0 : arg1表示wrap的下标
+		# i = 1 : arg1表示 popup 的dom
+		close-wrap = (i,arg1)!->
+			switch i 
+			case 0 then
+				$ '#wrap' .fadeOut 300
+				$ '.wrap' .eq(arg1).hide!
+			case 1 then
+				$ arg1 .fadeOut 300
+				$ '#popup_cover' .hide!
+		# 显示全局信息提示
+		show-global-message = (str)!->
+			ob = $ '#global_message' 
+			ob.show!
+			ob.html str 
+			setTimeout('$("#global_message").fadeOut(300)',2000)
+			
+		# 获取选中的桌位数目
+		get-disabled-table-num = ->
+			num = 0
+			for x,i in tables
+				if x.prototype.able == false
+					num +=1
+			num
+		# 获取选中的桌位dom
+		get-disabled-table = ->
+			for x,i in tables
+				if x.prototype.able == false
+					x.prototype.dom
+		get-first-disabled-table = ->
+			for x,i in tables
+				if x.prototype.able == false
+					return x.prototype.dom
+			return null
+		# 导出二维码的输入框们
+		$ '.wrap.batch_export2 select' .change ->
+			select-change($ @ .parents '.inputli' .index!,$ @ .val!)
+		select-change = (n,val)!->
+			inputlis = $ '.wrap.batch_export2 .inputli'
+			switch n
+			case 1  then    #折扣优惠
+				show-inputli val,inputlis.eq 2
+			case 3 then    #wifi密码
+				show-inputli val,inputlis.eq(5),inputlis.eq 4 
+			case 6 then     #发送邮箱
+				show-inputli val,inputlis.eq 7
+		show-inputli =(flag,ob1,ob2)!->
+			console.log ob1,ob2,flag
+			if(ob2)
+				ob2.show!
+			if flag == '0'
+				ob1.show!
+			else if flag == '1'
+				ob1.hide!
+			else if flag == '2'
+				ob2.hide!
+		# 获取qrcode的数据
+		get-qrcode-data = ->
+			objs = $ '.table_qr.disabled'
+			mydata = get-select-val!
+			arr=[]
+			for temp in objs
+				arr.push $ temp .find '.num' .text!
+			mydata.content = arr
+			mydata.wifi_name = $ '.batch_export2 input[name=wifi_name]:visible' .val!
+			mydata.wifi_password = $ '.batch_export2 input[name=wifi_password]:visible' .val!
+			mydata.email = $ '.batch_export2 input[name=wifi_email]:visible:visible' .val!
+			mydata.type = $ '.batch_export2 .add_wifi_model' .attr 'qrcode_type'
+			mydata
+		get-select-val = ->
+			mydata = {}
+			mydata.a = $ '.batch_export2 select[name=wifi]:visible' .val!
+			mydata.b = $ '.batch_export2 select[name=pay]:visible' .val!
+			mydata.c = $ '.batch_export2 select[name=discount]:visible' .val!
+			mydata
 
-	_save-form-value = ->
+	Operation = (op)->
+		@.prototype = new Change-state op
+		that = @.prototype
 
-	_init-depend-module = !->
-		page := require "./pageManage.js"
+	Table = (t)->
+		@.prototype = new Change-state t
+		that = @.prototype
+		$ that.dom .click !~>			
+			that.change-click-state!
+		$ that.dom .find '.popup' .click ->
+			return false
+		$ that.dom .find '.popup .btn.cancle' .click !~>
+			that.change-click-state true 
+		@
+	Add-new = (t)!->
+		@.prototype = new Table t
+		$ @.prototype.dom .click !->
 
+	Change-state = (ob)->
+		@.able = !$ ob .hasClass 'disabled'
+		@.dom = ob
+		@.change-click-state = (state)!~>
+			if state!=undefined
+				@.able = state
+			else
+				@able = !@able
+			if @.able
+				$ @.dom .removeClass 'disabled'
+			else 
+				$ @.dom .addClass 'disabled'
+		@
 	initial: !->
-		_save-form-value!
-		_show-form-value!
-		_init-all-event!
-		_init-depend-module!
+		# _save-form-value!
+		tables = new Tables!
 
 module.exports = main-manage

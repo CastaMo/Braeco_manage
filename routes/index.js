@@ -251,13 +251,13 @@ module.exports = function(passport) {
 	});
 
 
-	router.get('/Extra/log', function(req, res) {
+	router.get('/manage/Extra/log', function(req, res) {
 		res.render('./CanteenManageExtra/Log/develop');
 	});
-	router.get('/Extra/basic', function(req, res) {
+	router.get('/manage/Extra/basic', function(req, res) {
 		res.render('./CanteenManageExtra/basic/develop');
 	});
-	router.get('/Extra/download', function(req, res) {
+	router.get('/manage/Extra/download', function(req, res) {
 		res.render('./CanteenManageExtra/download/develop');
 	});
 

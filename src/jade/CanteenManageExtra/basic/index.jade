@@ -102,6 +102,28 @@ block content
 				span 管理餐厅照片
 				.close_wrap
 			.wrap_content
+				.wrap_pic
+					.big_pic
+						img(src='http://static.brae.co/index/3-5.png')
+						span(style='float:right') 建议尺寸: 375像素*200像素
+						span 最多上传5张图片
+					.little_pics
+						.little_pic_li.pic
+							input(type='file')
+							.little_pic
+								img(src='http://static.brae.co/index/3-5.png')
+								.delet_img
+							.empty_pic
+								.cross
+								span 点击上传图片
+						.little_pic_li
+							input(type='file')
+							.little_pic
+								img
+								.delet_img
+							.empty_pic
+								.cross
+								span 点击上传图片
 				.btns
 					.btn.cancle 取消
 					.btn.confirm 保存
