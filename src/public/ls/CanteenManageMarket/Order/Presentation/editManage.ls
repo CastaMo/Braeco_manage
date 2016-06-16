@@ -1,12 +1,12 @@
 page = null
 edit-manage = let
 
-    _ladder-content-dom = $ "\#order-reduce-edit .ladder-content"
+    _ladder-content-dom = $ "\#order-presentation-edit .ladder-content"
 
-    _add-btn-dom = $ "\#order-reduce-edit .add-ladder-btn"
+    _add-btn-dom = $ "\#order-presentation-edit .add-ladder-btn"
 
-    _cancel-btn-dom = $ "\#order-reduce-edit .cancel-btn"
-    _save-btn-dom = $ "\#order-reduce-edit .save-btn"
+    _cancel-btn-dom = $ "\#order-presentation-edit .cancel-btn"
+    _save-btn-dom = $ "\#order-presentation-edit .save-btn"
 
     item-manager = null
     
@@ -22,16 +22,16 @@ edit-manage = let
     _save-btn-click-event = !->
         # _reset-dom!
         # page.toggle-page "main"
-        result = item-manager.get-reduce-contents!
+        result = item-manager.get-presentation-contents!
         if typeof result === 'string'
             alert result
         else
             console.log JSON.stringify result
             json-result = JSON.stringify result
-            $.ajax {type: "POST", contentType: "application/json", url: "/Dinner/Manage/Discount/Reduce/Update", data: json-result,
-            dataType: "JSON", success: _update-reduce-success}
+            $.ajax {type: "POST", contentType: "application/json", url: "/Dinner/Manage/Discount/Give/Update", data: json-result,
+            dataType: "JSON", success: _update-presentation-success}
 
-    _update-reduce-success = (data)!->
+    _update-presentation-success = (data)!->
         console.log data
         location.reload!
 
@@ -39,10 +39,10 @@ edit-manage = let
         _ladder-content-dom.empty!
 
     class LadderItem
-        (index, condition, reduce) !->
+        (index, condition, presentation) !->
             @index = index
             @condition = condition
-            @reduce = reduce
+            @presentation = presentation
             @gene-dom!
             @init-event!
 
@@ -55,15 +55,15 @@ edit-manage = let
             @dom.append @condition-input
             @dom.append $ "<span class='money-content'>元</span>
             <span>立减</span>"
-            @reduce-input = $ "<input type='text' name='reduce' value='"+@reduce+"'>"
-            @dom.append @reduce-input
-            @dom.append $ "<span class='money-content'>元</span>"
+            @presentation-input = $ "<input type='text' name='presentation' value='"+@presentation+"'>"
+            @dom.append @presentation-input
+            @dom.append $ "<span class='number-content'>一份</span>"
             @delete-icon = $ "<icon class='delete-icon'></icon>"
             @dom.append @delete-icon
             _ladder-content-dom.append @dom
 
-        get-reduce-content: ->
-            [(parse-float @condition), (parse-float @reduce)]
+        get-presentation-content: ->
+            [(parse-float @condition), @presentation]
 
         update-index-dom: !->
             @index-dom.text "阶梯"+_ladder-index-chinese[@index]
@@ -71,8 +71,8 @@ edit-manage = let
         update-condition-dom: !->
             @condition-input.val @condition
 
-        update-reduce-dom: !->
-            @reduce-input.val @reduce
+        update-presentation-dom: !->
+            @presentation-input.val @presentation
 
         delete-dom: !->
             @dom.remove!
@@ -86,22 +86,18 @@ edit-manage = let
                 else
                     @condition = parse-float result
                 @update-condition-dom!
-            @reduce-input.change !~>
-                result = parse-float @reduce-input.val!
-                if isNaN result
-                    @reduce = null
-                    alert "请填写数字"
-                else
-                    @reduce = parse-float result
-                @update-reduce-dom!
+            @presentation-input.change !~>
+                result = @presentation-input.val!
+                @presentation = result
+                @update-presentation-dom!
             @delete-icon.click !~>
                 item-manager.delete-item @index
 
 
     class ItemManager
-        (ladder_reduce) !->
+        (ladder_presentation) !->
             @items = []
-            for item, i in ladder_reduce
+            for item, i in ladder_presentation
                 @items.push new LadderItem i,item[0],item[1]
 
         add-new-item: !->
@@ -119,22 +115,20 @@ edit-manage = let
                 item.index = i
                 item.update-index-dom!
 
-        get-reduce-contents: ->
+        get-presentation-contents: ->
             contents = []
             current-condition = 0.0
-            current-reduce = 0.0
             for item in @items
-                content = item.get-reduce-content!
-                if isNaN content[0] or isNaN content[1]
+                content = item.get-presentation-content!
+                if isNaN content[0]
                     return "非法输入"
-                if content[0] < current-condition or content[1] < current-reduce
-                    return "每一项的两个数都必须大于前一项"
+                if content[1] === ''
+                    return "请输入内容"
+                if content[0] < current-condition
+                    return "每一项的第一个数都必须大于前一项"
                 current-condition = content[0]
-                current-reduce = content[1]
                 contents.push content
             contents
-
-
 
     _init-all-event = !->
         _cancel-btn-dom.click !-> _cancel-btn-click-event!
@@ -145,7 +139,7 @@ edit-manage = let
         page    := require "./pageManage.js"
 
     get-promotion-and-init: (promotion)!->
-        item-manager := new ItemManager promotion.reduce_ladder
+        item-manager := new ItemManager promotion.give_ladder
 
     initial: !->
         _init-depend-module!

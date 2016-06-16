@@ -169,7 +169,6 @@ module.exports = function(passport) {
 
 
 	router.get('/Manage/Settings/Staff/Data', function(req, res, next) {
-		console.log("Settings/Staff/Data");
 		// setTimeout(function() {
 		// 	res.send("var allData = '"+'{"message":"success","data":{"waiters":[{"id":3,"name":"zjp","role":1,"phone":0,"sex":"\u7537"},{"id":5,"name":"mgz","role":1,"phone":13824418410,"sex":"女"},{"id":7,"name":"cjy","role":1,"phone":18819442283,"sex":"\u7537"},{"id":30,"name":"cxx","role":1,"phone":15626470862,"sex":"\u7537"},{"id":51,"name":"zzj","role":1,"phone":15521030187,"sex":"\u7537"},{"id":5673,"name":"null","role":1,"phone":18819473306,"sex":"\u7a7a"},{"id":5698,"name":"dingding","role":1,"phone":18819421257,"sex":"\u7a7a"},{"id":12777,"name":"szx","role":1,"phone":13929585358,"sex":"\u7a7a"}],"roles":[{"id":1,"name":"\u5e97\u957f","auth":533674483}]}}'+"';"+
 		// 	"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
@@ -250,6 +249,37 @@ module.exports = function(passport) {
 		res.json("hello world");
 	});
 
+
+	router.get('/Manage/Market/Promotion/Order/Data', function(req, res, next) {
+		console.log("/Manage/Market/Promotion/Order/Data");
+		setTimeout(function() {
+			res.send("var allData = '"+'{"message":"success","data":{"reduce_switch":false,"give_switch":true,"reduce_ladder":[[100,5],[150,7]],"give_ladder":[[30,"纸巾"],[70,"饮料"]]}}'+"';"+
+			"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
+		}, 0);
+	});
+	router.post('/Dinner/Manage/Discount/:promotion/Turn/:method', function(req, res, next) {
+		var promotion = req.params.promotion;
+		var method = req.params.method;
+		console.log(promotion);
+		console.log(method);
+		setTimeout(function(){
+			res.json({"message": "success"});
+		}, 1000);
+	});
+	router.post('/Dinner/Manage/Discount/Reduce/Update', function(req, res, next) {
+		var data = req.body;
+		console.log(data);
+		setTimeout(function() {
+			res.json({"message": "success"});
+		}, 1000);
+	});
+	router.post('/Dinner/Manage/Discount/Give/Update', function(req, res, next) {
+		var data = req.body;
+		console.log(data);
+		setTimeout(function() {
+			res.json({"message": "success"});
+		}, 1000);
+	});
 
 	router.get('/Extra/log', function(req, res) {
 		res.render('./CanteenManageExtra/Log/develop');
