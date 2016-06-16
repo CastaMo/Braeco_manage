@@ -1,4 +1,4 @@
-StateMachine = require './stateMachine-tool.js'
+StateMachine = require './../tools/stateMachine-tool.js'
 
 statistics-module = angular.module 'ManageDataStatistics'
 

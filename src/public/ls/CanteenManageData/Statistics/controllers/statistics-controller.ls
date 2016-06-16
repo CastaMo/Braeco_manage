@@ -82,7 +82,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       set-turnover-data!
       set-orders-data!
 
-      console.log $scope.statistic
+      console.log '$scope.statistic: ', $scope.statistic
       init-chart!
       set-ready-state!
 

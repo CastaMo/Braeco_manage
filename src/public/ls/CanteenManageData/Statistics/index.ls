@@ -8,14 +8,14 @@ ng-app-module.config ['$resourceProvider', ($resourceProvider)->
   $resourceProvider.defaults.stripTrailingSlashes = false
 ]
 
-# ====== angular filter ======
-require './statistics-filter.js'
+# ====== angular filters ======
+require './filters/statistics-filter.js'
 
-# ====== angular service ======
-require './statistics-service.js'
+# ====== angular services ======
+require './services/statistics-service.js'
 
-# ====== angular controller ======
-require './statistics-controller.js'
+# ====== angular controllers ======
+require './controllers/statistics-controller.js'
 
 # ====== angular bootstrap ======
 angular.element document .ready !->
