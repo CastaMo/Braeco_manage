@@ -57,6 +57,9 @@ module.exports = function(passport) {
 	router.get('/Manage/Settings/Business/Basic', function(req, res) {
 		res.render('./CanteenManageSettings/Business/Basic/develop');
 	});
+	router.get('/Manage/Settings/Business/Table', function(req, res) {
+		res.render('./CanteenManageSettings/Business/Table/develop');
+	});
 
 	router.get('/Manage/Settings/Business/Print', function(req, res) {
 		res.render('./CanteenManageSettings/Business/Print/develop');
