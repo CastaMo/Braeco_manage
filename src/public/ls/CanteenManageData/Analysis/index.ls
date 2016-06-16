@@ -1,22 +1,21 @@
 
 # ====== angular definition ======
-ng-app = 'ManageMarketActivity'
+ng-app = 'ManageDataAnalysis'
 ng-app-module = angular.module ng-app, ['ngResource']
 
 # ====== angular config ======
 ng-app-module.config ['$resourceProvider', ($resourceProvider)->
-  $resourceProvider.defaults.stripTrailingSlashes = false;
+  $resourceProvider.defaults.stripTrailingSlashes = false
 ]
 
 # ====== angular filters ======
-require './filters/activity-filter.js'
+require './filters/analysis-filter.js'
 
 # ====== angular services ======
-require './services/activity-service.js'
+require './services/analysis-service.js'
 
 # ====== angular controllers ======
-require './controllers/activityMain-controller.js'
-require './controllers/activityCanteenImage-controller.js'
+require './controllers/analysis-controller.js'
 
 # ====== angular bootstrap ======
 angular.element document .ready !->

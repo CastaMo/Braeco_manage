@@ -1,8 +1,8 @@
 # 'use strict';
 
-# ActivityView类提供单页面内伪路由控制
+# View类提供单页面内DOM切换功能
 
-class View
+class StateMachine
   (options)->
     @initial = options.initial
     @views = options.views
@@ -11,7 +11,7 @@ class View
     @show-state = options.show-state.join ' '
     @hide-state = options.hide-state.join ' '
     @init-state = options.init-state.join ' '
-    @current-state = []
+    @current-state = options.initial
 
     @action!
 
@@ -59,6 +59,6 @@ class View
     @init-view!
     @set-state-machine!
 
-    console.log 'Activity view action!'
+    console.log 'State Machine Action!'
 
-module.exports = View
+module.exports = StateMachine
