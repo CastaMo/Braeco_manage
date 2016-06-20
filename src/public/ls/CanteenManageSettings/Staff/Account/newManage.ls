@@ -36,7 +36,7 @@ new-manage = let
         password = _password-input-dom.val!
         role = _role-select-dom.val!
         if _check-input-field!
-            if gender == 'male'
+            if gender === 'male'
                 gender := "男"
             else
                 gender := "女"
@@ -82,6 +82,7 @@ new-manage = let
 
     _save-post-success = (data)!->
         _set-save-btn-able!
+        console.log data
         if data.message === "success"
             location.reload!
         else

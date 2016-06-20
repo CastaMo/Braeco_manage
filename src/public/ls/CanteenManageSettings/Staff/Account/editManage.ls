@@ -22,6 +22,8 @@ edit-manage = let
     _password-input-dom = $ "\#staff-account-edit input[name='password']"
     # _reset-password-btn-dom = $ "\#staff-account-edit button.reset-password-btn"
     _role-select-dom = $ "\#staff-account-edit select[name='role']"
+
+    _error-message-block-dom = $ "\#staff-account-edit .error-message-block"
     
     # _reset-password-btn-click-event = !->
         # _full-cover-dom.fade-in 100
@@ -47,10 +49,76 @@ edit-manage = let
         page.toggle-page "main"
         
     _save-btn-click-event = !->
-        page.toggle-page "main"
-        
+        name = _name-input-dom.val!
+        gender = _gender-select-dom.val!
+        phone = _phone-input-dom.val!
+        password = _password-input-dom.val!
+        role = _role-select-dom.val!
+        if _check-input-field!
+            if gender === 'male'
+                gender := "男"
+            else
+                gender := "女"
+            $.ajax {type: "POST", url: "/Waiter/update/"+_edited-staff.id, data: {
+                "phone": phone,
+                "name": name,
+                "password": password,
+                "sex": gender
+            }, dataType: "JSON", success: _save-post-success}
+            _set-save-btn-disable!
+        # page.toggle-page "main"
+    
+    _check-input-field = ->
+        error-message = []
+        name = _name-input-dom.val!
+        gender = _gender-select-dom.val!
+        phone = _phone-input-dom.val!
+        password = _password-input-dom.val!
+        role = _role-select-dom.val!
+        if name === ''
+            error-message.push "请输入姓名"
+        if phone === ''
+            error-message.push "请输入电话号码"
+        if password === ''
+            error-message.push "请输入密码"
+        if role === 'default'
+            error-message.push "请选择角色"
+        console.log error-message
+        if error-message.length === 0
+            true
+        else
+            _display-error-message error-message
+            false
+
+    _display-error-message = (error-message)!->
+        _error-message-block-dom.show!
+        _error-message-block-dom.empty!
+        for err in error-message
+            _error-message-block-dom.append "<p>"+err+"</p>"
+
+    _save-post-success = (data)!->
+        _set-save-btn-able!
+        console.log data
+        if data.message === 'success'
+            location.reload!
+        else
+            _display-error-message ["添加失败"]
+
+    _set-save-btn-disable = !->
+        _save-btn-dom.prop "disabled",true
+        _save-btn-dom.add-class "save-btn-disable"
+
+    _set-save-btn-able = !->
+        _save-btn-dom.prop "disabled",false
+        _save-btn-dom.remove-class "save-btn-disable"
+
     _reset-dom = !->
+        _name-input-dom.val ""
+        _gender-select-dom.val ""
+        _phone-input-dom.val ""
+        _password-input-dom.val ""
         _role-select-dom.empty!.append $ "<option value='default'>请选择角色</option>"
+        _error-message-block-dom.empty!.hide!
 
     _init-depend-module = !->
         page := require "./pageManage.js"
@@ -79,7 +147,6 @@ edit-manage = let
         _phone-input-dom.val _edited-staff.phone
         # _password-input-dom.val "*******"
         selected = ($ _role-select-dom.find "option").filter ->
-            console.log ($ this).val!
             if ($ this).val! === _edited-staff.role.id.to-string!
                 true
             else

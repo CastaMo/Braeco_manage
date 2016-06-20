@@ -246,7 +246,11 @@ module.exports = function(passport) {
 		}, 1000);
 	});
 	router.post('/Waiter/Update/:waiter_id', function(req, res, next) {
-		res.json("hello world");
+		var waiter_id = req.params.waiter_id;
+		console.log(waiter_id);
+		setTimeout(function(){
+			res.json({"message": "success"});
+		}, 1000);
 	});
 
 
