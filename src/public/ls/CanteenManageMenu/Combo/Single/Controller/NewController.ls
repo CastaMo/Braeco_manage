@@ -1,8 +1,9 @@
 eventbus 				= require "../eventbus.js"
 require_ 				= require "../requireManage.js"
 
-[			getObjectURL, 			converImgTobase64] =
-	[		util.getObjectURL, 	util.converImgTobase64]
+[			getObjectURL] =
+	[		util.getObjectURL]
+
 
 class NewController
 	(options)->
@@ -42,6 +43,7 @@ class NewController
 	pic-change: (file)!->
 		@upload-pic-flag 	= true
 		@pic 							= getObjectURL file
+
 		eventbus.emit "controller:new:pic-change", @pic
 
 	add-subitem: !->

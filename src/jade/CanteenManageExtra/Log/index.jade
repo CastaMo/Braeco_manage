@@ -1,16 +1,17 @@
 extends ../../layout
 
 block mainHead
-	p.title 查看敏感操作日志
+	p.title 查看敏感操作日志-杯口点餐
 
 block head
-	script(src="/Manage/Table/Data" type="text/javascript" async='async')
 	meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
 	title 查看敏感操作日志
 	block css
 
 '''这里是主体'''
 block content
+	block data
+	block pageData
 	.mycenter
 		.top
 			span.mypicker
