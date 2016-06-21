@@ -17,6 +17,7 @@ module.exports = function(router) {
   router.post('/pic/upload/token/activityupdate/:id', getCallbackHandleForRequest("POST", cookie));
   router.post('/Activity/Update/:activity_id', getCallbackHandleForRequest("POST", cookie));
   router.post('/Activity/Remove/:activityId', getCallbackHandleForRequest("POST", cookie));
+  router.post('/Activity/Get', getCallbackHandleForRequest("POST", cookie));
 
   return router;
 };

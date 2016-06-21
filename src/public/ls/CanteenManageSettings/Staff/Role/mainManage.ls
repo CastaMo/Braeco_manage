@@ -7,13 +7,13 @@ main-manage = let
     _new-btn-dom = $ "\#staff-role-main .new-btn"
     _table-body-dom = $ ".sr-container-table > tbody"
 
-    _all-permission = ['编辑餐牌','隐藏、显示、移动、排序餐品或品类','（待定）','（待定）',
-    '活动管理','订单优惠','会员','卡券', '搭配推荐','（待定）','（待定）',
+    _all-permission = ['餐品增删改','餐品操作','单品优惠','（待定）',
+    '活动发布','订单优惠','会员','优惠券券', '（待定）','（待定）','（待定）',
     '流水订单','数据统计','营销分析','（待定）','（待定）',
-    '业务管理','店员管理','餐厅信息修改','餐厅日志','（待定）','（待定）',
-    '接单处理','辅助点餐','会员充值','修改积分','退款','重打某单','打印日结','（待定）','（待定）']
+    '业务管理','店员管理','餐厅信息修改','查看敏感操作','（待定）','（待定）',
+    '接单','辅助点单','会员充值','修改积分','退款','重打订单','打印日结小票','（待定）','（待定）']
 
-    _all-tbd-index = [2, 3, 9, 10, 14, 15, 20, 21, 29, 30]
+    _all-tbd-index = [3, 8, 9, 10, 14, 15, 20, 21, 29, 30]
 
     _new-btn-click-event = !->
         page.toggle-page 'new'
@@ -34,10 +34,9 @@ main-manage = let
             alert "还有员工使用此角色，无法删除"
     
     class Role
-        (id, name, type, permission, permanent) ->
+        (id, name, permission, permanent) ->
             @id = id
             @name = name
-            @type = type
             @permission = permission
             @permanent = permanent
             @gene-dom!
@@ -73,7 +72,7 @@ main-manage = let
             @permission-dom = $ "<td class='td-permission'></td>"
             @tr-dom.append @permission-dom
             @method-dom = $ "<td class='td-method'></td>"
-            if @permanent === false    
+            if @permanent === false
                 @edit-method-dom = $ "<div class='method-container'>
                 <icon class='edit-icon'></icon>
                 <p>修改</p>
@@ -84,6 +83,13 @@ main-manage = let
                 </div>"
                 @method-dom.append @edit-method-dom
                 @method-dom.append @delete-method-dom
+            else
+                if @permission !== 2147483647
+                    @edit-method-dom = $ "<div class='method-container'>
+                    <icon class='edit-icon'></icon>
+                    <p>修改</p>
+                    </div>"
+                    @method-dom.append @edit-method-dom
             @tr-dom.append @method-dom
             _table-body-dom.append @tr-dom
         
@@ -91,11 +97,14 @@ main-manage = let
             if @permanent === false
                 @edit-method-dom.click !~> _edit-btn-click-event @
                 @delete-method-dom.click !~> _delete-btn-click-event @
+            else
+                if @permission !== 2147483647
+                    @edit-method-dom.click !~> _edit-btn-click-event @
     
     _init-all-role = !->
         for role in _all-roles
             console.log role
-            role_ = new Role role.id,role.name,role.type,role.auth,role.permanent
+            role_ = new Role role.id,role.name,role.auth,role.permanent
 
     _init-depend-module = !->
         page := require "./pageManage.js"

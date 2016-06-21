@@ -2,6 +2,7 @@ main-manage = let
 	Tables = !->
 		tables = []
 		operations = []
+		time-out-id = ''
 		for x in $ '.table_qr:not(.add_new)' 
 			tables.push(new Table x )
 		for x in $ '.table_operation'
@@ -87,11 +88,12 @@ main-manage = let
 				$ arg1 .fadeOut 300
 				$ '#popup_cover' .hide!
 		# 显示全局信息提示
-		show-global-message = (str)!->
+		show-global-message = (str)->
 			ob = $ '#global_message' 
 			ob.show!
 			ob.html str 
-			setTimeout('$("#global_message").fadeOut(300)',2000)
+			clearTimeout time-out-id
+			time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
 			
 		# 获取选中的桌位数目
 		get-disabled-table-num = ->

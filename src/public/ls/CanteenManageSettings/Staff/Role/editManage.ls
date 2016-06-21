@@ -10,7 +10,19 @@ edit-manage = let
 
     _error-message-block-dom = $ "\#staff-role-edit .error-message-block"
 
-    _all-tbd-index = [2, 3, 9, 10, 14, 15, 20, 21, 29, 30]
+    _member-dom = $ "\#staff-role-edit input[value='64']" # 会员
+    _member-add-dom = $ "\#staff-role-edit input[value='16777216']" # 会员充值
+    _member-edit-dom = $ "\#staff-role-edit input[value='33554432']" # 修改积分
+
+    _order-dom = $ "\#staff-role-edit input[value='2048']" # 流水订单
+    _order-refund-dom = $ "\#staff-role-edit input[value='67108864']" # 退款
+    _order-print-dom = $ "\#staff-role-edit input[value='134217728']" # 重打
+
+    _data-dom = $ "\#staff-role-edit input[value='4096']" # 数据统计
+    _data-print-dom = $ "\#staff-role-edit input[value='268435456']" # 打印日结
+
+    _all-tbd-index = [3, 8, 9, 10, 14, 15, 20, 21, 29, 30]
+    _zero-permission = 1613809416
 
     _edited-role = null
 
@@ -22,9 +34,11 @@ edit-manage = let
             if value === 0
                 sub-li-dom = par.find "ul li"
                 for li in sub-li-dom
-                    _set-checkbox-checked $ li
+                    if not ($ li).has-class "disabled-checkbox-item"
+                        _set-checkbox-checked $ li
             else
-                if (par.siblings 'li.checkbox-item').length === (par.siblings 'li.checked-icon').length
+                if (par.siblings 'li.checkbox-item').length-(par.siblings "li.disabled-checkbox-item").length \
+                    === (par.siblings 'li.checked-icon').length
                     _set-checkbox-checked $ par.parent!.parent!
         else
             _set-checkbox-unchecked par
@@ -36,15 +50,18 @@ edit-manage = let
                 _set-checkbox-unchecked $ par.parent!.parent!
     
     _reset-dom = !->
+        _error-message-block-dom.empty!.hide!
         _name-input-dom.val ''
         for checkbox in _checkbox-dom
             _set-checkbox-unchecked ($ checkbox).parent!
-    
+            ($ checkbox).parent!.remove-class "disabled-checkbox-item"
+
     _get-permission-value = ->
         permission-value = 0
         for checkbox in _checkbox-dom
             if ($ checkbox).is ":checked"
                 permission-value += parse-int ($ checkbox).val!
+        permission-value := (_zero-permission .|. permission-value )
         permission-value
     
     _set-checkbox-checked = (checkbox-par)!->
@@ -72,7 +89,6 @@ edit-manage = let
             _set-save-btn-disable!
 
     _update-post-success = (data)!->
-        console.log data
         _set-save-btn-able!
         if data.message === "success"
             location.reload!
@@ -85,7 +101,7 @@ edit-manage = let
         auth = _get-permission-value!
         if name === ''
             error-message.push "请输入角色名"
-        if auth === 0
+        if auth === _zero-permission
             error-message.push "请选择角色权限"
         if error-message.length === 0
             true
@@ -107,6 +123,95 @@ edit-manage = let
         _save-btn-dom.prop "disabled",false
         _save-btn-dom.remove-class "save-btn-disable"
 
+
+    _init-form-field = !->
+        _name-input-dom.val _edited-role.name
+        permission-string = _edited-role.permission.to-string 2
+        permission-array = []
+        for i from 0 to permission-string.length-1 by 1
+            index = permission-string.length-1-i
+            if index in _all-tbd-index
+                continue
+            if permission-string[i] === '1'
+                permission-array.push Math.pow 2,index
+        for i from 0 to permission-array.length-1 by 1
+            par = ($ "\#staff-role-edit input[value='"+permission-array[i]+"']").parent!
+            _set-checkbox-checked par
+            if (par.siblings 'li.checkbox-item').length === (par.siblings 'li.checked-icon').length
+                _set-checkbox-checked $ par.parent!.parent!
+        _fix-init-form-field!
+
+    _fix-init-form-field = !->
+        if not _member-dom.is ":checked"
+            _for-member-dom-unchecked!
+        if not _order-dom.is ":checked"
+            _for-order-dom-unchecked!
+        if not _data-dom.is ":checked"
+            _for-data-dom-unchecked!
+    
+    _member-dom-click-event = !->
+        if _member-dom.is ":checked"
+            _for-member-dom-checked!
+        else
+            _for-member-dom-unchecked!
+
+    _order-dom-click-event = !->
+        if _order-dom.is ":checked"
+            _for-order-dom-checked!
+        else
+            _for-order-dom-unchecked!
+
+    _data-dom-click-event = !->
+        if _data-dom.is ":checked"
+            _for-data-dom-checked!
+        else
+            _for-data-dom-unchecked!
+
+    _for-member-dom-checked = !->
+        _member-add-dom.parent!.remove-class "disabled-checkbox-item"
+        _member-edit-dom.parent!.remove-class "disabled-checkbox-item"
+        _member-add-dom.click !-> _checkbox-click-event event
+        _member-edit-dom.click !-> _checkbox-click-event event
+        _set-checkbox-unchecked _member-add-dom.parent!
+        _set-checkbox-unchecked _member-edit-dom.parent!
+        _set-checkbox-unchecked _member-edit-dom.parent!.parent!.parent!
+
+    _for-member-dom-unchecked = !->
+        _member-add-dom.parent!.add-class "disabled-checkbox-item"
+        _member-edit-dom.parent!.add-class "disabled-checkbox-item"
+        _member-add-dom.unbind "click"
+        _member-edit-dom.unbind "click"
+        _set-checkbox-unchecked _member-add-dom.parent!
+        _set-checkbox-unchecked _member-edit-dom.parent!
+
+    _for-order-dom-checked = !->
+        _order-refund-dom.parent!.remove-class "disabled-checkbox-item"
+        _order-print-dom.parent!.remove-class "disabled-checkbox-item"
+        _order-refund-dom.click !-> _checkbox-click-event event
+        _order-print-dom.click !-> _checkbox-click-event event
+        _set-checkbox-unchecked _order-refund-dom.parent!
+        _set-checkbox-unchecked _order-print-dom.parent!
+        _set-checkbox-unchecked _order-print-dom.parent!.parent!.parent!
+
+    _for-order-dom-unchecked = !->
+        _order-refund-dom.parent!.add-class "disabled-checkbox-item"
+        _order-print-dom.parent!.add-class "disabled-checkbox-item"
+        _order-refund-dom.unbind "click"
+        _order-print-dom.unbind "click"
+        _set-checkbox-unchecked _order-refund-dom.parent!
+        _set-checkbox-unchecked _order-print-dom.parent!
+
+    _for-data-dom-checked = !->
+        _data-print-dom.parent!.remove-class "disabled-checkbox-item"
+        _data-print-dom.click !-> _checkbox-click-event event
+        _set-checkbox-unchecked _data-print-dom.parent!
+        _set-checkbox-unchecked _data-print-dom.parent!.parent!.parent!
+
+    _for-data-dom-unchecked = !->
+        _data-print-dom.parent!.add-class "disabled-checkbox-item"
+        _data-print-dom.unbind "click"
+        _set-checkbox-unchecked _data-print-dom.parent!
+
     _init-depend-module = !->
         page := require "./pageManage.js"
     
@@ -114,21 +219,9 @@ edit-manage = let
         _cancel-btn-dom.click !-> _cancel-btn-click-event!
         _save-btn-dom.click !-> _save-btn-click-event!
         _checkbox-dom.click !-> _checkbox-click-event event
-
-    _init-form-field = !->
-        _name-input-dom.val _edited-role.name
-        permission-string = _edited-role.permission.to-string 2
-        permission-array = []
-        for i from 0 to permission-string.length-1 by 1
-            if i in _all-tbd-index
-                continue
-            if permission-string[i] === '1'
-                permission-array.push Math.pow 2,i
-        for i from 0 to permission-array.length-1 by 1
-            par = ($ "\#staff-role-edit input[value='"+permission-array[i]+"']").parent!
-            _set-checkbox-checked par
-            if (par.siblings 'li.checkbox-item').length === (par.siblings 'li.checked-icon').length
-                _set-checkbox-checked $ par.parent!.parent!
+        _member-dom.click !-> _member-dom-click-event!
+        _order-dom.click !-> _order-dom-click-event!
+        _data-dom.click !-> _data-dom-click-event!
 
     get-role-and-init: (role)!->
         _edited-role := role
