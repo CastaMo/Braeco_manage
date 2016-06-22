@@ -60,6 +60,10 @@ new-manage = let
             error-message.push "请输入姓名"
         if phone === ''
             error-message.push "请输入电话号码"
+        if phone !== ''
+            re = /^1\d{10}$/
+            if not re.test(phone)
+                error-message.push "电话号码格式不正确"
         if password === ''
             error-message.push "请输入密码"
         if comfirm-password === ''

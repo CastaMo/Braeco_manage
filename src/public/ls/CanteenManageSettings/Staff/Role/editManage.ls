@@ -21,6 +21,8 @@ edit-manage = let
     _data-dom = $ "\#staff-role-edit input[value='4096']" # 数据统计
     _data-print-dom = $ "\#staff-role-edit input[value='268435456']" # 打印日结
 
+    _staff-manage-dom = $ "\#staff-role-edit input[value='131072']" # 店员管理
+
     _all-tbd-index = [3, 8, 9, 10, 14, 15, 20, 21, 29, 30]
     _zero-permission = 1613809416
 
@@ -55,6 +57,7 @@ edit-manage = let
         for checkbox in _checkbox-dom
             _set-checkbox-unchecked ($ checkbox).parent!
             ($ checkbox).parent!.remove-class "disabled-checkbox-item"
+        _staff-manage-dom.parent!.add-class "disabled-checkbox-item"
 
     _get-permission-value = ->
         permission-value = 0
@@ -166,6 +169,7 @@ edit-manage = let
             _set-bound-click-disable _order-print-dom
         if not _data-dom.is ":checked"
             _set-bound-click-disable _data-print-dom
+        _set-bound-click-disable _staff-manage-dom
     
     _member-dom-click-event = !->
         if _member-dom.is ":checked"

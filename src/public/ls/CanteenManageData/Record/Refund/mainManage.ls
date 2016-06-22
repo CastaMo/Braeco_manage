@@ -120,6 +120,7 @@ main-manage = let
         _refund-data-obj-array = $.parseJSON _json-refund-data-dom.text!
         _page-data-obj := $.parseJSON _json-page-data-dom.text!
         for refund in _refund-data-obj-array
+            console.log refund_
             refund_ = new Refund refund
 
     _init-datepicker = !->

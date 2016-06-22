@@ -140,7 +140,7 @@ module.exports = function(passport) {
 		var printer = req.body;
 		console.log(orderid);
 		console.log(printer);
-		res.json({'message':'sucess'});
+		res.json({'message':'success'});
 	});
 
 	router.post('/order/refund/:orderid', function(req, res, next) {
