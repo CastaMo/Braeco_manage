@@ -10,7 +10,7 @@ block content
 	#container
 		#container_left
 			#tables_head
-				.table_operation.select_all.light
+				.table_operation.select_all
 					.table_operation_img
 					span 全选
 				.table_operation.add
@@ -34,7 +34,8 @@ block content
 					.table_qr_gray
 						.checkbox.checked
 					.popup.edit
-						input(type='text' name='edit_table')
+						.arrow
+						input(type='text' name='edit_table' class='table_name')
 						.btns
 							.btn.cancle 取消
 							.btn.confirm 确认
@@ -42,11 +43,12 @@ block content
 					.table_qr_light
 						img(src='http://brae.co/public/images/qrcode/76ca483fef0ed27d76511219caeee015e82f57a2.png')
 						.checkbox
-						.num 02
+						.num 东南西北
 					.table_qr_gray
 						.checkbox.checked
 					.popup.edit
-						input(type='text' name='edit_table')
+						.arrow
+						input(type='text' name='edit_table' class='table_name')
 						.btns
 							.btn.cancle 取消
 							.btn.confirm 确认
@@ -57,19 +59,34 @@ block content
 						.num A011
 					.table_qr_gray
 						.checkbox.checked
-					.popup.delete
-						div 确定删除此桌位？
+					.popup.edit
+						.arrow
+						input(type='text' name='edit_table')
 						.btns
-							.btn.confirm 确认
 							.btn.cancle 取消
+							.btn.confirm 确认
+				.table_qr
+					.table_qr_light
+						img(src='http://brae.co/public/images/qrcode/76ca483fef0ed27d76511219caeee015e82f57a2.png')
+						.checkbox
+						.num A056
+					.table_qr_gray
+						.checkbox.checked
+					.popup.edit
+						.arrow
+						input(type='text' name='edit_table' class='table_name')
+						.btns
+							.btn.cancle 取消
+							.btn.confirm 确认
 				.table_qr.add_new
 					.table_qr_light
 						.cross
 						span 添加座位
 					.table_qr_gray
 					.popup.edit
+						.arrow
 						.popup_cover
-						input(type='text' name='add_table' placeholder='请输入桌号')
+						input(type='text' name='add_table' placeholder='请输入桌号' class='table_name')
 						.btns
 							.btn.cancle 取消
 							.btn.confirm 确认
@@ -77,14 +94,16 @@ block content
 			#global_message 提示！
 			#wrap
 				.wrap.batch_add
-					.wrap_head 批量添加桌位
+					.wrap_head 批量添加桌位 
+						.cancle_cross
 					.wrap_content
 						.inputli
 							.input_desc 桌位数量
-							input(type='number' name='num' placeholder='请输入桌位数量')
+							input(type='number' name='add_num' placeholder='请输入桌位数量')
 						.inputli
 							.input_desc 起始编号
-							input(type='text' name='code' placeholder='请输入桌位数量')
+							input(type='text' name='add_start' placeholder='请输入起始桌位号' class='table_name')
+							.little_gray 比如 01，A011，最多四位哦！
 					.btns
 						.btn.cancle 取消
 						.btn.confirm 确认
@@ -115,7 +134,8 @@ block content
 						.btn.cancle 取消
 						.btn.confirm 下一步
 				.wrap.batch_export.batch_export2
-					.wrap_head 选择导出模板
+					.wrap_head 选择导出模板 
+						.cancle_cross
 					.wrap_content 
 						.wrap_left
 							.inputli
@@ -125,12 +145,12 @@ block content
 									option(value='1') 在线+现金支付
 							.inputli
 								.input_desc 折扣优惠
-								select(name='dicount')
+								select(name='discount')
 									option(value='0') 有折扣优惠
 									option(value='1') 没有折扣
 							.inputli
 								.input_desc 
-								input(type='text' name='discount' placeholder='请输入折扣')
+								input(type='text' name='discount_value' placeholder='请输入折扣')
 								.input_unit 折
 								.tip
 							.inputli
@@ -149,12 +169,12 @@ block content
 								.tip
 							.inputli
 								.input_desc 导出方式
-								select
+								select(name='send_email')
 									option(value='0') 发送到邮箱
 									option(value='1') 直接下载
 							.inputli
 								.input_desc 
-								input(type='text' name='wifi_email' placeholder='请输入您的邮箱地址')
+								input(type='text' name='email' placeholder='请输入您的邮箱地址')
 								.tip
 						.wrap_right
 							img(src='http://brae.co/public/images/qrcode/2square000.png')
@@ -163,7 +183,8 @@ block content
 						.btn.cancle 取消
 						.btn.confirm 导出
 				.wrap.batch_export.batch_export3
-					.wrap_head 导出设置
+					.wrap_head 导出设置 
+						.cancle_cross
 					.wrap_content
 						.wrap_left
 							img(src='http://brae.co/public/images/qrcode/empty.png')
@@ -177,7 +198,8 @@ block content
 						.btn.cancle 取消
 						.btn.confirm 导出
 				.wrap.batch_delete
-					.wrap_head 删除桌位
+					.wrap_head 删除桌位 
+						.cancle_cross
 					.wrap_content
 						.delete_tables 已选中<b></b>
 						br

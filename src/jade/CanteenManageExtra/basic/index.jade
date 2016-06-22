@@ -4,7 +4,6 @@ block mainHead
 	p.title 餐厅信息
 
 block head
-	script(src="/Manage/Table/Data" type="text/javascript" async='async')
 	meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
 	title 餐厅信息 - 杯口点餐
 	block css
@@ -51,15 +50,15 @@ block content
 					.wrap_input_li
 						.wrap_desc 输入旧密码
 						.wrap_input
-							input(type='password' name='origin_name')
+							input(type='password' name='password')
 					.wrap_input_li
 						.wrap_desc 输入新密码
 						.wrap_input
-							input(type='password' name='new_name')
+							input(type='password' name='newpassword')
 					.wrap_input_li
 						.wrap_desc 确认密码
 						.wrap_input
-							input(type='password' name='confirm_name')
+							input(type='password' name='confirm_password')
 				.btns
 					.btn.cancle 取消
 					.btn.confirm 保存
@@ -76,7 +75,7 @@ block content
 					.wrap_input_li
 						.wrap_desc 新地址
 						.wrap_input
-							input(type='text' name='address')
+							input(type='text' name='address' placeholder='请输入电话号码')
 				.btns
 					.btn.cancle 取消
 					.btn.confirm 保存
@@ -93,7 +92,7 @@ block content
 					.wrap_input_li
 						.wrap_desc 新联系方式
 						.wrap_input
-							input(type='text' name='phone')
+							input(type='text' name='phone' placeholder='只能输入固定座机或者手机号码哦')
 				.btns
 					.btn.cancle 取消
 					.btn.confirm 保存
@@ -127,6 +126,7 @@ block content
 				.btns
 					.btn.cancle 取消
 					.btn.confirm 保存
+	#global_message 提示
 
 
 block bottom

@@ -67,7 +67,7 @@
     background: rgba(0,0,0,0.6);
     top: 0;
     left: 0;
-    // display: none;
+    display: none;
 }
 .wrap {
     background: #ffffff;
@@ -166,7 +166,6 @@
     width: 980px;
     height: 560px;
     top: 350px;
-    display: block;
 }
 .big_pic {
     width: 445px;
@@ -251,4 +250,21 @@
 .little_pic_li .delet_img:hover{
     background: url(@delete_hover_img) no-repeat;
     background-size: contain;
+}
+
+#global_message{
+    background: #eb4f10;
+    color: white;
+    font-size: 16px;
+    position: fixed;
+    top: 80px;
+    width: auto;
+    padding: 0 100px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 5px;
+    left: 50%;
+    transform: translate(-50%,0);
+    display: none;
+    z-index: 99
 }
