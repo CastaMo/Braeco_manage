@@ -198,13 +198,17 @@ refund-manage = let
         if data.message === 'success'
             location.reload!
         else if data.message === 'Wrong password'
-            refund-error-message.text "密码错误"
+            alert "密码错误"
+            # refund-error-message.text "密码错误"
         else if data.message === 'Invalid dish to refund'
-            refund-error-message.text "非法的退款"
+            alert "非法的退款"
+            # refund-error-message.text "非法的退款"
         else if data.message === 'Order not found'
-            refund-error-message.text "订单未找到"
-        else
-            refund-error-message.text "错误"
+            alert "订单未找到"
+            # refund-error-message.text "订单未找到"
+        else if data.message === 'Need to upload cert of wx pay'
+            alert "需要上传微信证书"
+            # refund-error-message.text "错误"
         _set-password-comfirm-button-able!
         
     

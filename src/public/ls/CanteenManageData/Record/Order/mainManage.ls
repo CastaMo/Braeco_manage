@@ -113,7 +113,7 @@ main-manage = let
         _page-data-obj := $.parseJSON _json-page-data-dom.text!
     
     _int-to-string =(number)->
-        if number > 10
+        if number >= 10
             number.to-string!
         else
             "0"+number.to-string!
@@ -180,9 +180,13 @@ main-manage = let
         </tr>
         </thead>"
         table-body-dom = $ "<tbody></tbody>"
+        current-cat = 0
         for single-food in content-obj
             if single-food.cat === 0
                 continue
+            if current-cat !== 0 and current-cat !== single-food.cat
+                table-body-dom.append "<tr><td colspan='3'>-----------------------------------------</td></tr>"
+            current-cat := single-food.cat
             table-body-dom.append _gene-food-table-row single-food
         table-dom.append table-body-dom
         $ table-dom
@@ -196,9 +200,12 @@ main-manage = let
     
     _gene-promotion-block-dom = (content-obj) ->
         promotion-block-dom = $ "<div class='details-block'></div>"
+        first-promition = true
         for single-promotion in content-obj
             if single-promotion.cat === 0
-                promotion-block-dom.append $ "<p>------------------ 优惠 -------------------</p>"
+                if first-promition
+                    promotion-block-dom.append $ "<p>------------------ 优惠 -------------------</p>"
+                    first-promition = false
                 promotion-block-dom.append $ "<span class='left-span'>"+single-promotion.name+"</span>"
                 promotion-block-dom.append $ "<span class='right-span'>"+single-promotion.property[0]+"</span>"
                 promotion-block-dom.append "<div class='clear'></div>"
@@ -363,7 +370,18 @@ main-manage = let
 
 
     _init-datepicker = !->
-        $('[data-toggle="datepicker"]').datepicker {format: 'yyyy-mm-dd'}
+        $.fn.datepicker.languages['zh-CN'] = {
+            days: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+            daysShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+            daysMin: ['日', '一', '二', '三', '四', '五', '六'],
+            months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            monthsShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            weekStart: 1,
+            startView: 0,
+            yearFirst: true,
+            yearSuffix: '年'
+        }
+        $('[data-toggle="datepicker"]').datepicker {format: 'yyyy-mm-dd', language: 'zh-CN'}
 
     initial: !->
         _gene-data!

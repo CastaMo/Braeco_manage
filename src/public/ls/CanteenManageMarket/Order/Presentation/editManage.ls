@@ -121,7 +121,7 @@ edit-manage = let
             for item in @items
                 content = item.get-presentation-content!
                 if isNaN content[0]
-                    return "非法输入"
+                    return "请填写数字"
                 if content[1] === ''
                     return "请输入内容"
                 if content[0] < current-condition
