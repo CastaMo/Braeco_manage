@@ -35,16 +35,11 @@ class ComboController
 		eventbus.on "controller:category:current-category-id-change", (category-id, old-category-id)!~>
 			@set-is-all-choose old-category-id, false
 
-		eventbus.on "controller:new:add-combo", (category-id, combo)!~>
-			combo 					= new Combo combo
-			combo.is-choose = false
-			@combos[category-id].push combo
-			eventbus.emit "controller:combo:add-combo", category-id, combo.id
+		eventbus.on "controller:new:add-combo", (category-id, config-data)!~>
+			@add-combo category-id, config-data
 			@set-is-all-choose category-id, false
 
-		eventbus.on "controller:edit:edit-combo", (category-id, combo-id, config-data)!~>
-			@set-config-for-combo category-id, combo-id, config-data
-			@set-is-all-choose category-id, false
+		eventbus.on "controller:edit:edit-combo", (category-id, combo-id, config-data)!~> @edit-combo category-id, combo-id, config-data
 
 	get-current-combo-ids: -> return @current-combo-ids
 
@@ -106,6 +101,35 @@ class ComboController
 			eventbus.emit "controller:combo:remove", category-id, combo.id
 		temp = null
 		@set-is-all-choose category-id, false
+
+	add-combo: (category-id, config-data)!->
+		combo 					= new Combo config-data
+		combo.is-choose = false
+		@combos[category-id].push combo
+		eventbus.emit "controller:combo:add-combo", category-id, combo.id
+
+	remove-combo: (category-id, combo-id)!->
+		combo = @get-combo category-id, combo-id
+		category-for-combos = @combos[category-id]
+		category-for-combos.splice (category-for-combos.index-of combo), 1
+		eventbus.emit "controller:combo:remove", category-id, combo-id
+
+	edit-combo: (category-id, combo-id, config-data)!->
+		@set-config-for-combo category-id, combo-id, config-data
+		@set-is-all-choose category-id, false
+
+	copy-combo: (old-category-id, new-category-id, old-combo-id, new-combo-id)!->
+		old-combo = @get-combo old-category-id, old-combo-id
+		new-combo-config = old-combo.get-copy-config-for-construct!
+		new-combo-config.id = new-combo-id
+		@add-combo new-category-id, new-combo-config
+
+	move-combo: (old-category-id, new-category-id, old-combo-id)!->
+		old-combo = @get-combo old-category-id, old-combo-id
+		new-combo-config = old-combo.get-copy-config-for-construct!
+		@remove-combo old-category-id, old-combo-id
+		@add-combo new-category-id, new-combo-config
+
 
 	#========= operation for combo end ===============#
 

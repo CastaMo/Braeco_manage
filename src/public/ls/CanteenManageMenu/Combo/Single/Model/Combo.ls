@@ -54,5 +54,20 @@ class Combo
 
 	get-id: -> return @id
 
+	get-copy-config-for-construct: ->
+		return config = 
+			able 						:			@able
+			dc 							:			@dc
+			dc_type 				:			@dc-type
+			default_price 	:			@default-price
+			detail 					:			@detail
+			groups 					:			@groups
+			id 							:			@id
+			name 						: 		@c-name
+			name2 					:			@e-name
+			pic 						:			@pic
+			type 						:			@type
+			tag 						:			@tag
+
 
 module.exports = Combo
