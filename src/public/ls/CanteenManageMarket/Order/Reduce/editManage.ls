@@ -126,7 +126,7 @@ edit-manage = let
             for item in @items
                 content = item.get-reduce-content!
                 if isNaN content[0] or isNaN content[1]
-                    return "非法输入"
+                    return "请填写数字"
                 if content[0] < current-condition or content[1] < current-reduce
                     return "每一项的两个数都必须大于前一项"
                 current-condition = content[0]

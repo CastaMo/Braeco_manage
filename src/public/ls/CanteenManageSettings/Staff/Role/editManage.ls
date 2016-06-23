@@ -21,6 +21,8 @@ edit-manage = let
     _data-dom = $ "\#staff-role-edit input[value='4096']" # 数据统计
     _data-print-dom = $ "\#staff-role-edit input[value='268435456']" # 打印日结
 
+    _staff-manage-dom = $ "\#staff-role-edit input[value='131072']" # 店员管理
+
     _all-tbd-index = [3, 8, 9, 10, 14, 15, 20, 21, 29, 30]
     _zero-permission = 1613809416
 
@@ -55,6 +57,7 @@ edit-manage = let
         for checkbox in _checkbox-dom
             _set-checkbox-unchecked ($ checkbox).parent!
             ($ checkbox).parent!.remove-class "disabled-checkbox-item"
+        _staff-manage-dom.parent!.add-class "disabled-checkbox-item"
 
     _get-permission-value = ->
         permission-value = 0
@@ -66,11 +69,27 @@ edit-manage = let
     
     _set-checkbox-checked = (checkbox-par)!->
         ($ checkbox-par.find "> input[type='checkbox']").attr 'checked',true
+        if ($ checkbox-par.find "> input[type='checkbox']").val! === '64'
+            _set-bound-click-able _member-add-dom
+            _set-bound-click-able _member-edit-dom
+        if ($ checkbox-par.find ">input[type='checkbox']").val! === '2048'
+            _set-bound-click-able _order-refund-dom
+            _set-bound-click-able _order-print-dom
+        if ($ checkbox-par.find ">input[type='checkbox']").val! === '4096'
+            _set-bound-click-able _data-print-dom
         checkbox-par.remove-class "unchecked-icon"
         checkbox-par.add-class "checked-icon"
     
     _set-checkbox-unchecked = (checkbox-par)!->
         ($ checkbox-par.find "> input[type='checkbox']").attr 'checked',false
+        if ($ checkbox-par.find "> input[type='checkbox']").val! === '64'
+            _set-bound-click-disable _member-add-dom
+            _set-bound-click-disable _member-edit-dom
+        if ($ checkbox-par.find ">input[type='checkbox']").val! === '2048'
+            _set-bound-click-disable _order-refund-dom
+            _set-bound-click-disable _order-print-dom
+        if ($ checkbox-par.find ">input[type='checkbox']").val! === '4096'
+            _set-bound-click-disable _data-print-dom
         checkbox-par.remove-class "checked-icon"
         checkbox-par.add-class "unchecked-icon"
 
@@ -134,7 +153,7 @@ edit-manage = let
                 continue
             if permission-string[i] === '1'
                 permission-array.push Math.pow 2,index
-        for i from 0 to permission-array.length-1 by 1
+        for i from permission-array.length-1 to 0 by -1
             par = ($ "\#staff-role-edit input[value='"+permission-array[i]+"']").parent!
             _set-checkbox-checked par
             if (par.siblings 'li.checkbox-item').length === (par.siblings 'li.checked-icon').length
@@ -143,74 +162,48 @@ edit-manage = let
 
     _fix-init-form-field = !->
         if not _member-dom.is ":checked"
-            _for-member-dom-unchecked!
+            _set-bound-click-disable _member-edit-dom
+            _set-bound-click-disable _member-add-dom
         if not _order-dom.is ":checked"
-            _for-order-dom-unchecked!
+            _set-bound-click-disable _order-refund-dom
+            _set-bound-click-disable _order-print-dom
         if not _data-dom.is ":checked"
-            _for-data-dom-unchecked!
+            _set-bound-click-disable _data-print-dom
+        _set-bound-click-disable _staff-manage-dom
     
     _member-dom-click-event = !->
         if _member-dom.is ":checked"
-            _for-member-dom-checked!
+            _set-bound-click-able _member-edit-dom
+            _set-bound-click-able _member-add-dom
         else
-            _for-member-dom-unchecked!
+            _set-bound-click-disable _member-edit-dom
+            _set-bound-click-disable _member-add-dom
 
     _order-dom-click-event = !->
         if _order-dom.is ":checked"
-            _for-order-dom-checked!
+            _set-bound-click-able _order-refund-dom
+            _set-bound-click-able _order-print-dom
         else
-            _for-order-dom-unchecked!
+            _set-bound-click-disable _order-refund-dom
+            _set-bound-click-disable _order-print-dom
 
     _data-dom-click-event = !->
         if _data-dom.is ":checked"
-            _for-data-dom-checked!
+            _set-bound-click-able _data-print-dom
         else
-            _for-data-dom-unchecked!
+            _set-bound-click-disable _data-print-dom
 
-    _for-member-dom-checked = !->
-        _member-add-dom.parent!.remove-class "disabled-checkbox-item"
-        _member-edit-dom.parent!.remove-class "disabled-checkbox-item"
-        _member-add-dom.click !-> _checkbox-click-event event
-        _member-edit-dom.click !-> _checkbox-click-event event
-        _set-checkbox-unchecked _member-add-dom.parent!
-        _set-checkbox-unchecked _member-edit-dom.parent!
-        _set-checkbox-unchecked _member-edit-dom.parent!.parent!.parent!
+    _set-bound-click-able = (dom)!->
+        dom.unbind "click"
+        dom.parent!.remove-class "disabled-checkbox-item"
+        dom.click !-> _checkbox-click-event event
+        _set-checkbox-unchecked dom.parent!
+        _set-checkbox-unchecked dom.parent!.parent!.parent!
 
-    _for-member-dom-unchecked = !->
-        _member-add-dom.parent!.add-class "disabled-checkbox-item"
-        _member-edit-dom.parent!.add-class "disabled-checkbox-item"
-        _member-add-dom.unbind "click"
-        _member-edit-dom.unbind "click"
-        _set-checkbox-unchecked _member-add-dom.parent!
-        _set-checkbox-unchecked _member-edit-dom.parent!
-
-    _for-order-dom-checked = !->
-        _order-refund-dom.parent!.remove-class "disabled-checkbox-item"
-        _order-print-dom.parent!.remove-class "disabled-checkbox-item"
-        _order-refund-dom.click !-> _checkbox-click-event event
-        _order-print-dom.click !-> _checkbox-click-event event
-        _set-checkbox-unchecked _order-refund-dom.parent!
-        _set-checkbox-unchecked _order-print-dom.parent!
-        _set-checkbox-unchecked _order-print-dom.parent!.parent!.parent!
-
-    _for-order-dom-unchecked = !->
-        _order-refund-dom.parent!.add-class "disabled-checkbox-item"
-        _order-print-dom.parent!.add-class "disabled-checkbox-item"
-        _order-refund-dom.unbind "click"
-        _order-print-dom.unbind "click"
-        _set-checkbox-unchecked _order-refund-dom.parent!
-        _set-checkbox-unchecked _order-print-dom.parent!
-
-    _for-data-dom-checked = !->
-        _data-print-dom.parent!.remove-class "disabled-checkbox-item"
-        _data-print-dom.click !-> _checkbox-click-event event
-        _set-checkbox-unchecked _data-print-dom.parent!
-        _set-checkbox-unchecked _data-print-dom.parent!.parent!.parent!
-
-    _for-data-dom-unchecked = !->
-        _data-print-dom.parent!.add-class "disabled-checkbox-item"
-        _data-print-dom.unbind "click"
-        _set-checkbox-unchecked _data-print-dom.parent!
+    _set-bound-click-disable = (dom)!->
+        dom.parent!.add-class "disabled-checkbox-item"
+        dom.unbind "click"
+        _set-checkbox-unchecked dom.parent!
 
     _init-depend-module = !->
         page := require "./pageManage.js"

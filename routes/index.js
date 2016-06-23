@@ -140,7 +140,7 @@ module.exports = function(passport) {
 		var printer = req.body;
 		console.log(orderid);
 		console.log(printer);
-		res.json({'message':'sucess'});
+		res.json({'message':'success'});
 	});
 
 	router.post('/order/refund/:orderid', function(req, res, next) {
@@ -246,7 +246,11 @@ module.exports = function(passport) {
 		}, 1000);
 	});
 	router.post('/Waiter/Update/:waiter_id', function(req, res, next) {
-		res.json("hello world");
+		var waiter_id = req.params.waiter_id;
+		console.log(waiter_id);
+		setTimeout(function(){
+			res.json({"message": "success"});
+		}, 1000);
 	});
 
 

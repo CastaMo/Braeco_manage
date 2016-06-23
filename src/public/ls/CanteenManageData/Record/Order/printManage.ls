@@ -32,13 +32,21 @@ print-manage = let
         ($ 'input:checkbox.printer-checkbox').each !->
             if this.checked
                 checked-printer-ids.push parse-int ($ this).val!
-        checked-printer-ids-json = JSON.stringify checked-printer-ids
-        $.ajax {type: "POST", url: "/order/reprint/"+_order-id, data: { checked-printer-ids-json }, dataType: 'JSON', success: _print-success}
-        _set-comfirm-button-disable!
+        if checked-printer-ids.length === 0
+            alert "请选择打印机"
+        else
+            checked-printer-ids-json = JSON.stringify checked-printer-ids
+            $.ajax {type: "POST", url: "/order/reprint/"+_order-id, data: { checked-printer-ids-json }, dataType: 'JSON', success: _print-success}
+            _set-comfirm-button-disable!
     
     _print-success = (data)!->
-        console.log data
         _set-comfirm-button-able!
+        if data.message === 'success'
+            _full-cover-dom.fade-out 100
+            printer-choose-block-dom = $ "\#full-cover .printer-choose-block"
+            printer-choose-block-dom.empty!       
+        else if data.message === 'All of selected printers are unusable'
+            alert "没有匹配的打印机"
         
         
     _hide-print-page = !->

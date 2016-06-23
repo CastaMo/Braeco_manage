@@ -92,7 +92,7 @@ main-manage = let
         for ladder-item,i in _order-promotion.give_ladder
             _ladder-content-dom.append $ "<div class='ladder-content-item'>
                 <span class='ladder-level'>阶梯"+_ladder-index-chinese[i]+"</span>
-                <span class='ladder-description'>订单消费满"+ladder-item[0]+"元&nbsp;&nbsp;立减"+ladder-item[1]+"一份</span>
+                <span class='ladder-description'>订单消费满"+ladder-item[0]+"元&nbsp;&nbsp;立送"+ladder-item[1]+"一份</span>
                 </div>"
         _edit-infomation-content-dom.text "最多可再添加"+(7-_order-promotion.give_ladder.length)+"个阶梯"
 

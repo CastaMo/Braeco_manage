@@ -104,7 +104,7 @@ refund-manage = let
             _total-sum += single-food.sum
     
     _is-total-current-ok = ->
-        if parse-float ($ "\#refund-money").text! == 0.0
+        if (parse-float ($ "\#refund-money").text!) === 0.0
             false
         else
             true
@@ -156,7 +156,7 @@ refund-manage = let
         else
             true
         
-    _description-input-change-event = !->
+    _description-input-keyup-event = !->
         if ($ "\#description-input").val! !== '' and _is-total-current-ok!
             _set-comfirm-button-able!
         else
@@ -198,13 +198,17 @@ refund-manage = let
         if data.message === 'success'
             location.reload!
         else if data.message === 'Wrong password'
-            refund-error-message.text "密码错误"
+            alert "密码错误"
+            # refund-error-message.text "密码错误"
         else if data.message === 'Invalid dish to refund'
-            refund-error-message.text "非法的退款"
+            alert "非法的退款"
+            # refund-error-message.text "非法的退款"
         else if data.message === 'Order not found'
-            refund-error-message.text "订单未找到"
-        else
-            refund-error-message.text "错误"
+            alert "订单未找到"
+            # refund-error-message.text "订单未找到"
+        else if data.message === 'Need to upload cert of wx pay'
+            alert "需要上传微信证书"
+            # refund-error-message.text "错误"
         _set-password-comfirm-button-able!
         
     
@@ -273,7 +277,7 @@ refund-manage = let
         reason-block-dom = $ "<div class='refund-reason-block'></div>"
         reason-block-dom.append "<span>退款原因*</span>"
         description-input-dom = $ "<input id='description-input' type='text' placeholder='必填，否则无法退款'>"
-        description-input-dom.keyup !-> _description-input-change-event! 
+        description-input-dom.keyup !-> _description-input-keyup-event! 
         reason-block-dom.append description-input-dom
         reason-block-dom.append "<div class='clear'></div>"
         _refund-block-content-dom.append reason-block-dom

@@ -36,7 +36,7 @@ new-manage = let
         password = _password-input-dom.val!
         role = _role-select-dom.val!
         if _check-input-field!
-            if gender == 'male'
+            if gender === 'male'
                 gender := "男"
             else
                 gender := "女"
@@ -60,6 +60,10 @@ new-manage = let
             error-message.push "请输入姓名"
         if phone === ''
             error-message.push "请输入电话号码"
+        if phone !== ''
+            re = /^1\d{10}$/
+            if not re.test(phone)
+                error-message.push "电话号码格式不正确"
         if password === ''
             error-message.push "请输入密码"
         if comfirm-password === ''
@@ -82,6 +86,7 @@ new-manage = let
 
     _save-post-success = (data)!->
         _set-save-btn-able!
+        console.log data
         if data.message === "success"
             location.reload!
         else

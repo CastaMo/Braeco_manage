@@ -23,7 +23,12 @@ main-manage = let
 
     _delete-post-success = (data)!->
         # console.log data
-        location.reload!
+        if data.message === 'success'
+            location.reload!
+        if data.message === 'User not found'
+            alert "该店员不存在"
+        if data.message === 'Is not waiter of current dinner'
+            alert "该店员不是当前餐厅的员工"
     
     class Staff
         
