@@ -1,32 +1,17 @@
 @test-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAbUExURQAAAEpKSkpKSk1NTUtLS0xMTExMTEpKSk5OTm81PO0AAAAJdFJOUwD93zpTiqKlGubZFsEAAABoSURBVAjXY2BgYHBXFCphAAMnQSFFQRUQi1UwmYHBTDAAyAxUBgkYiTIwsAg1gJgcig4MTMIQHYYKDI4JECabCEOhAYTJLM6gyAAFQkAIBYrITCQFSNqQDEOyAsliJOcgOxLJ6XAPAQDK+A1r186o5gAAAABJRU5ErkJggg==";
 @open-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAMBAMAAACU11D1AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAVUExURQAAAMnIzcjIzcrIzMvLzsnJ0MjHzFs/5jcAAAAGdFJOUwDKlWpEJkTFp3cAAABMSURBVAjXY2BKgwEFBgYxKDORgYGBEcoWALJZoewAIJvBDcxMATEZmMFsAzCbQQ3ITIIwwboFoGygsYkwJkNYWiqczZLmAGczGINJAL45F6Xh/lnGAAAAAElFTkSuQmCC";
 @close-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAUBAMAAABPKxEfAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAYUExURQAAAMnIzcrIzMvLzsnJ0NLS0sjIzcjHzMiPbMIAAAAHdFJOUwDKakQmEZXNnwmFAAAAPElEQVQI12NgY4AAdlEoXegAocuLoXS5ApQug9LlolAapBREg5SCaaBSFLoYVZ0oqjkKKPbA7IW6A+ouAAQcGXMQpW2pAAAAAElFTkSuQmCC";
+@checkbox-false-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQAgMAAACNX3zMAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAJUExURf////Pz9eTk6GlTKiwAAAAXSURBVAjXY8hatWqVA0MAAwMjtUmwyQB+eA0/S/QgYAAAAABJRU5ErkJggg==";
+@checkbox-true-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQBAMAAAACH4lsAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAVUExURcnJzcjHzP///8zL0Pb29t/e4dHR1S1JgdkAAAABdFJOU3+AXLTLAAAAQklEQVQI12NgFIQABgbcLDMYS9glEcoyUTGEsISdnEGyooEgIRArSRUkBBZTCgEKgfUGKTlDzRMFCUHMCyZkL5AFAK/LC9Jxd5N6AAAAAElFTkSuQmCC";
+
 .test-icon {
     background-image: url(@test-icon-url);
 }
 
+#tables-choose,
 #categories-choose {
-    border: 1px solid #E7E7EB;
-    position: relative;
-    right: 22px;
-    float: right;
-    height: 382px;
-    width: 247px;
-    overflow: auto;
-    li.shown-item:hover {
-        background-color: #F4F5F9;
-    }
+    li._shown-item,
     li.shown-item {
-        cursor: pointer;
-        padding-left: 10px;
-        line-height: 2.5;
-        height: 32px;
-        border-bottom: 1px solid #E7E7EB;
-        input[type=checkbox] {
-            float: right;
-            margin-top: 8px;
-            margin-right: 5px;
-        }
         &.open {
             .open-icon {
                 zoom: 50%;
@@ -39,6 +24,29 @@
                 zoom: 50%;
                 background-image: url(@close-icon-url);
                 background-position: 5px 20px;
+            }
+        }
+        ._checkbox-icon,
+        .checkbox-icon {
+            &.true {
+                background-image: url(@checkbox-true-icon-url);
+                background-position: 8px 8px;
+            }
+            &.false {
+                background-image: url(@checkbox-false-icon-url);
+                background-position: 8px 8px;
+            }
+        }
+    }
+    li.inner-shown-item {
+        .checkbox-icon {
+            &.true {
+                background-image: url(@checkbox-true-icon-url);
+                background-position: 8px 8px;
+            }
+            &.false {
+                background-image: url(@checkbox-false-icon-url);
+                background-position: 8px 8px;
             }
         }
     }
