@@ -58,7 +58,7 @@ class EditView
 		eventbus.on "controller:edit:read-from-combo", (combo)!~> @read-from-combo combo
 
 	type-dom-change-event: (type)!->
-		if type is "combo_sum" then @price-dom.fade-in 200
+		if type is "combo_static" then @price-dom.fade-in 200
 		else @price-dom.fade-out 200; @price-dom.val null
 
 	pic-upload-event: (file)!->
@@ -218,8 +218,8 @@ class EditView
 
 	reset: !->
 		@c-name-dom.val null; 										@e-name-dom.val null
-		@type-dom.val "combo_sum"
-		@type-dom-change-event "combo_sum"; 			@price-dom.val null
+		@type-dom.val "combo_static"
+		@type-dom-change-event "combo_static"; 		@price-dom.val null
 		@pic-upload-dom.val null;									@pic-dom.css {"background-image": ""}
 		@subitem-list-dom.html null; 							@all-subitem-doms.length = 0
 		@remark-dom.val null; 										@intro-dom.val null

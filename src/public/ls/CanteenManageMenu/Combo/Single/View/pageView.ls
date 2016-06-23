@@ -8,6 +8,7 @@ class PageView
 	assign: (options)!->
 		@all-default-states = options.all-default-states
 		@datas 							= options.datas
+		@full-cover-dom 		= $ options.full-cover-CSS-selector
 
 	init: !->
 		@init-all-prepare!
@@ -28,6 +29,9 @@ class PageView
 		for toggle-name in @datas.toggle
 			@all-toggle-doms[toggle-name] = $ "\#combo-#{toggle-name}"
 
+		for cover-name in @datas.cover
+			@all-cover-doms[cover-name] = @full-cover-dom.find ".#{cover-name}-field"
+
 	set-default-state: !->
 		for default-state in @all-default-states
 			$ default-state.view .add-class default-state.class-name
@@ -35,7 +39,7 @@ class PageView
 	add-listen-for-event-bus: !->
 		eventbus.on "view:page:toggle-page", (toggle-name)!~> @toggle-page toggle-name
 
-		eventbus.on "view:page:cover-page", (toggle-name)!~> @toggle-page toggle-name
+		eventbus.on "view:page:cover-page", (cover-name)!~> @cover-page cover-name
 		
 
 	toggle-page: (toggle-name)!->
@@ -46,9 +50,12 @@ class PageView
 
 	cover-page: (cover-name)!->
 		@cover-state = cover-name
+		if cover-name is "exit"
+			@full-cover-dom.fade-out 100, !~> if @cover-state is "exit" then @unshow-all-cover-page cover-name
+		else @unshow-all-cover-page cover-name; @full-cover-dom.fade-in 100, !~> @all-cover-doms[cover-name].remove-class "hide"
+
+	unshow-all-cover-page: (cover-name)!->
 		for cover-name_, cover-dom of @all-cover-doms when cover-name isnt cover-name_
 			cover-dom.add-class "hide"
-		if cover-name is "exit" then @full-cover-dom.fade-out 100
-		else @all-cover-doms[cover-name].remove-class "hide"; @full-cover-dom.fade-in 100
 
 module.exports = PageView

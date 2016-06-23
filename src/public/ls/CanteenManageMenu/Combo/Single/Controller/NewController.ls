@@ -1,8 +1,8 @@
 eventbus 				= require "../eventbus.js"
 require_ 				= require "../requireManage.js"
 
-[			getObjectURL] =
-	[		util.getObjectURL]
+[			getObjectURL, 				converImgTobase64] =
+	[		util.getObjectURL, 		util.converImgTobase64]
 
 
 class NewController
@@ -63,13 +63,13 @@ class NewController
 
 	set-config-data: (options)!->
 		@config-data = options
-		if @config-data.type isnt "combo_sum" then @config-data.price = 0
+		if @config-data.type isnt "combo_static" then @config-data.price = 0
 
 	check-is-valid: !->
 		err-msg = ""; valid-flag = true
 		if @config-data.name.length <= 0 or @config-data.name.length > 32 then err-msg += "套餐名称长度应为1~32位\n"; valid-flag = false
 		if @config-data.name2.length > 32 then err-msg += "英文名长度应为0~32位\n"; valid-flag = false
-		if @config-data.type is "combo_sum"
+		if @config-data.type is "combo_static"
 			if @config-data.price.length is 0 or Number(@config-data.price) < 0 or Number(@config-data.price) > 9999 then err-msg += "默认价格范围应为0~9999元\n"; valid-flag = false
 		if @config-data.tag.length > 18 then err-msg += "标签长度应为0~18位\n"; valid-flag = false
 		if @config-data.detail.length > 400 then err-msg += "详情长度应为0~400位\n"; valid-flag = false
@@ -88,6 +88,7 @@ class NewController
 	success-callback: (category-id)!->
 		@config-data.able 					= true
 		@config-data.default_price 	= @config-data.price
+		@config-data.pic 						= @pic
 		eventbus.emit "controller:new:add-combo", category-id, @config-data
 		eventbus.emit "view:page:toggle-page", "main"
 		@reset!
