@@ -343,4 +343,9 @@ module.exports = function(grunt) {
     grunt.registerTask('backup', [
         'copy:backup',
     ]);
+    grunt.registerTask('extra', [
+        'copy:test',
+        'jade',
+        'less'
+    ]);
 };
