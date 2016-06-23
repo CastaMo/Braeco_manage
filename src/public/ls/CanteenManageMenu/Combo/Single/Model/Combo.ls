@@ -1,8 +1,3 @@
-eventbus 		= require "../eventbus.js"
-
-[ 		deep-copy] = 
-	[		util.deep-copy]
-
 class Combo
 
 	(options)->
@@ -62,6 +57,7 @@ class Combo
 			default_price 	:			@default-price
 			detail 					:			@detail
 			groups 					:			@groups
+			require 				: 		@require
 			id 							:			@id
 			name 						: 		@c-name
 			name2 					:			@e-name

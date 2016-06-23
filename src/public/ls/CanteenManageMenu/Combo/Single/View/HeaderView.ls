@@ -16,6 +16,14 @@ class HeaderView
 		"move" 					:		!->
 			eventbus.emit "view:page:cover-page", "move"
 		"sort" 					:		!->
+			current-category-id = @category-controller.get-current-category-id!
+			dishes = null
+			datas = @combo-controller.get-datas!
+			for data in datas when current-category-id is data.id
+				dishes = data.dishes; break
+			if dishes.length <= 1 then alert "餐品数量小于2个, 请先添加餐品"; return
+			@sort-controller.read-from-dishes dishes
+			eventbus.emit "view:page:cover-page", "sort"
 		"copy" 					:		!->
 			eventbus.emit "view:page:cover-page", "copy"
 		"able" 					:		!->
@@ -37,6 +45,7 @@ class HeaderView
 		@header-controller  	= options.header-controller
 		@new-controller 			= options.new-controller
 		@edit-controller 			= options.edit-controller
+		@sort-controller 			= options.sort-controller
 		@$el 									= $ options.el-CSS-selector
 		@all-default-states 	= options.all-default-states
 

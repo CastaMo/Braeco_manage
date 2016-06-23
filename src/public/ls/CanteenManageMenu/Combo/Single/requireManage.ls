@@ -32,7 +32,7 @@ require-manage = let
 		'remove',						'top',
 		'move', 						'edit',
 		'able', 						'picUploadPre',
-		'picUpload'
+		'picUpload', 				'sort'
 	]
 
 	###
@@ -48,6 +48,7 @@ require-manage = let
 		'able' 					:		'/Dish/Update/Able'
 		'picUploadPre' 	:		'/pic/upload/token/dishupdate'
 		'picUpload' 		:		'http://up.qiniu.com/putb64'
+		'sort' 					: 	'/Dish/Sort'
 	}
 
 	###
@@ -86,6 +87,7 @@ require-manage = let
 		"able" 					:		(data)-> return "#{data.JSON}"
 		"picUploadPre" 	:		(data)-> return ""
 		"picUpload" 		:		(data)-> return "#{data.url}"
+		"sort" 					: 	(data)-> return "#{data.JSON}"
 
 	}
 

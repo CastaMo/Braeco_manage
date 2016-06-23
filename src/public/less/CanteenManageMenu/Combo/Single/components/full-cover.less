@@ -17,22 +17,21 @@
         background-color: rgba(0, 0, 0, 0.6);
     }
     .popup {
-        height: 275px;
         width: 450px;
         background-color: #fff;
         .title-field {
-            line-height: 64px;
+            line-height: 55px;
             background-color: @grey-color;
-            font-size: 20px;
+            font-size: 16px;
             .title-wrapper {
                 padding: 0 20px;
                 .close-field {
                     float: right;
-                    margin: 14.5px 0;
+                    margin: 10px 0;
                     .close-btn {
                         cursor: pointer;
                         .background-norm();
-                        background-size: 20px 20px;
+                        background-size: 16px 16px;
                         height: 35px;
                         width: 35px;
                     }
@@ -40,25 +39,8 @@
             }
         }
         .content-field {
-            height: 143px;
             border-top: solid 1px @border-grey-color;
             border-bottom: solid 1px @border-grey-color;
-            .content-wrapper {
-                line-height: 32px;
-                width: 332px;
-                height: 32px;
-                margin: 55px auto;
-                p {
-                    font-size: 14px;
-                }
-                .select-field {
-                    float: right;
-                    height: 32px;
-                }
-                select {
-                    width: 255px;
-                }
-            }
         }
         .btn-field {
             .btn-wrapper {
@@ -82,10 +64,26 @@
                 }
             }
         }
-        &.property-field {
-            height: 390px;
+        &.copy-field,
+        &.move-field {
             .content-field {
-                height: auto;
+                line-height: 32px;
+                .content-wrapper {
+                    width: 332px;
+                    margin: 0 auto;
+                    .content-container {
+                        padding: 60px 0;
+                        .right-part {
+                            select {
+                                width: 255px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        &.property-field {
+            .content-field {
                 .content-wrapper {
                     margin: 30px auto;
                     width: 258px;
@@ -94,6 +92,7 @@
                     border: solid 1px @border-grey-color;
                     ul {
                         li {
+                            font-size: 14px;
                             border-bottom: solid 1px @border-grey-color;
                             cursor: pointer;
                             &:hover {
@@ -157,6 +156,94 @@
                             span.dot:before {
                                 content: "";
                                 .animation(animation-dot 2s infinite);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        &.sort-field {
+            height: auto;
+            .content-field {
+                height: auto;
+                .content-wrapper {
+                    width: 342px;
+                    margin: 0 auto;
+                    height: auto;
+                    .content-container {
+                        padding: 34px 0 30px 0;
+                        > *:not(.clear) {
+                            height: 200px;
+                        }
+                        > .left-part {
+                            .dish-field {
+                                border: solid 1px @border-grey-color;
+                                .dish-wrapper {
+                                    width: 245px;
+                                    height: 200px;
+                                    overflow: hidden;
+                                    .dish-container {
+                                        ul {
+                                            li {
+                                                cursor: pointer;
+                                                border-bottom: solid 1px @border-grey-color;
+                                                &:hover {
+                                                    background-color: @grey-color;
+                                                }
+                                                .basic-info-wrapper {
+                                                    width: 230px;
+                                                    margin: 0 auto;
+                                                    line-height: 30px;
+                                                    .name-field {
+                                                        p {
+                                                            width: 200px;
+                                                            .ellipsisWithLineNum(1);
+                                                        }
+                                                    }
+                                                    .tick-field {
+                                                        .tick {
+                                                            .background-norm();
+                                                            .background-size(14px, 14px);
+                                                            background-color: #fff;
+                                                            border: solid 1px @border-grey-color;
+                                                            margin: 7px 0;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        > .right-part {
+                            width: 64px;
+                            .oper-field {
+                                > * {
+                                    .rounded-corners(5px);
+                                    border: solid 1px @border-grey-color;
+                                    cursor: pointer;
+                                }
+                                .down-btn {
+                                    margin-top: 20px;
+                                }
+                                .btn-wrapper {
+                                    width: 28px;
+                                    margin: 0 auto;
+                                    .btn-container {
+                                        padding: 23.5px 0;
+                                        height: 42px;
+                                        .icon {
+                                            .background-norm();
+                                            .background-size(18px, 20px);
+                                            margin: 0 auto;
+                                        }
+                                        p {
+                                            line-height: 14px;
+                                            margin-top: 8px;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
