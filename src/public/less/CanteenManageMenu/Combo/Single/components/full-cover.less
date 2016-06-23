@@ -1,0 +1,167 @@
+#full-cover {
+    .hide;
+    select {
+        height: 30px;
+    }
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    .full-cover-container,
+    .full-cover-wrapper {
+        height: 100%;
+        width: 100%;
+    }
+    .full-cover-container {
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+    .popup {
+        height: 275px;
+        width: 450px;
+        background-color: #fff;
+        .title-field {
+            line-height: 64px;
+            background-color: @grey-color;
+            font-size: 20px;
+            .title-wrapper {
+                padding: 0 20px;
+                .close-field {
+                    float: right;
+                    margin: 14.5px 0;
+                    .close-btn {
+                        cursor: pointer;
+                        .background-norm();
+                        background-size: 20px 20px;
+                        height: 35px;
+                        width: 35px;
+                    }
+                }
+            }
+        }
+        .content-field {
+            height: 143px;
+            border-top: solid 1px @border-grey-color;
+            border-bottom: solid 1px @border-grey-color;
+            .content-wrapper {
+                line-height: 32px;
+                width: 332px;
+                height: 32px;
+                margin: 55px auto;
+                p {
+                    font-size: 14px;
+                }
+                .select-field {
+                    float: right;
+                    height: 32px;
+                }
+                select {
+                    width: 255px;
+                }
+            }
+        }
+        .btn-field {
+            .btn-wrapper {
+                width: 266px;
+                margin: 0 auto;
+                .btn-container {
+                    padding: 19px 0;
+                    .btn {
+                        width: 120px;
+                        padding: 0;
+                        text-align: center;
+                    }
+                    .cancel-btn {
+                        border: solid 1px @border-grey-color;
+                    }
+                    .confirm-btn {
+                        float: right;
+                        background-color: @orange-color;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+        &.property-field {
+            height: 390px;
+            .content-field {
+                height: auto;
+                .content-wrapper {
+                    margin: 30px auto;
+                    width: 258px;
+                    height: 190px;
+                    overflow: auto;
+                    border: solid 1px @border-grey-color;
+                    ul {
+                        li {
+                            border-bottom: solid 1px @border-grey-color;
+                            cursor: pointer;
+                            &:hover {
+                                background-color: @grey-color;
+                            }
+                            .property-content-wrapper {
+                                width: 100%;
+                                height: 30px;
+                                .name-field {
+                                    float: left;
+                                    margin-left: 7px;
+                                    line-height: 30px;
+                                }
+                                .tick-field {
+                                    float: right;
+                                    margin-right: 7px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        &.loading-field {
+            .animation-field {
+                .animation-wrapper {
+                    width: 250px;
+                    margin: 0 auto;
+                    .animation-container {
+                        padding: 40px 0;
+                        .logo-pic-field {
+                            width: 55px;
+                            height: 100px;
+                            margin: 0 auto;
+                            position: relative;
+                            .logo-pic {
+                                position: absolute;
+                                top: 0;
+                                left: 2.5px;
+                                .background-norm();
+                                .background-size(50px, 50px);
+                                .animation(animation-bounce 400ms cubic-bezier(0.165, 0.840, 0.440, 1.000) infinite alternate);
+                            }
+                            .shadow {
+                                width: 55px;
+                                height: 15px;
+                                position: absolute;
+                                left: 0;
+                                bottom: 0;
+                                background-color: #000;
+                                .rounded-corners(100%);
+                                opacity: 0.2;
+                                .animation(animation-shadow 400ms cubic-bezier(0.165, 0.840, 0.440, 1.000) infinite alternate);
+                            }
+                        }
+                        .word-field {
+                            margin-top: 40px;
+                            line-height: 40px;
+                            font-size: 20px;
+                            text-align: center;
+                            span.dot:before {
+                                content: "";
+                                .animation(animation-dot 2s infinite);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

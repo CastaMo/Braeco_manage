@@ -6,6 +6,8 @@ ComboListView 				= require "./View/ComboListView.js"
 HeaderView 						= require "./View/HeaderView.js"
 NewView 							= require "./View/NewView.js"
 EditView							= require "./View/EditView.js"
+CopyView 							= require "./View/CopyView.js"
+MoveView							= require "./View/MoveView.js"
 
 
 CategoryController 		= require "./Controller/CategoryController.js"
@@ -14,6 +16,8 @@ HeaderController 			= require "./Controller/HeaderController.js"
 SubitemController 		= require "./Controller/SubitemController.js"
 NewController 				= require "./Controller/NewController.js"
 EditController				= require "./Controller/EditController.js"
+CopyController 				= require "./Controller/CopyController.js"
+MoveController 				= require "./Controller/MoveController.js"
 
 
 let win = window, doc = document
@@ -67,6 +71,18 @@ let win = window, doc = document
 
 		edit-controller 			= new EditController opt 			=
 			dc-type-map-dc-options: 			dc-type-map-dc-options
+
+		copy-controller 			= new CopyController opt 			=
+			all-default-states 		:				[ 				opt 			=
+				default-category-id : 			data.categories[0].id
+			]
+
+		move-controller 			= new MoveController opt 			=
+			all-default-states 		:				[ 				opt 			=
+				default-category-id : 			data.categories[0].id
+			]
+
+
 
 		default-category-id = category-controller.get-current-category-id!
 
@@ -139,11 +155,24 @@ let win = window, doc = document
 			edit-controller 			: 			edit-controller
 			dc-type-map-dc-options: 			dc-type-map-dc-options
 
+		copy-view 						= new CopyView opt 						=
+			el-CSS-selector 			: 			"\#full-cover .copy-field"
+			copy-controller 			: 			copy-controller
+			category-controller 	: 			category-controller
+			combo-controller 			: 			combo-controller
+
+		move-view 						= new MoveView opt 						=
+			el-CSS-selector 			: 			"\#full-cover .move-field"
+			move-controller 			: 			move-controller
+			category-controller 	: 			category-controller
+			combo-controller 			: 			combo-controller
+
 	_init-page = !->
 		page-view = new PageView opt = 
 			datas 					:
 				toggle 				: 	["new", "edit", "main"]
-				cover 				: 	["copy", "move"]
+				cover 				: 	["copy", "move", "loading"]
+			full-cover-CSS-selector 		: 	"\#full-cover"
 
 			all-default-states 	: 	[
 				opt =
