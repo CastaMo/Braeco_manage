@@ -250,13 +250,16 @@ module.exports = function(passport) {
 	});
 
 
-	router.get('/Manage/Market/Promotion/Order/Data', function(req, res, next) {
-		console.log("/Manage/Market/Promotion/Order/Data");
-		setTimeout(function() {
-			res.send("var allData = '"+'{"message":"success","data":{"reduce_switch":false,"give_switch":true,"reduce_ladder":[[100,5],[150,7]],"give_ladder":[[30,"纸巾"],[70,"饮料"]]}}'+"';"+
-			"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
-		}, 0);
-	});
+// <<<<<<< HEAD
+// 	router.get('/manage/Extra/log', function(req, res) {
+// =======
+// 	router.get('/Manage/Market/Promotion/Order/Data', function(req, res, next) {
+// 		console.log("/Manage/Market/Promotion/Order/Data");
+// 		setTimeout(function() {
+// 			res.send("var allData = '"+'{"message":"success","data":{"reduce_switch":false,"give_switch":true,"reduce_ladder":[[100,5],[150,7]],"give_ladder":[[30,"纸巾"],[70,"饮料"]]}}'+"';"+
+// 			"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
+// 		}, 0);
+// 	});
 	router.post('/Dinner/Manage/Discount/:promotion/Turn/:method', function(req, res, next) {
 		var promotion = req.params.promotion;
 		var method = req.params.method;
@@ -281,13 +284,13 @@ module.exports = function(passport) {
 		}, 1000);
 	});
 
-	router.get('/Extra/log', function(req, res) {
+	router.get('/manage/Extra/log', function(req, res) {
 		res.render('./CanteenManageExtra/Log/develop');
 	});
-	router.get('/Extra/basic', function(req, res) {
+	router.get('/manage/Extra/basic', function(req, res) {
 		res.render('./CanteenManageExtra/basic/develop');
 	});
-	router.get('/Extra/download', function(req, res) {
+	router.get('/manage/Extra/download', function(req, res) {
 		res.render('./CanteenManageExtra/download/develop');
 	});
 
