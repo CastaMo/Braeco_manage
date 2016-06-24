@@ -3,6 +3,11 @@ main-manage = let
 	[get-JSON, deep-copy] = [util.get-JSON, util.deep-copy]
 	_coupons = []
 	_length = ""
+	_upsum = null
+	_upnow = null
+	_downsum = null
+	_downnow = null
+	_jumpPage = null
 	_apply-dom = $ "\.apply input"
 	_face-value-dom = $ "\._face-value"
 	_valid-period-dom = $ "\._valid-period"
@@ -24,6 +29,12 @@ main-manage = let
 	_pass-content-dom = $ "\#pass-content-field"
 	_confirm-btn-dom = $ "\.confirm-btn"
 	_confirm-cancel-btn = $ "\.confirm-cancel-btn"
+	_up-last-dom = $ "\._up .lastPage.btn"
+	_up-next-dom = $ "\._up .nextPage.btn"
+	_up-jump-dom = $ "\._up .jumpPage.btn"
+	_down-last-dom = $ "\._down .lastPage.btn"
+	_down-next-dom = $ "\._down .nextPage.btn"
+	_down-jump-dom = $ "\._down .jumpPage.btn"
 
 	class Coupon
 		(options)->
@@ -32,8 +43,17 @@ main-manage = let
 			_coupons.push @
 		init: !->
 
-	_init-all-coupon = (_get-coupon-JSON)!->
-		all-coupons = get-JSON _get-coupon-JSON!
+	_init-all-coupon = !->
+		couponArrJSON = $('#json-field').html!
+		console.log "couponArrJSON", couponArrJSON
+		_test = '{"0":[{"quantity":"1","remain":"1","cost":"1","cost_reduce":"1","description":null,"status":"1","daily":"0","max":"1","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/2eb8f0fd16faedf3c823542e1512ffb22e0e5b73.png","fun":"7","couponid":"19","indate":"2016-06-062016-06-06"},{"quantity":"3","remain":"3","cost":"3","cost_reduce":"12","description":null,"status":"0","daily":"0","max":"2","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/f86eb3aef5c7f98b14365d559e3c4acff9ff3d92.png","fun":"3","couponid":"18","indate":"3"},{"quantity":"1","remain":"1","cost":"1","cost_reduce":"1","description":null,"status":"2","daily":"0","max":"1","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/32fba3f289c338ca3d276c553aace573dad54fb1.png","fun":"7","couponid":"17","indate":"2016-06-062016-06-29"},{"quantity":"1","remain":"1","cost":"1","cost_reduce":"1","description":null,"status":"1","daily":"0","max":"1","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/0a0c6242d75b3964c79125ae54584fc5941274ba.png","fun":"3","couponid":"16","indate":"2016-06-062016-06-08"},{"quantity":"1","remain":"1","cost":"1","cost_reduce":"1","description":null,"status":"1","daily":"0","max":"1","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/2eb8f0fd16faedf3c823542e1512ffb22e0e5b73.png","fun":"7","couponid":"19","indate":"2016-06-062016-06-06"},{"quantity":"3","remain":"3","cost":"3","cost_reduce":"12","description":null,"status":"0","daily":"0","max":"2","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/f86eb3aef5c7f98b14365d559e3c4acff9ff3d92.png","fun":"3","couponid":"18","indate":"3"},{"quantity":"1","remain":"1","cost":"1","cost_reduce":"1","description":null,"status":"2","daily":"0","max":"1","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/32fba3f289c338ca3d276c553aace573dad54fb1.png","fun":"7","couponid":"17","indate":"2016-06-062016-06-29"},{"quantity":"1","remain":"1","cost":"1","cost_reduce":"1","description":null,"status":"1","daily":"0","max":"1","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/0a0c6242d75b3964c79125ae54584fc5941274ba.png","fun":"3","couponid":"16","indate":"2016-06-062016-06-08"}],"upsum":10,"upnow":1,"downsum":1}'
+		all-coupons = []
+		all-coupons = JSON.parse(couponArrJSON)[0]
+		_upsum := JSON.parse(couponArrJSON)['upsum']
+		_upnow := JSON.parse(couponArrJSON)['upnow']
+		_downsum := JSON.parse(couponArrJSON)['downsum']
+		_downnow := JSON.parse(couponArrJSON)['downnow']
+		console.log "all-coupons", all-coupons
 		for coupon in all-coupons
 			new Coupon {
 				couponid 			:		coupon.couponid
@@ -52,8 +72,10 @@ main-manage = let
 			}
 
 	_init-coupon-view = !->
+		$("._up .page").html("#{_upnow}/#{_upsum}")
+		$("._down .page").html("#{_downnow}/#{_downsum}")
 		_length = _coupons.length
-		for i from 0 to _length-1 by 1
+		for i from 0 to _length-2 by 1
 			_new-dom = $ "<div class='coupon' class='btn'>
 							<div class='coupon-identify'>
 								<span class='coupon-batch-number'></span>
@@ -69,7 +91,7 @@ main-manage = let
 			_new-dom.find(".coupon-max-use").html("最多可叠加使用#{_coupons[i].max_use}张")
 			_new-dom.find(".coupon-value").html("#{_coupons[i].cost_reduce}元（满#{_coupons[i].cost}元可用）")
 			if _coupons[i].indate.length is 20
-				_new-dom.find(".coupon-valid-period").html("#{_coupons[i].indate.substr(10)} 至 #{_coupons[i].indate.substr(10,20)}")
+				_new-dom.find(".coupon-valid-period").html("#{_coupons[i].indate.substr(0, 10)} 至 #{_coupons[i].indate.substr(10,20)}")
 			else if _coupons[i].indate.length < 10
 				_new-dom.find(".coupon-valid-period").html("领取后#{_coupons[i].indate}天有效，过期无效")
 			if _coupons[i].status == "0"
@@ -139,6 +161,32 @@ main-manage = let
 			autopick: 'true'
 		});
 		
+		_up-last-dom.click !->
+			if _upnow > 1 then _upnow--
+			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
+
+		_down-last-dom.click !->
+			if _downnow > 1 then _downnow--
+			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
+
+		_up-next-dom.click !->
+			if _upnow < _upsum then _upnow++
+			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
+
+		_down-next-dom.click !->
+			if _downnow < _downsum then _downnow++
+			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
+
+		_up-jump-dom.click !->
+			_jumpPage = $(".up ._jump-input").val!
+			if _jumpPage >= 1 and _jumpPage <= _upsum then _upnow = _jumpPage
+			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
+
+		_down-jump-dom.click !->
+			_jumpPage = $(".down ._jump-input").val!
+			if _jumpPage >= 1 and _jumpPage <= _downsum then _downnow = _jumpPage
+			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
+
 		_apply-dom.click !->
 			_apply = $(this).parent()
 			if _apply.hasClass("true")
@@ -286,8 +334,8 @@ main-manage = let
 		require_ := require "./requireManage.js"
 
 
-	initial: (_get-coupon-JSON)!->
-		_init-all-coupon _get-coupon-JSON
+	initial: !->
+		_init-all-coupon!
 		_init-coupon-view!
 		_init-depend-module!
 		_init-all-event!

@@ -31,11 +31,11 @@ main-manage = let
 								<td class = 'printerSize'></td>
 								<td>
 									<div class = 'setting-btn btn'>
-										<div class = 'test-icon'></div>
+										<div class = 'setting-icon'></div>
 										<p>设置</p>
 									</div>
 									<div class = 'switch-btn btn'>
-										<div class = 'test-icon'></div>
+										<div class = 'switch-icon'></div>
 										<p>启用</p>
 									</div>
 								</td>

@@ -1,7 +1,6 @@
 extends ../index
 
 block head
-	script(src="/Manage/Market/Coupon/Data" type="text/javascript" async='async')
 	meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
 	title Braeco
 	block css
@@ -21,8 +20,26 @@ block content
 					.color-field
 					p 运营中
 				#run-content-field
+			#page-select._up
+				.lastPage.btn
+					.last-btn-image
+				.page 1/1
+				.nextPage.btn
+					.next-btn-image
+				#jump-input
+					input._jump-input
+				.jump-btn.btn 跳转
 			#pass-coupon
 				#pass-title
 					.color-field
 					p 已过期
 				#pass-content-field
+			#page-select._down
+				.lastPage.btn
+					.last-btn-image
+				.page 1/1
+				.nextPage.btn
+					.next-btn-image
+				#jump-input
+					input._jump-input
+				.jump-btn.btn 跳转
