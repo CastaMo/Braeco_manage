@@ -105,7 +105,7 @@ class ComboListView
 		combo-dom-object.name-dom
 										.html "<p>#{combo.get-c-name!}</p><p>#{combo.get-e-name!}</p>"
 
-		if combo.get-type! is "combo_sum"
+		if combo.get-type! is "combo_static"
 			combo-dom-object.price-dom.html "#{combo.get-default-price!}元"
 		else combo-dom-object.price-dom.html "子项加总"
 

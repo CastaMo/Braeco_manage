@@ -7,5 +7,208 @@ block head
 
 '''这里是主体'''
 block content
-	p asdgfdsdfghj
+	#container
+		#container_left
+			#tables_head
+				.table_operation.select_all
+					.table_operation_img
+					span 全选
+				.table_operation.add
+					.table_operation_img
+					span 添加
+				.table_operation.edit
+					.table_operation_img
+					span 修改
+				.table_operation.export
+					.table_operation_img
+					span 导出
+				.table_operation.delete
+					.table_operation_img
+					span 删除
+			#tables_container
+				.table_qr
+					.table_qr_light
+						img(src='http://brae.co/public/images/qrcode/76ca483fef0ed27d76511219caeee015e82f57a2.png')
+						.checkbox
+						.num 01
+					.table_qr_gray
+						.checkbox.checked
+					.popup.edit
+						.arrow
+						input(type='text' name='edit_table' class='table_name')
+						.btns
+							.btn.cancle 取消
+							.btn.confirm 确认
+				.table_qr
+					.table_qr_light
+						img(src='http://brae.co/public/images/qrcode/76ca483fef0ed27d76511219caeee015e82f57a2.png')
+						.checkbox
+						.num 东南西北
+					.table_qr_gray
+						.checkbox.checked
+					.popup.edit
+						.arrow
+						input(type='text' name='edit_table' class='table_name')
+						.btns
+							.btn.cancle 取消
+							.btn.confirm 确认
+				.table_qr
+					.table_qr_light
+						img(src='http://brae.co/public/images/qrcode/76ca483fef0ed27d76511219caeee015e82f57a2.png')
+						.checkbox
+						.num A011
+					.table_qr_gray
+						.checkbox.checked
+					.popup.edit
+						.arrow
+						input(type='text' name='edit_table')
+						.btns
+							.btn.cancle 取消
+							.btn.confirm 确认
+				.table_qr
+					.table_qr_light
+						img(src='http://brae.co/public/images/qrcode/76ca483fef0ed27d76511219caeee015e82f57a2.png')
+						.checkbox
+						.num A056
+					.table_qr_gray
+						.checkbox.checked
+					.popup.edit
+						.arrow
+						input(type='text' name='edit_table' class='table_name')
+						.btns
+							.btn.cancle 取消
+							.btn.confirm 确认
+				.table_qr.add_new
+					.table_qr_light
+						.cross
+						span 添加座位
+					.table_qr_gray
+					.popup.edit
+						.arrow
+						.popup_cover
+						input(type='text' name='add_table' placeholder='请输入桌号' class='table_name')
+						.btns
+							.btn.cancle 取消
+							.btn.confirm 确认
+			#popup_cover
+			#global_message 提示！
+			#wrap
+				.wrap.batch_add
+					.wrap_head 批量添加桌位 
+						.cancle_cross
+					.wrap_content
+						.inputli
+							.input_desc 桌位数量
+							input(type='number' name='add_num' placeholder='请输入桌位数量')
+						.inputli
+							.input_desc 起始编号
+							input(type='text' name='add_start' placeholder='请输入起始桌位号' class='table_name')
+							.little_gray 比如 01，A011，最多四位哦！
+					.btns
+						.btn.cancle 取消
+						.btn.confirm 确认
+				.wrap.batch_export.batch_export1
+					.wrap_head 选择导出模板
+					.wrap_content
+						.imgli
+							.img_container
+								img(src='http://brae.co/public/images/qrcode/empty.png')
+							.span 二维码
+							span.gray
+						.imgli
+							.img_container
+								img(src='http://brae.co/public/images/qrcode/2square000.png')
+							.span 桌贴(方)
+							span.gray <br>尺寸：10 * 10 cm
+						.imgli
+							.img_container
+								img(src='http://brae.co/public/images/qrcode/2circle000.png')
+							.span 桌贴(圆)
+							span.gray <br>尺寸：10 * 10 cm
+						.imgli
+							.img_container
+								img(src='http://brae.co/public/images/qrcode/2square000.png')
+							.span 桌牌
+							span.gray 尺寸A6<br>（ 14.8 * 10.5 cm ）
+					.btns
+						.btn.cancle 取消
+						.btn.confirm 下一步
+				.wrap.batch_export.batch_export2
+					.wrap_head 选择导出模板 
+						.cancle_cross
+					.wrap_content 
+						.wrap_left
+							.inputli
+								.input_desc 支付方式
+								select(name='pay')
+									option(value='0') 仅在线支付
+									option(value='1') 在线+现金支付
+							.inputli
+								.input_desc 折扣优惠
+								select(name='discount')
+									option(value='0') 有折扣优惠
+									option(value='1') 没有折扣
+							.inputli
+								.input_desc 
+								input(type='text' name='discount_value' placeholder='请输入折扣')
+								.input_unit 折
+								.tip
+							.inputli
+								.input_desc wifi密码
+								select(name='wifi')
+									option(value='0') 有wifi密码
+									option(value='1') 仅有wifi名称
+									option(value='2') 无wifi
+							.inputli
+								.input_desc 
+								input(type='text' name='wifi_name' placeholder='请输入wifi名称')
+								.tip
+							.inputli
+								.input_desc 
+								input(type='text' name='wifi_password' placeholder='请输入wifi密码')
+								.tip
+							.inputli
+								.input_desc 导出方式
+								select(name='send_email')
+									option(value='0') 发送到邮箱
+									option(value='1') 直接下载
+							.inputli
+								.input_desc 
+								input(type='text' name='email' placeholder='请输入您的邮箱地址')
+								.tip
+						.wrap_right
+							img(src='http://brae.co/public/images/qrcode/2square000.png')
+					div(style='clear:both')
+					.btns
+						.btn.cancle 取消
+						.btn.confirm 导出
+				.wrap.batch_export.batch_export3
+					.wrap_head 导出设置 
+						.cancle_cross
+					.wrap_content
+						.wrap_left
+							img(src='http://brae.co/public/images/qrcode/empty.png')
+						.wrap_right
+							.inputli
+								.input_desc 二维码边长
+								input(type='text' name='length' )
+								.input_unit cm
+					div(style='clear:both')
+					.btns
+						.btn.cancle 取消
+						.btn.confirm 导出
+				.wrap.batch_delete
+					.wrap_head 删除桌位 
+						.cancle_cross
+					.wrap_content
+						.delete_tables 已选中<b></b>
+						br
+						span 该操作无法恢复，确认删除？
+
+					.btns
+						.btn.confirm 确认
+						.btn.cancle 取消
+
+
+
 	

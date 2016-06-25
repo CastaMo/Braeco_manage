@@ -13,9 +13,11 @@ class HeaderView
 			current-combo 			= @combo-controller.get-combo current-category-id, current-combo-id
 			@edit-controller.read-from-combo current-combo
 			eventbus.emit "view:page:toggle-page", "edit"
-		"move" 					:		!-> 
+		"move" 					:		!->
+			eventbus.emit "view:page:cover-page", "move"
 		"sort" 					:		!->
-		"copy" 					:		!-> 
+		"copy" 					:		!->
+			eventbus.emit "view:page:cover-page", "copy"
 		"able" 					:		!->
 			current-category-id 	= @category-controller.get-current-category-id!
 			combo-able 						= @header-controller.get-combo-able!

@@ -27,7 +27,8 @@ class Combo
 		@able = able
 
 	set-config: (options)!->
-		deep-copy options, @
+		options.id = @id
+		@assign options
 
 	get-c-name: -> return @c-name
 
