@@ -1,32 +1,26 @@
 @test-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAbUExURQAAAEpKSkpKSk1NTUtLS0xMTExMTEpKSk5OTm81PO0AAAAJdFJOUwD93zpTiqKlGubZFsEAAABoSURBVAjXY2BgYHBXFCphAAMnQSFFQRUQi1UwmYHBTDAAyAxUBgkYiTIwsAg1gJgcig4MTMIQHYYKDI4JECabCEOhAYTJLM6gyAAFQkAIBYrITCQFSNqQDEOyAsliJOcgOxLJ6XAPAQDK+A1r186o5gAAAABJRU5ErkJggg==";
 @open-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAMBAMAAACU11D1AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAVUExURQAAAMnIzcjIzcrIzMvLzsnJ0MjHzFs/5jcAAAAGdFJOUwDKlWpEJkTFp3cAAABMSURBVAjXY2BKgwEFBgYxKDORgYGBEcoWALJZoewAIJvBDcxMATEZmMFsAzCbQQ3ITIIwwboFoGygsYkwJkNYWiqczZLmAGczGINJAL45F6Xh/lnGAAAAAElFTkSuQmCC";
 @close-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAUBAMAAABPKxEfAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAYUExURQAAAMnIzcrIzMvLzsnJ0NLS0sjIzcjHzMiPbMIAAAAHdFJOUwDKakQmEZXNnwmFAAAAPElEQVQI12NgY4AAdlEoXegAocuLoXS5ApQug9LlolAapBREg5SCaaBSFLoYVZ0oqjkKKPbA7IW6A+ouAAQcGXMQpW2pAAAAAElFTkSuQmCC";
+@checkbox-false-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQAgMAAACNX3zMAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAJUExURf////Pz9eTk6GlTKiwAAAAXSURBVAjXY8hatWqVA0MAAwMjtUmwyQB+eA0/S/QgYAAAAABJRU5ErkJggg==";
+@checkbox-true-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAQBAMAAAACH4lsAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAVUExURcnJzcjHzP///8zL0Pb29t/e4dHR1S1JgdkAAAABdFJOU3+AXLTLAAAAQklEQVQI12NgFIQABgbcLDMYS9glEcoyUTGEsISdnEGyooEgIRArSRUkBBZTCgEKgfUGKTlDzRMFCUHMCyZkL5AFAK/LC9Jxd5N6AAAAAElFTkSuQmCC";
+@setting-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoBAMAAAB+0KVeAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAbUExURQAAAExMTEtLS1BQUEtLS0tLS0tLS05OTkpKSsvhzPcAAAAIdFJOUwA47BDLjmshrYoIUAAAASJJREFUKM+FU7FOwzAQPTckZYyz0JEEqDxWKB+A6JKxYuoYdepYNkZqmXKfzd3ZDhE9iZuSp3fn987PAFIGpWr4raLOoNlMYN9msNlOxMFbvAdYoHUhU3vEdQQPiNtM5E4BqRK1x68GwwhQOmz3kUrEnXkUMea1LiOViABpfAEgVCbOJINQjUs+3u+SN0//Dbb0vXxDfDpB/jXO08Qjy7nQNMdEa4+BJ2EguTR9uFgLRDgzcb0pDkxdEQBiZinqSMgJbgT03Y66H/jkZ+qvOkfgJ7DrkcGKNwC3CfxAsVTg9wxchWhnOP8Hqu1XB/lunEsqRRLiy1z8Ijm6tqkuRF2dumT1OtSLU69YD0OMjacZ1TDFRg+YGkU9tGq89Yfw98n8AORWnJd7uQ0QAAAAAElFTkSuQmCC";
+@switch-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAoBAMAAABk7EXQAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAeUExURQAAAEpKSk9PT0xMTEpKSkpKSltbW01NTUpKSkpKSkN9leUAAAAJdFJOUwDjGlmmvwgyhsvaNLoAAAEdSURBVCjPrZIxb8IwEIUNQYERMbTyRgUSYotAlZqtqtQhc6tW2WBgYAMkBjakTh3dQtv3b3v2+ZxrZ26x8+Xu+fklxnC14cy/uhgaHxn1HoRkuGK0RMEkr/DJqMRpEVAHODGqgPuAaFMwyvzLoIRrOXGLoDaFGwpqW3yEue/G18FPdrk3IlLZ0Hln7b6mM5dkSqGSbJfoa9SijnccNerhh4YLjTKSthhq5FeLhUY5rcDfCOkZ3JXP57ELoqUDryVJk06MvqS8r+heyrtfh2xSHfAlSUj5JGJeSZ3yIj5o0E2Y4eyjK86eegdNE6tUcFEts/wdzQo4b/ymWwMv8k/Ave0mdxbyT9AlUqXL7YW8NnZumTzpe4werXue8f4XGuqBZ64f1S4AAAAASUVORK5CYII=";
 .test-icon {
     background-image: url(@test-icon-url);
 }
 
+.setting-icon {
+    background-image: url(@setting-icon-url);
+}
+
+.switch-icon {
+    background-image: url(@switch-icon-url);
+}
+
+#tables-choose,
 #categories-choose {
-    border: 1px solid #E7E7EB;
-    position: relative;
-    right: 22px;
-    float: right;
-    height: 382px;
-    width: 247px;
-    overflow: auto;
-    li.shown-item:hover {
-        background-color: #F4F5F9;
-    }
+    li._shown-item,
     li.shown-item {
-        cursor: pointer;
-        padding-left: 10px;
-        line-height: 2.5;
-        height: 32px;
-        border-bottom: 1px solid #E7E7EB;
-        input[type=checkbox] {
-            float: right;
-            margin-top: 8px;
-            margin-right: 5px;
-        }
         &.open {
             .open-icon {
                 zoom: 50%;
@@ -39,6 +33,29 @@
                 zoom: 50%;
                 background-image: url(@close-icon-url);
                 background-position: 5px 20px;
+            }
+        }
+        ._checkbox-icon,
+        .checkbox-icon {
+            &.true {
+                background-image: url(@checkbox-true-icon-url);
+                background-position: 8px 8px;
+            }
+            &.false {
+                background-image: url(@checkbox-false-icon-url);
+                background-position: 8px 8px;
+            }
+        }
+    }
+    li.inner-shown-item {
+        .checkbox-icon {
+            &.true {
+                background-image: url(@checkbox-true-icon-url);
+                background-position: 8px 8px;
+            }
+            &.false {
+                background-image: url(@checkbox-false-icon-url);
+                background-position: 8px 8px;
             }
         }
     }

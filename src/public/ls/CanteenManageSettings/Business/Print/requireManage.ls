@@ -26,7 +26,7 @@ require-manage = let
 		}
 
 	_correct-URL = {
-		"modify"		:		(ajax-object,data)-> ajax-object.url += ""
+		"modify"		:		(ajax-object,data)-> ajax-object.url += "/#{data.printer-id}"
 	}
 
 	_set-header = {}

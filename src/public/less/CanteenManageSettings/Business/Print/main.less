@@ -41,10 +41,13 @@
                         padding-left: 10px;
                         padding-right: 10px;
                     }
-                    .test-icon {
-                        margin-left: 20px;
-                        height: 20px;
-                        width: 20px;
+                    .setting-icon,
+                    .switch-icon {
+                        background-repeat: no-repeat;
+                        zoom: 50%;
+                        margin-left: 40px;
+                        height: 40px;
+                        width: 40px;
                     }
                 }
                 p {
@@ -64,10 +67,11 @@
                 }
             }
             #modify-content {
-                height: 755px;
+                height: 1200px;
                 border: 1px solid #E7E7EB;
                 border-top-width: 0;
                 input {
+                    border: 1px solid #E7E7EB;
                     padding-left: 5px;
                     color: #4A4A4A;
                     font-family: Hiragino Sans GB, Microsoft Yahei, sans-serif;
@@ -76,6 +80,7 @@
                     font-size: 14px;
                 }
                 select {
+                    border: 1px solid #E7E7EB;
                     padding-left: 5px;
                     color: #4A4A4A;
                     font-family: Hiragino Sans GB, Microsoft Yahei, sans-serif;
@@ -107,13 +112,22 @@
                 #printFont {
                     padding: 30px 0 0 30px;
                 }
+                #printTable,
                 #printBranch {
                     padding: 30px 0 0 30px;
                     width: 370px;
+                    height: 400px;
+                    ._tableTip,
+                    ._branchTip {
+                        float: left;
+                        height: 15px;
+                        margin: 5px 0 10px 0;
+                    }
                     input {
                         height: 16px;
                         width: 16px;
                     }
+                    #tables-choose,
                     #categories-choose {
                         border: 1px solid #E7E7EB;
                         position: relative;
@@ -122,6 +136,7 @@
                         height: 382px;
                         width: 247px;
                         overflow: auto;
+                        li.inner-shown-item:hover,
                         li.shown-item:hover {
                             background-color: #F4F5F9;
                         }
@@ -131,10 +146,17 @@
                             line-height: 2.5;
                             height: 32px;
                             border-bottom: 1px solid #E7E7EB;
-                            input[type=checkbox] {
+                            .checkbox-icon {
+                                background-repeat: no-repeat;
                                 float: right;
-                                margin-top: 8px;
-                                margin-right: 5px;
+                                height: 30px;
+                                width: 30px;
+                                input[type=checkbox] {
+                                    opacity: 0;
+                                    float: right;
+                                    margin-top: 8px;
+                                    margin-right: 5px;
+                                }
                             }
                             .open-icon {
                                 margin-right: 10px;
@@ -143,16 +165,26 @@
                                 width: 30px;
                                 background-repeat: no-repeat;
                             }
+                            &._all {
+                                cursor: default;
+                            }
                         }
                         li.inner-shown-item {
                             padding-left: 45px;
                             line-height: 2.5;
                             height: 32px;
                             border-bottom: 1px solid #E7E7EB;
-                            input[type=checkbox] {
+                            .checkbox-icon {
+                                background-repeat: no-repeat;
                                 float: right;
-                                margin-top: 8px;
-                                margin-right: 5px;
+                                height: 30px;
+                                width: 30px;
+                                input[type=checkbox] {
+                                    opacity: 0;
+                                    float: right;
+                                    margin-top: 8px;
+                                    margin-right: 5px;
+                                }
                             }
                         }
                     }
