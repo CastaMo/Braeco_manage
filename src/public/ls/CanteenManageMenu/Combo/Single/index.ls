@@ -8,6 +8,7 @@ NewView 							= require "./View/NewView.js"
 EditView							= require "./View/EditView.js"
 CopyView 							= require "./View/CopyView.js"
 MoveView							= require "./View/MoveView.js"
+SortView 							= require "./View/SortView.js"
 
 
 CategoryController 		= require "./Controller/CategoryController.js"
@@ -18,6 +19,7 @@ NewController 				= require "./Controller/NewController.js"
 EditController				= require "./Controller/EditController.js"
 CopyController 				= require "./Controller/CopyController.js"
 MoveController 				= require "./Controller/MoveController.js"
+SortController 				= require "./Controller/SortController.js"
 
 
 let win = window, doc = document
@@ -82,6 +84,8 @@ let win = window, doc = document
 				default-category-id : 			data.categories[0].id
 			]
 
+		sort-controller 			= new SortController
+
 
 
 		default-category-id = category-controller.get-current-category-id!
@@ -106,6 +110,7 @@ let win = window, doc = document
 			header-controller 		: 			header-controller
 			new-controller 				: 			new-controller
 			edit-controller 			: 			edit-controller
+			sort-controller 			: 			sort-controller
 			el-CSS-selector 			: 			"div.combo-oper"
 			all-default-states 		: 			[ 				opt 			=
 				[
@@ -167,11 +172,15 @@ let win = window, doc = document
 			category-controller 	: 			category-controller
 			combo-controller 			: 			combo-controller
 
+		sort-view 						= new SortView opt 						=
+			el-CSS-selector 			: 			"\#full-cover .sort-field"
+			sort-controller 			: 			sort-controller
+
 	_init-page = !->
 		page-view = new PageView opt = 
 			datas 					:
 				toggle 				: 	["new", "edit", "main"]
-				cover 				: 	["copy", "move", "loading"]
+				cover 				: 	["copy", "move", "loading", "sort"]
 			full-cover-CSS-selector 		: 	"\#full-cover"
 
 			all-default-states 	: 	[

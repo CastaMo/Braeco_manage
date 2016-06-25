@@ -49,7 +49,19 @@ class CopyView
 	confirm-btn-click-event: !->
 		current-combo-ids = @combo-controller.get-current-combo-ids!
 		current-category-id = @copy-controller.get-current-category-id!
-		@copy-controller.require-for-copy current-combo-ids, current-category-id, (result)!-> window.location.reload!
+		@copy-controller.require-for-copy current-combo-ids,
+																			current-category-id,
+																			(result)!~> @success-callback result.result
+
+	success-callback: (new-combo-id-map-by-old-combo-id)!->
+		old-category-id = @category-controller.get-current-category-id!
+		new-category-id = @copy-controller.get-current-category-id!
+		current-combo-ids = @combo-controller.get-current-combo-ids!
+		for combo-id in current-combo-ids
+			new-combo-id = new-combo-id-map-by-old-combo-id[combo-id]
+			@combo-controller.copy-combo old-category-id, new-category-id, combo-id, new-combo-id
+		@combo-controller.set-is-all-choose old-category-id, false
+		eventbus.emit "view:page:cover-page", "exit"
 
 	create-select-option-dom: (category-name)!->
 		return select-option-dom = $ "<option value='#{category-name}'>#{category-name}</option>"

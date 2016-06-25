@@ -14,6 +14,8 @@ module.exports = function(router) {
 
   router.post('/Dish/Copy', getCallbackHandleForRequest("POST"));
 
+  router.post('/Dish/Sort', getCallbackHandleForRequest("POST"));
+
   router.post('/Dish/Update/Top', getCallbackHandleForRequest("POST"));
 
   router.post('/Dish/Update/Category', getCallbackHandleForRequest("POST"));

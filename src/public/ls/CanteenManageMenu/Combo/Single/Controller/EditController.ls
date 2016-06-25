@@ -95,12 +95,14 @@ class EditController
 		if @upload-pic-flag
 			callback = !~> @request-for-upload-pic !~> @success-callback category-id
 		else callback = !~> @success-callback category-id
+		eventbus.emit "view:page:cover-page", "loading"
 		require_.get("edit").require {
 			data 			: 		{
 				JSON 					:			JSON.stringify(@config-data)
 				dish-id 			: 		@id
 			}
 			success 	: 		(result)!~> callback!
+			always 		: 		!-> eventbus.emit "view:page:cover-page", "exit"
 		}
 
 	request-for-upload-pic: (callback)!->
@@ -109,6 +111,7 @@ class EditController
 
 		check-is-already-and-upload = !~>
 			if base64-str and data.token and data.key
+				eventbus.emit "view:page:cover-page", "loading"
 				require_.get("picUpload").require {
 					data 			:		{
 						fsize 	: 	-1
@@ -122,9 +125,11 @@ class EditController
 						data 								:= {}
 						console.log "success"
 						callback?!
+					always 		:		!-> eventbus.emit "view:page:cover-page", "exit"
 				}
 
 		if @pic
+			eventbus.emit "view:page:cover-page", "loading"
 			require_.get("picUploadPre").require {
 				data 		: 		{
 					id 		: 		@id
@@ -134,6 +139,7 @@ class EditController
 					data.key 			= 		result.key
 					console.log "token ready"
 					check-is-already-and-upload!
+				always	:			!-> eventbus.emit "view:page:cover-page", "exit"
 			}
 
 		if @pic then converImgTobase64 @pic, (data-URL)!->
