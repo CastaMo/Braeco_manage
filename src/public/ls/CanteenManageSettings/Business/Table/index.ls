@@ -1,8 +1,13 @@
 let win = window, doc = document
+	_get-JSON = null
+
+	_init-all-get-JSON-func = (data)->
+		_get-JSON 		:= -> return data
 
 	_init-callback = {
 		"Need to rescan qrcode" 	:	->	win.location.pathname = "/Table/Confirm/rescan"
 		"success" 					:	(result)->
+			_init-all-get-JSON-func result.data
 			_init-all-module()
 	}
 
