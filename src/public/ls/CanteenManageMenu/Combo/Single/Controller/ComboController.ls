@@ -136,20 +136,24 @@ class ComboController
 	require-for-set-able-for-current-combos: (category-id, able)!->
 		if able then flag = 1
 		else flag = 0
+		eventbus.emit "view:page:cover-page", "loading"
 		require_.get("able").require {
 			data 			: 			{
 				JSON		: 			JSON.stringify(@current-combo-ids)
 				flag 		:				flag				
 			}
 			success 	:				(result)!~> @set-able-for-current-combos category-id, able
+			always 		:				!-> eventbus.emit "view:page:cover-page", "exit"
 		}
 
 	require-for-remove-for-current-combos: (category-id)!->
+		eventbus.emit "view:page:cover-page", "loading"
 		require_.get("remove").require {
 			data 			: 			{
 				JSON 		:				JSON.stringify(@current-combo-ids)
 			}
 			success 	: 			(result)!~> @remove-for-current-combos category-id
+			always 		:				!-> eventbus.emit "view:page:cover-page", "exit"
 		}
 
 

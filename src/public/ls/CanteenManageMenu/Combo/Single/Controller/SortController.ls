@@ -67,11 +67,13 @@ class SortController
 		eventbus.emit "controller:sort:read-from-dishes", @dishes
 
 	require-for-sort: (dish-ids, callback)!->
+		eventbus.emit "view:page:cover-page", "loading"
 		require_.get("sort").require {
 			data 			:				{
 				JSON 		:				JSON.stringify(dish-ids)
 			}
 			success 	:				callback
+			always 		:				!-> eventbus.emit "view:page:cover-page", "exit"
 		}
 
 
