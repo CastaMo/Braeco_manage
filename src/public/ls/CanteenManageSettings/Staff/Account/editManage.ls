@@ -91,6 +91,10 @@ edit-manage = let
             error-message.push "请输入姓名"
         if phone === ''
             error-message.push "请输入电话号码"
+        if phone !== ''
+            re = /(^(13\d|15[^4,\D]|17[13678]|18\d)\d{8}|170[^346,\D]\d{7})$/
+            if not re.test(phone)
+                error-message.push "电话号码格式不正确"
         if password === ''
             error-message.push "请输入密码"
         if role === 'default'
