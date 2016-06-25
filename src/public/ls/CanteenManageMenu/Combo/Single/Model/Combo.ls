@@ -1,8 +1,3 @@
-eventbus 		= require "../eventbus.js"
-
-[ 		deep-copy] = 
-	[		util.deep-copy]
-
 class Combo
 
 	(options)->
@@ -53,6 +48,22 @@ class Combo
 	get-type: -> return @type
 
 	get-id: -> return @id
+
+	get-copy-config-for-construct: ->
+		return config = 
+			able 						:			@able
+			dc 							:			@dc
+			dc_type 				:			@dc-type
+			default_price 	:			@default-price
+			detail 					:			@detail
+			groups 					:			@groups
+			require 				: 		@require
+			id 							:			@id
+			name 						: 		@c-name
+			name2 					:			@e-name
+			pic 						:			@pic
+			type 						:			@type
+			tag 						:			@tag
 
 
 module.exports = Combo

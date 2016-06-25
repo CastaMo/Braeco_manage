@@ -1,4 +1,5 @@
 require_ = require "../requireManage.js"
+eventbus = require "../eventbus.js"
 
 class CopyController
 	(options)->
@@ -29,12 +30,13 @@ class CopyController
 			for id in current-combo-ids
 				request-object[id] = new-category-id
 			return JSON.stringify request-object
-
+		eventbus.emit "view:page:cover-page", "loading"
 		require_.get("copy").require {
 			data 				:		 	{
 				JSON 			:			_get-upload-JSON-for-copy current-combo-ids, new-category-id
 			}
 			success 		: 		callback
+			always 			:			!-> eventbus.emit "view:page:cover-page", "exit"
 		}
 
 module.exports = CopyController
