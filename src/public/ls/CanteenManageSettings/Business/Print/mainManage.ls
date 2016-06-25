@@ -10,6 +10,7 @@ main-manage = let
 	_cancel-btn-dom = $ "\.cancel-btn"
 	_save-btn-dom = $ "\.save-btn"
 	_printCut-dom = $ "\._printCut"
+	_test-dom = $ "\.test-btn"
 
 	_init-JSON = (_get-JSON)!->
 		all = get-JSON _get-JSON!
@@ -36,7 +37,7 @@ main-manage = let
 									</div>
 									<div class = 'switch-btn btn'>
 										<div class = 'switch-icon'></div>
-										<p>启用</p>
+										<p></p>
 									</div>
 								</td>
 							</tr>"
@@ -46,12 +47,37 @@ main-manage = let
 				_new-printer.find(".printerSeparate").html("是")
 			else if printer[i].separate is false
 				_new-printer.find(".printerSeparate").html("否")
+			if printer[i].able is true
+				_new-printer.find(".switch-icon").removeClass("able-icon")
+				_new-printer.find(".switch-icon").addClass("unable-icon")
+				_new-printer.find(".switch-btn p").html("停用")
+			else if printer[i].able is false
+				_new-printer.find(".switch-icon").removeClass("unable-icon")
+				_new-printer.find(".switch-icon").addClass("able-icon")
+				_new-printer.find(".switch-btn p").html("启用")
+				_new-printer.find
 			_new-printer.find(".printerPage").html("#{printer[i].page}联")
 			if printer[i].size is 0
 				_new-printer.find(".printerSize").html("小")
 			else if printer[i].size is 1
 				_new-printer.find(".printerSize").html("大")
 			$('#Info').last().append _new-printer
+			_new-printer.find(".switch-btn").click !->
+				request-object = {}
+				_hrefID = Number($(@).parent().parent().find(".printerID").html!)
+				if $(@).find("p").html() is "启用"
+					_able = 1
+				else if $(@).find("p").html() is "停用"
+					_able = 0
+				require_.get("able").require {
+					data 			:		{
+						JSON 		:		JSON.stringify(request-object)
+						able 		:		_able
+						printer-id 	:		_hrefID;
+					}
+					callback 		:		(result)!-> window.location.reload!
+				}
+				request-object.id = Number($(@).parent().parent().find(".printerID").html!)
 			_new-printer.find(".setting-btn").click !->
 				checkedBan = $(@).parent().parent().find(".printerID").html!
 				console.log "checkedBan", checkedBan
@@ -231,6 +257,14 @@ main-manage = let
 				page.toggle-page "modify"
 
 	_init-all-event = !->
+		_test-dom.click !->
+			request-object = {}
+			require_.get("test").require {
+				data 		:		{
+					JSON 	:		JSON.stringify(request-object)
+				}
+				callback 	:		(result)!-> location.reload!
+			}
 		_printCut-dom.change !->
 			if $("._printCut").val() is "true"
 				$("._printFont").val(1)
@@ -294,7 +328,7 @@ main-manage = let
 					JSON 	:		JSON.stringify(request-object)
 					printer-id:		Number($("._printID").html!)
 				}
-				success 	:		(result)!-> location.reload!
+				callback 	:		(result)!-> location.reload!
 			}
 			
 

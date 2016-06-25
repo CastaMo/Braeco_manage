@@ -72,10 +72,10 @@ main-manage = let
 			}
 
 	_init-coupon-view = !->
-		$("._up .page").html("#{_upnow}/#{_upsum}")
-		$("._down .page").html("#{_downnow}/#{_downsum}")
 		_length = _coupons.length
-		for i from 0 to _length-2 by 1
+		for i from 0 to _length-1 by 1
+			$("._up .page").html("#{_upnow}/#{_upsum}")
+			$("._down .page").html("#{_downnow}/#{_downsum}")
 			_new-dom = $ "<div class='coupon' class='btn'>
 							<div class='coupon-identify'>
 								<span class='coupon-batch-number'></span>
@@ -151,7 +151,6 @@ main-manage = let
 						$("._pre-apply-area").html(_fun)
 						$("._pre-multiple-use").html("每笔订单最多同时叠加使用#{_coupons[j].max_use}张")
 						$("._QRcode").attr("src", "#{_coupons[j].url}")
-						
 				page.toggle-page "detail"
 
 	_init-all-event = !->
@@ -328,6 +327,13 @@ main-manage = let
 		_date-period-end-dom.change !->
 			$("._date-period-tip").html("有效期：#{_date-period-start-dom.val!} 至 #{_date-period-end-dom.val!}")
 
+	time-out-id = ''
+	show-global-message = (str)->
+		ob = $ '#global_message'
+		ob.show!
+		ob.html str
+		clearTimeout time-out-id
+		time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
 
 	_init-depend-module = !->
 		page := require "./pageManage.js"
