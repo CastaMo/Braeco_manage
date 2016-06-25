@@ -75,7 +75,6 @@ refund-manage = let
             current-sum += parse-int j-cur-td.text!
             index += 1
         current-sum
-            
     
     _set-comfirm-button-disable = !->
         comfirm-button = $ ".refund-block .comfirm-btn"
@@ -162,8 +161,7 @@ refund-manage = let
         else
             _set-comfirm-button-disable!
             _password-block-disappear!
-            
-        
+    
     _password-comfirm-btn-click-event = !->
         description = ($ "\#description-input").val!
         password = ($ "\#password-input").val!
@@ -231,7 +229,7 @@ refund-manage = let
         <tr>
         <td class='table-cat-col'>项目</td>
         <td class='table-num-col'>数量</td>
-        <td class='table-pri-col'>单价</td>
+        <td class='table-pri-col'>单价（元）</td>
         </tr>
         </thead>"
         for single-food in _data-obj.content
@@ -245,7 +243,7 @@ refund-manage = let
         row-dom = $ "<tr></tr>"
         row-dom.append "<td class='id-td' style='display: none'>"+single-food.id+"</td>"
         td-name = $ "<td class='table-cat-col cat-td'>"+single-food.name+"</td>"
-        if single-food.property.length > 0
+        if single-food.property.length > 0 and single-food.type === 0
             td-name.append $ "<span class='sub-food-item'>"+'（'+(single-food.property.join '、')+"）"+"</span>"
         row-dom.append td-name
         row-dom.append _gene-food-table-num-col single-food.sum
