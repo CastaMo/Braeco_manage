@@ -1,7 +1,16 @@
 @import "../main";
 @import "./components/animation";
 
-
-
-
-@import "./components/full-cover";
+#subitem {
+	color: #4A4A4A;
+	font-size: 14px;
+	.subitem-wrapper {
+		width: 712px;
+		margin: 0 auto;
+		.subitem-container {
+			padding: 28px 0;
+			@import "./components/subitem-main";
+			@import "./components/full-cover";
+		}
+	}
+}

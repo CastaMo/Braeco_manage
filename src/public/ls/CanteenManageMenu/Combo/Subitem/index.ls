@@ -47,7 +47,6 @@ let win = window, doc = document
 					class-name 	: 	"choose"
 			]
 		}
-		console.log page-view
 
 
 
