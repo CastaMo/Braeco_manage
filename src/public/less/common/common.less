@@ -477,6 +477,55 @@ a {
                         margin-left: 50px !important;
                     }
                 }
+
+                .waiter-image-container {
+                    background-image: url(@waiter-grey-pic-url);
+                }
+                #waiter:hover {
+                    .waiter-image-container {
+                        background-image: url(@waiter-yellow-pic-url);
+                    }
+                }
+                .install-image-container {
+                    background-image: url(@install-grey-pic-url);
+                }
+                #install:hover {
+                    .install-image-container {
+                        background-image: url(@install-yellow-pic-url);
+                    }
+                }
+                .setting-image-container {
+                    background-image: url(@setting-grey-pic-url);
+                }
+                #setting:hover {
+                    .setting-image-container {
+                        background-image: url(@setting-yellow-pic-url);
+                    }
+                }
+                .sorts-image-container {
+                    background-image: url(@sorts-grey-pic-url);
+                }
+                #sorts:hover {
+                    .sorts-image-container {
+                        background-image: url(@sorts-yellow-pic-url);
+                    }
+                }
+                .dishes-image-container {
+                    background-image: url(@dishes-grey-pic-url);
+                }
+                #dishes:hover {
+                    .dishes-image-container {
+                        background-image: url(@dishes-yellow-pic-url);
+                    }
+                }
+                .package-image-container {
+                    background-image: url(@package-grey-pic-url);
+                }
+                #package:hover {
+                    .package-image-container {
+                        background-image: url(@package-yellow-pic-url);
+                    }
+                }
                 .content-step-block {
                     .step-header {
                         margin-left: 30px;
@@ -485,6 +534,7 @@ a {
                     }
                     .step-content {
                         cursor: pointer;
+                        display: block;
                         width: 320px;
                         height: 100px;
                         margin-left: 30px;
@@ -524,42 +574,7 @@ a {
                             background-position: center;
                             background-repeat: no-repeat;
                         }
-                        .waiter-grey-image-container {
-                            background-image: url(@waiter-grey-pic-url);
-                        }
-                        .waiter-yellow-image-container {
-                            background-image: url(@waiter-yellow-pic-url);
-                        }
-                        .install-grey-image-container {
-                            background-image: url(@install-grey-pic-url);
-                        }
-                        .install-yellow-image-container {
-                            background-image: url(@install-yellow-pic-url);
-                        }
-                        .setting-grey-image-container {
-                            background-image: url(@setting-grey-pic-url);
-                        }
-                        .setting-yellow-image-container {
-                            background-image: url(@setting-yellow-pic-url);
-                        }
-                        .sorts-grey-image-container {
-                            background-image: url(@sorts-grey-pic-url);
-                        }
-                        .sorts-yellow-image-container {
-                            background-image: url(@sorts-yellow-pic-url);
-                        }
-                        .dishes-grey-image-container {
-                            background-image: url(@dishes-grey-pic-url);
-                        }
-                        .dishes-yellow-image-container {
-                            background-image: url(@dishes-yellow-pic-url);
-                        }
-                        .package-grey-image-container {
-                            background-image: url(@package-grey-pic-url);
-                        }
-                        .package-yellow-image-container {
-                            background-image: url(@package-yellow-pic-url);
-                        }
+                        
                     }
                     .step-content:hover {
                         background-color: #fffcf6;
@@ -585,4 +600,7 @@ a {
             }
         }
     }
+}
+#full-cover {
+    z-index: 999;
 }
