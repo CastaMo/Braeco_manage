@@ -12,6 +12,8 @@ class Subitem extends Base
 		@name 			= options.name
 		@remark 		= options.remark
 		@type 			= options.type
+		@price 			= options.price
+		@discount 	= options.discount
 
 
 
@@ -35,6 +37,8 @@ class SubitemModel extends MBase
 				name 					:			data.name
 				remark 				:			data.remark
 				type 					:			data.type
+				price 				:			data.price 		|| 0
+				discount 			: 		data.discount || 0
 			}
 		console.log @all-subitems
 

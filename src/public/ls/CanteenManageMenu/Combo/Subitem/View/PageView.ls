@@ -23,9 +23,10 @@ class PageView extends VBase
 			@all-cover-doms[cover-name] = @full-cover-dom.find ".#{cover-name}-field"
 
 	init-all-event: !->
-		eventbus.on "view:page:toggle-change", (toggle-name)!~> @toggle-page toggle-name
 
-		eventbus.on "view:page:cover-change", (cover-name)!~> @cover-page cover-name
+		eventbus.on "model:page:toggle-change", (toggle-name)!~> @toggle-page toggle-name
+
+		eventbus.on "model:page:cover-change", (cover-name)!~> @cover-page cover-name
 
 	set-default-state: !->
 		for default-state in @all-default-states

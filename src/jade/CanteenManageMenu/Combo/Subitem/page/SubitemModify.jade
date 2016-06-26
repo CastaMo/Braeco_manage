@@ -1,0 +1,68 @@
+#subitem-modify
+	.s-table.left-right-border
+		.s-head.top-bottom-border
+			.s-head-wrapper
+				.s-head-container
+					.head-field
+						p 修改子项
+		.s-basic
+			.s-basic-wrapper
+				.s-basic-container
+					.warn-field
+						.warn-warpper.s-wrapper
+							p 带 * 号的为必填项
+					.name-field
+						.name-wrapper.s-wrapper
+							.left-part
+								p 名称 *
+							.right-part
+								input(type="text" id="input-name")
+							.clear
+					.remark-field
+						.remark-wrapper.s-wrapper
+							.left-part
+								p 备注
+							.right-part
+								input(type="text" id="input-remark")
+							.clear
+		.s-extend.top-bottom-border
+			.s-extend-wrapper
+				.s-extend-container
+					.price-field
+						.price-wrapper.s-wrapper
+							.left-part
+								p 计价方式 *
+							.right-part
+								select(id="select-type")
+									option(value='static') 固定价格
+									option(value='discount') 折扣价格
+								.addition
+									span :
+									input(type="number" id="input-price" step="1" value="1")
+								.clear
+							.clear
+					.dish-field
+						.dish-wrapper.s-wrapper
+							.left-part
+								p 包含单品 *
+							.right-part
+								.dish-elem
+									.dish-elem-wrapper
+										.dish-elem-container
+											.all-choose.choose-elem
+												.choose-elem-wrapper
+													.choose-elem-container
+														.left-part
+															p 全部单品
+														.right-part
+															.tick
+														.clear
+							.clear
+		.s-oper
+			.s-oper-wrapper
+				.s-oper-container.parallel-container
+					.cancel-btn
+						p 取消
+					.confirm-btn
+						p 保存
+					.clear
