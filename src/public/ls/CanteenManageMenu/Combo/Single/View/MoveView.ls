@@ -49,7 +49,18 @@ class MoveView
 	confirm-btn-click-event: !->
 		current-combo-ids = @combo-controller.get-current-combo-ids!
 		current-category-id = @move-controller.get-current-category-id!
-		@move-controller.require-for-move current-combo-ids, current-category-id, (result)!-> window.location.reload!
+		@move-controller.require-for-move current-combo-ids,
+																			current-category-id,
+																			(result)!~> @success-callback!
+
+	success-callback: !->
+		old-category-id = @category-controller.get-current-category-id!
+		new-category-id = @move-controller.get-current-category-id!
+		current-combo-ids = @combo-controller.get-current-combo-ids!
+		for combo-id in current-combo-ids
+			@combo-controller.move-combo old-category-id, new-category-id, combo-id
+		@combo-controller.set-is-all-choose old-category-id, false
+		eventbus.emit "view:page:cover-page", "exit"
 
 	create-select-option-dom: (category-name)!->
 		return select-option-dom = $ "<option value='#{category-name}'>#{category-name}</option>"

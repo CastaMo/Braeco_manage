@@ -3,7 +3,7 @@
     .staff-form
         p.form-description 带 * 号的为必填项
         .input-field
-             p 店员名字 *
+             p 店员姓名 *
              input(type="text" name="name")
         .input-field
             p 性别 *
@@ -13,10 +13,11 @@
         .input-field
             p 手机 *
             input(type="text" name="phone" readOnly)
-        .input-field
-            p 修改密码 *
-            input(type="password" name="password")
-            //- button.reset-password-btn 重置密码
+            button.reset-password-btn 重置密码
+        //-.input-field
+        //-    p 修改密码 *
+        //-    input(type="password" name="password")
+        //-    button.reset-password-btn 重置密码
         .input-field
             p 角色 *
             select(name="role")

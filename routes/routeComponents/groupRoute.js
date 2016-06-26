@@ -6,6 +6,10 @@ module.exports = function(router) {
     res.render('./CanteenManageMenu/Food/Property/develop');
   });
 
+  router.get('/Manage/Menu/Combo/Subitem', function(req, res) {
+    res.render('./CanteenManageMenu/Combo/Subitem/develop');
+  });
+
   router.post('/Dish/Group/Add', function(req, res) {
     res.json({
       message   :     "success",

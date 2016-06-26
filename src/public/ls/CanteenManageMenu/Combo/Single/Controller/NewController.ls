@@ -97,12 +97,14 @@ class NewController
 		if @upload-pic-flag
 			callback = !~> @request-for-upload-pic !~> @success-callback category-id
 		else callback = !~> @success-callback category-id
+		eventbus.emit "view:page:cover-page", "loading"
 		require_.get("add").require {
 			data 			: 		{
 				JSON 					:			JSON.stringify(@config-data)
 				category-id 	: 		category-id
 			}
 			success 	: 		(result)!~> @config-data.id = result.id; callback!
+			always 		:			!-> eventbus.emit "view:page:cover-page", "exit"
 		}
 
 	request-for-upload-pic: (callback)!->
@@ -111,6 +113,7 @@ class NewController
 
 		check-is-already-and-upload = !~>
 			if base64-str and data.token and data.key
+				eventbus.emit "view:page:cover-page", "loading"
 				require_.get("picUpload").require {
 					data 			:		{
 						fsize 	: 	-1
@@ -124,9 +127,11 @@ class NewController
 						data 								:= {}
 						console.log "success"
 						callback?!
+					always 		: 	!-> eventbus.emit "view:page:cover-page", "exit"
 				}
 
 		if @pic
+			eventbus.emit "view:page:cover-page", "loading"
 			require_.get("picUploadPre").require {
 				data 		: 		{
 					id 		: 		@config-data.id
@@ -136,6 +141,7 @@ class NewController
 					data.key 			= 		result.key
 					console.log "token ready"
 					check-is-already-and-upload!
+				always 	:			!-> eventbus.emit "view:page:cover-page", "exit"
 			}
 
 		if @pic then converImgTobase64 @pic, (data-URL)!->
