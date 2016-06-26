@@ -70,21 +70,49 @@ class SubitemModifyModel extends MBase
 	set-config-data: (config-data)!->
 		@config-data = config-data
 
-	get-config-data: -> return @config-data
+	get-config-data-for-upload: ->
+		result = {}
+		obj = {}
+		if @state is "edit" then result.group-id = @id
+		obj.type = "combo"
+		if @config-data.type is "discount_combo" then obj.discount = @config-data.num
+		else obj.price = @config-data.num
+		obj.combo_type = @config-data.type.split("_").shift!
+		obj.name = @config-data.name
+		obj.remark = @config-data.remark
+		obj.content = @all-choose-dish-ids
+		result.JSON = JSON.stringify obj
+		return result
+
+	get-config-data-for-callback: ->
+		obj = {}
+		if @state is "edit" then obj.id = @id
+
+		if @config-data.type is "discount_combo" then obj.discount = @config-data.num
+		else obj.price = @config-data.num
+
+		obj.type = @config-data.type
+		obj.name = @config-data.name
+		obj.remark = @config-data.remark
+		obj.content = @all-choose-dish-ids
+		return obj
 
 	check-self-config-data-is-valid: ->
 		err-msg = ""; valid-flag = true
 		if @config-data.name.length <= 0 or @config-data.name.length > 32 then err-msg += "子项名称长度应为1~32位\n"; valid-flag = false
 		if @config-data.remark.length > 32 then err-msg += "子项备注长度应为0~32位\n"; valid-flag = false
-		if @config-data.combo-type is "discount"
-			if Number @config-data.price < 0 or Number @config-data.price > 10000 then err-msg += "子项折扣应为0~10000"; valid-flag = false
+		if @config-data.type is "discount_combo"
+			if Number @config-data.num < 0 or Number @config-data.num > 10000 then err-msg += "子项折扣应为0~10000"; valid-flag = false
 		else
-			if Number @config-data.discount < 0 or Number @config-data.discount > 100000 then err-msg += "子项价格应为0~100000元"; valid-flag = false
-		if @config-data.content.length < 0 then err-msg += "子项需选择至少一个单品"; valid-flag = false
+			if Number @config-data.num < 0 or Number @config-data.num > 100000 then err-msg += "子项价格应为0~100000元"; valid-flag = false
+		if @all-choose-dish-ids.length <= 0 then err-msg += "子项需选择至少一个单品"; valid-flag = false
 		if not valid-flag then alert err-msg
 		return valid-flag
 
 	reset: !->
+		@id 												= null
+		@config-data 								= null
+		@all-choose-dish-ids.length = 0
 		@set-is-all-choose false
 		for category-id, category-is-active of @is-category-active
 			@set-is-category-active category-id, false

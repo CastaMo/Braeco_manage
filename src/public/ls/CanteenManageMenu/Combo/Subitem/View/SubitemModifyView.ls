@@ -53,19 +53,16 @@ class SubitemModifyView extends VBase
 
 		for let category-id, category-dom of @all-category-doms
 			category-dom.click !~>
-				is-active = @subitem-modify-controller.get-is-category-active category-id
-				@subitem-modify-controller.set-is-category-active category-id, !is-active
+				@subitem-modify-controller.toggle-is-category-active category-id
 
 			category-dom.find(".right-part").click (e)!~>
-				is-choose = @subitem-modify-controller.get-is-category-choose category-id
-				@subitem-modify-controller.set-is-category-choose category-id, !is-choose
+				@subitem-modify-controller.toggle-is-category-choose category-id
 				return false
 
 		for let category-id, dish-doms of @all-dish-doms
 			for let dish-id, dish-dom of dish-doms
 				dish-dom.click !~>
-					is-choose = @subitem-modify-controller.get-is-dish-choose category-id, dish-id
-					@subitem-modify-controller.set-is-dish-choose category-id, dish-id, !is-choose
+					@subitem-modify-controller.toggle-is-dish-choose category-id, dish-id
 
 		eventbus.on "model:subitem-modify:is-all-choose-change", (is-choose)!~>
 			@change-choose-for-all-choose is-choose
@@ -79,18 +76,28 @@ class SubitemModifyView extends VBase
 		eventbus.on "model:subitem-modify:is-dish-choose-change", (category-id, dish-id, is-choose)!~>
 			@change-choose-for-dish category-id, dish-id, is-choose
 
+		eventbus.on "model:subitem-modify:state-change", (state)!~>
+			@change-title-by-state state
+
 		eventbus.on "model:subitem-modify:read-from-subitem", (subitem)!~>
 			@read-from-subitem subitem
+
+		eventbus.on "model:subitem-modify:reset", !~>
+			@reset!
 
 	cancel-btn-click-event: !->
 		@page-controller.toggle-change "main"
 
 	confirm-btn-click-event: !->
-		@page-controller.toggle-change "main"
+		@subitem-modify-controller.submit-data-and-try-require {
+			name  		: 		@name-dom.val!
+			remark 		: 		@remark-dom.val!
+			type 			: 		@combo-type-select-dom.val!
+			num 			: 		@number-dom.val!
+		}, !~> @page-controller.toggle-change "main"
 
 	all-choose-btn-click-event: !->
-		is-choose = @subitem-modify-controller.get-is-all-choose!
-		@subitem-modify-controller.set-is-all-choose !is-choose
+		@subitem-modify-controller.toggle-is-all-choose!
 
 	change-choose-for-all-choose: (is-choose)!->
 		if is-choose
@@ -118,6 +125,10 @@ class SubitemModifyView extends VBase
 		else
 			@all-dish-doms[category-id][dish-id].remove-class "choose"
 
+	change-title-by-state: (state)!->
+		if state is "new" then @title-dom.html "新建子项"
+		else @title-dom.html "编辑子项"
+
 	read-from-subitem: (subitem)!->
 		@name-dom.val subitem.name
 		@remark-dom.val subitem.remark
@@ -126,6 +137,12 @@ class SubitemModifyView extends VBase
 			@number-dom.val subitem.price
 		else
 			@number-dom.val subitem.discount
+
+	reset: !->
+		@name-dom.val null
+		@remark-dom.val null
+		@combo-type-select-dom.val null
+		@number-dom.val null
 
 	create-category-elem-dom: !->
 		category-elem-dom = $ "<div class='category-elem'></div>"

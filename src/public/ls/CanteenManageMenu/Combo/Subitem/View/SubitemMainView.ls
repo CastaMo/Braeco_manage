@@ -25,7 +25,11 @@ class SubitemMainView extends VBase
 
 		@new-btn-dom.click !~> @new-btn-click-event!
 
-		eventbus.on "model:subitem:remove-subitem", (subitem-id)!~> @remove-subitem subitem-id
+		eventbus.on "model:subitem:remove-subitem", (subitem-id)!~> @remove-subitem-dom subitem-id
+
+		eventbus.on "model:subitem:add-subitem", (subitem-id)!~> @add-subitem-dom subitem-id
+
+		eventbus.on "model:subitem:update-subitem", (subitem-id)!~> @update-subitem-dom-by-id subitem-id
 
 	new-btn-click-event: !->
 		@page-controller.toggle-change "modify"
@@ -51,7 +55,7 @@ class SubitemMainView extends VBase
 		@subitem-list-dom.append $el
 		@update-subitem-dom-by-id subitem-id
 
-	remove-subitem: (subitem-id)!->
+	remove-subitem-dom: (subitem-id)!->
 		subitem-dom-object = @all-subitem-doms[subitem-id]
 		subitem-dom-object.$el.fade-out 200, !~>
 			subitem-dom-object.$el.remove!

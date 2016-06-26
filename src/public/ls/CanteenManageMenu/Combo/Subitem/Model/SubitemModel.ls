@@ -45,7 +45,7 @@ class SubitemModel extends MBase
 	add-subitem: (subitem)!->
 		subitem = new Subitem subitem
 		@all-subitems[subitem.id] = subitem
-		eventbus.emit "model:subitem:add-subitem", subitem
+		eventbus.emit "model:subitem:add-subitem", subitem.id
 
 	remove-subitem-by-id: (subitem-id)!->
 		delete @all-subitems[subitem-id]
@@ -53,7 +53,7 @@ class SubitemModel extends MBase
 
 	update-subitem: (subitem-id, config-data)!->
 		@all-subitems[subitem-id].assign config-data
-		eventbus.emit "model:subitem:update-subitem", subitem-id, config-data
+		eventbus.emit "model:subitem:update-subitem", subitem-id
 
 	get-subitem-by-id: (subitem-id)-> return @all-subitems[subitem-id]
 
