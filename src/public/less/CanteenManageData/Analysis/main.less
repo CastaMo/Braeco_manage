@@ -1,6 +1,72 @@
 @import "../../common/common";
 @import "./base64.less";
 
+#analysis-main {
+  .analysis-main-tabs {
+    position: relative;
+    left: 0px;
+    bottom: 40px;
+    height: 28px;
+
+    .tab {
+      display: inline-block;
+      width: 103px;
+      text-align: center;
+      padding-bottom: 14px;
+
+      &:hover {
+        cursor: pointer;
+        border-bottom: 3px solid #ffc107;
+      }
+    }
+    .choose {
+      border-bottom: 3px solid #ffc107;
+    }
+  }
+  .analysis-main-containers {
+    position: relative;
+    bottom: 28px;
+    padding: 32px;
+    .container {
+      .filters {
+        .time-type {
+          display: inline-block;
+          height: 30px;
+          width: 100px;
+          border: 1px solid #e7e7eb;
+          margin-right: 19px;
+        }
+        .time-type-datepicker {
+          display: inline-block;
+          width: 206px;
+          height: 30px;
+          border: 1px solid #e7e7eb;
+        }
+        .calendar-icon {
+          display: inline-block;
+          width: 30px;
+          height: 28px;
+          border: 1px solid #e7e7eb;
+          line-height: 30px;
+          vertical-align: middle;
+          border-left: 0px;
+          background-image: url(@calendar-icon-url);
+          background-size: 80%;
+          background-repeat: no-repeat;
+          background-position: 3px 4px;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
+
+.mainbar-wrapper .main-head-field p.title {
+  padding-bottom: 28px;
+}
 
 .analysis-fade-in {
   opacity: 1;

@@ -1,2 +1,36 @@
 #analysis-main(ng-controller='data-analysis')
-  h1 这部分还没弄完哦
+  .analysis-main-tabs
+    .tab.choose(ng-click='setSelectedTab($event, "member")') 会员发展
+    .tab(ng-click='setSelectedTab($event, "coupons")') 卡券核销
+  .analysis-main-containers
+    .container(ng-show='selectedTab == "member"')
+      .filters
+        select.time-type
+          option 按日查看
+          option 按周查看
+          option 按月查看
+          option 按年查看
+        input.time-type-datepicker(type='text' data-toggle="datepicker")
+        .calendar-icon
+      .data-panel
+        .current-members
+        .member-class
+        .current-balance
+      .graphs
+        canvas#analysis-main-graph
+    .container(ng-show='selectedTab == "coupons"')
+      .filters
+        select
+          option 代金券
+        span 批次号
+        select
+          option 123456
+        button 筛选
+        select
+          option 按日查看
+          option 按周查看
+          option 按月查看
+          option 按年查看
+        input(type='text' data-toggle="datepicker")
+      .graph
+      | 图表
