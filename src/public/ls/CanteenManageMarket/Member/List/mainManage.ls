@@ -22,23 +22,55 @@ main-manage = let
 	_init-all-event = !->
 		$("._searchInput").keydown (event)!->
 			if event.keyCode is 13 then _search-dom.trigger "click"
+			if $('._searchInput').val() == '' || /^[0-9]+(.[0-9]{1,2})?$/.test($('._searchInput').val())
+				return true;
+			else
+				show-global-message '该输入框只能输入数字哦'
+				$('._searchInput').val('')
+				return false;
 		
 		$('#_input1').keydown (event)!->
 			if event.keyCode is 13 then _save-dom.trigger "click"
-		
+			if $('#_input1').val() == '' || /^[0-9]+(.[0-9]{1,2})?$/.test($('#_input1').val())
+				return true;
+			else
+				show-global-message '该输入框只能输入数字哦'
+				$('#_input1').val('')
+				return false;
+
 		$('#_input2').keydown (event)!->
 			if event.keyCode is 13 then _save-dom.trigger "click"
-		
+			if $('#_input2').val() == '' || /^[0-9]+(.[0-9]{1,2})?$/.test($('#_input2').val())
+				return true;
+			else
+				show-global-message '该输入框只能输入数字哦'
+				$('#_input2').val('')
+				return false;
+
+		$('#_suppPhone').keydown (event)!->
+			if event.keyCode is 13 then _save-dom.trigger "click"
+			if $('#_suppPhone').val() == '' || /^[0-9]+(.[0-9]{1,2})?$/.test($('#_suppPhone').val())
+				return true;
+			else
+				show-global-message '该输入框只能输入数字哦'
+				$('#_suppPhone').val('')
+				return false;
+
 		$("._jump-input").keydown (event)!->
 			if event.keyCode is 13 then _jump-dom.trigger "click"
-		
+			if event.keyCode is 13 then _save-dom.trigger "click"
+			if $('._jump-input').val() == '' || /^[0-9]+(.[0-9]{1,2})?$/.test($('._jump-input').val())
+				return true;
+			else
+				show-global-message '该输入框只能输入数字哦'
+				$('._jump-input').val('')
+				return false;
+				
 		_search-dom.click !->
 			searchNum = $('._searchInput').val!
-			if searchNum.length > 0 and /^[0-9]+$/.test(searchNum) or searchNum.length is 0
-				searchNum = Number(searchNum)
-				_location = "/Manage/Market/Member/List?search=" + searchNum
-				location.href = _location
-			else alert("只能输入电话或编号")
+			searchNum = Number(searchNum)
+			_location = "/Manage/Market/Member/List?search=" + searchNum
+			location.href = _location
 
 		_last-page-dom.click !->
 			pageArrJSON = $('#page-JSON-field').html!
@@ -77,6 +109,7 @@ main-manage = let
 			modify-input = $('#_input1').val!
 			parentID = $('.displayID').html!
 			recharge-input = $('#_input2').val!
+			searchNum = $('._searchInput').val!
 			request-object = {}
 			for i from 0 to _length-1 by 1
 				if Number(_members[i].id) is Number(parentID) and modify-input != ""
@@ -104,7 +137,7 @@ main-manage = let
 							JSON 	:		JSON.stringify(request-object)
 							user-id :		parentID;
 						}
-						success 	:		(result)!-> location.reload!
+						callback 	:		(result)!-> location.reload!
 					}
 			_update-members!
 			_init-table!
@@ -207,6 +240,15 @@ main-manage = let
 	_init-depend-module = !->
 		page := require "./pageManage.js"
 		require_ := require "./requireManage.js"
+
+	time-out-id = ''
+	# 显示全局信息提示
+	show-global-message = (str)->
+		ob = $ '#global_message' 
+		ob.show!
+		ob.html str 
+		clearTimeout time-out-id
+		time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
 
 	initial: !->
 		_init-arry!

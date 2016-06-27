@@ -4,11 +4,13 @@ require-manage = let
 		[	util.get-JSON, 	util.ajax,	util.deep-copy]
 
 	_all-require-name = [
-		'modify'
+		'modify',	'able',		'test'
 	]
 
 	_all-require-URL = {
 		'modify'		:		'/Dinner/Printer/Update'
+		'able'			:		'/Dinner/Printer/Update/Able'
+		'test'			:		'/Dinner/Printer/Test'
 	}
 
 	_requires = {}
@@ -27,12 +29,16 @@ require-manage = let
 
 	_correct-URL = {
 		"modify"		:		(ajax-object,data)-> ajax-object.url += "/#{data.printer-id}"
+		"able"			:		(ajax-object,data)-> ajax-object.url += "/#{data.able}/#{data.printer-id}"
+		"test"			:		(ajax-object,data)-> ajax-object.url += ""
 	}
 
 	_set-header = {}
 
 	_get-require-data-str = {
 		"modify"		:		(data)-> return "#{data.JSON}"
+		"able"			:		(data)-> return "#{data.JSON}"
+		"test"			:		(data)-> return "#{data.JSON}"
 	}
 
 	_normal-handle = (name, result_, callback)->
