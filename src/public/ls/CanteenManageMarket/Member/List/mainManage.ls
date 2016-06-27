@@ -20,46 +20,42 @@ main-manage = let
 	_loop-balance-dom = $ "\.table-title ._loop-balance a"
 	
 	_init-all-event = !->
-		$("._searchInput").keydown (event)!->
+		$("._searchInput").blur (event)!->
 			if event.keyCode is 13 then _search-dom.trigger "click"
-			if $('._searchInput').val() == '' || /^[0-9]+(.[0-9]{1,2})?$/.test($('._searchInput').val())
+			if $('._searchInput').val() == '' or /^[1-9]\d*$/.test($('._searchInput').val())
 				return true;
 			else
-				show-global-message '该输入框只能输入数字哦'
-				$('._searchInput').val('')
+				show-global-message '该输入框只能输入数字'
 				return false;
 		
-		$('#_input1').keydown (event)!->
+		$('#_input1').blur (event)!->
 			if event.keyCode is 13 then _save-dom.trigger "click"
-			if $('#_input1').val() == '' || /^[0-9]+(.[0-9]{1,2})?$/.test($('#_input1').val())
+			if $('#_input1').val() == '' or /^[1-9]\d*$/.test($('#_input1').val())
 				return true;
 			else
-				show-global-message '该输入框只能输入数字哦'
-				$('#_input1').val('')
+				show-global-message '该输入框只能输入数字'
 				return false;
 
-		$('#_input2').keydown (event)!->
+		$('#_input2').blur (event)!->
 			if event.keyCode is 13 then _save-dom.trigger "click"
-			if $('#_input2').val() == '' || /^[0-9]+(.[0-9]{1,2})?$/.test($('#_input2').val())
+			if $('#_input2').val() == '' or /^[1-9]\d*$/.test($('#_input2').val())
 				return true;
 			else
-				show-global-message '该输入框只能输入数字哦'
-				$('#_input2').val('')
+				show-global-message '该输入框只能输入数字'
 				return false;
 
-		$('#_suppPhone').keydown (event)!->
+		$('#_suppPhone').blur (event)!->
 			if event.keyCode is 13 then _save-dom.trigger "click"
-			if $('#_suppPhone').val() == '' || /^[0-9]+(.[0-9]{1,2})?$/.test($('#_suppPhone').val())
+			if $('#_suppPhone').val() == '' or /^[1-9]\d*$/.test($('#_suppPhone').val())
 				return true;
 			else
-				show-global-message '该输入框只能输入数字哦'
-				$('#_suppPhone').val('')
+				show-global-message '该输入框只能输入数字'
 				return false;
 
-		$("._jump-input").keydown (event)!->
+		$("._jump-input").blur (event)!->
 			if event.keyCode is 13 then _jump-dom.trigger "click"
 			if event.keyCode is 13 then _save-dom.trigger "click"
-			if $('._jump-input').val() == '' || /^[0-9]+(.[0-9]{1,2})?$/.test($('._jump-input').val())
+			if $('._jump-input').val() == '' or /^[1-9]\d*$/.test($('._jump-input').val())
 				return true;
 			else
 				show-global-message '该输入框只能输入数字哦'
@@ -225,6 +221,8 @@ main-manage = let
 				page.cover-page "recharge"
 		pageArrJSON = $('#page-JSON-field').html!
 		pageArr = JSON.parse(pageArrJSON)
+		if pageArr.search isnt null
+			$("._searchInput").val("#{pageArr.search}")
 		$(".page").html(pageArr.pn + "/" + pageArr.sum_pages)
 		if pageArr.in is "DESC" then
 			_loop-id-dom.attr("href", "?by=create_date&in=ASC&search=#{pageArr.search}&pn=#{pageArr.pn}")
