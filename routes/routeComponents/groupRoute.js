@@ -1,5 +1,7 @@
 'use strict';
 
+var getCallbackHandleForRequest = require("../../common/getCallbackHandleForRequest.js");
+
 module.exports = function(router) {
 
   router.get('/Manage/Menu/Food/Property', function(req, res) {
@@ -10,24 +12,11 @@ module.exports = function(router) {
     res.render('./CanteenManageMenu/Combo/Subitem/develop');
   });
 
-  router.post('/Dish/Group/Add', function(req, res) {
-    res.json({
-      message   :     "success",
-      id        :     Number(Math.floor(100000 + Math.random() * 100000))
-    });
-  });
+  router.post('/Dish/Group/Add', getCallbackHandleForRequest("POST"));
 
-  router.post('/Dish/Group/Update/:propertyGroupId', function(req, res) {
-    res.json({
-      message   :     "success"
-    });
-  });
+  router.post('/Dish/Group/Update/:groupId', getCallbackHandleForRequest("POST"));
 
-  router.post('/Dish/Group/Remove/:propertyGroupId', function(req, res) {
-    res.json({
-      message   :     "success"
-    });
-  });
+  router.post('/Dish/Group/Remove/:groupId', getCallbackHandleForRequest("POST"));
 
   return router;
 };

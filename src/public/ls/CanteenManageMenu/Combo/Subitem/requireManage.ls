@@ -19,8 +19,8 @@ require-manage = let
 	###
 	_get-normal-ajax-object = (config)->
 		return {
-			url 			:		config.url
-			type 			:		config.type
+			url 		:		config.url
+			type 		:		config.type
 			async 		:		config.async
 		}
 
@@ -28,38 +28,25 @@ require-manage = let
 	#	请求名字(自己设)
 	###
 	_all-require-name = [
-		'add',							'copy',
-		'remove',						'top',
-		'move', 						'edit',
-		'able', 						'picUploadPre',
-		'picUpload', 				'sort'
+		'add',							'remove',
+		'edit'
 	]
 
 	###
 	#	请求名字与URL键值对(与后台进行商量)，名字需依赖于上述对象
 	###
 	_all-require-URL = {
-		'add' 					:		'/Dish/Add'
-		'copy' 					:		'/Dish/Copy'
-		'remove' 				:		'/Dish/Remove'
-		'top' 					:		'/Dish/Update/Top'
-		'move' 					:		'/Dish/Update/Category'
-		'edit' 					:		'/Dish/Update/All'
-		'able' 					:		'/Dish/Update/Able'
-		'picUploadPre' 	:		'/pic/upload/token/dishupdate'
-		'picUpload' 		:		'http://up.qiniu.com/putb64'
-		'sort' 					: 	'/Dish/Sort'
+		'add' 			:		'/Dish/Group/Add'
+		'remove' 		:		'/Dish/Group/Remove'
+		'edit' 			:		'/Dish/Group/Update'
 	}
 
 	###
 	#	校正ajax-object的url
 	###
 	_correct-URL = {
-		"add"						:		(ajax-object, data)-> ajax-object.url += "/#{data.category-id}"
-		"edit" 					:		(ajax-object, data)-> ajax-object.url += "/#{data.dish-id}"
-		"able" 					:		(ajax-object, data)-> ajax-object.url += "/#{data.flag}"
-		'picUploadPre' 	:		(ajax-object, data)-> ajax-object.url += "/#{data.id}"
-		'picUpload' 		:		(ajax-object, data)-> ajax-object.url += "/#{data.fsize}/key/#{data.key}"
+		"remove"			:		(ajax-object, data)-> ajax-object.url += "/#{data.group-id}"
+		"edit" 				:		(ajax-object, data)-> ajax-object.url += "/#{data.group-id}"
 	}
 
 
@@ -67,10 +54,6 @@ require-manage = let
 	#	按照需要设定header
 	###
 	_set-header = {
-		"picUpload" 		:		(ajax-object, data)-> ajax-object.header =  {
-			"Content-Type" 		:		"application/octet-stream"
-			"Authorization" 	:		"UpToken #{data.token}"
-		}
 	}
 
 
@@ -78,47 +61,39 @@ require-manage = let
 	#	ajax请求对象对应的数据请求属性，以键值对Object呈现于此
 	###
 	_get-require-data-str = {
-		"add" 					:		(data)-> return "#{data.JSON}"
-		"copy" 					:		(data)-> return "#{data.JSON}"
-		"remove" 				:		(data)-> return "#{data.JSON}"
-		"top" 					: 		(data)-> return "#{data.JSON}"
-		"move" 					:		(data)-> return "#{data.JSON}"
-		"edit" 					:		(data)-> return "#{data.JSON}"
-		"able" 					:		(data)-> return "#{data.JSON}"
-		"picUploadPre" 	:		(data)-> return ""
-		"picUpload" 		:		(data)-> return "#{data.url}"
-		"sort" 					: 	(data)-> return "#{data.JSON}"
-
+		"add" 			:		(data)-> return "#{data.JSON}"
+		"edit" 			:		(data)-> return "#{data.JSON}"
+		"remove" 		:		(data)-> return ""
 	}
 
 	###
 	#	在请求状态码为200且返回的message属性不为success时的处理方法
 	###
 	_require-fail-callback = {
-		"Activity not found" 										:		-> alert "活动不存在"
-		"Category not found" 										:		-> alert "品类不存在"
-		"Dish not found" 												:		-> alert "餐品不存在"
-		"Dinner not found" 											:		-> alert "餐厅不存在"
-		"Conflict property name" 								:		-> alert "属性名冲突"
-		"Membership card not exists" 						:		-> alert "会员卡不存在"
-		"Not enough money" 											:		-> alert "会员卡余额不足"
-		"Printer not found" 										:		-> alert "打印机不存在"
-		"Conflict feie printer" 								:		-> alert "某台飞鹅打印机在餐厅添加了两次，且为相同的打印模式"
+		"Activity not found" 					:		-> alert "活动不存在"
+		"Category not found" 					:		-> alert "品类不存在"
+		"Dish not found" 						:		-> alert "餐品不存在"
+		"Dinner not found" 						:		-> alert "餐厅不存在"
+		"Conflict property name" 				:		-> alert "属性名冲突"
+		"Membership card not exists" 			:		-> alert "会员卡不存在"
+		"Not enough money" 						:		-> alert "会员卡余额不足"
+		"Printer not found" 					:		-> alert "打印机不存在"
+		"Conflict feie printer" 				:		-> alert "某台飞鹅打印机在餐厅添加了两次，且为相同的打印模式"
 
-		"Invalid template type" 								:		-> alert "（二维码导出时）模板类型不存在"
-		"Invalid config" 												:		-> alert "（二维码导出时）配置不合法"
-		"Invalid QR" 														:		-> alert "（前台扫码支付时）非法的二维码"
+		"Invalid template type" 				:		-> alert "（二维码导出时）模板类型不存在"
+		"Invalid config" 						:		-> alert "（二维码导出时）配置不合法"
+		"Invalid QR" 							:		-> alert "（前台扫码支付时）非法的二维码"
 
-		"Table not found" 											:		-> alert "桌位不存在"
-		"Used phone" 														: 		-> alert "（餐厅注册时）手机号已被使用"
-		"Already has other phone"								:		-> alert "已经绑定了其他手机号"
-		"User not found" 												:		-> alert "用户不存在"
-		"Is not waiter of any dinner" 					:		-> alert "用户不是任何餐厅的服务员"
+		"Table not found" 						:		-> alert "桌位不存在"
+		"Used phone" 							: 		-> alert "（餐厅注册时）手机号已被使用"
+		"Already has other phone"				:		-> alert "已经绑定了其他手机号"
+		"User not found" 						:		-> alert "用户不存在"
+		"Is not waiter of any dinner" 			:		-> alert "用户不是任何餐厅的服务员"
 		"Already is waiter of current dinner" 	:		-> alert "（添加服务员时）用户已经是当前餐厅的服务员"
 		"Already is waiter of another dinner" 	:		-> alert "（添加服务员时）用户已经是其他餐厅的服务员"
 
-		"Invalid Ali QR URL" 										:		-> alert "非法的支付宝支付码"
-		"Alipay qrcode not found" 							:		-> alert "支付宝支付码不存在"
+		"Invalid Ali QR URL" 					:		-> alert "非法的支付宝支付码"
+		"Alipay qrcode not found" 				:		-> alert "支付宝支付码不存在"
 	}
 
 	###
