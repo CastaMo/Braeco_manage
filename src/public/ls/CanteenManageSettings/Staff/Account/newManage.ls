@@ -40,12 +40,15 @@ new-manage = let
                 gender := "男"
             else
                 gender := "女"
-            $.ajax {type: "POST", url: "/Waiter/Add/"+role, data: {
+            data = {
                 "phone": phone,
                 "name": name,
                 "password": password,
                 "sex": gender
-            }, dataType: 'JSON', success: _save-post-success}
+            }
+            data = JSON.stringify data
+            $.ajax {type: "POST", url: "/Waiter/Add/"+role, data: data,\
+                dataType: 'JSON', contentType: "application/json", success: _save-post-success}
             _set-save-btn-disable!
     
     _check-input-field = ->

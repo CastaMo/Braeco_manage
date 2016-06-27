@@ -11,6 +11,7 @@ edit-manage = let
     _error-message-block-dom = $ "\#staff-role-edit .error-message-block"
 
     _member-dom = $ "\#staff-role-edit input[value='64']" # 会员
+    _member-setting-dom = $ "\#staff-role-edit input[value='256']" # 会员设置
     _member-add-dom = $ "\#staff-role-edit input[value='16777216']" # 会员充值
     _member-edit-dom = $ "\#staff-role-edit input[value='33554432']" # 修改积分
 
@@ -23,7 +24,7 @@ edit-manage = let
 
     _staff-manage-dom = $ "\#staff-role-edit input[value='131072']" # 店员管理
 
-    _all-tbd-index = [3, 8, 9, 10, 14, 15, 20, 21, 29, 30]
+    _all-tbd-index = [3, 9, 10, 14, 15, 20, 21, 29, 30]
     _zero-permission = 1613809416
 
     _edited-role = null
@@ -70,6 +71,7 @@ edit-manage = let
     _set-checkbox-checked = (checkbox-par)!->
         ($ checkbox-par.find "> input[type='checkbox']").attr 'checked',true
         if ($ checkbox-par.find "> input[type='checkbox']").val! === '64'
+            _set-bound-click-able _member-setting-dom
             _set-bound-click-able _member-add-dom
             _set-bound-click-able _member-edit-dom
         if ($ checkbox-par.find ">input[type='checkbox']").val! === '2048'
@@ -83,6 +85,7 @@ edit-manage = let
     _set-checkbox-unchecked = (checkbox-par)!->
         ($ checkbox-par.find "> input[type='checkbox']").attr 'checked',false
         if ($ checkbox-par.find "> input[type='checkbox']").val! === '64'
+            _set-bound-click-disable _member-setting-dom
             _set-bound-click-disable _member-add-dom
             _set-bound-click-disable _member-edit-dom
         if ($ checkbox-par.find ">input[type='checkbox']").val! === '2048'
@@ -101,10 +104,13 @@ edit-manage = let
         name = _name-input-dom.val!
         auth = _get-permission-value!
         if _check-input-field!
-            $.ajax {type: "POST", url: "/Waiter/Role/Update/"+_edited-role.id, data: {
+            data = {
                 "name": name,
                 "auth": auth
-            }, dataType: "JSON", success: _update-post-success}
+            }
+            data = JSON.stringify data
+            $.ajax {type: "POST", url: "/Waiter/Role/Update/"+_edited-role.id, data: data,\
+                dataType: "JSON", contentType: "application/json", success: _update-post-success}
             _set-save-btn-disable!
 
     _update-post-success = (data)!->
@@ -162,6 +168,7 @@ edit-manage = let
 
     _fix-init-form-field = !->
         if not _member-dom.is ":checked"
+            _set-bound-click-disable _member-setting-dom
             _set-bound-click-disable _member-edit-dom
             _set-bound-click-disable _member-add-dom
         if not _order-dom.is ":checked"
@@ -173,9 +180,11 @@ edit-manage = let
     
     _member-dom-click-event = !->
         if _member-dom.is ":checked"
+            _set-bound-click-able _member-setting-dom
             _set-bound-click-able _member-edit-dom
             _set-bound-click-able _member-add-dom
         else
+            _set-bound-click-disable _member-setting-dom
             _set-bound-click-disable _member-edit-dom
             _set-bound-click-disable _member-add-dom
 

@@ -8,12 +8,12 @@ main-manage = let
     _table-body-dom = $ ".sr-container-table > tbody"
 
     _all-permission = ['餐品增删改','餐品操作','单品优惠','（待定）',
-    '活动发布','订单优惠','会员','优惠券券', '（待定）','（待定）','（待定）',
+    '活动发布','订单优惠','会员','优惠券', '会员设置','（待定）','（待定）',
     '流水订单','数据统计','营销分析','（待定）','（待定）',
     '业务管理','店员管理','餐厅信息修改','查看敏感操作','（待定）','（待定）',
     '接单','辅助点单','会员充值','修改积分','退款','重打订单','打印日结小票','（待定）','（待定）']
 
-    _all-tbd-index = [3, 8, 9, 10, 14, 15, 20, 21, 29, 30]
+    _all-tbd-index = [3, 9, 10, 14, 15, 20, 21, 29, 30]
 
     _new-btn-click-event = !->
         page.toggle-page 'new'
@@ -23,7 +23,8 @@ main-manage = let
         page.toggle-page 'edit'
 
     _delete-btn-click-event = (role) ->
-        $.ajax {type: "POST", url: "/Waiter/Role/Remove/"+role.id, dataType: 'JSON', success: _delete-post-success}
+        $.ajax {type: "POST", url: "/Waiter/Role/Remove/"+role.id,\
+            dataType: 'JSON', contentType: "application/json", success: _delete-post-success}
 
     _delete-post-success = (data) !->
         if data.message === "success"
@@ -47,7 +48,6 @@ main-manage = let
         gene-permission-string: !->
             permission-string = []
             binary-string = @permission.to-string 2
-            console.log binary-string
             for i from binary-string.length-1 to 0 by -1
                 if binary-string.length-1-i in _all-tbd-index
                     continue
@@ -103,7 +103,6 @@ main-manage = let
     
     _init-all-role = !->
         for role in _all-roles
-            console.log role
             role_ = new Role role.id,role.name,role.auth,role.permanent
 
     _init-depend-module = !->

@@ -18,7 +18,8 @@ main-manage = let
         page.toggle-page 'edit'
 
     _delete-btn-click-event = (staff)->
-        $.ajax {type: "POST", url: "/Waiter/Remove/"+staff.id, dataType: 'JSON', success: _delete-post-success}
+        $.ajax {type: "POST", url: "/Waiter/Remove/"+staff.id,\
+            dataType: 'JSON', contentType: "application/json", success: _delete-post-success}
         staff.delete-method-dom.unbind "click"
 
     _delete-post-success = (data)!->

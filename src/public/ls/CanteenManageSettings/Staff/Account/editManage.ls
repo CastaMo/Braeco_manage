@@ -68,9 +68,8 @@ edit-manage = let
         name = _name-input-dom.val!
         gender = _gender-select-dom.val!
         phone = _phone-input-dom.val!
-        role = _role-select-dom.val!
+        role = parse-int _role-select-dom.val!
         if _check-input-field!
-            console.log(gender);
             if gender === 'male'
                 gender := "男"
             else
@@ -78,12 +77,14 @@ edit-manage = let
             data = {
                 "phone": phone,
                 "name": name,
+                "role": role,
                 "sex": gender
             }
             if _new-password !== null and _new-password !== ''
                 data.password = _new-password
+            data = JSON.stringify data
             $.ajax {type: "POST", url: "/Waiter/update/"+_edited-staff.id, data: data,\
-                    dataType: "JSON", success: _save-post-success}
+                    dataType: "JSON", contentType: "application/json", success: _save-post-success}
             _set-save-btn-disable!
         # page.toggle-page "main"
     
@@ -117,7 +118,6 @@ edit-manage = let
 
     _save-post-success = (data)!->
         _set-save-btn-able!
-        console.log data
         if data.message === 'success'
             location.reload!
         else
