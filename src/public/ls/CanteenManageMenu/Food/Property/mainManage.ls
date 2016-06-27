@@ -65,11 +65,13 @@ main-manage = let
 
 			@remove-dom.click !~>
 				if not confirm "确定要删除属性组吗?(此操作无法恢复)" then return
+				page.cover-page "loading"
 				require_.get("remove").require {
 					data 				:		{
 						property-id 	:		@id	
 					}
 					success 			:		(result)!~> @remove-self!
+					always 				: 	!-> page.cover-page "exit"
 				}
 
 		init-property-dom: !->

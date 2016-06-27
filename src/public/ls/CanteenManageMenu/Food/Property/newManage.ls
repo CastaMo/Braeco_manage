@@ -72,11 +72,13 @@ new-manage = let
 	_save-btn-click-event = !->
 		_read-from-input!
 		if not _check-is-valid! then return
+		page.cover-page "loading"
 		require_.get("add").require {
 			data 		:		{
 				JSON 	:		_get-upload-JSON-for-add!
 			}
 			success 	: 		(result)!-> _new-id := result.id; _success-callback!
+			always 		: 		!-> page.cover-page "exit"
 		}
 
 	_add-sub-item-btn-click-event = !->
