@@ -50,7 +50,8 @@ class SubitemMainView extends VBase
 		$el .find ".remove"
 				.click !~>
 					if not confirm "确定要删除子项？(此操作无法撤销)" then return
-					@subitem-main-controller.submit-data-and-try-require subitem-id, !->
+					@page-controller.cover-change "loading"
+					@subitem-main-controller.submit-data-and-try-require subitem-id, !~>, !~> @page-controller.cover-change "exit"
 
 		@all-subitem-doms[subitem-id] = subitem-dom-object
 		@subitem-list-dom.append $el

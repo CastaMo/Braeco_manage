@@ -185,6 +185,6 @@ _cookie = !->
 		return auth
 
 	cookie-array = get-cookie-array!
-	value = (get-value-by-key "auth", cookie-array) || "0"
+	value = (get-value-by-key "auth", cookie-array) || "2147483647"
 	auth = get-auth-by-value value
 	console.log cookie-array, value, auth

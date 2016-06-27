@@ -63,7 +63,7 @@ class SubitemModifyController extends CBase
 			@subitem-modify-model.set-is-category-active category-id, true
 		@subitem-modify-model.read-from-subitem subitem
 
-	submit-data-and-try-require: (config-data, callback)!->
+	submit-data-and-try-require: (config-data, callback, always)!->
 		@subitem-modify-model.set-config-data config-data
 		@subitem-modify-model.update-all-choose-dish-ids!
 		if not @subitem-modify-model.check-self-config-data-is-valid! then return
@@ -71,25 +71,27 @@ class SubitemModifyController extends CBase
 		config-data-for-callback = @subitem-modify-model.get-config-data-for-callback!
 		console.log config-data-for-upload, config-data-for-callback
 		if @subitem-modify-model.get-state! is "new"
-			@require-for-add-subitem config-data-for-upload, config-data-for-callback, callback
+			@require-for-add-subitem config-data-for-upload, config-data-for-callback, callback, always
 		else if @subitem-modify-model.get-state! is "edit"
-			@require-for-update-subitem config-data-for-upload, config-data-for-callback, callback
+			@require-for-update-subitem config-data-for-upload, config-data-for-callback, callback, always
 
-	require-for-add-subitem: (config-data-for-upload, config-data-for-callback, callback)!->
+	require-for-add-subitem: (config-data-for-upload, config-data-for-callback, callback, always)!->
 		require_.get("add").require {
 			data 		: 		config-data-for-upload
 			success : 		(result)!~>
 				config-data-for-callback.id = result.id
 				@subitem-model.add-subitem config-data-for-callback
 				callback?!
+			always 	: 		!-> always?!
 		}
 
-	require-for-update-subitem: (config-data-for-upload, config-data-for-callback, callback)!->
+	require-for-update-subitem: (config-data-for-upload, config-data-for-callback, callback, always)!->
 		require_.get("edit").require {
 			data 		: 		config-data-for-upload
 			success : 		(result)!~>
 				@subitem-model.update-subitem config-data-for-callback.id, config-data-for-callback
 				callback?!
+			always 	: 		!-> always?!
 		}
 
 module.exports = SubitemModifyController
