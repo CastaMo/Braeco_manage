@@ -15,14 +15,16 @@ block content
 					.test-btn.btn
 						p 下单测试
 				#table-field
-					table#Info
-						tr.table-title
-							th(width="17%") 打印机编号
-							th(width="23%") 备注
-							th(width="13%") 是否切单
-							th(width="13%") 每单联数
-							th(width="13%") 字号
-							th(width="21%") 操作
+					#Info
+						.table-title
+							.printerID.title-set 打印机编号
+							.printerRemark.title-set 备注
+							.printerSeparate.title-set 是否切单
+							.printerPage.title-set 每单联数
+							.printerSize.title-set 字号
+							.setting.title-set 操作
+							.clear
+						.table-list
 			#modify-field
 				#modify-title
 					p 打印机设置
@@ -75,3 +77,6 @@ block content
 						p 取消
 					.save-btn.btn
 						p 保存
+					.clear
+				.clear
+			.clear
