@@ -70,6 +70,7 @@ edit-manage = let
         phone = _phone-input-dom.val!
         role = _role-select-dom.val!
         if _check-input-field!
+            console.log(gender);
             if gender === 'male'
                 gender := "男"
             else
@@ -134,7 +135,6 @@ edit-manage = let
         _name-input-dom.val ""
         _gender-select-dom.val ""
         _phone-input-dom.val ""
-        _password-input-dom.val ""
         _role-select-dom.empty!.append $ "<option value='default'>请选择角色</option>"
         _error-message-block-dom.empty!.hide!
 
