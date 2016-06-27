@@ -15,19 +15,20 @@ block content
 	.mycenter
 		.top
 			span.mypicker
-				input.time(type='text' placeholder='开始')
+				input.time(type='text' name='st' placeholder='开始')
 				span.datepicker_img
 			span.dao 到
 			span.mypicker
-				input.time(type='text' placeholder='结束')
+				input.time(type='text' name='en' placeholder='结束')
 				span.datepicker_img
-			.mybtn 
-			select
-				option 全部类别
-				option 类别1
-				option 类别2
-				option 类别3
-				option 类别4
+			.mybtn#search 
+			select(name='type')
+				option(value='all') 所有
+				option(value='waiter') 店员管理
+				option(value='member') 会员管理
+				option(value='dctool') 订单优惠管理
+				option(value='basicinfo') 餐厅信息管理
+				option(value='order') 订单管理
 		.center
 			table.ro-container-table
 				thead
@@ -41,4 +42,11 @@ block content
 						td 店长
 						td 将会员 于德强(15626473390) 的积分设置为120790(之前为120790)
 						td 会员修改
+			#page
+				a.left(href='')
+				.page_text <span>1</span>/<span>1</span>
+				a.right(href='')
+				.page_input
+					input(type='text' name='jump')
+				.page_jump 跳转
 block bottom

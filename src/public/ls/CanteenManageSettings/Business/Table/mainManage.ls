@@ -1,4 +1,5 @@
 main-manage = let
+	_all-data = null
 	Wrap = !->
 		tables = []
 		operations = []
@@ -127,74 +128,74 @@ main-manage = let
 				ob2.hide!
 
 	Operation = (op)->
-		@.prototype = new Change-state op
-		that = @.prototype
+		@prototype = new Change-state op
+		that = @prototype
 
 	Table = (t)->
-		@.prototype = new Change-state t
-		that = @.prototype
+		@prototype = new Change-state t
+		that = @prototype
 		$ that.dom .click !~>			
 			that.change-click-state!
 		$ that.dom .find '.popup' .click ->
 			return false
 		@
 	Change-state = (ob)->
-		@.able = !$ ob .hasClass 'disabled'
-		@.dom = ob
-		@.change-click-state = (state)!~>
+		@able = !$ ob .hasClass 'disabled'
+		@dom = ob
+		@change-click-state = (state)!~>
 			if state!=undefined
-				@.able = state
+				@able = state
 			else
 				@able = !@able
-			if @.able
-				$ @.dom .removeClass 'disabled'
+			if @able
+				$ @dom .removeClass 'disabled'
 			else 
-				$ @.dom .addClass 'disabled'
+				$ @dom .addClass 'disabled'
 		@
 	My-input = (ob)->
-		@.dom = ob
-		@.empty = ~>
-			if $ @.dom .val! == '' || /\s/.test($ @.dom .val!)
+		@dom = ob
+		@empty = ~>
+			if $ @dom .val! == '' || /\s/.test($ @dom .val!)
 				show-global-message '输入不可为空'
 				return true
 			return false
-		@.valid =(reg)~>
-			val = @.dom.value
-			if @.empty!
+		@valid =(reg)~>
+			val = @dom.value
+			if @empty!
 				return false
 			if reg!=undefined
 				if !reg.test val
 					return false
-			if $ @.dom .hasClass 'table_name'
+			if $ @dom .hasClass 'table_name'
 				if val.length>4
 					show-global-message '桌位号不能太长哦！'
 					return false
 			return true
-		@.focus =!~>
-			$ @.dom .focus!
+		@focus =!~>
+			$ @dom .focus!
 		@
 
 	# type:true  表示wrap
 	# type:false 表示popup
 	# ob:dom对象
 	Cover = (ob)->
-		@.prototype = new Base-cover ob
-		@.inputs = []
-		that = @.prototype
+		@prototype = new Base-cover ob
+		@inputs = []
+		that = @prototype
 
 		for x in $ that.dom .find 'input'
-			@.inputs.push new My-input x
+			@inputs.push new My-input x
 		$ that.dom .find '.btn.confirm' .click !~>
-			if @.valid!
-				@.mysubmit @.get-cover-data!
+			if @valid!
+				@mysubmit @get-cover-data!
 
-		@.valid = !~>
-			for x in @.inputs
+		@valid = !~>
+			for x in @inputs
 				if !x.valid!
 					x.focus!
 					return false
 			return true
-		@.mysubmit = (data,url)!~>
+		@mysubmit = (data,url)!~>
 			util.ajax {
 				type : 'post'
 				url : '/Table/Add'
@@ -209,7 +210,7 @@ main-manage = let
 				unavailabled : (result)!->
 					console.log result
 			}
-		@.get-cover-data =~>
+		@get-cover-data =~>
 			if $ that.dom .hasClass 'batch_export2'
 				return get-qrcode-data!
 			else if $ that.dom .hasClass 'batch_delete'
@@ -239,22 +240,22 @@ main-manage = let
 			for x in $ '.batch_export2 select'
 				mydata[$ x .attr 'name' ] = $ x .val!
 			mydata
-		
-	Base-cover =(ob)->
-		@.dom = ob
-		@.type = $ @.dom .hasClass 'wrap'
+	class Base-cover
+		(ob) ->
+			@dom = ob
+			@type = $ @dom .hasClass 'wrap'
 
-		$ @.dom .find '.cancle_cross,.btn.cancle' .click !~>
+		$ @dom .find '.cancle_cross,.btn.cancle' .click !~>
 			close-wrap!
 
 		# i = '.wrap'  
 		# i = '.poput' 
 		close-wrap = !~>
-			if @.type
+			if @type
 				$ '#wrap' .fadeOut 300
-				$ @.dom .hide!
+				$ @dom .hide!
 			else 
-				$ @.dom .fadeOut 300
+				$ @dom .fadeOut 300
 				$ '#popup_cover' .hide!
 		@
 	time-out-id = ''
@@ -265,8 +266,22 @@ main-manage = let
 		ob.html str 
 		clearTimeout time-out-id
 		time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
-	initial: !->
-		# _save-form-value!
+	class init-all-data 
+		(d) ->
+			_all-data := d
+			_init!
+		_init =->
+			_initial-new-table = $ '.table_qr.new'
+			for x in _all-data
+				_new-table = _initial-new-table.clone(true)
+				_new-table.find '.table_qr_light img' .attr 'src',x.url
+				_new-table.find '.table_qr_light .num' .text x.word
+				_new-table.removeClass 'new'
+				_new-table.insertBefore _initial-new-table
+			_initial-new-table.remove!
+
+	initial: (json-data)!->
+		init-all-data json-data
 		tables = new Wrap!
 
 module.exports = main-manage
