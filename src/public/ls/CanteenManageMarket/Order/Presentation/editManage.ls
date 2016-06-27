@@ -28,8 +28,8 @@ edit-manage = let
         else
             console.log JSON.stringify result
             json-result = JSON.stringify result
-            $.ajax {type: "POST", contentType: "application/json", url: "/Dinner/Manage/Discount/Give/Update", data: json-result,
-            dataType: "JSON", success: _update-presentation-success}
+            $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Give/Update", data: json-result,\
+                dataType: "JSON", contentType: "application/json", success: _update-presentation-success}
 
     _update-presentation-success = (data)!->
         console.log data
