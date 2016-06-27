@@ -78,7 +78,7 @@ class SubitemModifyController extends CBase
 	require-for-add-subitem: (config-data-for-upload, config-data-for-callback, callback)!->
 		require_.get("add").require {
 			data 		: 		config-data-for-upload
-			success : 		(result)!->
+			success : 		(result)!~>
 				config-data-for-callback.id = result.id
 				@subitem-model.add-subitem config-data-for-callback
 				callback?!
@@ -87,7 +87,7 @@ class SubitemModifyController extends CBase
 	require-for-update-subitem: (config-data-for-upload, config-data-for-callback, callback)!->
 		require_.get("edit").require {
 			data 		: 		config-data-for-upload
-			success : 		(result)!->
+			success : 		(result)!~>
 				@subitem-model.update-subitem config-data-for-callback.id, config-data-for-callback
 				callback?!
 		}
