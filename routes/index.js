@@ -247,7 +247,8 @@ module.exports = function(passport) {
 	});
 	router.post('/Waiter/Update/:waiter_id', function(req, res, next) {
 		var waiter_id = req.params.waiter_id;
-		console.log(waiter_id);
+		var waiter = req.body;
+		console.log(waiter);
 		setTimeout(function(){
 			res.json({"message": "success"});
 		}, 1000);

@@ -19,11 +19,11 @@ class PageModel extends MBase
 
 	toggle-change: (toggle-name)!->
 		@current-toggle-state = toggle-name
-		eventbus.emit "model:page:toggle-change", @current-toggle-state
+		eventbus.emit "model:page:toggle-change", toggle-name
 
 	cover-change: (cover-name)!->
 		@current-cover-state = cover-name
-		eventbus.emit "model:page:cover-change", @current-cover-state
+		eventbus.emit "model:page:cover-change", cover-name
 
 	get-toggle-state: -> return @current-toggle-state
 

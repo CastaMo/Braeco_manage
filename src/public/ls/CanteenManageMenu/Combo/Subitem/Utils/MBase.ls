@@ -1,6 +1,6 @@
-MVCBase = require "./MVCBase.js"
+Base = require "./Base.js"
 
-class MBase extends MVCBase
+class MBase extends Base
 	(options)->
 		super options
 

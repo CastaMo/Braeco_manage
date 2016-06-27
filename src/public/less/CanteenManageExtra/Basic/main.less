@@ -51,14 +51,30 @@
     height: 107px;
     margin: 21px 0;
 }
+.info_value.info_img1 {
+    width: 105px;
+    height: 139px;
+    margin: 21px 0;
+}
 .info_value.info_img img{
     width: 100%;
     height: 100%;
 }
-.info_li.big {
-    height: 147px;
+.info_value.info_img1 img{
+    border: solid 1px #e4e4e4;
+    border-radius: 7px;
 }
-
+.info_li.big {
+    height: auto;
+}
+.info_li .btns {
+    float: right;
+    line-height: 30px;
+    margin-top: 10px;
+}
+.info_li .btns .blue {
+    float: none;
+}
 // ----------------- wrap ------------------------
 #wrap_contianer {
     position: fixed;
@@ -67,6 +83,7 @@
     background: rgba(0,0,0,0.6);
     top: 0;
     left: 0;
+    z-index: 1;
     display: none;
 }
 .wrap {
@@ -180,7 +197,7 @@
     text-align: center;
     margin-top: 40px;
 }
-#wrap_pics img {
+#wrap_pics .little_pics img {
     width: 100%;
     height: 100%;
 }
@@ -267,4 +284,73 @@
     transform: translate(-50%,0);
     display: none;
     z-index: 99
+}
+#wrap_printers{
+    width: 450px;
+    height: 390px;
+}
+.wrap_printers {
+    text-align: left;
+    height: auto;
+    border: solid 1px #D5CEC6;
+    margin: auto;
+    width: 245px;
+    margin-bottom: 20px;
+    height: 180px;
+    overflow-y: auto;
+}
+.printer {
+    cursor: pointer;
+    border-bottom: solid 1px #D5CEC6;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 14px;
+    font-size: 14px;
+}
+.printer input{
+    float: right;
+    margin-top: 10px;
+}
+#wrap_printers .btns{
+    margin-top: 25px;
+}
+#wrap_printers .btn.cancle{
+    margin-left: 95px;
+}
+
+
+.carousel {
+    height: 250px;
+    position: relative;
+    overflow: hidden;
+}
+.carousel_imgs {
+    position: relative;
+}
+.carousel_img {
+    width: 450px;
+    display: none;
+    top: 0;
+    position: absolute;
+}
+.carousel_img.active{
+    display: block;
+}
+.carousel_dots {
+    text-align: center;
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+}
+.carousel_dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.3);
+    display: inline-block;
+    margin: 0 5px;
+}
+.carousel_dot.active {
+    background: rgba(255,255,255,0.9);
 }
