@@ -57,5 +57,15 @@ class SubitemModel extends MBase
 
 	get-subitem-by-id: (subitem-id)-> return @all-subitems[subitem-id]
 
+	get-config-data-for-upload: (subitem-id)->
+		result = {}
+		result.group-id = subitem-id
+		return result
+
+	get-config-data-for-callback: (subitem-id)->
+		obj = {}
+		obj.id = subitem-id
+		return obj
+
 module.exports = SubitemModel
 
