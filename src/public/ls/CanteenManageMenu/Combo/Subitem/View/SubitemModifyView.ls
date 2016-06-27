@@ -89,12 +89,14 @@ class SubitemModifyView extends VBase
 		@page-controller.toggle-change "main"
 
 	confirm-btn-click-event: !->
+		@page-controller.cover-change "loading"
 		@subitem-modify-controller.submit-data-and-try-require {
 			name  		: 		@name-dom.val!
 			remark 		: 		@remark-dom.val!
 			type 			: 		@combo-type-select-dom.val!
 			num 			: 		@number-dom.val!
 		}, !~> @page-controller.toggle-change "main"
+		, !~> @page-controller.cover-change "exit"
 
 	all-choose-btn-click-event: !->
 		@subitem-modify-controller.toggle-is-all-choose!
