@@ -89,7 +89,6 @@ new-manage = let
 
     _save-post-success = (data)!->
         _set-save-btn-able!
-        console.log data
         if data.message === "success"
             location.reload!
         else

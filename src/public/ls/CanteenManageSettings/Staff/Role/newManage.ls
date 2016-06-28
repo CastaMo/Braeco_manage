@@ -29,7 +29,6 @@ new-manage = let
         value = parse-int ($ event.target).val!
         par = ($ event.target).parent!
         if ($ event.target).is ":checked"
-            _set-checkbox-checked par
             if value === 0
                 sub-li-dom = par.find "ul li"
                 for li in sub-li-dom
@@ -39,14 +38,15 @@ new-manage = let
                 if (par.siblings 'li.checkbox-item').length-(par.siblings "li.disabled-checkbox-item").length \
                     === (par.siblings 'li.checked-icon').length
                     _set-checkbox-checked $ par.parent!.parent!
+            _set-checkbox-checked par
         else
-            _set-checkbox-unchecked par
             if value === 0
                 sub-li-dom = par.find "ul li"
                 for li in sub-li-dom
                     _set-checkbox-unchecked $ li
             else
                 _set-checkbox-unchecked $ par.parent!.parent!
+            _set-checkbox-unchecked par
     
     _reset-dom = !->
         _error-message-block-dom.empty!.hide!

@@ -23,16 +23,17 @@ main-manage = let
         page.toggle-page 'edit'
 
     _delete-btn-click-event = (role) ->
-        $.ajax {type: "POST", url: "/Waiter/Role/Remove/"+role.id,\
-            dataType: 'JSON', contentType: "application/json", success: _delete-post-success}
+        if confirm "是否确定删除该角色"
+            $.ajax {type: "POST", url: "/Waiter/Role/Remove/"+role.id,\
+                dataType: 'JSON', contentType: "application/json", success: _delete-post-success}
+            role.delete-method-dom.unbind "click"
 
     _delete-post-success = (data) !->
-        if data.message === "success"
-            location.reload!
-        else if data.message === "Waiter role not found"
+        if data.message === "Waiter role not found"
             alert "未找到该角色"
-        else if data.message === "Cannot remove role with waiter still using"
+        if data.message === "Cannot remove role with waiter still using"
             alert "还有员工使用此角色，无法删除"
+        location.reload!
     
     class Role
         (id, name, permission, permanent) ->

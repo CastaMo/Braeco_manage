@@ -24,7 +24,7 @@ main-manage = let
     _page-data-obj = null
 
     _int-to-string =(number)->
-        if number > 10
+        if number >= 10
             number.to-string!
         else
             "0"+number.to-string!
@@ -135,7 +135,7 @@ main-manage = let
             yearFirst: true,
             yearSuffix: '年'
         }
-        $('[data-toggle="datepicker"]').datepicker {format: 'yyyy-mm-dd', language: 'zh-CN'}
+        $('[data-toggle="datepicker"]').datepicker {format: 'yyyy-mm-dd', language: 'zh-CN', autohide: true}
 
     _init-page-info = !->
         st = _page-data-obj.st

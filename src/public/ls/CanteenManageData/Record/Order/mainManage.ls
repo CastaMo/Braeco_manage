@@ -381,7 +381,7 @@ main-manage = let
             yearFirst: true,
             yearSuffix: '年'
         }
-        $('[data-toggle="datepicker"]').datepicker {format: 'yyyy-mm-dd', language: 'zh-CN'}
+        $('[data-toggle="datepicker"]').datepicker {format: 'yyyy-mm-dd', language: 'zh-CN', autohide: true}
 
     initial: !->
         _gene-data!
