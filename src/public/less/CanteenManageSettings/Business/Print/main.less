@@ -71,19 +71,20 @@
                         }
                         font-size: 28px;
                         position: relative;
-                        right: 35px;
+                        right: 80px;
                         bottom: 8px;
                         float: left;
                         background-repeat: no-repeat;
                         z-index: 9999;
-                        height: 282px;
-                        width: 482px;
+                        height: 328px;
+                        width: 573px;
                         .confirm-ask {
                             margin: 80px 0 0 30px;
                         }
                         #confirm-btn-field {
                             margin: 0px 0 0 60px;
                             .confirm-btn {
+                                margin-left: 60px;
                                 border: 1px solid #FFC107;
                                 line-height: 64px;
                                 color: #FFFFFF;
@@ -212,13 +213,17 @@
                     }
                     #tables-choose,
                     #categories-choose {
-                        border: 1px solid #E7E7EB;
                         position: relative;
                         right: 22px;
                         float: right;
-                        height: 382px;
+                        height: 372px;
                         width: 247px;
                         overflow: auto;
+                        .allChoose {
+                            border: 1px solid #E7E7EB;
+                            border-bottom-width: 0;
+                            height: auto;
+                        }
                         li.inner-shown-item:hover,
                         li.shown-item:hover {
                             background-color: #F4F5F9;
@@ -232,13 +237,17 @@
                             .checkbox-icon {
                                 background-repeat: no-repeat;
                                 float: right;
-                                height: 30px;
-                                width: 30px;
+                                zoom: 50%;
+                                height: 32px;
+                                width: 32px;
+                                position: relative;
+                                right: 20px;
+                                top: 16px;
                                 input[type=checkbox] {
+                                    height: 32px;
+                                    width: 32px;
                                     opacity: 0;
                                     float: right;
-                                    margin-top: 8px;
-                                    margin-right: 5px;
                                 }
                             }
                             .open-icon {
@@ -260,13 +269,17 @@
                             .checkbox-icon {
                                 background-repeat: no-repeat;
                                 float: right;
-                                height: 30px;
-                                width: 30px;
+                                zoom: 50%;
+                                height: 32px;
+                                width: 32px;
+                                position: relative;
+                                right: 20px;
+                                top: 16px;
                                 input[type=checkbox] {
+                                    height: 32px;
+                                    width: 32px;
                                     opacity: 0;
                                     float: right;
-                                    margin-top: 8px;
-                                    margin-right: 5px;
                                 }
                             }
                         }

@@ -27,14 +27,14 @@ main-manage = let
 	_save-btn-dom = $ "\.save-btn"
 	_run-content-dom = $ "\#run-content-field"
 	_pass-content-dom = $ "\#pass-content-field"
-	_confirm-btn-dom = $ "\.confirm-btn"
-	_confirm-cancel-btn = $ "\.confirm-cancel-btn"
+	_confirm-btn-dom = $ "\#stop-coupon .confirm-btn"
+	_confirm-cancel-btn = $ "\#stop-coupon .confirm-cancel-btn"
 	_up-last-dom = $ "\._up .lastPage.btn"
 	_up-next-dom = $ "\._up .nextPage.btn"
-	_up-jump-dom = $ "\._up .jumpPage.btn"
+	_up-jump-dom = $ "\._up .jump-btn"
 	_down-last-dom = $ "\._down .lastPage.btn"
 	_down-next-dom = $ "\._down .nextPage.btn"
-	_down-jump-dom = $ "\._down .jumpPage.btn"
+	_down-jump-dom = $ "\._down .jump-btn"
 
 	class Coupon
 		(options)->
@@ -73,9 +73,13 @@ main-manage = let
 
 	_init-coupon-view = !->
 		_length = _coupons.length
+		$("._up .page").html("#{_upnow}/#{_upsum}")
+		$("._up ._jump-input").attr("max", "#{_upsum}")
+		$("._down .page").html("#{_downnow}/#{_downsum}")
+		$("._down ._jump-input").attr("max", "#{_downsum}")
+		if _upnow > 1 then $(document).scrollTop(233)
+		if _downnow > 1 then $(document).scrollTop(465)
 		for i from 0 to _length-1 by 1
-			$("._up .page").html("#{_upnow}/#{_upsum}")
-			$("._down .page").html("#{_downnow}/#{_downsum}")
 			_new-dom = $ "<div class='coupon' class='btn'>
 							<div class='coupon-identify'>
 								<span class='coupon-batch-number'></span>
@@ -159,10 +163,17 @@ main-manage = let
 			autohide: 'true'
 			autopick: 'true'
 		});
+
+		$("._up ._jump-input").keyup !->
+			if event.keyCode is 13 then _up-jump-dom.trigger "click"
+
+		$("._down ._jump-input").keyup !->
+			if event.keyCode is 13 then _down-jump-dom.trigger "click"
 		
 		_up-last-dom.click !->
 			if _upnow > 1 then _upnow--
 			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
+			$(document).scrollTop(233)
 
 		_down-last-dom.click !->
 			if _downnow > 1 then _downnow--
@@ -171,20 +182,33 @@ main-manage = let
 		_up-next-dom.click !->
 			if _upnow < _upsum then _upnow++
 			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
+			$(document).scrollTop(233)
 
 		_down-next-dom.click !->
 			if _downnow < _downsum then _downnow++
 			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
 
 		_up-jump-dom.click !->
-			_jumpPage = $(".up ._jump-input").val!
-			if _jumpPage >= 1 and _jumpPage <= _upsum then _upnow = _jumpPage
-			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
+			if $("._up ._jump-input").val() isnt ''
+				if $("._up ._jump-input").val() > 1 and $("._up ._jump-input").val() <= _upsum
+					_jumpPage = $("._up ._jump-input").val!
+				else if $("._up ._jump-input").val() > _upsum
+					_jumpPage = _upnow
+				else
+					_jumpPage = 1
+			else _jumpPage = _upnow
+			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_jumpPage}&downpn=#{_downnow}"
 
 		_down-jump-dom.click !->
-			_jumpPage = $(".down ._jump-input").val!
-			if _jumpPage >= 1 and _jumpPage <= _downsum then _downnow = _jumpPage
-			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
+			if $("._down ._jump-input").val() isnt ''
+				if $("._down ._jump-input").val() > 1 and $("._down ._jump-input").val() <= _downsum
+					_jumpPage = $("._down ._jump-input").val!
+				else if $("._down ._jump-input").val() > _downsum
+					_jumpPage = _downnow
+				else
+					_jumpPage = 1
+			else _jumpPage = _downnow
+			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_jumpPage}"
 
 		_apply-dom.click !->
 			_apply = $(this).parent()
@@ -199,7 +223,15 @@ main-manage = let
 			page.toggle-page "new"
 
 		_cancel-btn-dom.click !->
+			$('#btn-filed .stop-confirm').fade-in 100
+
+		$('#btn-filed .stop-confirm .confirm-btn').click !->
+			$('#btn-filed .stop-confirm').fade-out 100、
+
+		$('#btn-filed .stop-confirm .confirm-cancel-btn').click !->
+			$('#btn-filed .stop-confirm').fade-out 100
 			page.toggle-page "basic"
+
 
 		_save-btn-dom.click !->
 			_init-all-blur!
@@ -276,7 +308,6 @@ main-manage = let
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
 				}
-				callback 	:		(result)!-> location.reload!
 			}
 
 		_stop-btn-dom.click !->
@@ -299,7 +330,6 @@ main-manage = let
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
 				}
-				callback 	:		(result)!-> location.reload!
 			}
 
 		_confirm-cancel-btn.click !->

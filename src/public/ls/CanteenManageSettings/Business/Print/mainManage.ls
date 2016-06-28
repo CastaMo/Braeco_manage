@@ -88,10 +88,10 @@ main-manage = let
 			$(".table-list").last().append _new-printer
 			_new-printer.find(".switch-btn").click !->
 				if $(@).find("p").html() is "停用"
-					$(@).parent().find(".stop-confirm").fade-in 100
+					$(@).parent().find(".stop-confirm").fade-in 300
 				else $(@).parent().find(".confirm-btn").click!
 			_new-printer.find(".confirm-cancel-btn").click !->
-				$(@).parent().parent().fade-out 100
+				$(@).parent().parent().fade-out 300
 			_new-printer.find(".confirm-btn").click !->
 				request-object = {}
 				_hrefID = Number($(@).parent().parent().parent().parent().find(".printerID").html!)
@@ -124,6 +124,7 @@ main-manage = let
 						$('#categories-choose .allChoose input').parent().removeClass "true"
 						$('#categories-choose .allChoose input').parent().addClass "false"
 					else if _apply.hasClass("false")
+						$('#categories-choose .allChoose input').attr("checked", true)
 						$('#categories-choose .allChoose input').parent().removeClass "false"
 						$('#categories-choose .allChoose input').parent().addClass "true"
 				$('#tables-choose ._all input').click !->
@@ -133,6 +134,7 @@ main-manage = let
 						$('#tables-choose .allChoose input').parent().removeClass "true"
 						$('#tables-choose .allChoose input').parent().addClass "false"
 					else if _apply.hasClass("false")
+						$('#categories-choose .allChoose input').attr("checked", true)
 						$('#tables-choose .allChoose input').parent().removeClass "false"
 						$('#tables-choose .allChoose input').parent().addClass "true"
 				for i from 0 to printer.length-1 by 1
@@ -195,11 +197,11 @@ main-manage = let
 									if $(@).hasClass "open" and not $(event.target).hasClass "checkInput"
 										$(@).removeClass "open"
 										$(@).addClass "close"
-										$(@).parent().find(".inner-shown-item").fade-out 100
+										$(@).parent().find(".inner-shown-item").fade-out 300
 									else if $(@).hasClass "close" and not $(event.target).hasClass "checkInput"
 										$(@).removeClass "close"
 										$(@).addClass "open"
-										$(@).parent().find(".inner-shown-item").fade-in 100
+										$(@).parent().find(".inner-shown-item").fade-in 300
 								for k from 0 to categories[j].dishes.length-1 by 1
 									_new-dish = $  "<li class = 'inner-shown-item'>
 														<span class = 'dish_name'></span>

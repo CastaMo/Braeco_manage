@@ -19,16 +19,32 @@ main-manage = let
 	_loop-exp-dom = $ "\.table-title ._loop-exp a"
 	_loop-balance-dom = $ "\.table-title ._loop-balance a"
 	
-	_init-all-event = !->
-		$("._searchInput").blur (event)!->
+	_init-all-keyup = !->
+		$("._searchInput").keyup !->
 			if event.keyCode is 13 then _search-dom.trigger "click"
+
+		$('#_input1').keyup !->
+			if event.keyCode is 13 then _save-dom.trigger "click"
+
+		$('#_input2').keyup !->
+			if event.keyCode is 13 then _save-dom.trigger "click"
+
+		$('#_suppPhone').keyup !->
+			if event.keyCode is 13 then _save-dom.trigger "click"
+
+		$("._jump-input").keyup !->
+			if event.keyCode is 13 then _jump-dom.trigger "click"
+			if event.keyCode is 13 then _save-dom.trigger "click"
+
+	_init-all-blur = !->
+		$("._searchInput").blur !->
 			if $('._searchInput').val() == '' or /^[1-9]\d*$/.test($('._searchInput').val())
 				return true;
 			else
 				show-global-message '该输入框只能输入数字'
 				return false;
 		
-		$('#_input1').blur (event)!->
+		$('#_input1').blur !->
 			if event.keyCode is 13 then _save-dom.trigger "click"
 			if $('#_input1').val() == '' or /^[1-9]\d*$/.test($('#_input1').val())
 				return true;
@@ -36,7 +52,7 @@ main-manage = let
 				show-global-message '该输入框只能输入数字'
 				return false;
 
-		$('#_input2').blur (event)!->
+		$('#_input2').blur !->
 			if event.keyCode is 13 then _save-dom.trigger "click"
 			if $('#_input2').val() == '' or /^[1-9]\d*$/.test($('#_input2').val())
 				return true;
@@ -44,7 +60,7 @@ main-manage = let
 				show-global-message '该输入框只能输入数字'
 				return false;
 
-		$('#_suppPhone').blur (event)!->
+		$('#_suppPhone').blur !->
 			if event.keyCode is 13 then _save-dom.trigger "click"
 			if $('#_suppPhone').val() == '' or /^[1-9]\d*$/.test($('#_suppPhone').val())
 				return true;
@@ -52,7 +68,7 @@ main-manage = let
 				show-global-message '该输入框只能输入数字'
 				return false;
 
-		$("._jump-input").blur (event)!->
+		$("._jump-input").blur !->
 			if event.keyCode is 13 then _jump-dom.trigger "click"
 			if event.keyCode is 13 then _save-dom.trigger "click"
 			if $('._jump-input').val() == '' or /^[1-9]\d*$/.test($('._jump-input').val())
@@ -61,7 +77,8 @@ main-manage = let
 				show-global-message '该输入框只能输入数字哦'
 				$('._jump-input').val('')
 				return false;
-				
+
+	_init-all-event = !->
 		_search-dom.click !->
 			searchNum = $('._searchInput').val!
 			searchNum = Number(searchNum)
@@ -249,6 +266,8 @@ main-manage = let
 		time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
 
 	initial: !->
+		_init-all-blur!
+		_init-all-keyup!
 		_init-arry!
 		_init-table!
 		_init-depend-module!

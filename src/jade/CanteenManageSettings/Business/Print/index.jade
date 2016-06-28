@@ -59,19 +59,21 @@ block content
 					#printBranch
 						span._content 分单设置
 						p._branchTip 请选择允许分单打印的餐品
-						#categories-choose
-							ul.allChoose
-								li.shown-item._all 全选
-									.checkbox-icon.true
-										input(type="checkbox" checked="true")
+						#categories-containter
+							#categories-choose
+								ul.allChoose
+									li.shown-item._all 全选
+										.checkbox-icon.true
+											input(type="checkbox" checked="true")
 					#printTable
 						span._content 桌位设置
 						p._tableTip 请选择允许分单打印的桌位
-						#tables-choose
-							ul.allChoose
-								li.shown-item._all 全选
-									.checkbox-icon.true
-										input(type="checkbox" checked="true")
+						#tables-containter
+							#tables-choose
+								ul.allChoose
+									li.shown-item._all 全选
+										.checkbox-icon.true
+											input(type="checkbox" checked="true")
 				#modify-btn-field
 					.cancel-btn.btn
 						p 取消
