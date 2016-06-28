@@ -103,8 +103,12 @@ edit-manage = let
         add-new-item: !->
             if @items.length < 7
                 @items.push new LadderItem @items.length,'',''
+                if @items.length === 7
+                    _add-btn-dom.hide!
 
         delete-item: (index)!->
+            if @items.length === 7
+                _add-btn-dom.show!
             removed-items = @items.splice index,1
             removed-item = removed-items[0]
             removed-item.delete-dom!
