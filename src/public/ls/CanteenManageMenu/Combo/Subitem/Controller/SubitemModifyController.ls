@@ -63,13 +63,14 @@ class SubitemModifyController extends CBase
 			@subitem-modify-model.set-is-category-active category-id, true
 		@subitem-modify-model.read-from-subitem subitem
 
-	submit-data-and-try-require: (config-data, callback, always)!->
+	submit-data-and-try-require: (config-data, callback, always, require-prepare-callbcak)!->
 		@subitem-modify-model.set-config-data config-data
 		@subitem-modify-model.update-all-choose-dish-ids!
 		if not @subitem-modify-model.check-self-config-data-is-valid! then return
 		config-data-for-upload = @subitem-modify-model.get-config-data-for-upload!
 		config-data-for-callback = @subitem-modify-model.get-config-data-for-callback!
 		console.log config-data-for-upload, config-data-for-callback
+		require-prepare-callbcak?!
 		if @subitem-modify-model.get-state! is "new"
 			@require-for-add-subitem config-data-for-upload, config-data-for-callback, callback, always
 		else if @subitem-modify-model.get-state! is "edit"
