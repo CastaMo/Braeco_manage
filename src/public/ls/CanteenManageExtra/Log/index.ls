@@ -25,7 +25,6 @@ do !->
 		@pages = JSON.parse ($ '#page-JSON-field' ).text!
 
 		$ '#search' .click !->
-			console.log _get-url-data
 			window.location.href = _get-url _get-url-data!
 		$ 'select[name=type]' .change !->
 			window.location.href = _get-url _get-url-data!
