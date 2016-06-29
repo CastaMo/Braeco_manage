@@ -97,7 +97,7 @@ main-manage = let
 			if _coupons[i].indate.length is 20
 				_new-dom.find(".coupon-valid-period").html("#{_coupons[i].indate.substr(0, 10)} 至 #{_coupons[i].indate.substr(10,20)}")
 			else if _coupons[i].indate.length < 10
-				_new-dom.find(".coupon-valid-period").html("领取后#{_coupons[i].indate}天有效，过期无效")
+				_new-dom.find(".coupon-valid-period").html("领取后 #{_coupons[i].indate} 天有效，过期无效")
 			if _coupons[i].status == "0"
 				_new-dom.find(".coupon-status").html("发放中")
 				_new-dom.find(".coupon-status").css("color","#00C049")
@@ -136,7 +136,7 @@ main-manage = let
 						if _coupons[j].indate.length is 20
 							$("._pre-valid-period").html("#{_coupons[j].indate.substr(10)} 至 #{_coupons[j].indate.substr(10,20)}")
 						else if _coupons[j].indate.length isnt 20
-							$("._pre-valid-period").html("领取后#{_coupons[j].indate}天有效，过期无效")
+							$("._pre-valid-period").html("领取后 #{_coupons[j].indate} 天有效，过期无效")
 						$("._pre-use-condition").html("订单额满#{_coupons[j].cost}元可使用")
 						if Number(_coupons[j].pay) is 0
 							$("._left-distribute-coupon").html("顾客点餐前发券")
@@ -226,7 +226,7 @@ main-manage = let
 			$('#btn-filed .stop-confirm').fade-in 100
 
 		$('#btn-filed .stop-confirm .confirm-btn').click !->
-			$('#btn-filed .stop-confirm').fade-out 100、
+			$('#btn-filed .stop-confirm').fade-out 100
 
 		$('#btn-filed .stop-confirm .confirm-cancel-btn').click !->
 			$('#btn-filed .stop-confirm').fade-out 100
@@ -391,7 +391,7 @@ main-manage = let
 				$('#date-period').fade-out 100
 				$('#valid-day').fade-in 100
 		_valid-day-dom.keyup !->
-			$(".valid-day-input-tip").html("领取后#{_valid-day-dom.val!}天有效，过期无效")
+			$(".valid-day-input-tip").html("领取后 #{_valid-day-dom.val!} 天有效，过期无效")
 		_use-condition-dom.keyup !->
 			$(".pre-condition-value").html($("._use-condition").val!)
 			$(".tip-3-content").html("3. 订单消费满 ￥#{$("._use-condition").val!} 可用，最多可同时使用 #{$("._multiple-use").val!} 张。")

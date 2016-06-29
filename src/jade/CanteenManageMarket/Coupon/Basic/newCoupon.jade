@@ -13,8 +13,6 @@
 					span.pre-condition-value
 					span.pre-condition-back  可用
 				.pre-rule
-					.tip-0
-						span &nbsp;
 					.tip-1
 						span.tip-1-content 1. 本券仅在：杯口餐厅 使用;
 					.tip-2
@@ -29,7 +27,7 @@
 				#face-value
 					span._content 面值*
 					.face-value-input
-						input._face-value.check-input
+						input._face-value.check-input(maxlength = "6")
 						span._unit 元
 				#valid-period
 					span._content 有效期*
@@ -42,18 +40,18 @@
 						input._date-period-start
 						span._zhi 至
 						input._date-period-end
-					p._date-period-tip 有效期：2016-01-01 至 2016-12-31
+					p._date-period-tip 有效期： 至 
 				#valid-day
 					span._content 有效天数*
 					.valid-day-input
-						input._valid-day.check-input
+						input._valid-day.check-input(maxlength = "6")
 						span._unit 天
 					p.valid-day-input-tip 领取后 天有效，过期无效
 				#use-condition
 					span._content 使用门槛*
 					.use-condition-input
 						span 消费满
-						input._use-condition.check-input
+						input._use-condition.check-input(maxlength = "7")
 						span._unit 元
 						span 可用
 			#down-field
@@ -65,7 +63,7 @@
 				#max-coupon
 					span._content 发放上限*
 					.max-coupon-input
-						input._max-coupon.check-input
+						input._max-coupon.check-input(maxlength = "10")
 						span._unit 张
 				#max-own-select
 					span._content 领取上限*
@@ -75,7 +73,7 @@
 				#max-own
 					span._content
 					#max-own-input
-						input._max-own.check-input
+						input._max-own.check-input(maxlength = "10")
 						span._unit 张
 				#apply-area
 					span._content 适用业务*
@@ -94,7 +92,7 @@
 				#multiple-use
 					span._content 叠加使用*
 					.multiple-use-input
-						input._multiple-use.check-input
+						input._multiple-use.check-input(maxlength = "10")
 						span._unit 张
 					p.multiple-use-tip 每笔订单最多可同时叠加使用 张
 			#btn-filed
