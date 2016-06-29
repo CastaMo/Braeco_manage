@@ -79,9 +79,6 @@ do !->
 			ymdhis = time.getUTCFullYear! + "-"
 			ymdhis += _add-zero(time.getUTCMonth!+1) + "-"
 			ymdhis += _add-zero time.getUTCDate! 
-			ymdhis += "<br> " + _add-zero(time.getUTCHours!)+":"
-			ymdhis += _add-zero(time.getUTCMinutes!)+":"
-			ymdhis += _add-zero time.getUTCSeconds!
 			ymdhis
 		_date-to-unix = (d,add)->
 			if add ==1

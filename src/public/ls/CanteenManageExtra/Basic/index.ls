@@ -30,7 +30,7 @@ do ->
 				for x in inputs
 					name = x.getAttribute 'name'
 					if name == 'oldpass'
-						data[name] = jQuery.md5 x.value
+						data[name] = $.md5 x.value
 					data[name] = x.value
 				data
 			if temp.getAttribute('id')!='wrap_pics'
@@ -120,48 +120,51 @@ do ->
 	Wrap-pics = !->
 		self = util.getById 'wrap_pics'
 		self.mychange = {}
-		self.upload = {}
+		self.mychange.arr=[]
 		$ '#wrap_pics' .find 'input[type=file]' .change !->
 			index = $ @ .parents '.little_pic_li' .index!
 			src = util.getObjectURL @files[0]
 			temp = {}
 			temp.action ='change'
 			temp.value = src
-			self.mychange[index+''] = temp
+			self.mychange.arr[index+''] = temp
 			img-preview index,src
 		$ '#wrap_pics' .find '.little_pic_li .delet_img' .click !->
 			delete-img-input($ @ .parents('.little_pic_li').index!)
 		
 		util.getById 'wrap_pics' .mysubmit = !->
 			show-loading!
-			for key of @mychange
-				if @mychange[key].action == 'delete'
-					ajax-for-delete @mychange[key].value
-				else if  @mychange[key].action == 'change'
-					ajax-for-token key,@mychange[key].value
+			self.mychange.sum = 0
+			for key of @mychange.arr
+				self.mychange.sum +=1
+				if @mychange.arr[key].action == 'delete'
+					ajax-for-delete @mychange.arr[key].value,self.mychange.sum
+				else if  @mychange.arr[key].action == 'change'
+					ajax-for-token key,@mychange.arr[key].value,self.mychange.sum
 					# *******************************************************
 					# ********************** todo  *****************
 					# ************** 完成上传删除后提示 *************
 					# ****************************************************
+		afte-upload-img = ->
 			text
-			for key of @upload
-				text = key + ':' + @upload[key] +'\n'
+			for key of self.mychange.arr
+				text = key + ':' + self.mychange.arr[key] +'<br>'
 			show-global-message text
 			close-loading!
-		ajax-for-token = (n,src)!->
+		ajax-for-token = (n,src,order)!->
 			util.ajax {
 				type : 'post'
 				url : '/pic/upload/token/cover/' + n
 				async :'async'
 				success : (result)!->
 					if result.message == 'success'
-						ajax-for-qiniu result,src
-				always : (result)!->
-					console.log result
+						ajax-for-qiniu result,src,order
 				unavailabled : (result)!->
-					show-global-message '提交失败，原因：'+result
+					self.mychange.arr[i+''].result='上传失败，请重试'
+				always : (result)!->
+					
 				}
-		ajax-for-qiniu = (data,src)!->
+		ajax-for-qiniu = (data,src,order)!->
 			util.ajax {
 				type : 'post'
 				url : 'http://upload.qiniu.com/'
@@ -172,15 +175,14 @@ do ->
 					file : util.converImgTobase64 src				
 				}
 				success : (result)!->
-					console.log result
 					if result.message == 'success'
-						self.upload[i+'']='上传成功'
-						console.log 'success'
+						self.mychange.arr[i+''].result='上传成功'
+						# console.log self.mychange
 				always : (result)!->
-					console.log result
+					if order==self.mychange.sum
+						afte-upload-img!
 				unavailabled : (result)!->
-					self.upload[i+'']='上传失败，请重试'
-					console.log result
+					self.mychange.arr[i+''].result='上传失败，请重试'
 			}
 		ajax-for-delete = (n)!->
 			util.ajax {
@@ -188,15 +190,13 @@ do ->
 				url : '/Dinner/Cover/Remove/'+n
 				async :'async'
 				success : (result)!->
-					console.log result
 					if result.message == 'success'
-						self.upload[n+'']='上传成功'
-						console.log 'success'
+						self.mychange.arr[i+''].result='删除成功'
 				always : (result)!->
-					console.log result
+					if order==self.mychange.sum
+						afte-upload-img!
 				unavailabled : (result)!->
-					self.upload[n+'']='上传失败，请重试!'
-					console.log result
+					self.mychange.arr[i+''].result='删除失败，请重试!'
 			}
 		img-preview = (index,src)!->
 			$ '.little_pic_li' .eq index .find('img').attr 'src', src
