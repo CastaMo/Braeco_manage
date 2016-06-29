@@ -226,7 +226,7 @@ main-manage = let
 			$('#btn-filed .stop-confirm').fade-in 100
 
 		$('#btn-filed .stop-confirm .confirm-btn').click !->
-			$('#btn-filed .stop-confirm').fade-out 100、
+			$('#btn-filed .stop-confirm').fade-out 100
 
 		$('#btn-filed .stop-confirm .confirm-cancel-btn').click !->
 			$('#btn-filed .stop-confirm').fade-out 100
