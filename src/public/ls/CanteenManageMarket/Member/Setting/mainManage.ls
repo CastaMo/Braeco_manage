@@ -95,7 +95,7 @@ main-manage = let
 					data 		:		{
 						JSON 	:		JSON.stringify(request-object)
 					}
-					success 	:		(result)!-> location.reload!
+					callback 	:		(result)!-> location.reload!
 				}
 				location.href = "/Manage/Market/Member/Setting"
 			else alert("后一项升级积分必须大于等于前一项，后一项折扣必须小于等于前一项")
@@ -112,11 +112,10 @@ main-manage = let
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
 				}
-				success 	:		(result)!-> location.reload!
+				callback 	:		(result)!-> location.reload!
 			}
 
 	_init-all-blur = !->
-		
 
 	time-out-id = ''
 	# 显示全局信息提示
