@@ -192,15 +192,27 @@
                         .checkbox-item {
                             float: left;
                             margin-right: 30px;
-                            input {
+                            input[type="checkbox"] {
+                                cursor: pointer;
                                 float: left;
                                 width: 18px;
                                 height: 18px;
+                                opacity: 0;
                             }
                             span {
                                 float: left;
                                 margin-left: 8px;
                             }
+                        }
+                        .checked-checkbox-item {
+                            background-image: url(@checked-icon-url);
+                            background-size: 18px 18px;
+                            background-repeat: no-repeat;                        
+                        }
+                        .unchecked-checkbox-item {
+                            background-image: url(@unchecked-icon-url);
+                            background-size: 18px 18px;
+                            background-repeat: no-repeat;
                         }
                     }
                 }

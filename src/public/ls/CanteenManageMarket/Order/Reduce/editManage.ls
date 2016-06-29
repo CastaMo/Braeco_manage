@@ -8,6 +8,8 @@ edit-manage = let
     _cancel-btn-dom = $ "\#order-reduce-edit .cancel-btn"
     _save-btn-dom = $ "\#order-reduce-edit .save-btn"
 
+    _checkbox-inputs-dom = $ "\#order-reduce-edit .business-content input[type='checkbox']"
+
     item-manager = null
     
     _ladder-index-chinese = ['一','二','三','四','五','六','七']
@@ -30,6 +32,17 @@ edit-manage = let
             json-result = JSON.stringify result
             $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Reduce/Update", data: json-result,\
                 dataType: "JSON", contentType: "application/json", success: _update-reduce-success}
+
+    _checkbox-change-event = (event)!->
+        checkbox = $ event.target
+        parent = checkbox.parent!
+        if checkbox.is ":checked"
+            parent.remove-class 'unchecked-checkbox-item'
+            parent.add-class 'checked-checkbox-item'
+        else
+            parent.remove-class 'checked-checkbox-item'
+            parent.add-class 'unchecked-checkbox-item'
+
 
     _update-reduce-success = (data)!->
         console.log data
@@ -144,6 +157,7 @@ edit-manage = let
         _cancel-btn-dom.click !-> _cancel-btn-click-event!
         _save-btn-dom.click !-> _save-btn-click-event!
         _add-btn-dom.click !-> _add-btn-click-event!
+        _checkbox-inputs-dom.change !-> _checkbox-change-event event
 
     _init-depend-module = !->
         page    := require "./pageManage.js"

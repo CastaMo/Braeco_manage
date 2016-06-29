@@ -148,7 +148,6 @@ edit-manage = let
         _save-btn-dom.prop "disabled",false
         _save-btn-dom.remove-class "save-btn-disable"
 
-
     _init-form-field = !->
         _name-input-dom.val _edited-role.name
         permission-string = _edited-role.permission.to-string 2
@@ -162,7 +161,8 @@ edit-manage = let
         for i from permission-array.length-1 to 0 by -1
             par = ($ "\#staff-role-edit input[value='"+permission-array[i]+"']").parent!
             _set-checkbox-checked par
-            if (par.siblings 'li.checkbox-item').length === (par.siblings 'li.checked-icon').length
+            if (par.siblings 'li.checkbox-item').length-(par.siblings "li.disabled-checkbox-item").length \
+                === (par.siblings 'li.checked-icon').length
                 _set-checkbox-checked $ par.parent!.parent!
         _fix-init-form-field!
 
