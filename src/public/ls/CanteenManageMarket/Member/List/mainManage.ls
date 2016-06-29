@@ -41,15 +41,15 @@ main-manage = let
 			if $('._searchInput').val() == '' or /^[1-9]\d*$/.test($('._searchInput').val())
 				return true;
 			else
-				show-global-message '该输入框只能输入数字'
+				show-global-message '搜索会员只能输入数字！'
 				return false;
 		
 		$('#_input1').blur !->
 			if event.keyCode is 13 then _save-dom.trigger "click"
-			if $('#_input1').val() == '' or /^[1-9]\d*$/.test($('#_input1').val())
+			if $('#_input1').val() == '' or /^[0-9]\d*$/.test($('#_input1').val())
 				return true;
 			else
-				show-global-message '该输入框只能输入数字'
+				show-global-message '修改积分只能为正整数！'
 				return false;
 
 		$('#_input2').blur !->
@@ -57,7 +57,7 @@ main-manage = let
 			if $('#_input2').val() == '' or /^[1-9]\d*$/.test($('#_input2').val())
 				return true;
 			else
-				show-global-message '该输入框只能输入数字'
+				show-global-message '充值金额只能为正整数！'
 				return false;
 
 		$('#_suppPhone').blur !->
@@ -65,7 +65,7 @@ main-manage = let
 			if $('#_suppPhone').val() == '' or /^[1-9]\d*$/.test($('#_suppPhone').val())
 				return true;
 			else
-				show-global-message '该输入框只能输入数字'
+				show-global-message '输入正确的手机号码！'
 				return false;
 
 		$("._jump-input").blur !->
@@ -83,21 +83,18 @@ main-manage = let
 			searchNum = $('._searchInput').val!
 			searchNum = Number(searchNum)
 			_location = "/Manage/Market/Member/List?search=" + searchNum
-			location.href = _location
 
 		_last-page-dom.click !->
 			pageArrJSON = $('#page-JSON-field').html!
 			pageArr = JSON.parse(pageArrJSON)
 			if pageArr.pn > 1 then pageArr.pn--
 			location.href = "/Manage/Market/Member/List?by=create_date&search=#{pageArr.search}&in=#{pageArr.in}&pn=" + pageArr.pn
-			_init-table!
 
 		_next-page-dom.click !->
 			pageArrJSON = $('#page-JSON-field').html!
 			pageArr = JSON.parse(pageArrJSON)
 			if pageArr.pn < pageArr.sum_pages then pageArr.pn++
 			location.href = "/Manage/Market/Member/List?by=create_date&search=#{pageArr.search}&in=#{pageArr.in}&pn=" + pageArr.pn
-			_init-table!
 
 		_jump-dom.click !->
 			jumpPage = $("._jump-input").val!
@@ -107,7 +104,6 @@ main-manage = let
 			pageArrJSON = JSON.stringify(pageArr)
 			$('#page-JSON-field').html(pageArrJSON)
 			location.href = "/Manage/Market/Member/List?by=create_date&in=#{pageArr.in}&pn=" + pageArr.pn
-			_init-table!
 
 		_close-dom.click !->
 			page.cover-page "exit"
@@ -133,7 +129,7 @@ main-manage = let
 							JSON 	:		JSON.stringify(request-object)
 							user-id :		parentID;
 						}
-						success 	:		(result)!-> location.reload!
+						callback 	:		(result)!-> location.reload!
 					}
 				else if Number(_members[i].id) is Number(parentID) and recharge-input != ""
 					request-object.amount = recharge-input;
@@ -152,11 +148,6 @@ main-manage = let
 						}
 						callback 	:		(result)!-> location.reload!
 					}
-			_update-members!
-			_init-table!
-			if $(".phoneNumber").html! is "-" and recharge-input != "" and /^[0-9]+$/.test($(".phoneNumber").val!) and $(".phoneNumber").val!.length is 11
-				alert("我们已经发送一条短信给会员，会员按照手机短信提示后回复短信即可充值成功，请提示会员留意手机信息!")
-			page.cover-page "exit"
 
 	class Member
 		(options)!->
@@ -261,7 +252,7 @@ main-manage = let
 	show-global-message = (str)->
 		ob = $ '#global_message' 
 		ob.show!
-		ob.html str 
+		ob.html str
 		clearTimeout time-out-id
 		time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
 

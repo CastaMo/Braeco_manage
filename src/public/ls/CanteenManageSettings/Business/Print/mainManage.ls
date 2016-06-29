@@ -11,8 +11,10 @@ main-manage = let
 	_save-btn-dom = $ "\.save-btn"
 	_printCut-dom = $ "\._printCut"
 	_test-dom = $ "\.test-btn"
-	_confirm-btn-dom = $ "\.confirm-btn"
-	_confirm-cancel-btn-dom = $ "\.confirm-cancel-btn"
+	_confirm-btn-dom = $ "\.stop-confirm-btn"
+	_confirm-cancel-btn-dom = $ "\.stop-confirm-cancel-btn"
+	_modify-confirm-btn-dom = $ "\#modify-btn-field .confirm-btn"
+	_modify-confirm-cancel-btn-dom = $ "\#modify-btn-field .confirm-cancel-btn"
 
 	_init-JSON = (_get-JSON)!->
 		all = get-JSON _get-JSON!
@@ -49,11 +51,11 @@ main-manage = let
 										</div>
 										<div class = 'stop-confirm stop-confirm-image'>
 											<p>确认停用该打印机吗？</p>
-											<div id = 'confirm-btn-field'>
-												<div class = 'confirm-btn btn'>
+											<div id = 'stop-confirm-btn-field'>
+												<div class = 'stop-confirm-btn btn'>
 													<p>确认</>
 												</div>
-												<div class = 'confirm-cancel-btn btn'>
+												<div class = 'stop-confirm-cancel-btn btn'>
 													<p>取消</>
 												</div>
 											</div>
@@ -314,6 +316,13 @@ main-manage = let
 				$("._printUnit").attr("disabled", false)
 
 		_cancel-btn-dom.click !->
+			$('#modify-btn-field .stop-confirm').fade-in 100
+
+		_modify-confirm-btn-dom.click !->
+			$('#modify-btn-field .stop-confirm').fade-out 100
+
+		_modify-confirm-cancel-btn-dom.click !->
+			$('#modify-btn-field .stop-confirm').fade-out 100
 			page.toggle-page "basic"
 
 		_save-btn-dom.click !->

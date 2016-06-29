@@ -35,6 +35,7 @@ main-manage = let
 	_down-last-dom = $ "\._down .lastPage.btn"
 	_down-next-dom = $ "\._down .nextPage.btn"
 	_down-jump-dom = $ "\._down .jump-btn"
+	_return-dom = $ "\.return-btn"
 
 	class Coupon
 		(options)->
@@ -343,6 +344,9 @@ main-manage = let
 		_confirm-cancel-btn.click !->
 			$(".stop-confirm").fade-out 100
 
+		_return-dom.click !->
+			page.toggle-page "basic"
+
 	_init-all-blur = !->
 		_face-value-dom.blur !->
 			if $('._face-value').val() == '' or /^[0-9]+(.[0-9]{1,2})?$/.test($('._face-value').val())
@@ -422,14 +426,6 @@ main-manage = let
 			$("._date-period-tip").html("有效期：#{_date-period-start-dom.val!} 至 #{_date-period-end-dom.val!}")
 		_date-period-end-dom.change !->
 			$("._date-period-tip").html("有效期：#{_date-period-start-dom.val!} 至 #{_date-period-end-dom.val!}")
-
-	time-out-id = ''
-	show-global-message = (str)->
-		ob = $ '#global_message'
-		ob.show!
-		ob.html str
-		clearTimeout time-out-id
-		time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
 
 	_init-depend-module = !->
 		page := require "./pageManage.js"
