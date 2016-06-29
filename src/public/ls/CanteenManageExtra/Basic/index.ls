@@ -32,7 +32,7 @@ do ->
 					if name == 'oldpass'
 						data[name] = $.md5 x.value
 					data[name] = x.value
-					
+					# console.log x
 				data
 			if temp.getAttribute('id')!='wrap_pics'
 				temp.mysubmit =(mydata,myurl)->
