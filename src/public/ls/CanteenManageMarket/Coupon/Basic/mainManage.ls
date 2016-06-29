@@ -27,14 +27,14 @@ main-manage = let
 	_save-btn-dom = $ "\.save-btn"
 	_run-content-dom = $ "\#run-content-field"
 	_pass-content-dom = $ "\#pass-content-field"
-	_confirm-btn-dom = $ "\.confirm-btn"
-	_confirm-cancel-btn = $ "\.confirm-cancel-btn"
+	_confirm-btn-dom = $ "\#stop-coupon .confirm-btn"
+	_confirm-cancel-btn = $ "\#stop-coupon .confirm-cancel-btn"
 	_up-last-dom = $ "\._up .lastPage.btn"
 	_up-next-dom = $ "\._up .nextPage.btn"
-	_up-jump-dom = $ "\._up .jumpPage.btn"
+	_up-jump-dom = $ "\._up .jump-btn"
 	_down-last-dom = $ "\._down .lastPage.btn"
 	_down-next-dom = $ "\._down .nextPage.btn"
-	_down-jump-dom = $ "\._down .jumpPage.btn"
+	_down-jump-dom = $ "\._down .jump-btn"
 
 	class Coupon
 		(options)->
@@ -73,9 +73,13 @@ main-manage = let
 
 	_init-coupon-view = !->
 		_length = _coupons.length
+		$("._up .page").html("#{_upnow}/#{_upsum}")
+		$("._up ._jump-input").attr("max", "#{_upsum}")
+		$("._down .page").html("#{_downnow}/#{_downsum}")
+		$("._down ._jump-input").attr("max", "#{_downsum}")
+		if _upnow > 1 then $(document).scrollTop(233)
+		if _downnow > 1 then $(document).scrollTop(465)
 		for i from 0 to _length-1 by 1
-			$("._up .page").html("#{_upnow}/#{_upsum}")
-			$("._down .page").html("#{_downnow}/#{_downsum}")
 			_new-dom = $ "<div class='coupon' class='btn'>
 							<div class='coupon-identify'>
 								<span class='coupon-batch-number'></span>
@@ -89,11 +93,11 @@ main-manage = let
 						</div>"
 			_new-dom.find(".coupon-batch-number").html("批次号：#{_coupons[i].couponid}")
 			_new-dom.find(".coupon-max-use").html("最多可叠加使用#{_coupons[i].max_use}张")
-			_new-dom.find(".coupon-value").html("#{_coupons[i].cost_reduce}元（满#{_coupons[i].cost}元可用）")
+			_new-dom.find(".coupon-value").html("#{_coupons[i].cost_reduce/100}元（满#{_coupons[i].cost/100}元可用）")
 			if _coupons[i].indate.length is 20
 				_new-dom.find(".coupon-valid-period").html("#{_coupons[i].indate.substr(0, 10)} 至 #{_coupons[i].indate.substr(10,20)}")
 			else if _coupons[i].indate.length < 10
-				_new-dom.find(".coupon-valid-period").html("领取后#{_coupons[i].indate}天有效，过期无效")
+				_new-dom.find(".coupon-valid-period").html("领取后 #{_coupons[i].indate} 天有效，过期无效")
 			if _coupons[i].status == "0"
 				_new-dom.find(".coupon-status").html("发放中")
 				_new-dom.find(".coupon-status").css("color","#00C049")
@@ -132,7 +136,7 @@ main-manage = let
 						if _coupons[j].indate.length is 20
 							$("._pre-valid-period").html("#{_coupons[j].indate.substr(10)} 至 #{_coupons[j].indate.substr(10,20)}")
 						else if _coupons[j].indate.length isnt 20
-							$("._pre-valid-period").html("领取后#{_coupons[j].indate}天有效，过期无效")
+							$("._pre-valid-period").html("领取后 #{_coupons[j].indate} 天有效，过期无效")
 						$("._pre-use-condition").html("订单额满#{_coupons[j].cost}元可使用")
 						if Number(_coupons[j].pay) is 0
 							$("._left-distribute-coupon").html("顾客点餐前发券")
@@ -154,15 +158,30 @@ main-manage = let
 				page.toggle-page "detail"
 
 	_init-all-event = !->
-		$("._date-period input").datepicker ({
+		_date-period-start-dom.datepicker ({
 			format: 'yyyy-mm-dd'
 			autohide: 'true'
 			autopick: 'true'
+			trigger: $('.date-period-start')
 		});
+
+		_date-period-end-dom.datepicker ({
+			format: 'yyyy-mm-dd'
+			autohide: 'true'
+			autopick: 'true'
+			trigger: $('.date-period-end')
+		});
+
+		$("._up ._jump-input").keyup !->
+			if event.keyCode is 13 then _up-jump-dom.trigger "click"
+
+		$("._down ._jump-input").keyup !->
+			if event.keyCode is 13 then _down-jump-dom.trigger "click"
 		
 		_up-last-dom.click !->
 			if _upnow > 1 then _upnow--
 			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
+			$(document).scrollTop(233)
 
 		_down-last-dom.click !->
 			if _downnow > 1 then _downnow--
@@ -171,20 +190,33 @@ main-manage = let
 		_up-next-dom.click !->
 			if _upnow < _upsum then _upnow++
 			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
+			$(document).scrollTop(233)
 
 		_down-next-dom.click !->
 			if _downnow < _downsum then _downnow++
 			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
 
 		_up-jump-dom.click !->
-			_jumpPage = $(".up ._jump-input").val!
-			if _jumpPage >= 1 and _jumpPage <= _upsum then _upnow = _jumpPage
-			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
+			if $("._up ._jump-input").val() isnt ''
+				if $("._up ._jump-input").val() > 1 and $("._up ._jump-input").val() <= _upsum
+					_jumpPage = $("._up ._jump-input").val!
+				else if $("._up ._jump-input").val() > _upsum
+					_jumpPage = _upnow
+				else
+					_jumpPage = 1
+			else _jumpPage = _upnow
+			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_jumpPage}&downpn=#{_downnow}"
 
 		_down-jump-dom.click !->
-			_jumpPage = $(".down ._jump-input").val!
-			if _jumpPage >= 1 and _jumpPage <= _downsum then _downnow = _jumpPage
-			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_downnow}"
+			if $("._down ._jump-input").val() isnt ''
+				if $("._down ._jump-input").val() > 1 and $("._down ._jump-input").val() <= _downsum
+					_jumpPage = $("._down ._jump-input").val!
+				else if $("._down ._jump-input").val() > _downsum
+					_jumpPage = _downnow
+				else
+					_jumpPage = 1
+			else _jumpPage = _downnow
+			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_jumpPage}"
 
 		_apply-dom.click !->
 			_apply = $(this).parent()
@@ -199,14 +231,35 @@ main-manage = let
 			page.toggle-page "new"
 
 		_cancel-btn-dom.click !->
+			$('#btn-filed .stop-confirm').fade-in 100
+
+		$('#btn-filed .stop-confirm .confirm-btn').click !->
+			$('#btn-filed .stop-confirm').fade-out 100
+
+		$('#btn-filed .stop-confirm .confirm-cancel-btn').click !->
+			$('#btn-filed .stop-confirm').fade-out 100
 			page.toggle-page "basic"
 
+
 		_save-btn-dom.click !->
+			_init-all-blur!
+			_check-input = 0
+			for i from 0 to 5 by 1
+				if $('#right-field').find(".check-input").eq(i).val() is ''
+					_check-input++
+			if $('._valid-period').val! is 0
+				if _check-input > 1
+					show-global-message '尚有必选项未填写!'
+					return false
+			if $('._valid-period').val! is 1
+				if _check-input > 0
+					show-global-message '尚有必选项未填写!'
+					return false
 			addCoupon = {}
 			fun = []
 			_sum = 0
-			addCoupon.cost_reduce = $("._face-value").val!
-			addCoupon.cost = $("._use-condition").val!
+			addCoupon.cost_reduce = $("._face-value").val!*100
+			addCoupon.cost = $("._use-condition").val!*100
 			if $("._valid-period").val! is "0"
 				addCoupon.indate = _date-period-start-dom.val!
 				addCoupon.indate += _date-period-end-dom.val!
@@ -244,9 +297,8 @@ main-manage = let
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
 				}
-				success 	:		(result)!-> location.reload!
+				callback 	:		(result)!-> location.reload!
 			}
-			page.toggle-page "basic"
 
 		_run-btn-dom.click !->
 			$(".detailCoupon-wrapper").removeClass "stop"
@@ -264,7 +316,6 @@ main-manage = let
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
 				}
-				success 	:		(result)!-> location.reload!
 			}
 
 		_stop-btn-dom.click !->
@@ -287,24 +338,68 @@ main-manage = let
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
 				}
-				success 	:		(result)!-> location.reload!
 			}
 
 		_confirm-cancel-btn.click !->
 			$(".stop-confirm").fade-out 100
+
+	_init-all-blur = !->
+		_face-value-dom.blur !->
+			if $('._face-value').val() == '' or /^[0-9]+(.[0-9]{1,2})?$/.test($('._face-value').val())
+				return true
+			else
+				show-global-message '面值只能为数字，最多两位小数'
+				return false;
+
+		_use-condition-dom.blur !->
+			if $('._use-condition').val() == '' or /^[0-9]+(.[0-9]{1,2})?$/.test($('._use-condition').val())
+				return true
+			else
+				show-global-message '使用门槛只能为数字，最多两位小数'
+				return false;
+
+		_valid-day-dom.blur !->
+			if $('._valid-day').val() == '' or /^[0-9]+(.[0-9]{1,2})?$/.test($('._valid-day').val())
+				return true
+			else
+				show-global-message '有效天数只能为数字'
+				return false;
+
+		_max-coupon-dom.blur !->
+			if $('._max-coupon').val() == '' or /^[1-9]\d*$/.test($('._max-coupon').val())
+				return true
+			else
+				show-global-message '发放上限只能为数字'
+				return false;
+
+		_max-own-dom.blur !->
+			if $('._max-own').val() == '' or /^[1-9]\d*$/.test($('._max-own').val())
+				return true
+			else
+				show-global-message '领取上限只能为数字'
+				return false;
+
+		_multiple-use-dom.blur !->
+			if $('._multiple-use').val() == '' or /^[1-9]\d*$/.test($('._multiple-use').val())
+				return true
+			else
+				show-global-message '叠加使用只能为数字'
+				return false;
+
 
 	_init-all-keyup = !->
 		_face-value-dom.keyup !->
 			$("._pre-face-value").html($("._face-value").val!)
 		_valid-period-dom.change !->
 			if Number($(@).val!) is 0
+				$('._valid-day').val('')
 				$('#valid-day').fade-out 100
 				$('#date-period').fade-in 100
 			else if Number($(@).val!) is 1
 				$('#date-period').fade-out 100
 				$('#valid-day').fade-in 100
 		_valid-day-dom.keyup !->
-			$(".valid-day-input-tip").html("领取后#{_valid-day-dom.val!}天有效，过期无效")
+			$(".valid-day-input-tip").html("领取后 #{_valid-day-dom.val!} 天有效，过期无效")
 		_use-condition-dom.keyup !->
 			$(".pre-condition-value").html($("._use-condition").val!)
 			$(".tip-3-content").html("3. 订单消费满 ￥#{$("._use-condition").val!} 可用，最多可同时使用 #{$("._multiple-use").val!} 张。")
@@ -322,6 +417,7 @@ main-manage = let
 			$(".tip-2-content").html("2. 每个微信号限领取 #{$("._max-own").val!} 张代金券；")
 		_multiple-use-dom.keyup !->
 			$(".tip-3-content").html("3. 订单消费满 ￥#{$("._use-condition").val!} 可用，最多可同时使用 #{$("._multiple-use").val!} 张。")
+			$(".multiple-use-tip").html("每笔订单最多可同时叠加使用#{$("._multiple-use").val!}张")
 		_date-period-start-dom.change !->
 			$("._date-period-tip").html("有效期：#{_date-period-start-dom.val!} 至 #{_date-period-end-dom.val!}")
 		_date-period-end-dom.change !->
@@ -339,6 +435,14 @@ main-manage = let
 		page := require "./pageManage.js"
 		require_ := require "./requireManage.js"
 
+	time-out-id = ''
+	# 显示全局信息提示
+	show-global-message = (str)->
+		ob = $ '#global_message' 
+		ob.show!
+		ob.html str 
+		clearTimeout time-out-id
+		time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
 
 	initial: !->
 		_init-all-coupon!
@@ -346,6 +450,7 @@ main-manage = let
 		_init-depend-module!
 		_init-all-event!
 		_init-all-keyup!
+		_init-all-blur!
 
  
 module.exports = main-manage

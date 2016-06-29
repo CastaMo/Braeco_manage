@@ -1,10 +1,18 @@
 @import "../../../common/common";
 #record {
+    input, select, button {
+        color: #4A4A4A;
+        font-size: 14px;
+        font-family: "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "\9ED1\4F53", Arial, sans-serif;
+    }
+    *:focus {
+        outline: none;
+    }
     .record-wrapper {
         width: 710px;
         margin: 0 auto;
-        font-size: 14px;
         #record-refund-main {
+            font-size: 14px;
             margin: 30px 0;
             .rr-container-header {
                 .date-input-header {
@@ -32,10 +40,16 @@
                         width: 72px;
                         height: 36px;
                         margin-right: 20px;
-                        line-height: 1.8;
+                        line-height: 1.5;
                         background-color: #fff;
                         border: 1px solid #e7e7eb;
                         border-radius: 5px;
+                        &:hover {
+                            background-color: #F4F5F9;
+                        }
+                        &:focus {
+                            background-color: #F4F5F9;
+                        }
                         .search-icon {
                             width: 16px;
                             height: 16px;
@@ -55,6 +69,12 @@
                         background-color: #fff;
                         border: 1px solid #e7e7eb;
                         border-radius: 5px;
+                        &:hover {
+                            background-color: #F4F5F9;
+                        }
+                        &:focus {
+                            background-color: #F4F5F9;
+                        }
                     }
                 }
             }
@@ -72,7 +92,7 @@
                             font-weight: normal;
                         }
                         .rrt-refund-time {
-                            width: 15%;
+                            width: 14%;
                         }
                         .rrt-order-number {
                             width: 10%;
@@ -87,7 +107,7 @@
                             width: 15%;
                         }
                         .rrt-refund-reason {
-                            width: 15%;
+                            width: 16%;
                         }
                     }
                 }
@@ -116,6 +136,9 @@
                             }
                         }
                     }
+                    > tr:hover {
+                        background-color: #fffcf6;
+                    }
                 }
             }
             .rr-container-paginate {
@@ -135,10 +158,17 @@
                     border: 1px solid #e7e7eb;
                 }
                 .jump-btn {
-                    padding: 7px 20px;
+                    width: 70px;
+                    height: 30px;
                     border-radius: 5px;
                     background-color: #fff;
                     border: 1px solid #e7e7eb;
+                    &:hover {
+                        background-color: #F4F5F9;
+                    }
+                    &:focus {
+                        background-color: #F4F5F9;
+                    }
                 }
                 .prev-page-icon {
                     width: 30px;

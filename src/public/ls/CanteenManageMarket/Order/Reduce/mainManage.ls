@@ -40,12 +40,12 @@ main-manage = let
         location.href = "/Manage/Market/Activity"
 
     _start-reduce-event = !->
-        $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Reduce/Turn/On",
-        dataType: "JSON", success: _start-reduce-success}
+        $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Reduce/Turn/On",\
+            dataType: "JSON", contentType: "application/json", success: _start-reduce-success}
 
     _stop-reduce-event = !->
-        $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Reduce/Turn/Off",
-        dataType: "JSON", success: _stop-reduce-success}
+        $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Reduce/Turn/Off",\
+            dataType: "JSON", contentType: "application/json", success: _stop-reduce-success}
 
     _start-reduce-success = !->
         _start-alert-block-dom.show!

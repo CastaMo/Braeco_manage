@@ -28,8 +28,8 @@ edit-manage = let
         else
             console.log JSON.stringify result
             json-result = JSON.stringify result
-            $.ajax {type: "POST", contentType: "application/json", url: "/Dinner/Manage/Discount/Give/Update", data: json-result,
-            dataType: "JSON", success: _update-presentation-success}
+            $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Give/Update", data: json-result,\
+                dataType: "JSON", contentType: "application/json", success: _update-presentation-success}
 
     _update-presentation-success = (data)!->
         console.log data
@@ -103,8 +103,12 @@ edit-manage = let
         add-new-item: !->
             if @items.length < 7
                 @items.push new LadderItem @items.length,'',''
+                if @items.length === 7
+                    _add-btn-dom.hide!
 
         delete-item: (index)!->
+            if @items.length === 7
+                _add-btn-dom.show!
             removed-items = @items.splice index,1
             removed-item = removed-items[0]
             removed-item.delete-dom!

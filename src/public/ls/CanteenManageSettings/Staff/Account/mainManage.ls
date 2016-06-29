@@ -18,17 +18,17 @@ main-manage = let
         page.toggle-page 'edit'
 
     _delete-btn-click-event = (staff)->
-        $.ajax {type: "POST", url: "/Waiter/Remove/"+staff.id, dataType: 'JSON', success: _delete-post-success}
-        staff.delete-method-dom.unbind "click"
+        if confirm "是否确定删除"
+            $.ajax {type: "POST", url: "/Waiter/Remove/"+staff.id,\
+                dataType: 'JSON', contentType: "application/json", success: _delete-post-success}
+            staff.delete-method-dom.unbind "click"
 
     _delete-post-success = (data)!->
-        # console.log data
-        if data.message === 'success'
-            location.reload!
         if data.message === 'User not found'
             alert "该店员不存在"
         if data.message === 'Is not waiter of current dinner'
             alert "该店员不是当前餐厅的员工"
+        location.reload!
     
     class Staff
         
