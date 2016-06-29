@@ -201,10 +201,11 @@
             float: left;
             #preview-field {
                 .preview-background {
-                    margin: 30px 0 0 30px;
+                    margin: 60px 0 0 60px;
                     background-repeat: no-repeat;
-                    height: 380px;
-                    width: 210px;
+                    height: 760px;
+                    width: 420px;
+                    zoom: 50%;
                     .coupon-image {
                         height: 380px;
                         width: 210px;
@@ -213,8 +214,8 @@
                 .pre-face-value {
                     text-align: center;
                     position: relative;
-                    left: 107px;
-                    width: 100px;
+                    left: 104px;
+                    width: 110px;
                     bottom: 230px;
                     z-index: 50;
                     float: left;
@@ -234,7 +235,7 @@
                     margin: 0;
                     position: relative;
                     width: 110px;
-                    left: 107px;
+                    left: 104px;
                     bottom: 232px;
                     z-index: 50;
                     .pre-condition-fore,
@@ -320,17 +321,34 @@
                 }
                 #date-period {
                     margin: 20px 0 0 30px;
+                    .date-period-start,
+                    .date-period-end {
+                        float: left;
+                        width: 141px;
+                    }
                     input {
                         autohide: true;
-                        width: 140px;
+                        width: 112px;
                     }
                     ._zhi {
-                        margin: 0 18px 0 18px;
+                        float: left;
+                        margin: 6px 17px 0 17px;
                     }
                     ._date-period-tip {
                         color: #9B9B9B;
                         margin-top: 10px;
                         margin-left: 85px;
+                    }
+                    .datepicker-img {
+                        background-position: 5px 6px;
+                        margin-left: -1px;
+                        background-repeat: no-repeat;
+                        display: inline-block;
+                        height: 28px;
+                        width: 28px;
+                        background-size: 16px 16px;
+                        vertical-align: bottom;
+                        border: 1px solid #e7e7eb;
                     }
                 }
                 #valid-day {

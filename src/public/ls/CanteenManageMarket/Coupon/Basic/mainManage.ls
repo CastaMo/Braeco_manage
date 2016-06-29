@@ -158,10 +158,18 @@ main-manage = let
 				page.toggle-page "detail"
 
 	_init-all-event = !->
-		$("._date-period input").datepicker ({
+		_date-period-start-dom.datepicker ({
 			format: 'yyyy-mm-dd'
 			autohide: 'true'
 			autopick: 'true'
+			trigger: $('.date-period-start')
+		});
+
+		_date-period-end-dom.datepicker ({
+			format: 'yyyy-mm-dd'
+			autohide: 'true'
+			autopick: 'true'
+			trigger: $('.date-period-end')
 		});
 
 		$("._up ._jump-input").keyup !->
