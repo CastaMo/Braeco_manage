@@ -20,8 +20,8 @@ main-manage = let
 		_ladder = all['ladder']
 		charge_ladder = all['charge_ladder']
 		cashEXP = all['cashEXP']
-		$("._tip-1").html("顾客每消费1元获得 #{cashEXP} 积分")
-		for i from 0 to 5 by 1
+		$("._tip-1").html("顾客每消费 1 元获得 #{cashEXP} 积分")
+		for i from 1 to 5 by 1
 			$("\#level-table tr").eq(i+1).children("td").eq(0).html("LV#{i}.#{_ladder[i].name}")
 			$("\#level-table tr").eq(i+1).children("td").eq(1).html("#{_ladder[i].EXP}")
 			$("\#level-table tr").eq(i+1).children("td").eq(2).html("#{_ladder[i].discount}% (#{_ladder[i].discount/10}折)")
