@@ -55,8 +55,8 @@ main-manage = let
         _export-form-st-dom.val _page-data-obj.st
         
     _jump-btn-click-event = !->
-        st = _page-data-obj.st
-        en = _page-data-obj.en
+        st = _page-data-obj.old-st
+        en = _page-data-obj.old-en
         type = _page-data-obj.type
         pn = parse-int _target-page-input-dom.val!
         location.href = _construct-url st,en,pn,type
@@ -64,11 +64,12 @@ main-manage = let
     _start-date-input-dom-change-event = !->
         start-date = _start-date-input-dom.val!
         _page-data-obj.st = _date-to-unix-timestamp new Date start-date
+        _page-data-obj.st = _page-data-obj.st-8*3600
     
     _end-date-input-dom-change-event = !->
         end-date = _end-date-input-dom.val!
         _page-data-obj.en = _date-to-unix-timestamp new Date end-date
-        _page-data-obj.en = _page-data-obj.en+24*3600-1
+        _page-data-obj.en = _page-data-obj.en-8*3600+24*3600-1
     
     _tr-hover-event = (event) !->
         target = $ event.target
@@ -346,6 +347,10 @@ main-manage = let
             en := _page-data-obj.today + 24*3600-1
         else
             en := en + 24*3600-1
+            _page-data-obj.en = en
+        _page-data-obj.old-en = _page-data-obj.en
+        _page-data-obj.old-st = _page-data-obj.st
+        
         _start-date-input-dom.val _unix-timestamp-to-only-date st
         _end-date-input-dom.val _unix-timestamp-to-only-date en
         _type-filter-dom.val type
