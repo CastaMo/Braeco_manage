@@ -19,53 +19,66 @@ main-manage = let
 	_loop-exp-dom = $ "\.table-title ._loop-exp a"
 	_loop-balance-dom = $ "\.table-title ._loop-balance a"
 	
-	_init-all-event = !->
-		$("._searchInput").keydown (event)!->
+	_init-all-keyup = !->
+		$("._searchInput").keyup !->
 			if event.keyCode is 13 then _search-dom.trigger "click"
-			if $('._searchInput').val() == '' || /^[0-9]+(.[0-9]{1,2})?$/.test($('._searchInput').val())
-				return true;
-			else
-				show-global-message '该输入框只能输入数字哦'
-				$('._searchInput').val('')
-				return false;
-		
-		$('#_input1').keydown (event)!->
-			if event.keyCode is 13 then _save-dom.trigger "click"
-			if $('#_input1').val() == '' || /^[0-9]+(.[0-9]{1,2})?$/.test($('#_input1').val())
-				return true;
-			else
-				show-global-message '该输入框只能输入数字哦'
-				$('#_input1').val('')
-				return false;
 
-		$('#_input2').keydown (event)!->
+		$('#_input1').keyup !->
 			if event.keyCode is 13 then _save-dom.trigger "click"
-			if $('#_input2').val() == '' || /^[0-9]+(.[0-9]{1,2})?$/.test($('#_input2').val())
-				return true;
-			else
-				show-global-message '该输入框只能输入数字哦'
-				$('#_input2').val('')
-				return false;
 
-		$('#_suppPhone').keydown (event)!->
+		$('#_input2').keyup !->
 			if event.keyCode is 13 then _save-dom.trigger "click"
-			if $('#_suppPhone').val() == '' || /^[0-9]+(.[0-9]{1,2})?$/.test($('#_suppPhone').val())
-				return true;
-			else
-				show-global-message '该输入框只能输入数字哦'
-				$('#_suppPhone').val('')
-				return false;
 
-		$("._jump-input").keydown (event)!->
+		$('#_suppPhone').keyup !->
+			if event.keyCode is 13 then _save-dom.trigger "click"
+
+		$("._jump-input").keyup !->
 			if event.keyCode is 13 then _jump-dom.trigger "click"
 			if event.keyCode is 13 then _save-dom.trigger "click"
-			if $('._jump-input').val() == '' || /^[0-9]+(.[0-9]{1,2})?$/.test($('._jump-input').val())
+
+	_init-all-blur = !->
+		$("._searchInput").blur !->
+			if $('._searchInput').val() == '' or /^[1-9]\d*$/.test($('._searchInput').val())
+				return true;
+			else
+				show-global-message '该输入框只能输入数字'
+				return false;
+		
+		$('#_input1').blur !->
+			if event.keyCode is 13 then _save-dom.trigger "click"
+			if $('#_input1').val() == '' or /^[1-9]\d*$/.test($('#_input1').val())
+				return true;
+			else
+				show-global-message '该输入框只能输入数字'
+				return false;
+
+		$('#_input2').blur !->
+			if event.keyCode is 13 then _save-dom.trigger "click"
+			if $('#_input2').val() == '' or /^[1-9]\d*$/.test($('#_input2').val())
+				return true;
+			else
+				show-global-message '该输入框只能输入数字'
+				return false;
+
+		$('#_suppPhone').blur !->
+			if event.keyCode is 13 then _save-dom.trigger "click"
+			if $('#_suppPhone').val() == '' or /^[1-9]\d*$/.test($('#_suppPhone').val())
+				return true;
+			else
+				show-global-message '该输入框只能输入数字'
+				return false;
+
+		$("._jump-input").blur !->
+			if event.keyCode is 13 then _jump-dom.trigger "click"
+			if event.keyCode is 13 then _save-dom.trigger "click"
+			if $('._jump-input').val() == '' or /^[1-9]\d*$/.test($('._jump-input').val())
 				return true;
 			else
 				show-global-message '该输入框只能输入数字哦'
 				$('._jump-input').val('')
 				return false;
-				
+
+	_init-all-event = !->
 		_search-dom.click !->
 			searchNum = $('._searchInput').val!
 			searchNum = Number(searchNum)
@@ -225,6 +238,8 @@ main-manage = let
 				page.cover-page "recharge"
 		pageArrJSON = $('#page-JSON-field').html!
 		pageArr = JSON.parse(pageArrJSON)
+		if pageArr.search isnt null
+			$("._searchInput").val("#{pageArr.search}")
 		$(".page").html(pageArr.pn + "/" + pageArr.sum_pages)
 		if pageArr.in is "DESC" then
 			_loop-id-dom.attr("href", "?by=create_date&in=ASC&search=#{pageArr.search}&pn=#{pageArr.pn}")
@@ -251,6 +266,8 @@ main-manage = let
 		time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
 
 	initial: !->
+		_init-all-blur!
+		_init-all-keyup!
 		_init-arry!
 		_init-table!
 		_init-depend-module!

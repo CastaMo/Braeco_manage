@@ -78,12 +78,14 @@ edit-manage = let
 	_save-btn-click-event = !->
 		_read-from-input!
 		if not _check-is-valid! then return
+		page.cover-page "loading"
 		require_.get("edit").require {
 			data 				:		{
 				JSON 			:		_get-upload-JSON-for-edit!
 				property-id 	: 		_current-property.id
 			}
 			success 			: 		(result)!-> _success-callback!
+			always 				: 		!-> page.cover-page "exit"
 		}
 
 	_add-sub-item-btn-click-event = !->

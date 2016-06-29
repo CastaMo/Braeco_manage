@@ -1,0 +1,97 @@
+#subitem-main {
+	#new-btn {
+		.new-btn {
+			width: 160px;
+			height: 32px;
+			background-color: @orange-color;
+			color: #fff;
+			cursor: pointer;
+			.rounded-corners(5px);
+			.new-btn-wrapper {
+				width: 78px;
+				margin: 0 auto;
+				.left-part {
+					.icon {
+						.background-norm();
+						.background-size(14px, 14px);
+						margin-top: 9px;
+					}
+				}
+				.right-part {
+					line-height: 32px;
+				}
+			}
+		}
+	}
+	#subitem-table {
+		width: 710px;
+		margin: 20px auto 0 auto;
+		text-align: center;
+		#name {
+			width: 138px;
+		}
+		#remark {
+			width: 167px;
+		}
+		#price {
+			width: 140px;
+		}
+		#num {
+			width: 110px;
+		}
+		#oper {
+			width: 150px;
+		}
+		.subitem-head {
+			line-height: 43px;
+			background-color: @grey-color;
+			font-size: 16px;
+			color: #8D8D8D;
+			#remark, #num {
+				margin: 0 1px;
+			}
+		}
+		.subitem-body {
+			ul {
+				li {
+					border-bottom: solid 1px @border-grey-color;
+					.subitem-elem-container {
+						> *:not(.clear) {
+							height: 84px;
+							position: relative;
+							> * {
+								width: 90%;
+								line-height: 20px;
+							}
+							> *:not(.name-field):not(.oper-field) {
+								.ellipsisWithLineNum(1);
+							}
+						}
+					}
+					#name {
+						.name-field {
+							.ellipsisWithLineNum(2);
+						}
+					}
+					#oper {
+						.oper-field {
+							width: 81px;
+							.edit, .remove {
+								cursor: pointer;
+							}
+							.icon {
+								.background-norm();
+								.background-size(20px, 20px);
+								margin: 0 auto;
+							}
+							p {
+								margin-top: 10px;
+								line-height: 14px;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
