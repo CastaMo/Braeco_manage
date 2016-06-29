@@ -32,6 +32,7 @@ do ->
 					if name == 'oldpass'
 						data[name] = $.md5 x.value
 					data[name] = x.value
+					
 				data
 			if temp.getAttribute('id')!='wrap_pics'
 				temp.mysubmit =(mydata,myurl)->
