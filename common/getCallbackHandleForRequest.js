@@ -4,6 +4,8 @@ var http            = require('http');
 var BufferHelper    = require('./BufferHelper.js');
 var StringDecoder   = require('string_decoder').StringDecoder;
 var cookie          = 'sid=tkbobycg4ycgq6kz7ir18eunzarrd5l6';
+var zlib            = require('zlib');
+var fs              = require('fs');
 var flag            = true;
 
 function getOptionsForProxySendRequestConfig(url, method) {
@@ -38,10 +40,18 @@ function getCallbackProxyHandleResponse(res) {
     });
 
     remoteRes.on('end', function() {
-      var buffer = bufferHelper.toBuffer(),
-          result = buffer.toString();
+      var buffer = bufferHelper.toBuffer();
       try {
-        res.send(result);
+        var encode = remoteRes.headers['content-encoding'];
+        if (encode === "gzip") {
+          zlib.unzip(buffer, function(err, buffer) {
+            var result = buffer.toString();
+            res.send(result);
+          });
+        } else {
+          var result = buffer.toString();
+          res.send(result);
+        }
       } catch (e) {
         clearTimeout(timer);
         err(new Error('The result has syntax error. ' + e));
