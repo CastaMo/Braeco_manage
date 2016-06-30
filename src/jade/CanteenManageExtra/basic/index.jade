@@ -49,11 +49,6 @@ block content
 				.info_desc 扫码支付
 				.info_value.info_img.info_img1
 					img(src = '')
-	form#form1(target = 'res' enctype="multipart/form-data" action="http://upload.qiniu.com/" method="post")
-		input(type='file' name='file')
-		input(type='text' name='token')
-		input(type='text' name='key')
-	ifame#res(name='res')
 
 	#wrap_contianer
 		.wrap#wrap_password
@@ -138,14 +133,15 @@ block content
 						#carousel.carousel
 							.carousel_imgs
 							.carousel_dots
-								.carousel_dot.active
-								.carousel_dot
-								.carousel_dot
 						span(style='float:right') 建议尺寸: 375像素*200像素
 						span 最多上传5张图片
 					.little_pics
 						.little_pic_li
-							input(type='file')
+							iframe(name='' class='iframe')
+							form.form(target = '' enctype="multipart/form-data" action="http://upload.qiniu.com/" method="post")
+								input(type='file' name='file')
+								input(type='text' name='token')
+								input(type='text' name='key')
 							.little_pic
 								img
 								.delet_img
