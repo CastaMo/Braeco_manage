@@ -11,6 +11,7 @@ main-manage = let
 	_apply-dom = $ "\.apply input"
 	_face-value-dom = $ "\._face-value"
 	_valid-period-dom = $ "\._valid-period"
+	_distribute-coupon-dom = $ "\._distribute-coupon"
 	_valid-day-dom = $ "\._valid-day"
 	_use-condition-dom = $ "\._use-condition"
 	_max-coupon-dom = $ "\._max-coupon"
@@ -133,7 +134,7 @@ main-manage = let
 							$(".detailCoupon-wrapper").addClass "stop"
 						$("._pre-batch-number").html("#{_coupons[j].couponid}")
 						$("._pre-coupon-inventory").html("#{_coupons[j].remain}")
-						$("._pre-face-value").html("#{_coupons[j].cost_reduce}")
+						$("._pre-face-value").html("#{_coupons[j].cost_reduce}/100")
 						if _coupons[j].indate.length is 20
 							$("._pre-valid-period").html("#{_coupons[j].indate.substr(10)} 至 #{_coupons[j].indate.substr(10,20)}")
 						else if _coupons[j].indate.length isnt 20
@@ -244,18 +245,6 @@ main-manage = let
 
 		_save-btn-dom.click !->
 			_init-all-blur!
-			_check-input = 0
-			for i from 0 to 5 by 1
-				if $('#right-field').find(".check-input").eq(i).val() is ''
-					_check-input++
-			if $('._valid-period').val! is 0
-				if _check-input > 1
-					show-global-message '尚有必选项未填写!'
-					return false
-			if $('._valid-period').val! is 1
-				if _check-input > 0
-					show-global-message '尚有必选项未填写!'
-					return false
 			addCoupon = {}
 			fun = []
 			_sum = 0
@@ -291,7 +280,10 @@ main-manage = let
 			addCoupon.max_use = $("._multiple-use").val!
 			addCoupon.max = $("._max-own").val!
 			addCoupon.daily = $("._max-own-select").val!
-			addCoupon.pay = $("._distribute-coupon").val!
+			if $("._distribute-coupon").val! is "0"
+				addCoupon.pay = $("._distribute-coupon").val!
+			else if $("._distribute-coupon").val! is "1"
+				addCoupon.pay = $("._meal-ticket").val!*100
 			request-object = {}
 			request-object = addCoupon
 			require_.get("add").require {
@@ -402,6 +394,12 @@ main-manage = let
 			else if Number($(@).val!) is 1
 				$('#date-period').fade-out 100
 				$('#valid-day').fade-in 100
+		_distribute-coupon-dom.change !->
+			if Number($(@).val!) is 0
+				$('.meal-ticket').val('')
+				$('#meal-ticket').fade-out 100
+			else if Number($(@).val!) is 1
+				$('#meal-ticket').fade-in 100
 		_valid-day-dom.keyup !->
 			$(".valid-day-input-tip").html("领取后 #{_valid-day-dom.val!} 天有效，过期无效")
 		_use-condition-dom.keyup !->

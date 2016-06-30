@@ -86,6 +86,10 @@ main-manage = let
 
 
     _init-dom = !->
+        if _order-promotion.give_ladder.length === 0
+            _ladder-content-dom.append $ "<div class='ladder-content-item'>
+                <span class='ladder-level'>尚未配置阶梯</span>
+                </div>"
         for ladder-item,i in _order-promotion.give_ladder
             _ladder-content-dom.append $ "<div class='ladder-content-item'>
                 <span class='ladder-level'>阶梯"+_ladder-index-chinese[i]+"</span>
