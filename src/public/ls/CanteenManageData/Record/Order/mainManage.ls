@@ -9,6 +9,8 @@ main-manage = let
     
     _type-filter-dom = $ "\#record-order-main .type-filter"
     
+    _start-datepicker-dom = $ '\#record-order-main .start-datepicker-field'
+    _end-datepicker-dom = $ '\#record-order-main .end-datepicker-field'
     _start-date-input-dom = $ '\#record-order-main .start-date'
     _end-date-input-dom = $ '\#record-order-main .end-date'
     _search-btn-dom = $ "\#record-order-main .search-btn"
@@ -51,8 +53,16 @@ main-manage = let
         location.href = _construct-url st,en,pn,type
     
     _export-btn-click-event = !->
-        _export-form-en-dom.val _page-data-obj.en
-        _export-form-st-dom.val _page-data-obj.st
+        if st === null
+            st = _page-data-obj.today
+        else
+            st = _page-data-obj.st
+        if en === null
+            en = _page-data-obj.today + 24*3600-1
+        else
+            en = _page-data-obj.en
+        _export-form-st-dom.val st
+        _export-form-en-dom.val en
         
     _jump-btn-click-event = !->
         st = _page-data-obj.old-st
@@ -345,18 +355,16 @@ main-manage = let
         en = _page-data-obj.en
         pn = parse-int _page-data-obj.pn
         type = _page-data-obj.type
-        if st === null
-            st := _page-data-obj.today
-        if en === null
-            en := _page-data-obj.today + 24*3600-1
-        else
+        if en !== null
             en := en + 24*3600-1
             _page-data-obj.en = en
         _page-data-obj.old-en = _page-data-obj.en
         _page-data-obj.old-st = _page-data-obj.st
         
-        _start-date-input-dom.val _unix-timestamp-to-only-date st
-        _end-date-input-dom.val _unix-timestamp-to-only-date en
+        if st !== null
+            _start-date-input-dom.val _unix-timestamp-to-only-date st
+        if en !== null
+            _end-date-input-dom.val _unix-timestamp-to-only-date en
         _type-filter-dom.val type
         _current-page-dom.text pn.to-string!
         _total-page-dom.text _page-data-obj.sum_pages.to-string!
@@ -390,7 +398,8 @@ main-manage = let
             yearFirst: true,
             yearSuffix: '年'
         }
-        $('[data-toggle="datepicker"]').datepicker {format: 'yyyy-mm-dd', language: 'zh-CN', autohide: true}
+        _start-date-input-dom.datepicker {format: 'yyyy-mm-dd', language: 'zh-CN', autohide: true, trigger: _start-datepicker-dom}
+        _end-date-input-dom.datepicker {format: 'yyyy-mm-dd', language: 'zh-CN', autohide: true, trigger: _end-datepicker-dom}
 
     initial: !->
         _gene-data!

@@ -100,6 +100,8 @@ refund-manage = let
         for single-food in _data-obj.content
             if single-food.cat === 0
                 continue
+            if _is-refunded single-food
+                continue
             _total-sum += single-food.sum
     
     _is-total-current-ok = ->
@@ -136,9 +138,13 @@ refund-manage = let
         if ($ event.target).is ':checked'
             _set-all-max!
             _set-current-total _get-current-total!
+            ($ event.target).parent!.remove-class 'unchecked-checkbox-item'
+            ($ event.target).parent!.add-class 'checked-checkbox-item'
         else
             _set-all-zero!
             _set-current-total _get-current-total!
+            ($ event.target).parent!.add-class 'unchecked-checkbox-item'
+            ($ event.target).parent!.remove-class 'checked-checkbox-item'
     
     _password-block-appear = !->
         ($ '.password-block').fade-in 100
@@ -169,25 +175,25 @@ refund-manage = let
         refunds = []
         for id-td in id-tds
             j-id-td = $ id-td
-            id = parse-int j-id-td.text!
+            index = parse-int j-id-td.text!
             cur =  parse-int (j-id-td.parent!.find '.cur-td').first!.text!
             if cur === 0
                 continue
             else if cur > 0
-                for single-food in _data-obj.content
-                    if single-food.id === id
+                for single-food, i in _data-obj.content
+                    if i === index
                         refund-item = {}
-                        refund-item.id = id
+                        refund-item.id = single-food.id
                         refund-item.property = single-food.property
                         refund-item.sum = cur
                         refunds.push refund-item
+                        break
         json-data = {
             "description": description,
             "password": $.md5 password,
         }
         json-data.refund = refunds
         json-data = JSON.stringify json-data
-        console.log json-data
         $.ajax {type: "POST", url: "/order/refund/"+_data-obj.id, data: json-data, dataType: 'JSON', contentType:"application/json", success: _refund-post-success}
         _set-password-comfirm-button-disable!
     
@@ -209,12 +215,30 @@ refund-manage = let
             # refund-error-message.text "错误"
         _set-password-comfirm-button-able!
         
-    
+    _is-refunded = (single-food)->
+        if single-food.type === 0 and single-food.property.length > 0
+            if (single-food.property.index-of '【已退款】') >= 0 or (single-food.property.index-of '【退款中】') >= 0
+                return true
+            else
+                return false
+        else if single-food.type === 1
+            for food in single-food.property
+                if food instanceof Array and food.length === 1 and food[0].name === '属性'
+                    if (food[0].p.index-of '【已退款】') >= 0 or (food[0].p.index-of '【退款中】') >= 0
+                        return true
+                    else
+                        return false
+        return false
+
     _unset-checkbox = !->
         ($ '\#all-refund-checkbox').attr 'checked', false
+        ($ '\#all-refund-checkbox').parent!.add-class 'unchecked-checkbox-item'
+        ($ '\#all-refund-checkbox').parent!.remove-class 'checked-checkbox-item'
         
     _set-checkbox = !->
         ($ '\#all-refund-checkbox').attr 'checked', true
+        ($ '\#all-refund-checkbox').parent!.remove-class 'unchecked-checkbox-item'
+        ($ '\#all-refund-checkbox').parent!.add-class 'checked-checkbox-item'
 
     _init-all-event = !->
         _close-button-dom.click !-> _close-button-dom-click-event!
@@ -232,16 +256,18 @@ refund-manage = let
         <td class='table-pri-col'>单价（元）</td>
         </tr>
         </thead>"
-        for single-food in _data-obj.content
+        for single-food,index in _data-obj.content
             if single-food.cat === 0
                 continue
-            refund-food-table-dom.append _gene-food-table-row single-food
+            if _is-refunded single-food
+                continue
+            refund-food-table-dom.append _gene-food-table-row single-food,index
         refund-food-block-dom.append refund-food-table-dom
         _refund-block-content-dom.append refund-food-block-dom
     
-    _gene-food-table-row = (single-food)->
+    _gene-food-table-row = (single-food,index)->
         row-dom = $ "<tr></tr>"
-        row-dom.append "<td class='id-td' style='display: none'>"+single-food.id+"</td>"
+        row-dom.append "<td class='id-td' style='display: none'>"+index+"</td>"
         td-name = $ "<td class='table-cat-col cat-td'>"+single-food.name+"</td>"
         if single-food.property.length > 0 and single-food.type === 0
             td-name.append $ "<span class='sub-food-item'>"+'（'+(single-food.property.join '、')+"）"+"</span>"
@@ -282,7 +308,7 @@ refund-manage = let
     
     _gene-refund-conclusion-block-dom = !->
         conclusion-block-dom = $ "<div class='refund-conclusion-block'></div>"
-        span-checkbox-dom = $ "<span class='left-span'></span>"
+        span-checkbox-dom = $ "<span class='left-span checkbox-item unchecked-checkbox-item'></span>"
         checkbox-dom = $ "<input class='left-span' type='checkbox' id='all-refund-checkbox'>"
         checkbox-dom.change !-> _checkbox-change-event event
         span-checkbox-dom.append checkbox-dom
