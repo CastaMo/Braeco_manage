@@ -14,7 +14,8 @@
           .activity-item-wrapper
             .activity-item-container
               .activity-title {{ activity.title }}
-              img.activity-image(ng-src='{{ baseImageUrl + activity.pic }}')
+              .activity-image
+                img(ng-src='{{ baseImageUrl + activity.pic }}')
               .activity-time {{ formatActivityTime(activity.date_begin, activity.date_end) }}
               .brief {{ activity.intro }}
 
@@ -26,6 +27,7 @@
           .activity-item-wrapper
             .activity-item-container
               .activity-title {{ activity.title }}
-              img.activity-image(ng-src='{{ baseImageUrl + activity.pic }}')
+              .activity-image
+                img(ng-src='{{ baseImageUrl + activity.pic }}')
               .activity-time {{ formatActivityTime(activity.date_begin, activity.date_end) }}
               .brief {{ activity.intro }}

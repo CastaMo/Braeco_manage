@@ -60,7 +60,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
 
   # ====== 5 页面数据初始化 ======
   init-page-data = !->
-    # $scope.get-statistics-by-unit!
+    $scope.get-statistics-by-unit!
 
   # ====== 6 $scope事件函数定义 ======
   $scope.get-statistics-by-unit = !->
@@ -175,15 +175,15 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     $scope.filter.coupons-date = value
 
   init-all-years-and-all-months = !->
-    if $scope.register-time is null
-      throw new Error('$scope.register-time is null')
+    if $scope.register-time is null or $scope.register-time is undefined
+      throw new Error('$scope.register-time is null or undefined')
 
     register-time-date-obj = get-date-object $scope.register-time
     now-date-obj = get-date-object(new Date)
 
     set-all-years register-time-date-obj, now-date-obj
     set-all-months register-time-date-obj, now-date-obj
-    set-selected-month-and-year!
+    # set-selected-month-and-year!
 
   set-all-years = (register-time-date-obj, now-date-obj)!->
     all-years = []
@@ -359,6 +359,14 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
 
     get-date-object date
 
+  # {register-year-month-gap:, year-gap:, now-year-month-gap:}
+  get-total-months-obj = (register-time-date-obj, now-date-obj)->
+    obj = {}
+    obj.year-gap = now-date-obj.year - register-time-date-obj.year - 1
+    obj.register-year-month-gap = 12 - register-time-date-obj.month
+    obj.now-year-month-gap = now-date-obj.month
+    obj
+
   get-date-object = (date)->
     if date not instanceof Date
       throw new Error('The parameter "date" is not a instance of "Date"')
@@ -371,10 +379,10 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
 
   get-retrieve-member-data-callback = ->
     retrieve-member-data-callback = (result)!->
-      if $scope.register-time is null
+      if !$scope.register-time
         $scope.register-time = new Date(result.register_time * 1000)
         init-all-years-and-all-months!
-        set-datepicker-start-and-end-date!
+        # set-datepicker-start-and-end-date!
 
       $scope.statistic = result.statistic
 
