@@ -72,9 +72,10 @@ do ->
 			$ '#wrap_contianer' .fadeOut 300
 			self.wraps.eq index .hide!
 		ajax-callback = (result)!->
+			result = JSON.parse result
 			if result.message == 'success'
 				location.reload true
-			else if 'Wrong password'
+			else if result.message == 'Wrong password'
 				show-global-message '原密码<b>错误</b>,请重新输入'
 				$ '#wrap_password input' .eq 0 .val ''
 				$ '#wrap_password input' .eq 0 .focus!
@@ -136,7 +137,6 @@ do ->
 				self.mychange[index+''] = {}
 				self.mychange[index+''].action = 'change'
 			self._change_num =0
-			console.log self.mychange
 			for key of self.mychange
 				self._change_num += 1
 				if self.mychange[key].action == 'delete'
@@ -149,7 +149,7 @@ do ->
 				text = key + ':' + self.mychange[key].result+'<br>'
 			show-global-message text
 			close-loading!
-		ajax-for-token = (n,file,order)!->
+		ajax-for-token = (n,order)!->
 			util.ajax {
 				type : 'post'
 				url : '/pic/upload/token/cover/' + n
@@ -157,17 +157,17 @@ do ->
 				success : (result)!->
 					result = JSON.parse result
 					if result.message == 'success'
-						ajax-for-qiniu data,n,order
+						ajax-for-qiniu result,n,order
 				unavailabled : (result)!->
 					self.mychange[i+''].result='上传失败，请重试'
 				always : (result)!->
 					
 				}
 		ajax-for-qiniu = (data,n,order)!->
-			$ 'iframe' .eq(0).attr 'order',order
+			$ 'iframe' .eq n .attr 'order',order
 			$ '.form' .eq n .find 'input[name=token]' .val data.token
 			$ '.form' .eq n .find 'input[name=key]' .val data.key
-			$ '.form' .get n .submit!
+			$ '.form' .eq n .submit!
 			
 		ajax-for-delete = (n,order)!->
 			util.ajax {
@@ -177,15 +177,15 @@ do ->
 				success : (result)!->
 					result = JSON.parse result
 					if result.message == 'success'
-						self.mychange[i+''].result='删除成功'
+						self.mychange[n+''].result='删除成功'
 				always : (result)!->
 					if order==self._change_num
 						afte-upload-img!
 				unavailabled : (result)!->
 					self.mychange[i+''].result='删除失败，请重试!'
 			}
-		$ 'iframe' .load ->
-			i = parseInt($ @ .attr 'order')
+		$ 'iframe' .load !->
+			i = parseInt($ @ .attr 'order' )
 			if(i<=self._change_num)
 				self.mychange[i+''].result = '上传成功！'
 				if i == self._change_num
@@ -200,7 +200,7 @@ do ->
 		# *************** 没有菊花图，家荣那里有一种 ***************
 		# **********************************************************
 		show-loading = (index)!->
-			console.log '正在上传'
+			show-global-message '正在上传...'
 		close-loading = !->
 			console.log '关闭菊花'
 		add-img-input = !->
@@ -299,6 +299,8 @@ do ->
 			newPic.find 'form' .attr('target','res'+i)
 			newPic.find 'iframe' .attr('name','res'+i)
 			newPic.insertBefore($ '.little_pic_li:last' )
+			if i>=4
+				$ '.little_pic_li:last' .remove!
 		if d.data.wxpay
 			$ '.info_value.info_img1 img' .attr 'src',d.data.wxpay.qrurl
 			for x in d.data.wxpay.printer
