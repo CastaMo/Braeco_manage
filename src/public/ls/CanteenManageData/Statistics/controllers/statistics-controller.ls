@@ -62,7 +62,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     init-side-menu!
     init-datepicker-defaults!
     init-datepicker!
-    init-date-inputs!
+    init-date-inputs! # 界面数据初始化入口点
 
   # ====== 5 页面数据初始化 ======
   init-page-data = !->
@@ -79,6 +79,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
         set-datepicker-start-and-end-date!
 
       $scope.statistic = result.statistic
+      debugger
       set-turnover-data!
       set-orders-data!
 
@@ -103,7 +104,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     | 'turnover', 'orders' => init-line-chart!
     | 'sales-volume'       => init-pie-chart!
 
-  $scope.printSmallTicket = (event)!->
+  $scope.print-small-ticket = (event)!->
     alert '打印日结小票功能还没实现哦'
 
   $scope.set-data-by-data-type = (event)!->
@@ -204,6 +205,8 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     if $scope.statistic-chart isnt null
       $scope.statistic-chart.destroy!
       $scope.statistic-chart = null
+
+    console.log line-chart-option
 
     $scope.statistic-chart = new Chart ctx, line-chart-option
 
@@ -655,6 +658,8 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
 
     post-data = {}
     post-data <<< date-obj
+
+    debugger
 
     switch type
     | 'year'    => post-data.unit = 'year'

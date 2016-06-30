@@ -5,7 +5,7 @@
 
 * {
   font-family: 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
-  font-size: 14px;
+  // font-size: 14px;
 }
 
 // 原子类
@@ -17,7 +17,132 @@
   background-color: #FFFCF6;
 }
 
+.title {
+  padding-bottom: 32px;
+}
+
+#activity-header {
+  font-size: 14px;
+  position: relative;
+  bottom: 39px;
+
+  .activity-tabs {
+    font-size: 16px;
+    line-height: 37px;
+    height: 37px;
+
+    .activity-tab {
+      display: inline-block;
+      width: 113px;
+      text-align: center;
+
+      &:hover {
+        cursor: pointer;
+        border-bottom: 3px solid #ffc107;
+      }
+    }
+    .choose {
+      cursor: pointer;
+      border-bottom: 3px solid #ffc107;
+    }
+  }
+}
+
+#activity-list {
+  font-size: 14px;
+  position: relative;
+  bottom: 39px;
+
+  .activity-tabs-containers {
+    .container {
+      padding: 40px 30px 30px 30px;
+
+      .new-activity-button {
+        background: #ffc107;
+        border-radius: 5px;
+        width: 160px;
+        height: 32px;
+        line-height: 32px;
+        font-family: 'HiraginoSansGB-W3';
+        font-size: 14px;
+        color: #ffffff;
+        text-align: center;
+        margin-bottom: 30px;
+        background-image: url(@new-activity-cross-url);
+        background-repeat: no-repeat;
+        background-size: 10%;
+        background-size: 10%;
+        background-position: 32px 8px;
+
+        span {
+          display: inline-block;
+          margin-left: 10px;
+        }
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .activity-lists {
+        .passed-activity {
+          color:#9b9b9b;
+          img {
+            -webkit-filter: grayscale(100%);
+            filter: grayscale(100%);
+          }
+        }
+
+        .activity-item {
+          border: 1px solid #e7e7eb;
+          width: 220px;
+          height: 241px;
+          display: inline-block;
+          margin-right: 14px;
+          margin-bottom: 15px;
+
+          &:hover {
+            cursor: pointer;
+            border: 1px solid #ffc107;
+          }
+
+          .activity-item-wrapper {
+            .activity-item-container {
+              padding: 10px;
+
+              .activity-title {
+                padding-top: 10px;
+                padding-bottom: 10px;
+              }
+              .activity-image {
+                width: 200px;
+                height: 102px;
+              }
+              .activity-time {
+                font-size: 12px;
+                font-family: 'HiraginoSansGB-W3';
+                font-size: 12px;
+                color: #8d8d8d;
+                letter-spacing: 0px;
+                text-align: left;
+              }
+              .brief {
+                padding-top: 10px;
+                padding-bottom: 10px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 #activity-main {
+  font-size: 14px;
+  position: relative;
+  bottom: 39px;
+
   input, textarea {
     font-size: 14px;
   }
@@ -34,36 +159,135 @@
 
     .left-menu-wrapper {
       float: left;
-      width: 200px;
-      border: 1px solid @activity-border-color;
-      margin-right: 31px;
-      overflow: hidden;
+      width: 190px;
+      margin-right: 24px;
+      background: #fffcf6;
+      height: 374px;
+      background-image: url(@phone-background-url);
+      background-size: 100%;
+      background-repeat: no-repeat;
+      padding: 10px;
+      padding-top: 44px;
 
-      .upload-canteen-photo {
-        height: 107px;
-        border-bottom: 1px solid @activity-border-color;
-        line-height: 107px;
-        text-align: center;
-        color: rgba(161, 161, 161, 1);
-        // transition: all 0.5s;
+      .activity-image-preview {
+        display: inline-block;
+        width: 190px;
+        height: 95px;
+      }
 
-        span {
+      .activity-title {
+        height: 24px;
+        line-height: 24px;
+        .icon {
           display: inline-block;
-          width: 100%;
-          height: 100%;
+          background: #8b572a;
+          border-radius: 1.12px;
+          width: 30px;
+          height: 18px;
+          font-size: 5px;
+          line-height: 18px;
+          text-align: center;
+          color: white;
+          margin-right: 5px;
         }
-
-        #canteen-photo {
-          display: none;
-        }
-
-        &:hover, label:hover {
-          background-color: rgba(244, 245, 249, 1);
-          cursor: pointer;
-          color: black;
-          // transition: all 0.5s;
+        .content {
+          display: inline-block;
+          font-size: 10px;
+          line-height: 24px;
+          height: 24px;
+          font-weight: bold;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-spacing: nowrap;
+          width: 150px;
+          vertical-align: bottom;
         }
       }
+      .brief {
+        font-family: 'FZLTXHK--GBK1-0';
+        font-size: 7.84px;
+        color: #818181;
+        line-height: 30px;
+        text-align: justify;
+        height: 30px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .activity-time {
+        padding-top: 5px;
+        .label {
+          font-family: 'FZLTZHK--GBK1-0';
+          font-size: 8.96px;
+          color: #8b572a;
+          line-height: 13.43px;
+          text-align: left;
+        }
+        .content {
+          font-family: 'FZLTXHK--GBK1-0';
+          font-size: 7.84px;
+          color: #000000;
+          line-height: 13.43px;
+          padding-top: 3px;
+          padding-bottom: 3px;
+        }
+      }
+      .activity-content {
+        .label {
+          font-family: 'FZLTZHK--GBK1-0';
+          font-size: 8.96px;
+          color: #8b572a;
+          text-align: left;
+          padding-top: 5px;
+          padding-bottom: 5px;
+        }
+        .content {
+          font-size: 8px;
+          font-family: 'FZLTXHK--GBK1-0';
+          font-size: 8.96px;
+          color: #000000;
+          line-height: 16px;
+          text-align: justify;
+          height: 158px;
+          padding-bottom: 10px;
+          word-wrap: break-word;
+          overflow: hidden;
+        }
+      }
+      .footer {
+        text-align: center;
+        padding-top: 20px;
+        font-family: 'HiraginoSansGB-W3';
+        font-size: 14px;
+        color: #9b9b9b;
+        text-align: center;
+      }
+
+      // .upload-canteen-photo {
+      //   height: 107px;
+      //   border-bottom: 1px solid @activity-border-color;
+      //   line-height: 107px;
+      //   text-align: center;
+      //   color: rgba(161, 161, 161, 1);
+      //   // transition: all 0.5s;
+
+      //   span {
+      //     display: inline-block;
+      //     width: 100%;
+      //     height: 100%;
+      //   }
+
+      //   #canteen-photo {
+      //     display: none;
+      //   }
+
+      //   &:hover, label:hover {
+      //     background-color: rgba(244, 245, 249, 1);
+      //     cursor: pointer;
+      //     color: black;
+      //     // transition: all 0.5s;
+      //   }
+      // }
 
       .activity-items {
         .promotion-activity, .theme-activity {
@@ -585,12 +809,14 @@
 .activity-init {
   opacity: 0;
   visibility: hidden;
+  display: none;
 }
 
 .activity-fade-out {
   opacity: 0;
   visibility: hidden;
   transition: all 0.5s;
+  display: none;
 }
 
 .activity-fade-in {

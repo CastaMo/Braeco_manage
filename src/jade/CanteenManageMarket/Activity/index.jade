@@ -9,6 +9,7 @@ block head
   block css
 
 block content
-  include activityMain
-  //- include uploadCanteenImage
-  include activitySpinner
+  #activity(ng-controller='activity-main')
+    include activityList
+    include activityMain
+    include activitySpinner

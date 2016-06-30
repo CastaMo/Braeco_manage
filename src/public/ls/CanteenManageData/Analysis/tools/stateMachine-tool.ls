@@ -1,6 +1,6 @@
 # 'use strict';
 
-# View类提供单页面内DOM切换功能
+# StateMachine类提供单页面内DOM切换功能
 
 class StateMachine
   (options)->

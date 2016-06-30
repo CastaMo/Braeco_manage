@@ -1,50 +1,19 @@
-#activity-main(ng-controller='activity-main')
+#activity-main
   .braeco-activity-wrapper
     .left-menu-wrapper
-      .upload-canteen-photo(ng-click='uploadCanteenPhoto($event)')
-        span 上传餐厅图片
-
-      .activity-items
-        .promotion-activity
-          p 促销活动
-        ul.reduce-activities-list
-          li(ng-repeat='activity in activities.sales' ng-click='setCurrentActivity($event)')
-            .content
-              .pic
-                img(ng-src='{{ baseImageUrl + activity.pic }}')
-              .info
-                .title {{ activity.title }}
-                .brief {{ activity.intro }}
-          li.new-sale-activity(ng-show='newActivityType == "sales"')
-            .content
-              .pic
-                img(ng-src='{{ preImageUrl }}')
-              .info
-                .title {{ editor.activityName }}
-                .brief {{ editor.activityBrief }}
-
-        .new-promotion-activity.new-activity(ng-click='newActivity($event, "sales")') 添加促销活动
-
-      .activity-items
-        .theme-activity
-          p 主题活动
-        ul.theme-activities-list
-          li(ng-repeat='activity in activities.themes' ng-click='setCurrentActivity($event)')
-            .content
-              .pic
-                img(ng-src='{{baseImageUrl + activity.pic}}')
-              .info
-                .title {{ activity.title }}
-                .brief {{ activity.intro }}
-          li.new-theme-activity-li(ng-show='newActivityType == "theme"')
-            .content
-              .pic
-                img(ng-src='{{preImageUrl}}')
-              .info
-                .title {{ editor.activityName }}
-                .brief {{ editor.activityBrief }}
-
-        .new-theme-activity.new-activity(ng-click='newActivity($event, "theme")') 添加主题活动
+      img.activity-image-preview(src='http://ww2.sinaimg.cn/large/ed796d65gw1f5c4ujggb4j20ku0b4aa1.jpg')
+      .activity-title
+        .icon(ng-show='editor.activityType == "theme"') 主题
+        .icon(ng-show='editor.activityType == "sales"') 促销
+        .content {{ editor.activityName }}
+      .brief {{ editor.activityBrief }}
+      .activity-time
+        .label 活动时间
+        .content {{ formatActivityTime(null, null, editor.activityExpiryType) }}
+      .activity-content
+        .label 活动详情
+        .content {{ editor.activityContent }}
+      .footer 活动发布预览
 
     .right-content-wrapper
       .form-container

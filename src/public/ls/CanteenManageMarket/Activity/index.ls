@@ -16,7 +16,6 @@ require './services/activity-service.js'
 
 # ====== angular controllers ======
 require './controllers/activityMain-controller.js'
-require './controllers/activityCanteenImage-controller.js'
 
 # ====== angular bootstrap ======
 angular.element document .ready !->
