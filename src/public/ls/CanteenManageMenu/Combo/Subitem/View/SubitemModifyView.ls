@@ -89,11 +89,13 @@ class SubitemModifyView extends VBase
 		@page-controller.toggle-change "main"
 
 	confirm-btn-click-event: !->
+		num = (Number @number-dom.val!)
+		if @combo-type-select-dom.val! is "discount_combo" then num = Math.floor(num * 100)
 		@subitem-modify-controller.submit-data-and-try-require {
 			name  		: 		@name-dom.val!
 			remark 		: 		@remark-dom.val!
 			type 			: 		@combo-type-select-dom.val!
-			num 			: 		@number-dom.val!
+			num 			: 		num
 		}, !~> @page-controller.toggle-change "main"
 		, !~> @page-controller.cover-change "exit"
 		, !~> @page-controller.cover-change "loading"
@@ -138,7 +140,8 @@ class SubitemModifyView extends VBase
 		if subitem.type is "static_combo"
 			@number-dom.val subitem.price
 		else
-			@number-dom.val subitem.discount
+			num = subitem.discount / 100
+			@number-dom.val(Number(num.to-fixed(2)))
 
 	reset: !->
 		@name-dom.val null
