@@ -117,6 +117,7 @@ require-manage = let
 
 		"Invalid Ali QR URL" 					:		-> alert "非法的支付宝支付码"
 		"Alipay qrcode not found" 				:		-> alert "支付宝支付码不存在"
+		"Invalid discount" 						: 	-> alert "优惠设置不合理"
 	}
 
 	###
