@@ -4,6 +4,8 @@ main-manage = let
     _json-refund-data-dom = $ "\#json-refund-data"
     _json-page-data-dom = $ "\#json-page-data"
 
+    _start-datepicker-dom = $ '\#record-refund-main .start-datepicker-field'
+    _end-datepicker-dom = $ '\#record-refund-main .end-datepicker-field'
     _start-date-input-dom = $ '\#record-refund-main .start-date'
     _end-date-input-dom = $ '\#record-refund-main .end-date'
     _search-btn-dom = $ "\#record-refund-main .search-btn"
@@ -135,24 +137,24 @@ main-manage = let
             yearFirst: true,
             yearSuffix: '年'
         }
-        $('[data-toggle="datepicker"]').datepicker {format: 'yyyy-mm-dd', language: 'zh-CN', autohide: true}
+        _start-date-input-dom.datepicker {format: 'yyyy-mm-dd', language: 'zh-CN', autohide: true, trigger: _start-datepicker-dom}
+        _end-date-input-dom.datepicker {format: 'yyyy-mm-dd', language: 'zh-CN', autohide: true, trigger: _end-datepicker-dom}
 
     _init-page-info = !->
         st = _page-data-obj.st
         en = _page-data-obj.en
         pn = parse-int _page-data-obj.pn
-        if st === null
-            st := _page-data-obj.today
-        if en === null
-            en := _page-data-obj.today + 24*3600-1
-        else
+        
+        if en !== null
             en := en + 24*3600-1
             _page-data-obj.en = en
         _page-data-obj.old-en = _page-data-obj.en
         _page-data-obj.old-st = _page-data-obj.st
-        
-        _start-date-input-dom.val _unix-timestamp-to-only-date st
-        _end-date-input-dom.val _unix-timestamp-to-only-date en
+        if st !== null
+            _start-date-input-dom.val _unix-timestamp-to-only-date st
+        if en !== null
+            _end-date-input-dom.val _unix-timestamp-to-only-date en
+
         _current-page-dom.text pn.to-string!
         _total-page-dom.text _page-data-obj.sum_pages.to-string!
         _target-page-input-dom.val pn

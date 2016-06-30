@@ -2,10 +2,14 @@
     .rr-container-header
         .date-input-header 日期区间
         .input-field
-            input.start-date(data-toggle="datepicker")
+            .datepicker-field.start-datepicker-field
+                input.start-date(data-toggle="datepicker")
+                span.datepicker-icon
             p 至
-            input.end-date(data-toggle="datepicker")
-            button.search-btn 搜索
+            .datepicker-field.end-datepicker-field
+                input.end-date(data-toggle="datepicker")
+                span.datepicker-icon
+            button.search-btn
                 icon.search-icon
             form(id="export-form" action="/Dinner/Manage/Records/Excel" method="POST" target="_blank")
                 input(id="export-form-st" name="st" type='number' value="0" style="display:none")

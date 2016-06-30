@@ -17,7 +17,6 @@ main-manage = let
     _content-business-block-dom = $ "\#order-reduce-main .content-business-block"
     _content-ladder-block-dom = $ "\#order-reduce-main .content-ladder-block"
     _ladder-content-dom = $ "\#order-reduce-main .ladder-content"
-    _edit-infomation-content-dom = $ "\#order-reduce-main .edit-infomation-content"
 
     _order-promotion = null
 
@@ -69,7 +68,7 @@ main-manage = let
         _reduce-stop-btn-dom.unbind "click"
         _content-business-block-dom.add-class "content-disabled"
         _content-ladder-block-dom.add-class "content-disabled"
-        _edit-infomation-content-dom.add-class "content-disabled"
+        $ "\#order-reduce-main .edit-infomation-content" .add-class "content-disabled"
 
     _reduce-on = !->
         _reduce-start-btn-dom.remove-class "reduce-start-btn-disable"
@@ -80,20 +79,24 @@ main-manage = let
         _reduce-stop-btn-dom.click !-> _reduce-stop-btn-click-event!
         _content-business-block-dom.remove-class "content-disabled"
         _content-ladder-block-dom.remove-class "content-disabled"
-        _edit-infomation-content-dom.remove-class "content-disabled"
+        $ "\#order-reduce-main .edit-infomation-content" .remove-class "content-disabled"
 
 
     _init-dom = !->
+        if _order-promotion.reduce_ladder.length === 0
+            _ladder-content-dom.append $ "<div class='ladder-content-item'>
+                <span class='ladder-level'>尚未配置阶梯</span>
+                </div>"
+        for ladder-item,i in _order-promotion.reduce_ladder
+            _ladder-content-dom.append $ "<div class='ladder-content-item'>
+                <span class='ladder-level'>阶梯"+_ladder-index-chinese[i]+"</span>
+                <span class='ladder-description'>订单消费满 "+ladder-item[0]+" 元&nbsp;&nbsp;立减 "+ladder-item[1]+" 元</span>
+                </div>"
+        _ladder-content-dom.append $ "<p class='edit-infomation-content'>最多可再添加 "+(7-_order-promotion.reduce_ladder.length)+ " 个阶梯</p>"
         if _order-promotion.reduce_switch === false
             _reduce-stoping!
         else
             _reduce-on!
-        for ladder-item,i in _order-promotion.reduce_ladder
-            _ladder-content-dom.append $ "<div class='ladder-content-item'>
-                <span class='ladder-level'>阶梯"+_ladder-index-chinese[i]+"</span>
-                <span class='ladder-description'>订单消费满"+ladder-item[0]+"元&nbsp;&nbsp;立减"+ladder-item[1]+"元</span>
-                </div>"
-        _edit-infomation-content-dom.text "最多可再添加"+(7-_order-promotion.reduce_ladder.length)+"个阶梯"
 
     _init-all-event = !->
         _edit-btn-dom.click !-> _edit-btn-click-event!

@@ -8,6 +8,8 @@ print-manage = let
     _cancel-button-dom = $ "\#full-cover .print-block-content .cancel-btn"
     _comfirm-button-dom = $ "\#full-cover .print-block-content .comfirm-btn"
 
+    _checkbox-inputs-dom = $ "\#full-cover .print-block-content input[type='checkbox']"
+
     _close-button-dom-click-event = !->
         _full-cover-dom.fade-out 100
         printer-choose-block-dom = $ "\#full-cover .printer-choose-block"
@@ -25,7 +27,16 @@ print-manage = let
     _set-comfirm-button-able = !->
         _comfirm-button-dom.prop 'disabled', false
         _comfirm-button-dom.remove-class "comfirm-btn-disable"
-        
+    
+    _checkbox-change-event = (event)!->
+        checkbox = $ event.target
+        parent = checkbox.parent!
+        if checkbox.is ":checked"
+            parent.remove-class 'unchecked-checkbox-item'
+            parent.add-class 'checked-checkbox-item'
+        else
+            parent.remove-class 'checked-checkbox-item'
+            parent.add-class 'unchecked-checkbox-item'
     
     _comfirm-button-dom-click-event = !->
         checked-printer-ids = []
@@ -60,10 +71,11 @@ print-manage = let
         _printer := data.printer
         printer-choose-block-dom = $ "\#full-cover .printer-choose-block"
         for printer in data.printer
-            print-item-dom = $ "<div class='printer-item'></div>"
+            print-item-dom = $ "<div class='printer-item unchecked-checkbox-item'></div>"
             print-item-dom.append $ "<p>"+printer.remark+"</p>"
             input-dom = $ "<input type='checkbox' class='printer-checkbox'>"
             input-dom.val printer.id
+            input-dom.change !-> _checkbox-change-event event
             print-item-dom.append input-dom
             printer-choose-block-dom.append print-item-dom
         
