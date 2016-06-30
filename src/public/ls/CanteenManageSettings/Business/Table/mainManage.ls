@@ -36,7 +36,24 @@ main-manage = let
 					else
 						show-global-message '要先点击选择桌位哦！'
 		for win in $ '.wrap:not(.batch_export1), .popup'
-			covers.push(new Cover win)
+			new-cover = new Cover win
+			new-cover.mysubmit = (data,url)!~>
+				util.ajax {
+					type : 'post'
+					url : url
+					async :'async'
+					data : JSON.stringify data
+					success : (result)!->
+						console.log result
+						if result.message == 'success'
+							location.reload true
+					always : (result)!->
+						console.log result
+					unavailabled : (result)!->
+						console.log result
+				}
+			console.log new-cover
+			covers.push(new-cover)
 		covers.push(new Base-cover($ '.wrap.batch_export1'))
 
 		$ '.imgli' .click ->
@@ -187,7 +204,7 @@ main-manage = let
 			@inputs.push new My-input x
 		$ that.dom .find '.btn.confirm' .click !~>
 			if @valid!
-				@mysubmit @get-cover-data!
+				@mysubmit @get-cover-data!,'/Table/Add'
 
 		@valid = !~>
 			for x in @inputs
@@ -195,21 +212,6 @@ main-manage = let
 					x.focus!
 					return false
 			return true
-		@mysubmit = (data,url)!~>
-			util.ajax {
-				type : 'post'
-				url : '/Table/Add'
-				async :'async'
-				data : JSON.stringify data
-				success : (result)!->
-					console.log result
-					if result.message == 'success'
-						location.reload true
-				always : (result)!->
-					console.log result
-				unavailabled : (result)!->
-					console.log result
-			}
 		@get-cover-data =~>
 			if $ that.dom .hasClass 'batch_export2'
 				return get-qrcode-data!
@@ -240,12 +242,12 @@ main-manage = let
 			for x in $ '.batch_export2 select'
 				mydata[$ x .attr 'name' ] = $ x .val!
 			mydata
-	class Base-cover
-		(ob) ->
-			@dom = ob
-			@type = $ @dom .hasClass 'wrap'
+	Base-cover = (ob) ->
+		@dom = ob
+		@type = $ @dom .hasClass 'wrap'
 
 		$ @dom .find '.cancle_cross,.btn.cancle' .click !~>
+			console.log 'wrap'
 			close-wrap!
 
 		# i = '.wrap'  

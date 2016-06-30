@@ -31,8 +31,8 @@ do ->
 					name = x.getAttribute 'name'
 					if name == 'oldpass'
 						data[name] = $.md5 x.value
-					data[name] = x.value
-					# console.log x
+					else
+						data[name] = x.value
 				data
 			if temp.getAttribute('id')!='wrap_pics'
 				temp.mysubmit =(mydata,myurl)->
@@ -121,35 +121,36 @@ do ->
 	Wrap-pics = !->
 		self = util.getById 'wrap_pics'
 		self.mychange = {}
-		self.mychange.arr=[]
 		$ '#wrap_pics' .find 'input[type=file]' .change !->
-			index = $ @ .parents '.little_pic_li' .index!
-			src = util.getObjectURL @files[0]
-			temp = {}
-			temp.action ='change'
-			temp.value = src
-			self.mychange.arr[index+''] = temp
-			img-preview index,src
+			ob = $ @ .parents '.little_pic_li' 
+			index = ob.index!
+			ob.addClass 'change'
+			img-preview index,util.getObjectURL(@.files[0])
 		$ '#wrap_pics' .find '.little_pic_li .delet_img' .click !->
 			delete-img-input($ @ .parents('.little_pic_li').index!)
 		
 		util.getById 'wrap_pics' .mysubmit = !->
 			show-loading!
-			self.mychange.sum = 0
-			for key of @mychange.arr
-				self.mychange.sum +=1
-				if @mychange.arr[key].action == 'delete'
-					ajax-for-delete @mychange.arr[key].value,self.mychange.sum
-				else if  @mychange.arr[key].action == 'change'
-					ajax-for-token key,@mychange.arr[key].value,self.mychange.sum
+			for x in $ self .find '.little_pic_li.change'
+				index = $ x .index!
+				self.mychange[index+''] = {}
+				self.mychange[index+''].action = 'change'
+				self.mychange[index+''].value = util.getObjectURL($ x .find 'input[type=file]' .get 0 .files[0])
+			self._change_num =0
+			for key of self.mychange
+				self._change_num += 1
+				if self.mychange[key].action == 'delete'
+					ajax-for-delete self.mychange[key].value,self._change_num
+				else if  self.mychange[key].action == 'change'
+					ajax-for-token key,self.mychange[key].value,self._change_num
 					# *******************************************************
 					# ********************** todo  *****************
 					# ************** 完成上传删除后提示 *************
 					# ****************************************************
 		afte-upload-img = ->
 			text
-			for key of self.mychange.arr
-				text = key + ':' + self.mychange.arr[key] +'<br>'
+			for key of self.mychange
+				text = key + ':' + self.mychange[key].result +'<br>'
 			show-global-message text
 			close-loading!
 		ajax-for-token = (n,src,order)!->
@@ -158,14 +159,17 @@ do ->
 				url : '/pic/upload/token/cover/' + n
 				async :'async'
 				success : (result)!->
+					result = JSON.parse result
 					if result.message == 'success'
 						ajax-for-qiniu result,src,order
 				unavailabled : (result)!->
-					self.mychange.arr[i+''].result='上传失败，请重试'
+					self.mychange[i+''].result='上传失败，请重试'
 				always : (result)!->
 					
 				}
 		ajax-for-qiniu = (data,src,order)!->
+			console.log data
+			console.log data.token
 			util.ajax {
 				type : 'post'
 				url : 'http://upload.qiniu.com/'
@@ -176,14 +180,15 @@ do ->
 					file : util.converImgTobase64 src				
 				}
 				success : (result)!->
+					result = JSON.parse result
 					if result.message == 'success'
-						self.mychange.arr[i+''].result='上传成功'
+						self.mychange[i+''].result='上传成功'
 						# console.log self.mychange
 				always : (result)!->
-					if order==self.mychange.sum
+					if order==self._change_num
 						afte-upload-img!
 				unavailabled : (result)!->
-					self.mychange.arr[i+''].result='上传失败，请重试'
+					self.mychange[i+''].result='上传失败，请重试'
 			}
 		ajax-for-delete = (n)!->
 			util.ajax {
@@ -191,13 +196,14 @@ do ->
 				url : '/Dinner/Cover/Remove/'+n
 				async :'async'
 				success : (result)!->
+					result = JSON.parse result
 					if result.message == 'success'
-						self.mychange.arr[i+''].result='删除成功'
+						self.mychange[i+''].result='删除成功'
 				always : (result)!->
-					if order==self.mychange.sum
+					if order==self._change_num
 						afte-upload-img!
 				unavailabled : (result)!->
-					self.mychange.arr[i+''].result='删除失败，请重试!'
+					self.mychange[i+''].result='删除失败，请重试!'
 			}
 		img-preview = (index,src)!->
 			$ '.little_pic_li' .eq index .find('img').attr 'src', src
@@ -215,13 +221,16 @@ do ->
 			n = ($ '.little_pic_li' .length) - ($ '.little_pic_li.pic' .length)
 			if $ '.little_pic_li' .length < 5 && n<1
 				last = $ '.little_pic_li:last'
-				last.clone true .removeClass 'pic' .insertAfter(last)
+				last.clone true .removeClass 'pic change' .insertAfter(last)
 		delete-img-input = (n)!->
-			$ '.little_pic_li' .eq(n).remove!
-			temp = {}
-			temp.action = 'delete'
-			temp.value = n
-			self.mychange[n+''] = temp
+			ob = $ '.little_pic_li' .eq n
+			if ob.hasClass 'change'  #删除刚添加的图片（还未保存的）
+				delete self.mychange[n+'']
+			else
+				self.mychange[n+''] = {}
+				self.mychange[n+''].action = 'delete'
+				self.mychange[n+''].value = n
+			ob.remove!
 			n = ($ '.little_pic_li' .length) - ($ '.little_pic_li.pic' .length)
 			if(n == 0)
 				add-img-input!
