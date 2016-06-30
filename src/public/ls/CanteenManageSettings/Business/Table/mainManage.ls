@@ -32,17 +32,17 @@ main-manage = let
 						switch $ @ .index!
 						case 2  then  show-wrap 1,get-first-disabled-table!,'.edit'
 						case 3  then  show-wrap 0,1
-						case 4  then  show-wrap 0,4
+						case 4  then  show-wrap 0,5
 					else
 						show-global-message '要先点击选择桌位哦！'
 		for win in $ '.wrap:not(.batch_export1), .popup'
 			new-cover = new Cover win
-			new-cover.mysubmit = (data,url)!~>
+			new-cover.mysubmit = !~>
 				util.ajax {
 					type : 'post'
-					url : url
+					url : @url
 					async :'async'
-					data : JSON.stringify data
+					data : JSON.stringify @get-cover-data!
 					success : (result)!->
 						console.log result
 						if result.message == 'success'
@@ -52,7 +52,6 @@ main-manage = let
 					unavailabled : (result)!->
 						console.log result
 				}
-			console.log new-cover
 			covers.push(new-cover)
 		covers.push(new Base-cover($ '.wrap.batch_export1'))
 
@@ -64,6 +63,8 @@ main-manage = let
 			if i>=0
 				if i == 0
 					show-wrap 0,3
+				else if i == 3
+					show-wrap 0,4
 				else
 					show-wrap 0,2,i
 			else
@@ -93,6 +94,8 @@ main-manage = let
 					wrap.find 'select' .val ''
 					wrap.find '.wrap_right img' .attr('src',$ '.batch_export1 .imgli.selected img' .attr 'src' )
 				case 4 then
+					#桌牌
+				case 5 then
 					selected = get-disabled-table!
 					a = ''
 					for temp,i in selected
@@ -203,8 +206,9 @@ main-manage = let
 		for x in $ that.dom .find 'input'
 			@inputs.push new My-input x
 		$ that.dom .find '.btn.confirm' .click !~>
+
 			if @valid!
-				@mysubmit @get-cover-data!,'/Table/Add'
+				@mysubmit!
 
 		@valid = !~>
 			for x in @inputs
@@ -242,12 +246,12 @@ main-manage = let
 			for x in $ '.batch_export2 select'
 				mydata[$ x .attr 'name' ] = $ x .val!
 			mydata
+		@
 	Base-cover = (ob) ->
 		@dom = ob
 		@type = $ @dom .hasClass 'wrap'
 
 		$ @dom .find '.cancle_cross,.btn.cancle' .click !~>
-			console.log 'wrap'
 			close-wrap!
 
 		# i = '.wrap'  

@@ -39,7 +39,7 @@ do ->
 					util.ajax {
 					type : 'post'
 					url : '/Dinner/Update/Profile'
-					async :'async'
+					async :'true'
 					data : JSON.stringify mydata
 					success : (result)!->
 						ajax-callback result
@@ -135,7 +135,7 @@ do ->
 				index = $ x .index!
 				self.mychange[index+''] = {}
 				self.mychange[index+''].action = 'change'
-				self.mychange[index+''].value = util.getObjectURL($ x .find 'input[type=file]' .get 0 .files[0])
+				self.mychange[index+''].value = $ x .find 'input[type=file]' .get 0 .files[0]
 			self._change_num =0
 			for key of self.mychange
 				self._change_num += 1
@@ -150,51 +150,55 @@ do ->
 		afte-upload-img = ->
 			text
 			for key of self.mychange
-				text = key + ':' + self.mychange[key].result +'<br>'
+				text = key + ':' + self.mychange[key].result+'<br>'
 			show-global-message text
 			close-loading!
-		ajax-for-token = (n,src,order)!->
+		ajax-for-token = (n,file,order)!->
 			util.ajax {
 				type : 'post'
 				url : '/pic/upload/token/cover/' + n
-				async :'async'
+				async :'true'
 				success : (result)!->
 					result = JSON.parse result
 					if result.message == 'success'
-						ajax-for-qiniu result,src,order
+						ajax-for-qiniu result,file,order
 				unavailabled : (result)!->
 					self.mychange[i+''].result='上传失败，请重试'
 				always : (result)!->
 					
 				}
-		ajax-for-qiniu = (data,src,order)!->
-			console.log data
-			console.log data.token
-			util.ajax {
-				type : 'post'
-				url : 'http://upload.qiniu.com/'
-				async :'async'
-				data : {
-					token : data.token
-					key : data.key
-					file : util.converImgTobase64 src				
-				}
-				success : (result)!->
-					result = JSON.parse result
-					if result.message == 'success'
-						self.mychange[i+''].result='上传成功'
-						# console.log self.mychange
-				always : (result)!->
-					if order==self._change_num
-						afte-upload-img!
-				unavailabled : (result)!->
-					self.mychange[i+''].result='上传失败，请重试'
-			}
+		ajax-for-qiniu = (data,file,order)!->
+			$ '#form1 input[name=file]' .val file
+			$ '#form1 input[name=token]' .val data.token
+			$ '#form1 input[name=key]' .val data.token
+			$ '#form1' .submit!
+			# console.log data
+			# console.log data.token
+			# util.ajax {
+			# 	type : 'post'
+			# 	url : 'http://upload.qiniu.com/'
+			# 	async :'true'
+			# 	data : {
+			# 		token : data.token
+			# 		key : data.key
+			# 		file : util.converImgTobase64(src)
+			# 	}
+			# 	success : (result)!->
+			# 		result = JSON.parse result
+			# 		if result.message == 'success'
+			# 			self.mychange[i+''].result='上传成功'
+			# 			# console.log self.mychange
+			# 	always : (result)!->
+			# 		if order==self._change_num
+			# 			afte-upload-img!
+			# 	unavailabled : (result)!->
+			# 		self.mychange[i+''].result='上传失败，请重试'
+			# }
 		ajax-for-delete = (n)!->
 			util.ajax {
 				type : 'post'
 				url : '/Dinner/Cover/Remove/'+n
-				async :'async'
+				async :'true'
 				success : (result)!->
 					result = JSON.parse result
 					if result.message == 'success'
