@@ -65,6 +65,13 @@
 					select._distribute-coupon
 						option(value = "0") 顾客点餐前发券
 						option(value = "1") 顾客支付下单后发券
+				#meal-ticket
+					span._content
+					.meal-ticket-input
+						span 消费满
+						input._meal-ticket.check-input(maxlength = "7")
+						span._unit 元
+						span 领券
 				#max-coupon
 					span._content 发放上限 *
 					.max-coupon-input
