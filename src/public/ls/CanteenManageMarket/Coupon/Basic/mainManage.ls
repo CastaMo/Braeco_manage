@@ -343,7 +343,7 @@ main-manage = let
 			$(".stop-confirm").fade-out 100
 
 		_return-dom.click !->
-			page.toggle-page "basic"
+			location.href = "/Manage/Market/Coupon/Basic"
 
 	_init-all-blur = !->
 		_face-value-dom.blur !->
