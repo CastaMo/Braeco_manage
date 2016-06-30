@@ -10,7 +10,7 @@
       .new-activity-button(ng-click='newActivityByType($event, "sales")')
         span 新建活动
       .activity-lists
-        .activity-item(ng-repeat='activity in activities.sales' ng-click='selectOneActivity($event)')
+        .activity-item(ng-repeat='activity in activities.sales' ng-click='selectOneActivity($event)' class='{{ setPassedActivityClass(activity) }}')
           .activity-item-wrapper
             .activity-item-container
               .activity-title {{ activity.title }}
@@ -22,7 +22,7 @@
       .new-activity-button(ng-click='newActivityByType($event, "theme")')
         span 新建活动
       .activity-lists
-        .activity-item(ng-repeat='activity in activities.themes' ng-click='selectOneActivity($event)')
+        .activity-item(ng-repeat='activity in activities.themes' ng-click='selectOneActivity($event)'  class='{{ setPassedActivityClass(activity) }}')
           .activity-item-wrapper
             .activity-item-container
               .activity-title {{ activity.title }}

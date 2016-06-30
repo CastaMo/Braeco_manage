@@ -174,6 +174,13 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
     $ event.current-target .add-class 'choose'
     $scope.selected-tab = tab
 
+  $scope.set-passed-activity-class = (activity)->
+    class-name = ''
+    if parse-int(activity.date_begin) isnt 0
+      now-time = new Date
+      end-time = new Date(parse-int(activity.date_end + '000'))
+      if now-time > end-time then class-name = 'passed-activity'
+    class-name
 
   # ====== 8 工具函数定义 ======
   init-datepicker = !->
