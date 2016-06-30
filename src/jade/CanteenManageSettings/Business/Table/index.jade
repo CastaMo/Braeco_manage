@@ -36,7 +36,8 @@ block content
 						.checkbox.checked
 					.popup.edit
 						.arrow
-						input(type='text' name='edit_table' class='table_name')
+						input(type='text' name='word' class='table_name')
+						input(type='text' name='new' class='table_name' length='4')
 						.btns
 							.btn.cancle 取消
 							.btn.confirm 确认
@@ -48,10 +49,12 @@ block content
 					.popup.edit
 						.arrow
 						.popup_cover
-						input(type='text' name='add_table' placeholder='请输入桌号' class='table_name')
+						input(type='text' name='word' placeholder='请输入桌号' class='table_name')
 						.btns
 							.btn.cancle 取消
 							.btn.confirm 确认
+			form(id='export' action='/Table/Qrcode/Download' method='post')
+				input(name='data' type='text')
 			#popup_cover
 			#global_message 提示！
 			#wrap
@@ -61,10 +64,10 @@ block content
 					.wrap_content
 						.inputli
 							.input_desc 桌位数量
-							input(type='number' name='add_num' placeholder='请输入桌位数量')
+							input(type='number' name='sum' placeholder='请输入桌位数量')
 						.inputli
 							.input_desc 起始编号
-							input(type='text' name='add_start' placeholder='请输入起始桌位号' class='table_name')
+							input(type='text' name='start' placeholder='请输入起始桌位号' class='table_name')
 							.little_gray 比如 01，A011，最多四位哦！
 					.btns
 						.btn.cancle 取消
@@ -89,13 +92,37 @@ block content
 							span.gray <br>尺寸：10 * 10 cm
 						.imgli
 							.img_container
-								img(src='http://brae.co/public/images/qrcode/2square000.png')
+								img(src='')
 							.span 桌牌
 							span.gray 尺寸A6<br>（ 14.8 * 10.5 cm ）
 					.btns
 						.btn.cancle 取消
 						.btn.confirm 下一步
 				.wrap.batch_export.batch_export2
+					.wrap_head 导出设置 
+						.cancle_cross
+					.wrap_content
+						.wrap_left
+							img(src='http://brae.co/public/images/qrcode/empty.png')
+						.wrap_right
+							//- .inputli
+							//- 	.input_desc 二维码边长
+							//- 	input(type='text' name='length' )
+							//- 	.input_unit cm
+							.inputli
+								.input_desc 导出方式
+								select(name='send_email')
+									option(value='0') 发送到邮箱
+									option(value='1') 直接下载
+							.inputli
+								.input_desc 
+								input(type='text' name='email' placeholder='请输入您的邮箱地址')
+								.tip
+					div(style='clear:both')
+					.btns
+						.btn.cancle 取消
+						.btn.confirm 导出
+				.wrap.batch_export.batch_export3(type='square')
 					.wrap_head 选择导出模板 
 						.cancle_cross
 					.wrap_content 
@@ -144,22 +171,56 @@ block content
 					.btns
 						.btn.cancle 取消
 						.btn.confirm 导出
-				.wrap.batch_export.batch_export3
-					.wrap_head 导出设置 
+				.wrap.batch_export.batch_export4(type='circle')
+					.wrap_head 选择导出模板 
 						.cancle_cross
-					.wrap_content
+					.wrap_content 
 						.wrap_left
-							img(src='http://brae.co/public/images/qrcode/empty.png')
-						.wrap_right
 							.inputli
-								.input_desc 二维码边长
-								input(type='text' name='length' )
-								.input_unit cm
+								.input_desc 支付方式
+								select(name='pay')
+									option(value='0') 仅在线支付
+									option(value='1') 在线+现金支付
+							.inputli
+								.input_desc 折扣优惠
+								select(name='discount')
+									option(value='0') 有折扣优惠
+									option(value='1') 没有折扣
+							.inputli
+								.input_desc 
+								input(type='text' name='discount_value' placeholder='请输入折扣')
+								.input_unit 折
+								.tip
+							.inputli
+								.input_desc wifi密码
+								select(name='wifi')
+									option(value='0') 有wifi密码
+									option(value='1') 仅有wifi名称
+									option(value='2') 无wifi
+							.inputli
+								.input_desc 
+								input(type='text' name='wifi_name' placeholder='请输入wifi名称')
+								.tip
+							.inputli
+								.input_desc 
+								input(type='text' name='wifi_password' placeholder='请输入wifi密码')
+								.tip
+							.inputli
+								.input_desc 导出方式
+								select(name='send_email')
+									option(value='0') 发送到邮箱
+									option(value='1') 直接下载
+							.inputli
+								.input_desc 
+								input(type='text' name='email' placeholder='请输入您的邮箱地址')
+								.tip
+						.wrap_right
+							img(src='http://brae.co/public/images/qrcode/2circle000.png')
 					div(style='clear:both')
 					.btns
 						.btn.cancle 取消
 						.btn.confirm 导出
-				.wrap.batch_export.batch_export4
+				.wrap.batch_export.batch_export5
 					.wrap_head 导出设置 
 						.cancle_cross
 					.wrap_content
@@ -167,9 +228,32 @@ block content
 							img
 						.wrap_right
 							.inputli
+								.input_desc wifi密码
+								select(name='wifi')
+									option(value='0') 有wifi密码
+									option(value='1') 仅有wifi名称
+									option(value='2') 无wifi
+							.inputli
+								.input_desc 
+								input(type='text' name='wifi_name' placeholder='请输入wifi名称')
+								.tip
+							.inputli
+								.input_desc 
+								input(type='text' name='wifi_password' placeholder='请输入wifi密码')
+								.tip
+							.inputli
 								.input_desc 二维码边长
 								input(type='text' name='length' )
 								.input_unit cm
+							.inputli
+								.input_desc 导出方式
+								select(name='send_email')
+									option(value='0') 发送到邮箱
+									option(value='1') 直接下载
+							.inputli
+								.input_desc 
+								input(type='text' name='email' placeholder='请输入您的邮箱地址')
+								.tip
 					div(style='clear:both')
 					.btns
 						.btn.cancle 取消

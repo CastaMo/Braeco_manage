@@ -11,7 +11,7 @@ main-manage = let
 
 		add-new = tables[tables.length-1].prototype
 		$ add-new.dom .click !->
-			show-wrap 1,@,'.edit'
+			show-wrap 1,@
 
 		$ add-new.dom .find '.cancle' .click !->
 			$ add-new.change-click-state!	
@@ -30,29 +30,63 @@ main-manage = let
 				else
 					if get-disabled-table-num! >0
 						switch $ @ .index!
-						case 2  then  show-wrap 1,get-first-disabled-table!,'.edit'
+						case 2  then  show-wrap 1,get-first-disabled-table!
 						case 3  then  show-wrap 0,1
-						case 4  then  show-wrap 0,5
+						case 4  then  show-wrap 0,6
 					else
 						show-global-message '要先点击选择桌位哦！'
-		for win in $ '.wrap:not(.batch_export1), .popup'
-			new-cover = new Cover win
-			new-cover.mysubmit = !~>
-				util.ajax {
-					type : 'post'
-					url : @url
-					async :'async'
-					data : JSON.stringify @get-cover-data!
-					success : (result)!->
-						console.log result
+		# 导出二维码
+		for win in $ '.wrap.batch_export:gt(0)'
+			new-cover = new Cover(win,'/Table/Qrcode/Download',(
+				(result)!->
+					result = JSON.parse result
+					if result.message == 'success'
+						location.reload true
+				))
+				covers.push(new-cover)
+		# 单个桌位修改
+		for win in $ '.popup.edit:not(last)'
+			new-cover = new Cover win,'/table/edit',(
+				(result)!->
+					result = JSON.parse result
 						if result.message == 'success'
-							location.reload true
-					always : (result)!->
-						console.log result
-					unavailabled : (result)!->
-						console.log result
-				}
+							alert '修改成功'
+							set-timeout (!->location.reload!), 3000
+				)
 			covers.push(new-cover)
+		# 单个桌位添加
+		# 批量桌位添加
+		for win in $ '.batch_add'
+			new-cover = new Cover win,'/Table/add',(
+			(result)!->
+				result = JSON.parse result
+				if result.message == 'success'
+					alert '修改成功'
+					set-timeout (!->location.reload!), 3000
+				else if result.message == 'Invalid numbe'
+					alert '参数取值范围非法'
+				else if result.message == 'Duplicate entry'
+					alert '存在重复桌号'
+				else if 'Used word'
+					alert '该桌号已经存在'
+				else
+					alert result.message
+			)
+			covers.push(new-cover)
+		# 批量桌位删除
+		new-cover = new Cover ($ '.batch_delete' .get 0).'/Table/remove',(
+			(result)!->
+				result = JSON.parse result
+					if result.message == 'success'
+						alert '修改成功'
+						set-timeout (!->location.reload!), 3000
+					else if result.message == 'Empty content'
+						alert '桌号为空'
+					else
+						alert result.message
+			)
+		covers.push(new-cover)
+		# 选择导出模板
 		covers.push(new Base-cover($ '.wrap.batch_export1'))
 
 		$ '.imgli' .click ->
@@ -61,12 +95,7 @@ main-manage = let
 		$ '.wrap.batch_export1 .btn.confirm' .click !->
 			i = $ '.imgli.selected' .index!
 			if i>=0
-				if i == 0
-					show-wrap 0,3
-				else if i == 3
-					show-wrap 0,4
-				else
-					show-wrap 0,2,i
+				show-wrap 0, i+2
 			else
 				show-global-message '要先点击选择模板哦！'
 		select_all = (flag)!->
@@ -75,8 +104,15 @@ main-manage = let
 					x.prototype.change-click-state flag 
 
 		# i = 0 : wrap   arg1表示wrap的下标,arg2表示这个wrap需要的参数
-		# i = 1 : popup  arg1表示table_tr 的dom，arg2 表示'.edit'或者'.delete'
-		show-wrap = (i,arg1,arg2)!->
+		#          0 批量添加             input清空
+		#          1 导出选择模板         .imgli 去掉 selected class
+		#          2 裸码                 input 清空
+		#          3 桌贴方               input、select 清空
+		#          4 桌贴圆               input、select 清空
+		#          5 桌牌 细长            input、select 清空
+		#          6 批量删除             添加已选择的桌号
+		# i = 1 : popup  arg1表示table_tr 的dom，单个添加、编辑小弹窗
+		show-wrap = (i,arg1)!->
 			switch i
 			case 0 then 
 				wrap = $ '.wrap' .eq arg1
@@ -84,18 +120,11 @@ main-manage = let
 				$ '#wrap' .show! 
 				wrap.fadeIn 300
 				switch arg1
-				case 0,3 then 
-					wrap.find 'input' .val ''
-				case 1 then wrap.find '.imgli' .removeClass 'selected'
-				case 2 then
-					arr = ['squre','circle','card']
-					wrap.attr('type',arr[arg2-1])
+				case 0,2,3,4,5 then 
 					wrap.find 'input' .val ''
 					wrap.find 'select' .val ''
-					wrap.find '.wrap_right img' .attr('src',$ '.batch_export1 .imgli.selected img' .attr 'src' )
-				case 4 then
-					#桌牌
-				case 5 then
+				case 1 then wrap.find '.imgli' .removeClass 'selected'
+				case 6 then
 					selected = get-disabled-table!
 					a = ''
 					for temp,i in selected
@@ -103,9 +132,8 @@ main-manage = let
 					wrap.find '.delete_tables b' .text ' '+a.substr 1
 			case 1 then
 				$ '#popup_cover' .show!
-				little-wrap = $ arg1 .find arg2
-				if(arg2 == '.edit')
-					little-wrap.find 'input' .val($ arg1 .find '.num' .text!)
+				little-wrap = $ arg1 .find '.edit'
+				little-wrap.find 'input' .val($ arg1 .find '.num' .text!)
 				little-wrap.fadeIn 300
 			
 		# 获取选中的桌位数目
@@ -126,26 +154,24 @@ main-manage = let
 					return x.prototype.dom
 			return null
 		# 导出二维码的输入框们
-		$ '.wrap.batch_export2 select' .change ->
-			select-change($ @ .parents '.inputli' .index!,$ @ .val!)
-		select-change = (n,val)!->
-			inputlis = $ '.wrap.batch_export2 .inputli'
-			switch n
-			case 1  then    #折扣优惠
-				show-inputli val,inputlis.eq 2
-			case 3 then    #wifi密码
-				show-inputli val,inputlis.eq(5),inputlis.eq 4 
-			case 6 then     #发送邮箱
-				show-inputli val,inputlis.eq 7
-		show-inputli =(flag,ob1,ob2)!->
-			if(ob2)
-				ob2.show!
-			if flag == '0'
-				ob1.show!
-			else if flag == '1'
-				ob1.hide!
-			else if flag == '2'
-				ob2.hide!
+		$ '.wrap select' .change ->
+			if ($ @ .attr 'name')!='pay'
+				select-change ($ @ .parents '.inputli'),($ @ .val!),($ @ .attr 'name')=='wifi'
+		select-change = (ob,val,iswifi)!->
+			val  = parseInt val
+			if iswifi == true
+				if val>=0
+					ob.next!.show!
+					ob.next!.next!.show!
+				if val>=1
+					ob.next!.next!.hide!
+					if val>=2
+						ob.next!.hide!
+			else
+				if val ==0
+					ob.next!.show!
+				if val==1
+					ob.next!.hide!
 
 	Operation = (op)->
 		@prototype = new Change-state op
@@ -190,6 +216,17 @@ main-manage = let
 				if val.length>4
 					show-global-message '桌位号不能太长哦！'
 					return false
+			# 验证邮箱是否合法
+			if ($ @dom .attr 'name')=='mail'
+				if !/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test val
+					show-global-message '请输入正确的邮箱地址！'
+					return false
+			# 数字输入框的长度
+			len = $ @dom .attr 'length' 
+			if len!=undefined
+				if (!/\d/.test len)||(val.length>parseInt len)
+					show-global-message '该输入框只能输入数字，且长度不能大于'+len
+					return false
 			return true
 		@focus =!~>
 			$ @dom .focus!
@@ -198,18 +235,30 @@ main-manage = let
 	# type:true  表示wrap
 	# type:false 表示popup
 	# ob:dom对象
-	Cover = (ob)->
+	Cover = (ob,url,success)->
 		@prototype = new Base-cover ob
 		@inputs = []
+		_url = url
+		_success = success
 		that = @prototype
 
 		for x in $ that.dom .find 'input'
 			@inputs.push new My-input x
 		$ that.dom .find '.btn.confirm' .click !~>
-
 			if @valid!
 				@mysubmit!
 
+		@mysubmit = (url,success)!~>
+			util.ajax {
+				type :'post'
+				url : @url
+				data : JSON.stringify @.get-cover-data!
+				success :success
+				always : (result)!->
+					console.log result
+				unavailabled : (result)!->
+					console.log result
+			}
 		@valid = !~>
 			for x in @inputs
 				if !x.valid!
@@ -217,7 +266,8 @@ main-manage = let
 					return false
 			return true
 		@get-cover-data =~>
-			if $ that.dom .hasClass 'batch_export2'
+			console.log @inputs
+			if $ that.dom .hasClass 'batch_export'
 				return get-qrcode-data!
 			else if $ that.dom .hasClass 'batch_delete'
 				return get-disabled-table-text!
@@ -236,7 +286,7 @@ main-manage = let
 			mydata.content = get-disabled-table-text!
 			for x in $ '.batch_export2 input:visible'
 				mydata[$ x .attr 'name'] = $ x .val!
-			mydata.type = $ '.batch_export2' .attr 'type'
+			mydata.type = $ '.batch_export' .attr 'type'
 			mydata
 		get-disabled-table-text =->
 			for temp in $ '.table_qr.disabled'
@@ -252,11 +302,11 @@ main-manage = let
 		@type = $ @dom .hasClass 'wrap'
 
 		$ @dom .find '.cancle_cross,.btn.cancle' .click !~>
-			close-wrap!
+			@close-wrap!
 
 		# i = '.wrap'  
 		# i = '.poput' 
-		close-wrap = !~>
+		@close-wrap = !~>
 			if @type
 				$ '#wrap' .fadeOut 300
 				$ @dom .hide!
