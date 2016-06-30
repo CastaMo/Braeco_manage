@@ -8,6 +8,7 @@ main-manage = let
 	_check-re-valid = 0
 	_check-real-valid = 0
 	_check-gift-valid = 0
+	_check-gift = 0
 	_ladder = {}
 	_level-modify-btn-dom = $ "\#level-modify-btn"
 	_recharge-modify-btn-dom = $ "\#recharge-modify-btn"
@@ -29,9 +30,10 @@ main-manage = let
 		for i from 1 to 5 by 1
 			$("\#level-table tr").eq(i+1).children("td").eq(0).html("LV#{i}.#{_ladder[i].name}")
 			$("\#level-table tr").eq(i+1).children("td").eq(1).html("#{_ladder[i].EXP}")
-			$("\#level-table tr").eq(i+1).children("td").eq(2).html("#{_ladder[i].discount}% (#{_ladder[i].discount/10}折)")
+			$("\#level-table tr").eq(i+1).children("td").eq(2).html("#{_ladder[i].discount}% （#{_ladder[i].discount/10}折）")
 			$("._lv#{i}-upgrade").val(_ladder[i].EXP)
 			$("._lv#{i}-discout").val(_ladder[i].discount)
+			$("\#level-#{i} ._tip-2-discout").html("（#{_ladder[i].discount/10} 折）")
 		for j from 0 to 4 by 1
 			$("\#recharge-table tr").eq(j+1).children("td").eq(0).html("#{j+1}")
 			$("\#recharge-table tr").eq(j+1).children("td").eq(1).html("#{charge_ladder[j].pay}元")
@@ -89,7 +91,7 @@ main-manage = let
 				_ladder.push(_object)
 			request-object.ladder = _ladder
 			request-object.cashEXP = cashEXP
-			if _check-lv-valid is 0 and _check-ch-valid is 0
+			if _check-lv-valid is 0 and _check-ch-valid is 0 and _check-gift is 0
 				require_.get("Ladder").require {
 					data 		:		{
 						JSON 	:		JSON.stringify(request-object)
@@ -118,10 +120,13 @@ main-manage = let
 	_init-all-blur = !->
 		$("._tip-1-input").blur !->
 			if $('._tip-1-input').val() == '' or /^[0-9]\d*$/.test($('._tip-1-input').val())
-				return true
+				if $('._tip-1-input').val() < 100
+					_check-gift := 0
+					return true
 			else
+				_check-gift := 1
 				$('._tip-1-input').val('')
-				alert('消费赠送积分为正整数')
+				alert('消费赠送积分为正整数，范围 0-100')
 				return false
 
 		$("._lv1-upgrade").blur !->

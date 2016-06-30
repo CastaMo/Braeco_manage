@@ -91,10 +91,10 @@ main-manage = let
 			_new-printer.find(".switch-btn").click !->
 				if $(@).find("p").html() is "停用"
 					$(@).parent().find(".stop-confirm").fade-in 300
-				else $(@).parent().find(".confirm-btn").click!
-			_new-printer.find(".confirm-cancel-btn").click !->
+				else $(@).parent().find(".stop-confirm-btn").click!
+			_new-printer.find(".stop-confirm-cancel-btn").click !->
 				$(@).parent().parent().fade-out 300
-			_new-printer.find(".confirm-btn").click !->
+			_new-printer.find(".stop-confirm-btn").click !->
 				request-object = {}
 				_hrefID = Number($(@).parent().parent().parent().parent().find(".printerID").html!)
 				console.log "_hrefID", _hrefID

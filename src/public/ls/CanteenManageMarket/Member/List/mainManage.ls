@@ -1,6 +1,7 @@
 main-manage = let
 	page = require_ = null
 	jumpPage = null
+	_isSearchValid = 0
 	_length = ""
 	[get-JSON, deep-copy] = [util.get-JSON, util.deep-copy]
 	activityArr = $("")
@@ -40,8 +41,9 @@ main-manage = let
 	_init-all-blur = !->
 		$("._searchInput").blur !->
 			if $('._searchInput').val() == '' or /^[1-9]\d*$/.test($('._searchInput').val())
-				return true
+				_isSearchValid := 0
 			else
+				_isSearchValid := 1
 				$('._searchInput').val('')
 				alert('搜索会员只能输入数字')
 				return false
@@ -82,11 +84,8 @@ main-manage = let
 		_search-dom.click !->
 			searchNum = $('._searchInput').val!
 			searchNum = Number(searchNum)
-			if $('._searchInput').val() == '' or /^[1-9]\d*$/.test($('._searchInput').val())
-				location.href = "/Manage/Market/Member/List?search=#{searchNum}"
-			else
-				alert('搜索会员只能输入数字')
-				$('._searchInput').val('')
+			if _isSearchValid is 0
+				location.href = "/Manage/Market/Member/List?search=#{searchNum}"		
 
 		_last-page-dom.click !->
 			pageArrJSON = $('#page-JSON-field').html!
