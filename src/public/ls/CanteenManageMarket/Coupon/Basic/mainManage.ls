@@ -94,8 +94,8 @@ main-manage = let
 							</div>
 						</div>"
 			_new-dom.find(".coupon-batch-number").html("批次号：#{_coupons[i].couponid}")
-			_new-dom.find(".coupon-max-use").html("最多可叠加使用#{_coupons[i].max_use}张")
-			_new-dom.find(".coupon-value").html("#{_coupons[i].cost_reduce/100}元（满#{_coupons[i].cost/100}元可用）")
+			_new-dom.find(".coupon-max-use").html("最多可叠加使用 #{_coupons[i].max_use} 张")
+			_new-dom.find(".coupon-value").html("#{_coupons[i].cost_reduce/100}元（满 #{_coupons[i].cost/100} 元可用）")
 			if _coupons[i].indate.length is 20
 				_new-dom.find(".coupon-valid-period").html("#{_coupons[i].indate.substr(0, 10)} 至 #{_coupons[i].indate.substr(10,20)}")
 			else if _coupons[i].indate.length < 10
@@ -134,20 +134,20 @@ main-manage = let
 							$(".detailCoupon-wrapper").addClass "stop"
 						$("._pre-batch-number").html("#{_coupons[j].couponid}")
 						$("._pre-coupon-inventory").html("#{_coupons[j].remain}")
-						$("._pre-face-value").html("#{_coupons[j].cost_reduce}/100")
+						$("._pre-face-value").html("#{_coupons[j].cost_reduce/100}")
 						if _coupons[j].indate.length is 20
 							$("._pre-valid-period").html("#{_coupons[j].indate.substr(10)} 至 #{_coupons[j].indate.substr(10,20)}")
 						else if _coupons[j].indate.length isnt 20
 							$("._pre-valid-period").html("领取后 #{_coupons[j].indate} 天有效，过期无效")
-						$("._pre-use-condition").html("订单额满#{_coupons[j].cost}元可使用")
+						$("._pre-use-condition").html("订单额满 #{_coupons[j].cost/100} 元可使用")
 						if Number(_coupons[j].pay) is 0
 							$("._left-distribute-coupon").html("顾客点餐前发券")
 							$("._pre-distribute-coupon").html("顾客点餐前发券")
-						else if Number(_coupons[j].pay) is 1
-							$("._left-distribute-coupon").html("顾客支付订单后发券")
+						else if Number(_coupons[j].pay) isnt 0
+							$("._left-distribute-coupon").html("顾客支付订单后发券 消费满 #{_coupons[j].pay/100} 元领券")
 							$("._pre-distribute-coupon").html("顾客支付订单后发券")
-						$("._pre-max-coupon").html("#{_coupons[j].quantity}张")
-						$("._pre-max-own").html("每人最多领取#{_coupons[j].max}张")
+						$("._pre-max-coupon").html("#{_coupons[j].quantity} 张")
+						$("._pre-max-own").html("每人最多领取 #{_coupons[j].max} 张")
 						_fun = ""
 						_func = ["堂食 ", "预订 ", "外卖 ", "外带"]
 						_hello = parseInt(_coupons[j].fun).toString(2)
@@ -244,6 +244,9 @@ main-manage = let
 
 
 		_save-btn-dom.click !->
+			isValid = 0
+			for p from 0 to 6 by 1
+				if $(".check-input").eq(p).val() is '' then isValid = 1
 			_init-all-blur!
 			addCoupon = {}
 			fun = []
@@ -286,12 +289,15 @@ main-manage = let
 				addCoupon.pay = $("._meal-ticket").val!*100
 			request-object = {}
 			request-object = addCoupon
-			require_.get("add").require {
-				data 		:		{
-					JSON 	:		JSON.stringify(request-object)
+			if isValid is 0
+				require_.get("add").require {
+					data 		:		{
+						JSON 	:		JSON.stringify(request-object)
+					}
+					callback 	:		(result)!-> location.reload!
 				}
-				callback 	:		(result)!-> location.reload!
-			}
+			else if isValid is 1 
+				alert('保存失败，尚有未填写项目')
 
 		_run-btn-dom.click !->
 			$(".detailCoupon-wrapper").removeClass "stop"
@@ -344,42 +350,48 @@ main-manage = let
 			if $('._face-value').val() == '' or /^[0-9]+(.[0-9]{1,2})?$/.test($('._face-value').val())
 				return true
 			else
-				show-global-message '面值只能为数字，最多两位小数'
+				$('._face-value').val('')
+				alert('面值只能为数字，最多两位小数')
 				return false;
 
 		_use-condition-dom.blur !->
 			if $('._use-condition').val() == '' or /^[0-9]+(.[0-9]{1,2})?$/.test($('._use-condition').val())
 				return true
 			else
-				show-global-message '使用门槛只能为数字，最多两位小数'
+				$('._use-condition').val('')
+				alert('使用门槛只能为数字，最多两位小数')
 				return false;
 
 		_valid-day-dom.blur !->
-			if $('._valid-day').val() == '' or /^[0-9]+(.[0-9]{1,2})?$/.test($('._valid-day').val())
+			if $('._valid-day').val() == '' or /^[1-9]\d*$/.test($('._valid-day').val())
 				return true
 			else
-				show-global-message '有效天数只能为数字'
+				$('._valid-day').val('')
+				alert('有效天数只能为数字')
 				return false;
 
 		_max-coupon-dom.blur !->
 			if $('._max-coupon').val() == '' or /^[1-9]\d*$/.test($('._max-coupon').val())
 				return true
 			else
-				show-global-message '发放上限只能为数字'
+				$('._max-coupon').val('')
+				alert('发放上限只能为数字')
 				return false;
 
 		_max-own-dom.blur !->
 			if $('._max-own').val() == '' or /^[1-9]\d*$/.test($('._max-own').val())
 				return true
 			else
-				show-global-message '领取上限只能为数字'
+				$('._max-own').val('')
+				alert('领取上限只能为数字')
 				return false;
 
 		_multiple-use-dom.blur !->
 			if $('._multiple-use').val() == '' or /^[1-9]\d*$/.test($('._multiple-use').val())
 				return true
 			else
-				show-global-message '叠加使用只能为数字'
+				$('._multiple-use').val('')
+				alert('叠加使用只能为数字')
 				return false;
 
 
@@ -388,17 +400,19 @@ main-manage = let
 			$("._pre-face-value").html($("._face-value").val!)
 		_valid-period-dom.change !->
 			if Number($(@).val!) is 0
-				$('._valid-day').val('')
+				$('._valid-day').val('1')
 				$('#valid-day').fade-out 100
 				$('#date-period').fade-in 100
 			else if Number($(@).val!) is 1
+				$('._valid-day').val('')
 				$('#date-period').fade-out 100
 				$('#valid-day').fade-in 100
 		_distribute-coupon-dom.change !->
 			if Number($(@).val!) is 0
-				$('.meal-ticket').val('')
+				$('._meal-ticket').val('1')
 				$('#meal-ticket').fade-out 100
 			else if Number($(@).val!) is 1
+				$('._meal-ticket').val('')
 				$('#meal-ticket').fade-in 100
 		_valid-day-dom.keyup !->
 			$(".valid-day-input-tip").html("领取后 #{_valid-day-dom.val!} 天有效，过期无效")
