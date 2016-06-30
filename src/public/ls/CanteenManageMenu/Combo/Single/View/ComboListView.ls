@@ -76,7 +76,7 @@ class ComboListView
 	add-combo-dom: (category-id, combo-id)!->
 		combo-list-dom = @all-combo-list-doms[category-id]
 		combo-dom-object 									= {}
-		$el = combo-dom-object.$el 				= @create-combo-dom combo-list-dom
+		$el = combo-dom-object.$el 				= @create-combo-dom!
 		combo-dom-object.choose-dom 			= $el.find ".t-choose .choose-icon"
 		combo-dom-object.pic-dom 					= $el.find ".t-pic .pic"
 		combo-dom-object.name-dom 				= $el.find ".t-name .name-field"

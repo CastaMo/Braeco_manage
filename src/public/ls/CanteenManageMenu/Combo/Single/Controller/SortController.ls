@@ -28,7 +28,9 @@ class SortController
 		eventbus.emit "controller:sort:current-dish-indexes-change", @current-dish-indexes
 
 	down-for-current-dishes: !->
-		while index = @current-dish-indexes.pop! when index isnt @dishes.length - 1
+		while @current-dish-indexes.length isnt 0
+			index = @current-dish-indexes.pop!
+			if Number(index) is Number(@dishes.length - 1) then continue
 			@swap-dish index, index + 1
 		@current-dish-indexes.length = 0
 		for dish, i in @dishes when dish.is-choose

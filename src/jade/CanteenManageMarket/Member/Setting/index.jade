@@ -11,6 +11,7 @@ block content
 	#json-field {"ladder":[{"name":"\u9ed1\u94c1","EXP":0,"discount":100},{"name":"\u9752\u94dc","EXP":100,"discount":85},{"name":"\u767d\u94f6","EXP":1000,"discount":70},{"name":"\u9ec4\u91d1","EXP":3000,"discount":60},{"name":"\u767d\u91d1","EXP":5000,"discount":50},{"name":"\u94bb\u77f3","EXP":8000,"discount":10}],"charge_ladder":[{"pay":50,"get":50,"EXP":500},{"pay":150,"get":150,"EXP":150},{"pay":450,"get":450,"EXP":450},{"pay":750,"get":750,"EXP":750},{"pay":950,"get":950,"EXP":950}],"cashEXP":5}
 	#Setting
 		#Setting-wrapper
+			#global_message 提示！
 			#level
 				.level-wrapper
 					#level-title
@@ -25,30 +26,30 @@ block content
 								td 所需积分
 								td 折扣
 							tr.set-level
-								td._lv 黑铁
+								td._lv LV0.黑铁
 								td._fen 0
-								td._dis 100%（无折扣）
+								td._dis 100%(无折扣)
 							tr.set-level
-								td 青铜
-								td 1000
-								td 95%（9.5折）
+								td
+								td
+								td
 							tr.set-level
-								td 白银
-								td 10000
-								td 90%（9折）
+								td
+								td
+								td
 							tr.set-level
-								td 黄金
-								td 30000
-								td 85%（8.5折）
+								td
+								td
+								td
 							tr.set-level
-								td 白金
-								td 50000
-								td 80%（8折）
+								td
+								td
+								td
 							tr.set-level
-								td 钻石
-								td 80000
-								td 75%（7.5折）
-					span._tip-1 顾客每消费1元获得 10 积分
+								td
+								td
+								td
+					span._tip-1 顾客每消费1元获得 积分
 					span._tip-2 注意：会员折扣不会与任何单品优惠（立减、折扣、第二份半价）叠加
 					.clear
 			#recharge
@@ -66,30 +67,30 @@ block content
 								td 实际充值金额
 								td 获得积分
 							tr
-								td 1
-								td 50元
-								td 55元
-								td 0
+								td
+								td 
+								td
+								td
 							tr
-								td 2
-								td 100元
-								td 120元
-								td 0
+								td
+								td
+								td
+								td
 							tr
-								td 3
-								td 200元
-								td 250元
-								td 0
+								td
+								td
+								td
+								td
 							tr
-								td 4
-								td 300元
-								td 400元
-								td 0
+								td
+								td
+								td
+								td
 							tr
-								td 5
-								td 500元
-								td 650元
-								td 0
+								td
+								td
+								td
+								td
 							.clear
 					.clear
 			#modify-level
@@ -98,7 +99,7 @@ block content
 				#gift
 					#levelInfo
 						span 顾客每消费 1 元可获得
-						input._tip-1-input
+						input._tip-1-input(type = "number")
 						span 积分
 				#level-0
 					#levelInfo
@@ -115,9 +116,9 @@ block content
 						p LV1.青铜级
 					#modifyInfo
 						span 升级积分
-						input._lv1-upgrade
+						input._lv1-upgrade(type = "number")
 						span._discout 折扣
-						input._lv1-discout
+						input._lv1-discout(type = "number")
 						span._unit %
 						span._tip-2-discout
 				#level-2
@@ -125,9 +126,9 @@ block content
 						p LV2.白银级
 					#modifyInfo
 						span 升级积分
-						input._lv2-upgrade
+						input._lv2-upgrade(type = "number")
 						span._discout 折扣
-						input._lv2-discout
+						input._lv2-discout(type = "number")
 						span._unit %
 						span._tip-2-discout
 				#level-3
@@ -135,9 +136,9 @@ block content
 						p LV3.黄金级
 					#modifyInfo
 						span 升级积分
-						input._lv3-upgrade
+						input._lv3-upgrade(type = "number")
 						span._discout 折扣
-						input._lv3-discout
+						input._lv3-discout(type = "number")
 						span._unit %
 						span._tip-2-discout
 				#level-4
@@ -145,9 +146,9 @@ block content
 						p LV4.白金级
 					#modifyInfo
 						span 升级积分
-						input._lv4-upgrade
+						input._lv4-upgrade(type = "number")
 						span._discout 折扣
-						input._lv4-discout
+						input._lv4-discout(type = "number")
 						span._unit %
 						span._tip-2-discout
 				#level-5
@@ -155,9 +156,9 @@ block content
 						p LV5.钻石级
 					#modifyInfo
 						span 升级积分
-						input._lv5-upgrade
+						input._lv5-upgrade(type = "number")
 						span._discout 折扣
-						input._lv5-discout
+						input._lv5-discout(type = "number")
 						span._unit %
 						span._tip-2-discout
 				#modifyChoose
@@ -165,6 +166,13 @@ block content
 						p 取消
 					.level-finBtn.btn
 						p 保存
+					.stop-confirm.stop-confirm-image
+						p.confirm-ask 尚未保存，确认离开？
+						#confirm-btn-field
+							.confirm-cancel-btn.btn
+								p 离开
+							.confirm-btn.btn
+								p 暂不
 			#modify-recharge
 				#modify-title
 					p 修改充值项
@@ -173,63 +181,70 @@ block content
 						p 充值项 1
 					#modifyInfo
 						span 充值金额
-						input._re1
+						input._re1(type = "number")
 						span._unit 元
 						span._real 实际充值金额
-						input._re1-real
+						input._re1-real(type = "number")
 						span._unit 元
 						span._gitf 获得积分
-						input._gitf1-input
+						input._gitf1-input(type = "number")
 				#recharge-2
 					#rechargeInfo
 						p 充值项 2
 					#modifyInfo
 						span 充值金额
-						input._re2
+						input._re2(type = "number")
 						span._unit 元
 						span._real 实际充值金额
-						input._re2-real
+						input._re2-real(type = "number")
 						span._unit 元
 						span._gitf 获得积分
-						input._gitf2-input
+						input._gitf2-input(type = "number")
 				#recharge-3
 					#rechargeInfo
 						p 充值项 3
 					#modifyInfo
 						span 充值金额
-						input._re3
+						input._re3(type = "number")
 						span._unit 元
 						span._real 实际充值金额
-						input._re3-real
+						input._re3-real(type = "number")
 						span._unit 元
 						span._gitf 获得积分
-						input._gitf3-input
+						input._gitf3-input(type = "number")
 				#recharge-4
 					#rechargeInfo
 						p 充值项 4
 					#modifyInfo
 						span 充值金额
-						input._re4
+						input._re4(type = "number")
 						span._unit 元
 						span._real 实际充值金额
-						input._re4-real
+						input._re4-real(type = "number")
 						span._unit 元
 						span._gitf 获得积分
-						input._gitf4-input
+						input._gitf4-input(type = "number")
 				#recharge-5
 					#rechargeInfo
 						p 充值项 5
 					#modifyInfo
 						span 充值金额
-						input._re5
+						input._re5(type = "number")
 						span._unit 元
 						span._real 实际充值金额
-						input._re5-real
+						input._re5-real(type = "number")
 						span._unit 元
 						span._gitf 获得积分
-						input._gitf5-input
+						input._gitf5-input(type = "number")
 				#modifyChoose
 					.canBtn.btn
 						p 取消
 					.charge-finBtn.btn
 						p 保存
+					.stop-confirm.stop-confirm-image
+						p.confirm-ask 尚未保存，确认离开？
+						#confirm-btn-field
+							.confirm-cancel-btn.btn
+								p 离开
+							.confirm-btn.btn
+								p 暂不

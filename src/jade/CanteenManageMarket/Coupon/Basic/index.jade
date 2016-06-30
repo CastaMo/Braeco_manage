@@ -12,34 +12,37 @@ block content
 	block data
 	#Coupon
 		.Coupon-wrapper
+			#global_message
 			#new-coupon
-				.new-btn.btn
-					p + 新建代金券
+				.new-btn.btn.plus-img
+					p 新建代金券
 			#run-coupon
 				#run-title
 					.color-field
 					p 运营中
 				#run-content-field
 			#page-select._up
-				.lastPage.btn
-					.last-btn-image
-				.page 1/1
+				.jump-btn.btn 跳转
+				#jump-input
+					input._jump-input(type = "number" min = 1)
 				.nextPage.btn
 					.next-btn-image
-				#jump-input
-					input._jump-input
-				.jump-btn.btn 跳转
+				.page 1/1
+				.lastPage.btn
+					.last-btn-image
+				.clear
 			#pass-coupon
 				#pass-title
 					.color-field
 					p 已过期
 				#pass-content-field
 			#page-select._down
-				.lastPage.btn
-					.last-btn-image
-				.page 1/1
+				.jump-btn.btn 跳转
+				#jump-input
+					input._jump-input(type = "number" min = 1)
 				.nextPage.btn
 					.next-btn-image
-				#jump-input
-					input._jump-input
-				.jump-btn.btn 跳转
+				.page 1/1
+				.lastPage.btn
+					.last-btn-image
+				.clear

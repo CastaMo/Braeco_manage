@@ -36,7 +36,8 @@ print-manage = let
             alert "请选择打印机"
         else
             checked-printer-ids-json = JSON.stringify checked-printer-ids
-            $.ajax {type: "POST", url: "/order/reprint/"+_order-id, data: { checked-printer-ids-json }, dataType: 'JSON', success: _print-success}
+            $.ajax {type: "POST", url: "/order/reprint/"+_order-id, data: checked-printer-ids-json,\
+                dataType: 'JSON', contentType:"application/json", success: _print-success}
             _set-comfirm-button-disable!
     
     _print-success = (data)!->
@@ -67,7 +68,8 @@ print-manage = let
             printer-choose-block-dom.append print-item-dom
         
     _get-printer-infomation = !->
-        $.ajax {type: "POST", url: "/dinner/printer/get", dataType: 'JSON', success: _gene-printer-chooser}
+        $.ajax {type: "POST", url: "/dinner/printer/get", dataType: 'JSON',\
+            contentType:"application/json", success: _gene-printer-chooser}
 
     _init-all-event = !->
         _close-button-dom.click !-> _close-button-dom-click-event!

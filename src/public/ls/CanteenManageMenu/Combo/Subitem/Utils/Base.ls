@@ -1,4 +1,4 @@
-class MVCBase
+class Base
 	(options)->
 		@assign options
 		@init!
@@ -7,4 +7,4 @@ class MVCBase
 
 	init: !->
 
-module.exports = MVCBase
+module.exports = Base

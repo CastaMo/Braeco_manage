@@ -181,14 +181,14 @@ refund-manage = let
                         refund-item.property = single-food.property
                         refund-item.sum = cur
                         refunds.push refund-item
-        description = description
-        password = $.md5 password
-        refund = JSON.stringify refunds
-        $.ajax {type: "POST", url: "/order/refund/"+_data-obj.id, data: {
+        json-data = {
             "description": description,
-            "password": password,
-            "refund": refund
-        }, dataType: 'JSON', success: _refund-post-success}
+            "password": $.md5 password,
+        }
+        json-data.refund = refunds
+        json-data = JSON.stringify json-data
+        console.log json-data
+        $.ajax {type: "POST", url: "/order/refund/"+_data-obj.id, data: json-data, dataType: 'JSON', contentType:"application/json", success: _refund-post-success}
         _set-password-comfirm-button-disable!
     
     _refund-post-success = (data)!->

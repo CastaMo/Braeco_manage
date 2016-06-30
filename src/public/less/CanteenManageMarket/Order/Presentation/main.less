@@ -1,6 +1,14 @@
 @import "../../../common/common";
 @import "base64";
 #order {
+    input, select, button {
+        color: #4A4A4A;
+        font-size: 14px;
+        font-family: "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "\9ED1\4F53", Arial, sans-serif;
+    }
+    *:focus {
+        outline: none;
+    }
     .order-wrapper {
         width: 710px;
         margin: 0 auto;
@@ -52,6 +60,12 @@
                     border-radius: 5px;
                     background-color: #ffffff;
                     border: 1px solid #e7e7eb;
+                    &:hover {
+                        background-color: #F4F5F9;
+                    }
+                    &:focus {
+                        background-color: #F4F5F9;
+                    }
                 }
                 .alert-block {
                     position: absolute;
@@ -79,11 +93,23 @@
                         background-color: #ffffff;
                         border: none;
                         border: 1px solid #e7e7eb;
+                        &:hover {
+                            background-color: #F4F5F9;
+                        }
+                        &:focus {
+                            background-color: #F4F5F9;
+                        }
                     }
                     .comfirm-btn {
                         background-color: #ffc107;
                         border: none;
                         color: #ffffff;
+                        &:hover {
+                            background-color: #E5B113;
+                        }
+                        &:focus {
+                            background-color: #E5B113;
+                        }
                     }
                 }
                 #start-alert-block {
@@ -166,15 +192,27 @@
                         .checkbox-item {
                             float: left;
                             margin-right: 30px;
-                            input {
+                            input[type="checkbox"] {
+                                cursor: pointer;
                                 float: left;
                                 width: 18px;
                                 height: 18px;
+                                opacity: 0;
                             }
                             span {
                                 float: left;
                                 margin-left: 8px;
                             }
+                        }
+                        .checked-checkbox-item {
+                            background-image: url(@checked-icon-url);
+                            background-size: 18px 18px;
+                            background-repeat: no-repeat;                        
+                        }
+                        .unchecked-checkbox-item {
+                            background-image: url(@unchecked-icon-url);
+                            background-size: 18px 18px;
+                            background-repeat: no-repeat;
                         }
                     }
                 }
@@ -233,6 +271,12 @@
                         border: 1px solid #E7E7E8;
                         border-radius: 5px;
                         background-color: #ffffff;
+                        &:hover {
+                            background-color: #F4F5F9;
+                        }
+                        &:focus {
+                            background-color: #F4F5F9;
+                        }
                         .add-icon {
                             float: left;
                             width: 16px;
@@ -256,6 +300,12 @@
                         background: #ffffff;
                         border: 1px solid #e7e7eb;
                         border-radius: 5px;
+                        &:hover {
+                            background-color: #F4F5F9;
+                        }
+                        &:focus {
+                            background-color: #F4F5F9;
+                        }
                     }
                     .save-btn {
                         width: 120px;
@@ -264,6 +314,12 @@
                         background: #ffc107;
                         border-radius: 5px;
                         border: none;
+                        &:hover {
+                            background-color: #E5B113;
+                        }
+                        &:focus {
+                            background-color: #E5B113;
+                        }
                     }
                 }
             }

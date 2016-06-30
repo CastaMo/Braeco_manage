@@ -24,7 +24,7 @@ main-manage = let
     _page-data-obj = null
 
     _int-to-string =(number)->
-        if number > 10
+        if number >= 10
             number.to-string!
         else
             "0"+number.to-string!
@@ -67,19 +67,20 @@ main-manage = let
         _export-form-en-dom.val _page-data-obj.en
 
     _jump-btn-click-event = !->
-        st = _page-data-obj.st
-        en = _page-data-obj.en
+        st = _page-data-obj.old-st
+        en = _page-data-obj.old-en
         pn = parse-int _target-page-input-dom.val!
         location.href = _construct-url st,en,pn
 
     _start-date-input-dom-change-event = !->
         start-date = _start-date-input-dom.val!
         _page-data-obj.st = _date-to-unix-timestamp new Date start-date
+        _page-data-obj.st = _page-data-obj.st-8*3600
     
     _end-date-input-dom-change-event = !->
         end-date = _end-date-input-dom.val!
         _page-data-obj.en = _date-to-unix-timestamp new Date end-date
-        _page-data-obj.en = _page-data-obj.en+24*3600-1
+        _page-data-obj.en = _page-data-obj.en-8*3600+24*3600-1
 
     class Refund
         (refund) ->
@@ -120,7 +121,6 @@ main-manage = let
         _refund-data-obj-array = $.parseJSON _json-refund-data-dom.text!
         _page-data-obj := $.parseJSON _json-page-data-dom.text!
         for refund in _refund-data-obj-array
-            console.log refund_
             refund_ = new Refund refund
 
     _init-datepicker = !->
@@ -135,7 +135,7 @@ main-manage = let
             yearFirst: true,
             yearSuffix: '年'
         }
-        $('[data-toggle="datepicker"]').datepicker {format: 'yyyy-mm-dd', language: 'zh-CN'}
+        $('[data-toggle="datepicker"]').datepicker {format: 'yyyy-mm-dd', language: 'zh-CN', autohide: true}
 
     _init-page-info = !->
         st = _page-data-obj.st
@@ -147,6 +147,10 @@ main-manage = let
             en := _page-data-obj.today + 24*3600-1
         else
             en := en + 24*3600-1
+            _page-data-obj.en = en
+        _page-data-obj.old-en = _page-data-obj.en
+        _page-data-obj.old-st = _page-data-obj.st
+        
         _start-date-input-dom.val _unix-timestamp-to-only-date st
         _end-date-input-dom.val _unix-timestamp-to-only-date en
         _current-page-dom.text pn.to-string!

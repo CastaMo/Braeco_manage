@@ -6,7 +6,12 @@ main-manage = let
 	_ladder = {}
 	_level-modify-btn-dom = $ "\#level-modify-btn"
 	_recharge-modify-btn-dom = $ "\#recharge-modify-btn"
-	_cancel-btn-dom = $ "\.canBtn"
+	_charge-cancel-btn-dom = $ "\#modify-recharge .canBtn"
+	_level-cancel-btn-dom = $ "\#modify-level .canBtn"
+	_charge-cancel-confirm-btn-dom = $ "\#modify-recharge .confirm-cancel-btn"
+	_level-cancel-confirm-btn-dom = $ "\#modify-level .confirm-cancel-btn"
+	_charge-confirm-btn-dom = $ "\#modify-recharge .confirm-btn"
+	_level-confirm-btn-dom = $ "\#modify-level .confirm-btn"
 	_charge-finish-btn-dom = $ "\.charge-finBtn"
 	_level-finish-btn-dom = $ "\.level-finBtn"
 
@@ -15,8 +20,8 @@ main-manage = let
 		_ladder = all['ladder']
 		charge_ladder = all['charge_ladder']
 		cashEXP = all['cashEXP']
-		$("._tip-1").html("顾客每消费1元获得 #{cashEXP} 积分")
-		for i from 0 to 5 by 1
+		$("._tip-1").html("顾客每消费 1 元获得 #{cashEXP} 积分")
+		for i from 1 to 5 by 1
 			$("\#level-table tr").eq(i+1).children("td").eq(0).html("LV#{i}.#{_ladder[i].name}")
 			$("\#level-table tr").eq(i+1).children("td").eq(1).html("#{_ladder[i].EXP}")
 			$("\#level-table tr").eq(i+1).children("td").eq(2).html("#{_ladder[i].discount}% (#{_ladder[i].discount/10}折)")
@@ -38,7 +43,24 @@ main-manage = let
 		_recharge-modify-btn-dom.click !->
 			page.toggle-page "modify-recharge"
 
-		_cancel-btn-dom.click !->
+		_level-cancel-btn-dom.click !->
+			$('#modify-level .stop-confirm').fade-in 100
+
+		_charge-cancel-btn-dom.click !->
+			$('#modify-recharge .stop-confirm').fade-in 100
+
+		_level-confirm-btn-dom.click !->
+			$('#modify-level .stop-confirm').fade-out 100
+
+		_charge-confirm-btn-dom.click !->
+			$('#modify-recharge .stop-confirm').fade-out 100
+
+		_level-cancel-confirm-btn-dom.click !->
+			$('#modify-level .stop-confirm').fade-out 100
+			page.toggle-page "basic"
+
+		_charge-cancel-confirm-btn-dom.click !->
+			$('#modify-level .stop-confirm').fade-out 100
 			page.toggle-page "basic"
 
 		_level-finish-btn-dom.click !->
@@ -73,7 +95,7 @@ main-manage = let
 					data 		:		{
 						JSON 	:		JSON.stringify(request-object)
 					}
-					success 	:		(result)!-> location.reload!
+					callback 	:		(result)!-> location.reload!
 				}
 				location.href = "/Manage/Market/Member/Setting"
 			else alert("后一项升级积分必须大于等于前一项，后一项折扣必须小于等于前一项")
@@ -90,8 +112,19 @@ main-manage = let
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
 				}
-				success 	:		(result)!-> location.reload!
+				callback 	:		(result)!-> location.reload!
 			}
+
+	_init-all-blur = !->
+
+	time-out-id = ''
+	# 显示全局信息提示
+	show-global-message = (str)->
+		ob = $ '#global_message' 
+		ob.show!
+		ob.html str 
+		clearTimeout time-out-id
+		time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
 
 	_init-depend-module = !->
 		page := require "./pageManage.js"

@@ -1,5 +1,13 @@
 @import "../../../common/common";
 #staff {
+    input, select, button {
+        color: #4A4A4A;
+        font-size: 14px;
+        font-family: "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "\9ED1\4F53", Arial, sans-serif;
+    }
+    *:focus {
+        outline: none;
+    }
     .staff-wrapper {
         width: 710px;
         margin: 0 auto;
@@ -16,11 +24,17 @@
                     border-radius: 5px;
                     border: none;
                     color: #fff;
+                    &:hover {
+                        background-color: #E5B113;
+                    }
+                    &:focus {
+                        background-color: #E5B113;
+                    }
                     icon.add-icon {
                         float: left;
                         width: 14px;
                         height: 14px;
-                        margin-top: 1px;
+                        margin-top: 2px;
                         margin-left: 28px;
                         margin-right: -20px;
                         background-size: 14px 14px;
@@ -61,6 +75,7 @@
                     text-align: center;
                     > tr {
                         border: 1px solid #E7E7E7;
+                        height: 85px;
                         > td {
                             border: 1px solid #E7E7E7;
                             .method-container {
@@ -69,14 +84,17 @@
                                 margin: 0 10px;
                                 icon {
                                     display: inline-block;
-                                    width: 20px;
-                                    height: 20px;
-                                    background-size: 20px 20px;
                                     background-repeat: no-repeat;
                                     background-position: center;
                                 }
+                                .edit-icon {
+                                    width: 18px;
+                                    height: 19px;
+                                    background-size: 18px 19px;
+                                }
                                 .delete-icon {
                                     width: 16px;
+                                    height: 20px;
                                     background-size: 16px 20px;
                                 }
                                 p {
@@ -85,7 +103,7 @@
                             }
                         }
                         .td-permission {
-                            padding: 19px 50px 28px 50px;
+                            padding: 20px 20px 30px 20px;
                         }
                         .td-method {
                             padding: 10px 0px;
@@ -218,6 +236,12 @@
                 border-radius: 5px;
                 width: 118px;
                 height: 32px;
+                &:hover {
+                    background-color: #F4F5F9;
+                }
+                &:focus {
+                    background-color: #F4F5F9;
+                }
             }
             .save-btn {
                 color: #ffffff;
@@ -226,6 +250,12 @@
                 border-radius: 5px;
                 width: 120px;
                 height: 32px;
+                &:hover {
+                    background-color: #E5B113;
+                }
+                &:focus {
+                    background-color: #E5B113;
+                }
             }
             .save-btn-disable {
                 background-color: rgba(255, 193, 7, 0.5);

@@ -1,12 +1,12 @@
 do ->
-	_my-wrap = !->
-		@.wraps = $ '.wrap'
-		@.blues = $ '.blue'
-		that = @
+	My-wrap = !->
+		@wraps = $ '.wrap'
+		@blues = $ '.blue'
+		self = @
 		# **********************************************************
 		# ************************ todo  ***************************
 		# **********************************************************
-		for let temp in @.wraps
+		for let temp in @wraps
 			temp.valid = ->
 				if($ temp .attr('id')=='wrap_pics')
 					return true
@@ -29,15 +29,16 @@ do ->
 				inputs = $ temp .find 'input'
 				for x in inputs
 					name = x.getAttribute 'name'
-					if name == 'password'
-						data[name] = jQuery.md5 x.value
+					if name == 'oldpass'
+						data[name] = $.md5 x.value
 					data[name] = x.value
+					# console.log x
 				data
-			if temp.getAttribute 'id' !='wrap_pics'
+			if temp.getAttribute('id')!='wrap_pics'
 				temp.mysubmit =(mydata,myurl)->
 					util.ajax {
 					type : 'post'
-					url : '/User/Update/Profile'
+					url : '/Dinner/Update/Profile'
 					async :'async'
 					data : JSON.stringify mydata
 					success : (result)!->
@@ -46,25 +47,30 @@ do ->
 						show-global-message '提交失败，请重试！'
 					}
 
-		for let blue, i in @.blues
+		for let blue, i in @blues
 			$ blue .click -> 
-				showWrap i
+				showWrap(i,$ @ .parents '.info_li' .find '.info_value' .text!)
 
-		@.wraps.find '.close_wrap' .click !->
+		@wraps.find '.close_wrap' .click !->
 			closeWrap($(@).parents '.wrap' .index!)
-		@.wraps.find '.cancle' .click !->
+		@wraps.find '.cancle' .click !->
 			closeWrap($(@).parents '.wrap' .index!)
-		@.wraps.find '.btn.confirm' .click !->
+		@wraps.find '.btn.confirm' .click !->
 			curr = $ @ .parents '.wrap' .get(0)
 			if curr.valid!
 				curr.mysubmit curr.get-my-data!
-		showWrap =(index)!->
-			$ '#wrap_contianer' .show!
-			that.wraps.eq index .fadeIn 300
-			that.wraps.eq index .find('input').val ''
+		showWrap =(index,str)!~>
+			if index<@wraps.length
+				w = @wraps.eq index 
+				$ '#wrap_contianer' .show!
+				w.fadeIn 300
+				if index != 5
+					w.find('input').val ''
+				if index>0&&index<4
+					w.find '.wrap_input span' .html str
 		closeWrap = (index)!->
 			$ '#wrap_contianer' .fadeOut 300
-			that.wraps.eq index .hide!
+			self.wraps.eq index .hide!
 		ajax-callback = (result)!->
 			if result.message == 'success'
 				location.reload true
@@ -75,76 +81,91 @@ do ->
 			else
 				show-global-message '提交失败，原因：'+result.message
 
-	_my-inputs = (input)!->
+	My-inputs = (input)!->
 		# 特殊字符
 		# myreg = /[~!<>#$%^&*()-+_=:]/g
 		# 把四个特殊字符<>&\换成''
 		myreg = /[<>&\\]/g
-		@.inputs = input
-		that = @
+		@inputs = input
+		self = @
 		for let temp in @inputs
 			temp.is-valid = (reg,str)->
-				if @.value == '' || /^\s*$/g.test @.value
-					@.show-message '输入不可为空！'
-					return false
-				# 固定电话和手机号码的验证太麻烦，此处略过
-				# else if (@.getAttribute 'name' ) == 'phone'
-				# 	if ! /^[0-9\-\s]+$|^1[34578][0-9]{9}/.test @.value
-				# 		@.show-message '只能输入固定座机或者手机号码哦！'
-				# 		console.log 'phone'
-				# 		return false
-				return true
+				if @.getAttribute('type')== 'radio'
+					if $ 'input[name=printer]' .val! == ''
+						@show-message '请选择一个打印机'
+						return false
+					else
+						return true
+				else 
+					if @value == '' || /^\s*$/g.test @value
+						@show-message '输入不可为空！'
+						return false
+					else if (@getAttribute 'name' ) == 'email'
+						if ! /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test @value
+							@show-message '请输入正确的邮箱地址'
+							return false
+					# 固定电话和手机号码的验证太麻烦，此处略过
+					# else if (@getAttribute 'name' ) == 'phone'
+					# 	if ! /^[0-9\-\s]+$|^1[34578][0-9]{9}/.test @value
+					# 		@show-message '只能输入固定座机或者手机号码哦！'
+					# 		console.log 'phone'
+					# 		return false
+					return true
+				
 			$ temp .blur !->
 				$ @ .val($ @ .val().replace myreg,'' )
 			temp.show-message = (str)!->
 				$ temp .focus!
 				show-global-message str
 
-	_wrap-pics = !->
-		that = util.getById 'wrap_pics'
-		that.mychange = {}
-		that.upload = {}
+	Wrap-pics = !->
+		self = util.getById 'wrap_pics'
+		self.mychange = {}
+		self.mychange.arr=[]
 		$ '#wrap_pics' .find 'input[type=file]' .change !->
 			index = $ @ .parents '.little_pic_li' .index!
-			src = util.getObjectURL @.files[0]
+			src = util.getObjectURL @files[0]
 			temp = {}
 			temp.action ='change'
 			temp.value = src
-			that.mychange[index+''] = temp
+			self.mychange.arr[index+''] = temp
 			img-preview index,src
 		$ '#wrap_pics' .find '.little_pic_li .delet_img' .click !->
 			delete-img-input($ @ .parents('.little_pic_li').index!)
 		
 		util.getById 'wrap_pics' .mysubmit = !->
 			show-loading!
-			for key of @.mychange
-				if @.mychange[key].action == 'delete'
-					ajax-for-delete @.mychange[key].value
-				else if  @.mychange[key].action == 'change'
-					ajax-for-token key,@.mychange[key].value
+			self.mychange.sum = 0
+			for key of @mychange.arr
+				self.mychange.sum +=1
+				if @mychange.arr[key].action == 'delete'
+					ajax-for-delete @mychange.arr[key].value,self.mychange.sum
+				else if  @mychange.arr[key].action == 'change'
+					ajax-for-token key,@mychange.arr[key].value,self.mychange.sum
 					# *******************************************************
 					# ********************** todo  *****************
 					# ************** 完成上传删除后提示 *************
 					# ****************************************************
+		afte-upload-img = ->
 			text
-			for key of @.upload
-				text = key + ':' + @.upload[key] +'\n'
+			for key of self.mychange.arr
+				text = key + ':' + self.mychange.arr[key] +'<br>'
 			show-global-message text
 			close-loading!
-		ajax-for-token = (n,src)!->
+		ajax-for-token = (n,src,order)!->
 			util.ajax {
 				type : 'post'
 				url : '/pic/upload/token/cover/' + n
 				async :'async'
 				success : (result)!->
 					if result.message == 'success'
-						ajax-for-qiniu result,src
-				always : (result)!->
-					console.log result
+						ajax-for-qiniu result,src,order
 				unavailabled : (result)!->
-					show-global-message '提交失败，原因：'+result
+					self.mychange.arr[i+''].result='上传失败，请重试'
+				always : (result)!->
+					
 				}
-		ajax-for-qiniu = (data,src)!->
+		ajax-for-qiniu = (data,src,order)!->
 			util.ajax {
 				type : 'post'
 				url : 'http://upload.qiniu.com/'
@@ -155,15 +176,14 @@ do ->
 					file : util.converImgTobase64 src				
 				}
 				success : (result)!->
-					console.log result
 					if result.message == 'success'
-						that.upload[i+'']='上传成功'
-						console.log 'success'
+						self.mychange.arr[i+''].result='上传成功'
+						# console.log self.mychange
 				always : (result)!->
-					console.log result
+					if order==self.mychange.sum
+						afte-upload-img!
 				unavailabled : (result)!->
-					that.upload[i+'']='上传失败，请重试'
-					console.log result
+					self.mychange.arr[i+''].result='上传失败，请重试'
 			}
 		ajax-for-delete = (n)!->
 			util.ajax {
@@ -171,15 +191,13 @@ do ->
 				url : '/Dinner/Cover/Remove/'+n
 				async :'async'
 				success : (result)!->
-					console.log result
 					if result.message == 'success'
-						that.upload[n+'']='上传成功'
-						console.log 'success'
+						self.mychange.arr[i+''].result='删除成功'
 				always : (result)!->
-					console.log result
+					if order==self.mychange.sum
+						afte-upload-img!
 				unavailabled : (result)!->
-					that.upload[n+'']='上传失败，请重试!'
-					console.log result
+					self.mychange.arr[i+''].result='删除失败，请重试!'
 			}
 		img-preview = (index,src)!->
 			$ '.little_pic_li' .eq index .find('img').attr 'src', src
@@ -203,12 +221,57 @@ do ->
 			temp = {}
 			temp.action = 'delete'
 			temp.value = n
-			that.mychange[n+''] = temp
+			self.mychange[n+''] = temp
 			n = ($ '.little_pic_li' .length) - ($ '.little_pic_li.pic' .length)
 			if(n == 0)
 				add-img-input!
-	_my-carousel = !->
-		asdf
+	My-carousel = (dom)!->
+		@dom = dom
+		@imgs = $ dom .find '.carousel_img'
+		@interval-id = ''
+		self = @
+
+		$ @dom .find '.carousel_img' .eq 0 .addClass 'active'
+		$ @dom .find '.carousel_dot' .eq 0 .addClass 'active'
+		_add-carousel-animation = !~>
+			if @imgs.length>1
+				if @interval-id != ''
+					clearInterval @interval-id
+				
+				@interval-id = setInterval(
+					!->
+						_an-animation($ self.dom .find '.carousel_img.active' .index!)
+					,3000)
+			else
+				$ @imgs .show!
+		$ @dom .find '.carousel_dot' .click ->
+			i = $ @ .index!
+			if i - 1 < 0
+				vanish = self.imgs.length-1
+			else
+				vanish = i-1
+			_an-animation vanish
+			_add-carousel-animation self.interval-id
+		_an-animation =(i)!~>
+			if i+1>=@imgs.length
+				show=0
+			else
+				show=i+1
+			$ @dom .find '.carousel_img' .hide!
+			_my-slide @imgs[i],'0','-100%',1,0
+			_my-slide @imgs[show],'100%','0',0,1
+			$ @dom .find '.carousel_img.active' .removeClass 'active'
+			$ @dom .find '.carousel_dot.active' .removeClass 'active'
+			$ @imgs[show] .addClass 'active'
+			$ @dom .find '.carousel_dot' .eq(show).addClass 'active'
+
+		_my-slide = (ob,origin,dest,op1,op2)!->
+			$ ob .stop!
+			$ ob .css {'left':origin,'display':'block','opacity':op1}
+			$ ob .animate {'left':dest,'opacity':op2},1000
+		_add-carousel-animation!
+
+
 	time-out-id = ''
 	# 显示全局信息提示
 	show-global-message = (str)->
@@ -217,6 +280,35 @@ do ->
 		ob.html str 
 		clearTimeout time-out-id
 		time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
-	_uplad-imgs = new _wrap-pics!
-	inputs = new _my-inputs $ '.wrap:not(#wrap_pics) input' 
-	wrap = new _my-wrap!
+	_uplad-imgs = new Wrap-pics!
+	wrap = new My-wrap!
+
+# ********************************************************************************
+# *********************************** 初始  **************************************
+# ********************************************************************************
+	_main-init =(d)!->
+		$ '.info_value' .eq(0).text d.data.phone
+		$ '.info_value' .eq(1).text d.data.email
+		$ '.info_value' .eq(2).text d.data.dinner_name
+		$ '.info_value' .eq(3).text d.data.address
+		$ '.info_value' .eq(4).text d.data.contact_phone
+		$ '.info_value.info_img:eq(0) img' .attr 'src',d.data.covers[0]
+		for x in d.data.covers
+			$ '#carousel .carousel_imgs' .append('<img class="carousel_img" src="'+x+'"></img>')
+			$ '#carousel .carousel_dots' .append('<div class="carousel_dot"></div>')
+			newPic = $ '.little_pic_li:last' .clone(true)
+			newPic.find 'img' .attr 'src',x
+			newPic.addClass 'pic'
+			newPic.insertBefore($ '.little_pic_li:last' )
+		if d.data.wxpay
+			$ '.info_value.info_img1 img' .attr 'src',d.data.wxpay.qrurl
+			for x in d.data.wxpay.printer
+				$ '.wrap_printers' .eq 0 .append('<label class="printer">'+x.remark+'<input value="' + x.id + '" name="printer" type="radio"></label>')
+		carousel = new My-carousel $ '#carousel'
+		inputs = new My-inputs $ '.wrap:not(#wrap_pics) input' 
+
+	if window.all-data 
+		then _main-init JSON.parse window.all-data; window.all-data = null;
+	else 
+		window.main-init = _main-init;
+

@@ -8,13 +8,35 @@
         font-family: Hiragino Sans GB, Microsoft Yahei, sans-serif;
         width: 740px;
         height: 800px;
+        #global_message {
+            background: #eb4f10;
+            color: white;
+            font-size: 16px;
+            position: fixed;
+            top: 80px;
+            width: auto;
+            padding: 0 100px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 5px;
+            left: 50%;
+            transform: translate(-50%,0);
+            display: none;
+            z-index: 999
+        }
         #page-select {
+            border-top: 1px solid #E7E7EB;
             position: relative;
             float: right;
-            width: 335px;
-            margin-top: 20px;
+            width: 710px;
+            padding-top: 20px;
+            .btn:hover {
+                background-color: #F4F5F9;
+            }
             .lastPage {
-                float: left;
+                margin: 0 8px 0 0;
+                padding: 0;
+                float: right;
                 width: 30px;
                 height: 30px;
                 .last-btn-image {
@@ -26,13 +48,15 @@
                 text-align: center;
                 position: relative;
                 top: 4px;
-                float: left;
+                float: right;
                 color: #4A4A4A;
-                width: 65px;
+                width: auto;
                 height: 20px;
             }
             .nextPage {
-                float: left;
+                margin: 0 10px 0 8px;
+                padding: 0;
+                float: right;
                 width: 30px;
                 height: 30px;
                 .next-btn-image {
@@ -41,8 +65,7 @@
                 }
             }
             #jump-input {
-                margin-left: 10px;
-                float: left;
+                float: right;
                 input {
                     font-size: 14px;
                     padding-left: 5px;
@@ -63,17 +86,20 @@
                 color: #4A4A4A;
                 font-size: 14px;
                 border: 1px solid #E7E7EB;
-                float: left;
+                float: right;
             }
         }
         .coupon {
             cursor: pointer;
             margin-right: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             float: left;
             border: 1px solid #E7E7EB;
             height: 150px;
             width: 225px;
+            &:hover {
+                border-color: #FFC107;
+            }
             .coupon-identify {
                 margin: 20px 0 0 10px;
                 border-bottom: 1px solid #E7E7EB;
@@ -107,11 +133,26 @@
             position: relative;
             margin: 30px 0 0 30px;
             .new-btn {
+                zoom: 50%;
+                line-height: 60px;
+                font-size: 28px;
+                background-repeat: no-repeat;
                 background-color: #FFC107;
+                background-position: 30px 15px;
                 color: #FFFFFF;
-                text-align: center;
-                height: 30px;
-                width: 120px;
+                height: 60px;
+                width: 240px;
+                border-radius: 10px;
+                &:hover {
+                    background-color: #FFB300;
+                }
+                .plus-img {
+                    height: 28px;
+                    width: 28px;
+                }
+                p {
+                    margin-left: 60px;
+                }
             }
         }
         #run-coupon {
@@ -155,23 +196,41 @@
     .newCoupon-wrapper {
         font-size: 14px;
         font-family: Hiragino Sans GB, Microsoft Yahei, sans-serif;
+        #global_message {
+            background: #eb4f10;
+            color: white;
+            font-size: 16px;
+            position: fixed;
+            top: 80px;
+            width: auto;
+            padding: 0 100px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 5px;
+            left: 50%;
+            transform: translate(-50%,0);
+            display: none;
+            z-index: 999
+        }
         #left-field {
             float: left;
             #preview-field {
                 .preview-background {
-                    margin: 30px 0 0 30px;
+                    margin: 60px 0 0 60px;
                     background-repeat: no-repeat;
-                    height: 380px;
-                    width: 210px;
+                    height: 760px;
+                    width: 420px;
+                    zoom: 50%;
                     .coupon-image {
                         height: 380px;
                         width: 210px;
                     }
                 }
                 .pre-face-value {
+                    text-align: center;
                     position: relative;
-                    left: 107px;
-                    width: 100px;
+                    left: 104px;
+                    width: 110px;
                     bottom: 230px;
                     z-index: 50;
                     float: left;
@@ -187,10 +246,11 @@
                     }
                 }
                 .pre-condition {
+                    text-align: center;
                     margin: 0;
                     position: relative;
                     width: 110px;
-                    left: 107px;
+                    left: 104px;
                     bottom: 232px;
                     z-index: 50;
                     .pre-condition-fore,
@@ -209,12 +269,14 @@
                     }
                 }
                 .pre-rule {
+                    background-color: rgb(53, 46, 42);
                     text-align: left;
-                    width: 200px;
+                    padding: 0 10px 10px 10px;
+                    width: 190px;
                     color: #FFFFFF;
                     position: relative;
-                    left: 40px;
-                    bottom: 140px;
+                    left: 30px;
+                    bottom: 125px;
                     font-size: 8px;
                     z-index: 50;
                 }
@@ -249,7 +311,7 @@
             ._unit {
                 position: relative;
                 left: -25px;
-                color: #C8C7CC;
+                color: #4A4A4A;
             }
             input {
                 color: #4A4A4A;
@@ -274,17 +336,35 @@
                 }
                 #date-period {
                     margin: 20px 0 0 30px;
+                    .date-period-start,
+                    .date-period-end {
+                        float: left;
+                        width: 141px;
+                    }
                     input {
                         autohide: true;
-                        width: 140px;
+                        width: 112px;
                     }
                     ._zhi {
-                        margin: 0 18px 0 18px;
+                        float: left;
+                        margin: 6px 17px 0 17px;
                     }
                     ._date-period-tip {
                         color: #9B9B9B;
                         margin-top: 10px;
                         margin-left: 85px;
+                    }
+                    .datepicker-img {
+                        cursor: pointer;
+                        background-position: 5px 6px;
+                        margin-left: -1px;
+                        background-repeat: no-repeat;
+                        display: inline-block;
+                        height: 28px;
+                        width: 28px;
+                        background-size: 16px 16px;
+                        vertical-align: bottom;
+                        border: 1px solid #e7e7eb;
                     }
                 }
                 #valid-day {
@@ -362,6 +442,9 @@
                     color: #4A4A4A;
                     height: 30px;
                     width: 118px;
+                    &:hover {
+                        background-color: #F4F5F9;
+                    }
                 }
                 .save-btn {
                     margin: 20px 0 20px 30px;
@@ -372,6 +455,56 @@
                     background-color: #FFC107;
                     border: none;
                     color: white;
+                    &:hover {
+                        background-color: #FFB300;
+                    }
+                }
+                .stop-confirm {
+                    text-align: center;
+                    display: none;
+                    font-size: 28px;
+                    position: relative;
+                    right: 410px;
+                    bottom: 30px;
+                    float: left;
+                    background-repeat: no-repeat;
+                    z-index: 9999;
+                    height: 328px;
+                    width: 573px;
+                    .confirm-ask {
+                        margin: 80px 0 0 30px;
+                    }
+                    #confirm-btn-field {
+                        margin: 40px 0 0 60px;
+                        .confirm-btn {
+                            margin-left: 50px;
+                            border: 1px solid #FFC107;
+                            line-height: 64px;
+                            color: #FFFFFF;
+                            height: 64px;
+                            border-radius: 10px;
+                            width: 120px;
+                            background-color: #FFC107;
+                            &:hover {
+                                background-color: #FFB300;
+                                border-color: #FFB300;
+                            }
+                        }
+                        .confirm-cancel-btn {
+                            margin-left: 50px;
+                            line-height: 64px;
+                            border: 1px solid #E7E7EB;
+                            height: 64px;
+                            border-radius: 10px;
+                            width: 120px;
+                            &:hover {
+                                background-color: #F4F5F9;
+                            }
+                        }
+                    }
+                }
+                .stop-confirm-image {
+                    zoom: 0.5;
                 }
             }
         }
@@ -395,12 +528,19 @@
                 border: 1px solid #FFC107;
                 background: #FFC107;
                 color: #FFFFFF;
+                cursor: default;
+                &:hover {
+                     background: #FFC107;
+                }
             }
              #pre-btn-field #stop-coupon {
                 display: inline;
                 border: 1px solid #E7E7EB;
                 background: #FFFFFF;
                 color: #4A4A4A;
+                &:hover {
+                     background: #F4F5F9;
+                }
             }
             #pre-btn-field .overdue {
                 display: none;
@@ -411,6 +551,10 @@
                     opacity: 1;
                 }
             }
+            ._pre-QRcode-content,
+            ._pre-distribute-coupon {
+                color: #9B9B9B;
+            }
         }
         &.stop {
             #pre-btn-field #run-coupon {
@@ -418,21 +562,32 @@
                 border: 1px solid #E7E7EB;
                 background: #FFFFFF;
                 color: #4A4A4A;
+                &:hover {
+                     background: #F4F5F9;
+                }
             }
             #pre-btn-field #stop-coupon {
                 display: inline;
                 border: 1px solid #9B9B9B;
                 background: #9B9B9B;
                 color: #FFFFFF;
+                cursor: default;
+                &:hover {
+                     background: #9B9B9B;
+                }
             }
             #pre-btn-field .overdue {
                 display: none;
             }
             #detailCoupon-content {
-                color: #9B9B9B;
+                color: #C8C7CC;
                 ._QRcode {
                     opacity: 0.4;
                 }
+            }
+            ._pre-QRcode-content,
+            ._pre-distribute-coupon {
+                color: #C8C7CC;
             }
         }
         &.pass {
@@ -446,10 +601,14 @@
                 display: none;
             }
             #detailCoupon-content {
-                color: #9B9B9B;
+                color: #C8C7CC;
                 ._QRcode {
                     opacity: 0.4;
                 }
+            }
+            ._pre-QRcode-content,
+            ._pre-distribute-coupon {
+                color: #C8C7CC;
             }
         }
         #pre-btn-field {
@@ -472,6 +631,9 @@
                 -webkit-border-bottom-left-radius: 5px;
                 border-top-left-radius: 5px;
                 border-bottom-left-radius: 5px;
+                &:hover {
+                    background-color: #FFB300;
+                }
                 .run-btn {
                     margin-left: 13px;
                 }
@@ -495,23 +657,27 @@
                 .stop-btn {
                     margin-left: 13px;
                 }
+                &:hover {
+                    background-color: #F4F5F9;
+                }
                 .stop-confirm {
                     display: none;
                     font-size: 28px;
                     position: relative;
-                    right: 110px;
+                    right: 160px;
                     top: 8px;
                     float: left;
                     background-repeat: no-repeat;
                     z-index: 9999;
-                    height: 282px;
-                    width: 482px;
+                    height: 328px;
+                    width: 573px;
                     .confirm-ask {
                         margin: 80px 0 0 30px;
                     }
                     #confirm-btn-field {
                         margin: 40px 0 0 60px;
                         .confirm-btn {
+                            margin-left: 50px;
                             border: 1px solid #FFC107;
                             line-height: 64px;
                             color: #FFFFFF;
@@ -519,6 +685,10 @@
                             border-radius: 10px;
                             width: 120px;
                             background-color: #FFC107;
+                            &:hover {
+                                background-color: #FFB300;
+                                border-color: #FFB300;
+                            }
                         }
                         .confirm-cancel-btn {
                             margin-left: 50px;
@@ -527,6 +697,9 @@
                             height: 64px;
                             border-radius: 10px;
                             width: 120px;
+                            &:hover {
+                                background-color: #F4F5F9;
+                            }
                         }
                     }
                 }
@@ -633,20 +806,31 @@
                     margin: 40px 0 0 30px;
                     ._pre-distribute-coupon {
                         font-size: 13px;
-                        color: #9B9B9B;
                     }
                 }
                 #pre-QRcode-coupon {
                     margin: 30px 0 0 30px;
                     ._pre-QRcode-content {
                         font-size: 13px;
-                        color: #9B9B9B;
                     }
                     ._QRcode {
+                        border: 1px solid #F0F0F0;
                         margin-top: 15px;
-                        width: 200px;
-                        height: 200px;
+                        width: 190px;
+                        height: 190px;
                     }
+                }
+            }
+        }
+        #return-field {
+            margin: 30px 0 0 30px;
+            .return-btn {
+                text-align: center;
+                border: 1px solid #F0F0F0;
+                height: 32px;
+                width: 96px;
+                &:hover {
+                    background-color: #F4F5F9;
                 }
             }
         }

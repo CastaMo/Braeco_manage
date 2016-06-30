@@ -4,6 +4,7 @@ block mainHead
 	p.title 餐厅信息
 
 block head
+	script(src="/manage/Extra/Basic/Data" type="text/javascript" async='async')
 	meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
 	title 餐厅信息 - 杯口点餐
 	block css
@@ -15,12 +16,13 @@ block content
 			.myhead 账号信息
 			.infos
 				.info_li
-					.info_desc 账户名
-					.info_value 杯口咖啡
-				.info_li
-					.info_desc 账户名
+					.info_desc 账号
 					.info_value 杯口咖啡
 					.blue#change_password 重置密码
+			.info_li
+				.info_desc 邮箱地址
+				.info_value 1@qq.com
+				.blue#change_email 修改
 		.myli
 			.myhead 门店信息
 			.infos
@@ -39,7 +41,14 @@ block content
 				.blue#change_pics 上传图片
 				.info_desc 门店图片
 				.info_value.info_img
-					img(src = 'http://static.brae.co/index/3-5.png')
+					img(src = '')
+			.info_li.big
+				.btns
+					.blue#associate 关联打印机
+					a.blue#export(href='/Download/Wxqrpay' target='_blank') 导出
+				.info_desc 扫码支付
+				.info_value.info_img.info_img1
+					img(src = '')
 	#wrap_contianer
 		.wrap#wrap_password
 			.wrap_head 
@@ -50,15 +59,32 @@ block content
 					.wrap_input_li
 						.wrap_desc 输入旧密码
 						.wrap_input
-							input(type='password' name='password')
+							input(type='password' name='oldpass')
 					.wrap_input_li
 						.wrap_desc 输入新密码
 						.wrap_input
-							input(type='password' name='newpassword')
+							input(type='password' name='newpass')
 					.wrap_input_li
 						.wrap_desc 确认密码
 						.wrap_input
-							input(type='password' name='confirm_password')
+							input(type='password' name='confirmpass')
+				.btns
+					.btn.cancle 取消
+					.btn.confirm 保存
+		.wrap#wrap_email
+			.wrap_head 
+				span 修改邮箱地址
+				.close_wrap
+			.wrap_content
+				.wrap_inputs			
+					.wrap_input_li
+						.wrap_desc 原邮箱地址
+						.wrap_input
+							span 1@qq.com
+					.wrap_input_li
+						.wrap_desc 新邮箱地址
+						.wrap_input
+							input(type='email' name='email' placeholder='请输入邮箱地址')
 				.btns
 					.btn.cancle 取消
 					.btn.confirm 保存
@@ -75,7 +101,7 @@ block content
 					.wrap_input_li
 						.wrap_desc 新地址
 						.wrap_input
-							input(type='text' name='address' placeholder='请输入电话号码')
+							input(type='text' name='address' placeholder='请输入地址')
 				.btns
 					.btn.cancle 取消
 					.btn.confirm 保存
@@ -92,7 +118,7 @@ block content
 					.wrap_input_li
 						.wrap_desc 新联系方式
 						.wrap_input
-							input(type='text' name='phone' placeholder='只能输入固定座机或者手机号码哦')
+							input(type='text' name='contact_phone' placeholder='只能输入固定座机或者手机号码哦')
 				.btns
 					.btn.cancle 取消
 					.btn.confirm 保存
@@ -103,18 +129,15 @@ block content
 			.wrap_content
 				.wrap_pic
 					.big_pic
-						img(src='http://static.brae.co/index/3-5.png')
+						#carousel.carousel
+							.carousel_imgs
+							.carousel_dots
+								.carousel_dot.active
+								.carousel_dot
+								.carousel_dot
 						span(style='float:right') 建议尺寸: 375像素*200像素
 						span 最多上传5张图片
 					.little_pics
-						.little_pic_li.pic
-							input(type='file')
-							.little_pic
-								img(src='http://static.brae.co/index/3-5.png')
-								.delet_img
-							.empty_pic
-								.cross
-								span 点击上传图片
 						.little_pic_li
 							input(type='file')
 							.little_pic
@@ -123,6 +146,16 @@ block content
 							.empty_pic
 								.cross
 								span 点击上传图片
+				.btns
+					.btn.cancle 取消
+					.btn.confirm 保存
+		.wrap#wrap_printers
+			.wrap_head 
+				span 关联打印机
+				.close_wrap
+			.wrap_content
+				.wrap_inputs			
+					.wrap_printers
 				.btns
 					.btn.cancle 取消
 					.btn.confirm 保存

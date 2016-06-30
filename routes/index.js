@@ -242,12 +242,13 @@ module.exports = function(passport) {
 		var waiter_id = req.params.waiter_id;
 		console.log(waiter_id);
 		setTimeout(function() {
-			res.json({"message": "success"});
+			res.json({"message": "User not found"});
 		}, 1000);
 	});
 	router.post('/Waiter/Update/:waiter_id', function(req, res, next) {
 		var waiter_id = req.params.waiter_id;
-		console.log(waiter_id);
+		var waiter = req.body;
+		console.log(waiter);
 		setTimeout(function(){
 			res.json({"message": "success"});
 		}, 1000);

@@ -12,6 +12,7 @@ edit-manage = let
 
     _edited-staff = null
     _all-roles = null
+    _new-password = null
     
     _manage-permission-btn-dom = $ "\#staff-account-edit .manage-permission-btn"
     
@@ -21,7 +22,6 @@ edit-manage = let
     _name-input-dom = $ "\#staff-account-edit input[name='name']"
     _gender-select-dom = $ "\#staff-account-edit select[name='gender']"
     _phone-input-dom = $ "\#staff-account-edit input[name='phone']"
-    _password-input-dom = $ "\#staff-account-edit input[name='password']"
     _reset-password-btn-dom = $ "\#staff-account-edit button.reset-password-btn"
     _role-select-dom = $ "\#staff-account-edit select[name='role']"
 
@@ -43,11 +43,15 @@ edit-manage = let
     _full-cover-save-btn-click-event = !->
         password = _full-cover-password-input-dom.val!
         comfirm-password = _full-cover-comfirm-password-input-dom.val!
-        if password !== comfirm-password
+        if password === ''
+            alert "请输入密码"
+        else if comfirm-password === ''
+            alert '请确认密码'
+        else if password !== comfirm-password
             alert "两次输入的密码不一致"
-        else
-            console.log password, comfirm-password
-        # _full-cover-dom.fade-out 100
+        else if password === comfirm-password
+            _new-password := password
+            _full-cover-dom.fade-out 100
     
     _manage-permission-btn-click-event = !->
         current-url = location.href
@@ -64,19 +68,23 @@ edit-manage = let
         name = _name-input-dom.val!
         gender = _gender-select-dom.val!
         phone = _phone-input-dom.val!
-        password = _password-input-dom.val!
-        role = _role-select-dom.val!
+        role = parse-int _role-select-dom.val!
         if _check-input-field!
             if gender === 'male'
                 gender := "男"
             else
                 gender := "女"
-            $.ajax {type: "POST", url: "/Waiter/update/"+_edited-staff.id, data: {
+            data = {
                 "phone": phone,
                 "name": name,
-                "password": password,
+                "role": role,
                 "sex": gender
-            }, dataType: "JSON", success: _save-post-success}
+            }
+            if _new-password !== null and _new-password !== ''
+                data.password = _new-password
+            data = JSON.stringify data
+            $.ajax {type: "POST", url: "/Waiter/update/"+_edited-staff.id, data: data,\
+                    dataType: "JSON", contentType: "application/json", success: _save-post-success}
             _set-save-btn-disable!
         # page.toggle-page "main"
     
@@ -85,7 +93,6 @@ edit-manage = let
         name = _name-input-dom.val!
         gender = _gender-select-dom.val!
         phone = _phone-input-dom.val!
-        password = _password-input-dom.val!
         role = _role-select-dom.val!
         if name === ''
             error-message.push "请输入姓名"
@@ -95,11 +102,8 @@ edit-manage = let
             re = /(^(13\d|15[^4,\D]|17[13678]|18\d)\d{8}|170[^346,\D]\d{7})$/
             if not re.test(phone)
                 error-message.push "电话号码格式不正确"
-        if password === ''
-            error-message.push "请输入密码"
         if role === 'default'
             error-message.push "请选择角色"
-        console.log error-message
         if error-message.length === 0
             true
         else
@@ -114,7 +118,6 @@ edit-manage = let
 
     _save-post-success = (data)!->
         _set-save-btn-able!
-        console.log data
         if data.message === 'success'
             location.reload!
         else
@@ -132,7 +135,6 @@ edit-manage = let
         _name-input-dom.val ""
         _gender-select-dom.val ""
         _phone-input-dom.val ""
-        _password-input-dom.val ""
         _role-select-dom.empty!.append $ "<option value='default'>请选择角色</option>"
         _error-message-block-dom.empty!.hide!
 

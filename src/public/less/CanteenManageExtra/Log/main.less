@@ -3,6 +3,7 @@
 
 .mycenter {
     padding: 30px;
+    padding-bottom: 100px;
 }
 .top {
     font-size: 16px;
@@ -51,6 +52,7 @@ select{
 table{
 	border-collapse: collapse;
 	margin-top: 18px;
+    width: 100%;
 }
 thead{
 	background:#f4f5f9;
@@ -77,11 +79,60 @@ td{
 	color: #4a4a4a;
 	line-height:20px;
 	font-size: 14px;
+    padding: 10px;
 }
-#json-field{
+#page{
+	text-align: right;
+    width: 100%;
+    float: right;
+    margin-top: 30px;
+    line-height: 28px;
+}
+#page>div{
+	display: inline-block;
+	vertical-align: bottom;
+    margin: 0 30px;
+}
+#page .left{
+    width: 30px;
+    height: 30px;
+    background: url(@page_left);
+    display: inline-block;
+	vertical-align: bottom;
+}
+#page .right{
+    width: 30px;
+    height: 30px;
+    background: url(@page_right);
+    display: inline-block;
+	vertical-align: bottom;
+}
+#page input[type='text']{
+	font-size: 14px;
+    padding: 0 14px;
+    border: 1px solid #E7E7EB;
+    border-radius: 3px;
+    width: 68px;
+    height: 28px;
+    width: 70px;
+    height: 30px;
+}
+#page .page_jump{
+	text-align: center;
+    padding: 0;
+    height: 28px;
+    width: 58px;
+    margin: 0;
+    margin-left: -20px;
+    color: #4A4A4A;
+    font-size: 14px;
+    border: 1px solid #E7E7EB;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#json-field,#page-JSON-field{
 	display: none;
 }
-
 
 
 

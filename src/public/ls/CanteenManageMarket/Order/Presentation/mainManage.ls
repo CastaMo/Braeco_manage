@@ -40,12 +40,12 @@ main-manage = let
         location.href = "/Manage/Market/Activity"
         
     _start-presentation-event = !->
-        $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Give/Turn/On",
-        dataType: "JSON", success: _start-presentation-success}
+        $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Give/Turn/On",\
+            dataType: "JSON", contentType: "application/json", success: _start-presentation-success}
 
     _stop-presentation-event = !->
-        $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Give/Turn/Off",
-        dataType: "JSON", success: _stop-presentation-success}
+        $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Give/Turn/Off",\
+            dataType: "JSON", contentType: "application/json", success: _stop-presentation-success}
 
 
     _start-presentation-success = (data)!->

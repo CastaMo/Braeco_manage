@@ -322,7 +322,6 @@ main-manage = let
 					url 		:		"#{@pic}"
 					target-dom 	: 		@pic-dom[0]
 				}
-				console.log @
 				if not @able then @cover-dom.fade-in 200
 				else @cover-dom.fade-out 200
 				@c-name-dom.html @c-name; @c-name-dom.attr {"title": @c-name}

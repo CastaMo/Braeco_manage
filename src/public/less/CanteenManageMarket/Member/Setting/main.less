@@ -6,6 +6,27 @@
     #Setting-wrapper {
         width: 710px;
         margin: 30px 0 0 30px;
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0; 
+        }
+        #global_message {
+            background: #eb4f10;
+            color: white;
+            font-size: 16px;
+            position: fixed;
+            top: 80px;
+            width: auto;
+            padding: 0 150px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 5px;
+            left: 50%;
+            transform: translate(-50%,0);
+            display: none;
+            z-index: 999
+        }
         #level {
             .level-wrapper {
                 #level-title {
@@ -27,8 +48,11 @@
                     position: relative;
                     bottom: 25px;
                     height: 30px;
-                    width: 100px;
+                    width: 70px;
                     float: right;
+                    &:hover {
+                        background-color: #F4F5F9;
+                    }
                 }
                 #level-table {
                     float: right;
@@ -41,6 +65,7 @@
                         border: 1px solid #E7E7EB;
                         .table-title {
                             background-color: #F4F5F9;
+                            font-size: 16px;
                             td {
                                 color: #8D8D8D;
                                 height: 45px;
@@ -50,7 +75,7 @@
                         }
                         tr {
                             width: 712px;
-                            height: 54px;
+                            height: 45px;
                             td {
                                 color: #4A4A4A;
                                 text-align: center;
@@ -99,8 +124,11 @@
                     position: relative;
                     bottom: 25px;
                     height: 30px;
-                    width: 100px;
+                    width: 70px;
                     float: right;
+                    &:hover {
+                        background-color: #F4F5F9;
+                    }
                 }
                 #recharge-table {
                     float: right;
@@ -113,6 +141,7 @@
                         border: 1px solid #E7E7EB;
                         .table-title {
                             background-color: #F4F5F9;
+                            font-size: 16px;
                             td {
                                 color: #8D8D8D;
                                 height: 45px;
@@ -122,7 +151,7 @@
                         }
                         tr {
                             width: 712px;
-                            height: 54px;
+                            height: 45px;
                             td {
                                 color: #4A4A4A;
                                 text-align: center;
@@ -142,10 +171,11 @@
             float: left;
             font-size: 14px;
             #modify-title {
-                padding: 15px 0 0 14px;
+                font-size: 16px;
+                padding: 11px 0 0 30px;
                 background-color: #F4F5F9;
                 border: 1px solid #E7E7EB;
-                height: 35px;
+                height: 34px;
             }
             #gift,
             #level-0,
@@ -172,9 +202,10 @@
                     ._unit {
                     	position: relative;
                     	right: 30px;
-                    	color: #C8C7CC;
+                    	color: #4A4A4A;
                     }
                     ._tip-2-discout {
+                        margin-left: 0;
                     	position: relative;
                     	right: 25px; 
                     }
@@ -209,6 +240,9 @@
                     color: #4A4A4A;
                     height: 30px;
                     width: 118px;
+                    &:hover {
+                        background-color: #F4F5F9;
+                    }
                 }
                 .level-finBtn {
                     margin: 20px 0 20px 30px;
@@ -219,6 +253,57 @@
                     background-color: #FFC107;
                     border: none;
                     color: white;
+                    &:hover {
+                        background-color: #FFB300;
+                        border-color: #FFB300;
+                    }
+                }
+                .stop-confirm {
+                    text-align: center;
+                    display: none;
+                    font-size: 28px;
+                    position: relative;
+                    right: 700px;
+                    top: 110px;
+                    float: left;
+                    background-repeat: no-repeat;
+                    z-index: 9999;
+                    height: 328px;
+                    width: 573px;
+                    .confirm-ask {
+                        margin: 80px 0 0 30px;
+                    }
+                    #confirm-btn-field {
+                        margin: 40px 0 0 60px;
+                        .confirm-btn {
+                            margin-left: 50px;
+                            border: 1px solid #FFC107;
+                            line-height: 64px;
+                            color: #FFFFFF;
+                            height: 64px;
+                            border-radius: 10px;
+                            width: 120px;
+                            background-color: #FFC107;
+                            &:hover {
+                                background-color: #FFB300;
+                                border-color: #FFB300;
+                            }
+                        }
+                        .confirm-cancel-btn {
+                            margin-left: 50px;
+                            line-height: 64px;
+                            border: 1px solid #E7E7EB;
+                            height: 64px;
+                            border-radius: 10px;
+                            width: 120px;
+                            &:hover {
+                                background-color: #F4F5F9;
+                            }
+                        }
+                    }
+                }
+                .stop-confirm-image {
+                    zoom: 0.5;
                 }
             }
         }
@@ -228,10 +313,11 @@
             float: left;
             font-size: 14px;
             #modify-title {
-                padding: 15px 0 0 14px;
+                font-size: 16px;
+                padding: 11px 0 0 30px;
                 background-color: #F4F5F9;
                 border: 1px solid #E7E7EB;
-                height: 35px;
+                height: 34px;
             }
             #recharge-1,
             #recharge-2,
@@ -253,7 +339,7 @@
                     ._unit {
                     	position: relative;
                     	right: 30px;
-                    	color: #C8C7CC;
+                    	color: #4A4A4A;
                     }
                     ._gitf,
                     ._real {
@@ -282,6 +368,9 @@
                     color: #4A4A4A;
                     height: 30px;
                     width: 118px;
+                    &:hover {
+                        background-color: #F4F5F9;
+                    }
                 }
                 .charge-finBtn {
                     margin: 20px 0 20px 30px;
@@ -292,6 +381,56 @@
                     background-color: #FFC107;
                     border: none;
                     color: white;
+                    &:hover {
+                        background-color: #E5B113;
+                    }
+                }
+                .stop-confirm {
+                    text-align: center;
+                    display: none;
+                    font-size: 28px;
+                    position: relative;
+                    right: 700px;
+                    top: 110px;
+                    float: left;
+                    background-repeat: no-repeat;
+                    z-index: 9999;
+                    height: 328px;
+                    width: 573px;
+                    .confirm-ask {
+                        margin: 80px 0 0 30px;
+                    }
+                    #confirm-btn-field {
+                        margin: 40px 0 0 60px;
+                        .confirm-btn {
+                            margin-left: 50px;
+                            border: 1px solid #FFC107;
+                            line-height: 64px;
+                            color: #FFFFFF;
+                            height: 64px;
+                            border-radius: 10px;
+                            width: 120px;
+                            background-color: #FFC107;
+                            &:hover {
+                                background-color: #FFB300;
+                                border-color: #FFB300;
+                            }
+                        }
+                        .confirm-cancel-btn {
+                            margin-left: 50px;
+                            line-height: 64px;
+                            border: 1px solid #E7E7EB;
+                            height: 64px;
+                            border-radius: 10px;
+                            width: 120px;
+                            &:hover {
+                                background-color: #F4F5F9;
+                            }
+                        }
+                    }
+                }
+                .stop-confirm-image {
+                    zoom: 0.5;
                 }
             }
         }
