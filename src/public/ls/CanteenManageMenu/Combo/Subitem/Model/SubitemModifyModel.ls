@@ -99,13 +99,13 @@ class SubitemModifyModel extends MBase
 
 	check-self-config-data-is-valid: ->
 		err-msg = ""; valid-flag = true
-		if @config-data.name.length <= 0 or @config-data.name.length > 32 then err-msg += "子项名称长度应为1~32位\n"; valid-flag = false
-		if @config-data.remark.length > 32 then err-msg += "子项备注长度应为0~32位\n"; valid-flag = false
+		if @config-data.name.length <= 0 or @config-data.name.length > 32 then err-msg += "子项名称长度应为1~32位<br>"; valid-flag = false
+		if @config-data.remark.length > 32 then err-msg += "子项备注长度应为0~32位<br>"; valid-flag = false
 		if @config-data.type is "discount_combo"
-			if Number @config-data.num < 0 or Number @config-data.num > 10000 then err-msg += "子项折扣应为0~10000"; valid-flag = false
+			if Number @config-data.num < 0 or Number @config-data.num > 10000 then err-msg += "子项折扣应为0~100%<br>"; valid-flag = false
 		else
-			if Number @config-data.num < 0 or Number @config-data.num > 100000 then err-msg += "子项价格应为0~100000元"; valid-flag = false
-		if @all-choose-dish-ids.length <= 0 then err-msg += "子项需选择至少一个单品"; valid-flag = false
+			if Number @config-data.num < 0 or Number @config-data.num > 100000 then err-msg += "子项价格应为0~100000元<br>"; valid-flag = false
+		if @all-choose-dish-ids.length <= 0 then err-msg += "子项需选择至少一个单品<br>"; valid-flag = false
 		if not valid-flag then alert err-msg
 		return valid-flag
 

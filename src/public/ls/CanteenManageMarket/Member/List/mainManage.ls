@@ -13,7 +13,8 @@ main-manage = let
 	_table-dom = $ "\#Info"
 	_close-dom = $ "\.close-btn"
 	_cancle-dom = $ "\.cancel-btn"
-	_save-dom = $ "\.confirm-btn"
+	_modify-save-dom = $ "\.modify-field .confirm-btn"
+	_recharge-save-dom = $ "\.recharge-field .confirm-btn"
 	_loop-id-dom = $ "\.table-title ._loop-id a"
 	_loop-level-dom = $ "\.table-title ._loop-level a"
 	_loop-exp-dom = $ "\.table-title ._loop-exp a"
@@ -39,50 +40,49 @@ main-manage = let
 	_init-all-blur = !->
 		$("._searchInput").blur !->
 			if $('._searchInput').val() == '' or /^[1-9]\d*$/.test($('._searchInput').val())
-				return true;
+				return true
 			else
-				show-global-message '搜索会员只能输入数字！'
-				return false;
+				$('._searchInput').val('')
+				alert('搜索会员只能输入数字')
+				return false
 		
 		$('#_input1').blur !->
-			if event.keyCode is 13 then _save-dom.trigger "click"
 			if $('#_input1').val() == '' or /^[0-9]\d*$/.test($('#_input1').val())
-				return true;
+				return true
 			else
-				show-global-message '修改积分只能为正整数！'
-				return false;
+				$('#_input1').val('')
+				alert('修改积分只能为正整数')
+				return false
 
 		$('#_input2').blur !->
-			if event.keyCode is 13 then _save-dom.trigger "click"
-			if $('#_input2').val() == '' or /^[1-9]\d*$/.test($('#_input2').val())
-				return true;
+			if $('#_input2').val() == '' or /^\+?[1-9]\d*$/.test($('#_input2').val())
+				return true
 			else
-				show-global-message '充值金额只能为正整数！'
-				return false;
+				$('#_input2').val('')
+				alert('充值金额只能为正整数')
+				return false
 
-		$('#_suppPhone').blur !->
-			if event.keyCode is 13 then _save-dom.trigger "click"
-			if $('#_suppPhone').val() == '' or /^[1-9]\d*$/.test($('#_suppPhone').val())
-				return true;
+		$("._suppPhone").blur !->
+			if $('._suppPhone').val() == '' or /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/.test($('._suppPhone').val())
+				return true
 			else
-				show-global-message '输入正确的手机号码！'
-				return false;
+				$("._suppPhone").val('')
+				alert('输入正确的手机号码')
+				return false
 
 		$("._jump-input").blur !->
-			if event.keyCode is 13 then _jump-dom.trigger "click"
-			if event.keyCode is 13 then _save-dom.trigger "click"
 			if $('._jump-input').val() == '' or /^[1-9]\d*$/.test($('._jump-input').val())
-				return true;
+				return true
 			else
-				show-global-message '该输入框只能输入数字哦'
 				$('._jump-input').val('')
-				return false;
+				alert('该输入框只能输入数字')
+				return false
 
 	_init-all-event = !->
 		_search-dom.click !->
 			searchNum = $('._searchInput').val!
 			searchNum = Number(searchNum)
-			_location = "/Manage/Market/Member/List?search=" + searchNum
+			location.href = "/Manage/Market/Member/List?search=" + searchNum
 
 		_last-page-dom.click !->
 			pageArrJSON = $('#page-JSON-field').html!
@@ -113,41 +113,43 @@ main-manage = let
 			page.cover-page "exit"
 			_init-table!
 
-		_save-dom.click !->
-			_length = _members.length
-			modify-input = $('#_input1').val!
-			parentID = $('.displayID').html!
-			recharge-input = $('#_input2').val!
-			searchNum = $('._searchInput').val!
-			request-object = {}
-			for i from 0 to _length-1 by 1
-				if Number(_members[i].id) is Number(parentID) and modify-input != ""
-					_members[i].EXP = modify-input
-					request-object.exp = modify-input;
-					require_.get("modify").require {
-						data 		:		{
-							JSON 	:		JSON.stringify(request-object)
-							user-id :		parentID;
-						}
-						callback 	:		(result)!-> location.reload!
+		_modify-save-dom.click !->
+			if $('#_input1').val() != ''
+				_length = _members.length
+				modify-input = $('#_input1').val!
+				parentID = $('.displayID').html!
+				searchNum = $('._searchInput').val!
+				request-object = {}
+				request-object.exp = modify-input;
+				require_.get("modify").require {
+					data 		:		{
+						JSON 	:		JSON.stringify(request-object)
+						user-id :		parentID;
 					}
-				else if Number(_members[i].id) is Number(parentID) and recharge-input != ""
-					request-object.amount = recharge-input;
-					recharge-input = Number(_members[i].balance)+Number(recharge-input)
-					recharge-input = Number(recharge-input)
-					recharge-input = recharge-input.toFixed(2)
-					_members[i].balance = Number(recharge-input)
-					if $(".phoneNumber").html! is "-"
-						request-object.phone = $("._suppPhone").val!
-					else
-						request-object.phone = $(".phoneNumber").html!
-					require_.get("recharge").require {
-						data 		:		{
-							JSON 	:		JSON.stringify(request-object)
-							user-id :		parentID;
-						}
-						callback 	:		(result)!-> location.reload!
+					success 	:		(result)!-> location.reload!
+				}
+			else alert('修改失败')
+
+		_recharge-save-dom.click !->
+			if $('#_input2').val() != ''
+				_length = _members.length
+				parentID = $('.displayID').html!
+				recharge-input = $('#_input2').val!
+				searchNum = $('._searchInput').val!
+				request-object = {}
+				request-object.amount = recharge-input;
+				if $(".phoneNumber").html! is "-"
+					request-object.phone = $("._suppPhone").val!
+				else
+					request-object.phone = $(".phoneNumber").html!
+				require_.get("recharge").require {
+					data 		:		{
+						JSON 	:		JSON.stringify(request-object)
+						user-id :		parentID;
 					}
+					success 	:		(result)!-> location.reload!
+				}
+			else alert('充值失败')
 
 	class Member
 		(options)!->
@@ -164,7 +166,6 @@ main-manage = let
 		activityArr = JSON.parse(memberArrJSON)
 		for member in activityArr
 			new Member(member)
-
 
 	_init-table = !->
 		$('#_input1').val("")
@@ -246,15 +247,6 @@ main-manage = let
 	_init-depend-module = !->
 		page := require "./pageManage.js"
 		require_ := require "./requireManage.js"
-
-	time-out-id = ''
-	# 显示全局信息提示
-	show-global-message = (str)->
-		ob = $ '#global_message' 
-		ob.show!
-		ob.html str
-		clearTimeout time-out-id
-		time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
 
 	initial: !->
 		_init-all-blur!

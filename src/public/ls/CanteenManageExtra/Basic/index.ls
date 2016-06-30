@@ -31,15 +31,15 @@ do ->
 					name = x.getAttribute 'name'
 					if name == 'oldpass'
 						data[name] = $.md5 x.value
-					data[name] = x.value
-					# console.log x
+					else
+						data[name] = x.value
 				data
 			if temp.getAttribute('id')!='wrap_pics'
 				temp.mysubmit =(mydata,myurl)->
 					util.ajax {
 					type : 'post'
 					url : '/Dinner/Update/Profile'
-					async :'async'
+					async :'true'
 					data : JSON.stringify mydata
 					success : (result)!->
 						ajax-callback result
@@ -121,84 +121,76 @@ do ->
 	Wrap-pics = !->
 		self = util.getById 'wrap_pics'
 		self.mychange = {}
-		self.mychange.arr=[]
-		$ '#wrap_pics' .find 'input[type=file]' .change !->
-			index = $ @ .parents '.little_pic_li' .index!
-			src = util.getObjectURL @files[0]
-			temp = {}
-			temp.action ='change'
-			temp.value = src
-			self.mychange.arr[index+''] = temp
-			img-preview index,src
-		$ '#wrap_pics' .find '.little_pic_li .delet_img' .click !->
+		$ self .find 'input[type=file]' .change !->
+			ob = $ @ .parents '.little_pic_li' 
+			index = ob.index!
+			ob.addClass 'change'
+			img-preview index,util.getObjectURL(@.files[0])
+		$ self .find '.little_pic_li .delet_img' .click !->
 			delete-img-input($ @ .parents('.little_pic_li').index!)
 		
-		util.getById 'wrap_pics' .mysubmit = !->
+		self.mysubmit = !->
 			show-loading!
-			self.mychange.sum = 0
-			for key of @mychange.arr
-				self.mychange.sum +=1
-				if @mychange.arr[key].action == 'delete'
-					ajax-for-delete @mychange.arr[key].value,self.mychange.sum
-				else if  @mychange.arr[key].action == 'change'
-					ajax-for-token key,@mychange.arr[key].value,self.mychange.sum
-					# *******************************************************
-					# ********************** todo  *****************
-					# ************** 完成上传删除后提示 *************
-					# ****************************************************
+			for x in $ self .find '.little_pic_li.change'
+				index = $ x .index!
+				self.mychange[index+''] = {}
+				self.mychange[index+''].action = 'change'
+			self._change_num =0
+			console.log self.mychange
+			for key of self.mychange
+				self._change_num += 1
+				if self.mychange[key].action == 'delete'
+					ajax-for-delete key,self._change_num
+				else if  self.mychange[key].action == 'change'
+					ajax-for-token key,self._change_num
 		afte-upload-img = ->
 			text
-			for key of self.mychange.arr
-				text = key + ':' + self.mychange.arr[key] +'<br>'
+			for key of self.mychange
+				text = key + ':' + self.mychange[key].result+'<br>'
 			show-global-message text
 			close-loading!
-		ajax-for-token = (n,src,order)!->
+		ajax-for-token = (n,file,order)!->
 			util.ajax {
 				type : 'post'
 				url : '/pic/upload/token/cover/' + n
-				async :'async'
+				async :'true'
 				success : (result)!->
+					result = JSON.parse result
 					if result.message == 'success'
-						ajax-for-qiniu result,src,order
+						ajax-for-qiniu data,n,order
 				unavailabled : (result)!->
-					self.mychange.arr[i+''].result='上传失败，请重试'
+					self.mychange[i+''].result='上传失败，请重试'
 				always : (result)!->
 					
 				}
-		ajax-for-qiniu = (data,src,order)!->
-			util.ajax {
-				type : 'post'
-				url : 'http://upload.qiniu.com/'
-				async :'async'
-				data : {
-					token : data.token
-					key : data.key
-					file : util.converImgTobase64 src				
-				}
-				success : (result)!->
-					if result.message == 'success'
-						self.mychange.arr[i+''].result='上传成功'
-						# console.log self.mychange
-				always : (result)!->
-					if order==self.mychange.sum
-						afte-upload-img!
-				unavailabled : (result)!->
-					self.mychange.arr[i+''].result='上传失败，请重试'
-			}
-		ajax-for-delete = (n)!->
+		ajax-for-qiniu = (data,n,order)!->
+			$ 'iframe' .eq(0).attr 'order',order
+			$ '.form' .eq n .find 'input[name=token]' .val data.token
+			$ '.form' .eq n .find 'input[name=key]' .val data.key
+			$ '.form' .get n .submit!
+			
+		ajax-for-delete = (n,order)!->
 			util.ajax {
 				type : 'post'
 				url : '/Dinner/Cover/Remove/'+n
-				async :'async'
+				async :'true'
 				success : (result)!->
+					result = JSON.parse result
 					if result.message == 'success'
-						self.mychange.arr[i+''].result='删除成功'
+						self.mychange[i+''].result='删除成功'
 				always : (result)!->
-					if order==self.mychange.sum
+					if order==self._change_num
 						afte-upload-img!
 				unavailabled : (result)!->
-					self.mychange.arr[i+''].result='删除失败，请重试!'
+					self.mychange[i+''].result='删除失败，请重试!'
 			}
+		$ 'iframe' .load ->
+			i = parseInt($ @ .attr 'order')
+			if(i<=self._change_num)
+				self.mychange[i+''].result = '上传成功！'
+				if i == self._change_num
+					afte-upload-img!
+
 		img-preview = (index,src)!->
 			$ '.little_pic_li' .eq index .find('img').attr 'src', src
 			$ '.little_pic_li' .eq index .addClass 'pic'
@@ -215,13 +207,18 @@ do ->
 			n = ($ '.little_pic_li' .length) - ($ '.little_pic_li.pic' .length)
 			if $ '.little_pic_li' .length < 5 && n<1
 				last = $ '.little_pic_li:last'
-				last.clone true .removeClass 'pic' .insertAfter(last)
+				last.clone true .removeClass 'pic change' .insertAfter last
+				i = $ '.little_pic_li.pic' .length-1
+				last.find '.form' .attr 'target',('res'+i)
+				last.find '.iframe' .attr 'name',('res'+i)
 		delete-img-input = (n)!->
-			$ '.little_pic_li' .eq(n).remove!
-			temp = {}
-			temp.action = 'delete'
-			temp.value = n
-			self.mychange[n+''] = temp
+			ob = $ '.little_pic_li' .eq n
+			if ob.hasClass 'change'  #删除刚添加的图片（还未保存的）
+				delete self.mychange[n+'']
+			else
+				self.mychange[n+''] = {}
+				self.mychange[n+''].action = 'delete'
+			ob.remove!
 			n = ($ '.little_pic_li' .length) - ($ '.little_pic_li.pic' .length)
 			if(n == 0)
 				add-img-input!
@@ -293,12 +290,14 @@ do ->
 		$ '.info_value' .eq(3).text d.data.address
 		$ '.info_value' .eq(4).text d.data.contact_phone
 		$ '.info_value.info_img:eq(0) img' .attr 'src',d.data.covers[0]
-		for x in d.data.covers
+		for x,i in d.data.covers
 			$ '#carousel .carousel_imgs' .append('<img class="carousel_img" src="'+x+'"></img>')
 			$ '#carousel .carousel_dots' .append('<div class="carousel_dot"></div>')
 			newPic = $ '.little_pic_li:last' .clone(true)
 			newPic.find 'img' .attr 'src',x
 			newPic.addClass 'pic'
+			newPic.find 'form' .attr('target','res'+i)
+			newPic.find 'iframe' .attr('name','res'+i)
 			newPic.insertBefore($ '.little_pic_li:last' )
 		if d.data.wxpay
 			$ '.info_value.info_img1 img' .attr 'src',d.data.wxpay.qrurl

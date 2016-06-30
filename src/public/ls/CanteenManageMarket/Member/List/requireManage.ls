@@ -37,7 +37,7 @@ require-manage = let
 		"modify"		:		(data)-> return "#{data.JSON}"
 		"recharge"		:		(data)-> return "#{data.JSON}"
 	}
-
+	
 	_normal-handle = (name, result_, callback)->
 		result = get-JSON result_
 		message = result.message

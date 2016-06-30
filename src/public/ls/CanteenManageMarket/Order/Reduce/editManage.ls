@@ -114,6 +114,8 @@ edit-manage = let
     class ItemManager
         (ladder_reduce) !->
             @items = []
+            if ladder_reduce.length === 0
+                @items.push new LadderItem 0,'',''
             for item, i in ladder_reduce
                 @items.push new LadderItem i,item[0],item[1]
 
@@ -122,6 +124,8 @@ edit-manage = let
                 @items.push new LadderItem @items.length,'',''
                 if @items.length === 7
                     _add-btn-dom.hide!
+            if @items.length > 0
+                _add-btn-dom.remove-class "zero-add-ladder-btn"
 
         delete-item: (index)!->
             if @items.length === 7
@@ -130,6 +134,8 @@ edit-manage = let
             removed-item = removed-items[0]
             removed-item.delete-dom!
             @update-items-index!
+            if @items.length === 0
+                _add-btn-dom.add-class "zero-add-ladder-btn"
 
         update-items-index: !->
             for item, i in @items
