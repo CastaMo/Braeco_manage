@@ -20,6 +20,7 @@ group-manage = let
 			if group.type is "property" then property = new Property {
 				id 			:		group.id
 				name 		:		group.name
+				remark 	: 	group.remark
 				content 	: 		group.content
 				belong-to 	:		group.belong_to
 			}
@@ -107,10 +108,12 @@ group-manage = let
 
 		init-property-content-dom: !->
 			_get-property-content-dom = (property)->
+				if property.remark then property-str = "(#{property.remark})"
+				else property-str = ""
 				dom = $ "<li class='property-content'>
 							<div class='property-content-wrapper'>
 								<div class='name-field'>
-									<p class='name'>#{property.name}</p>
+									<p class='name'>#{property.name}#{property-str}</p>
 								</div>
 								<div class='tick-field'>
 									<div class='tick'></div>

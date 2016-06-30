@@ -149,7 +149,9 @@ class EditView
 
 		select-dom-inner-html = ""
 		for subitem-id, subitem of @subitem-controller.get-all-subitems!
-			select-dom-inner-html += "<option value=#{subitem.get-id!}>#{subitem.get-name!}</option>"
+			remark-str = ""
+			if subitem.get-remark! then remark-str = "(#{subitem.get-remark!})"
+			select-dom-inner-html += "<option value=#{subitem.get-id!}>#{subitem.get-name!}#{remark-str}</option>"
 		select-dom.html select-dom-inner-html
 
 		select-dom.change !~> subitem-length-dom.html @subitem-controller.get-subitem-length(select-dom.val!)
