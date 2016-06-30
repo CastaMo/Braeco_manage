@@ -250,7 +250,7 @@
 	height: 104px;
 }
 .inputli{
-	margin: 28px 60px;
+	margin: 28px 50px;
 	margin-top: 0;
 	position: relative;
 }
@@ -264,14 +264,19 @@
 	color:#4a4a4a;
 	text-align:left;
 	display: inline-block;
-	margin-right: 20px;
+	margin-right: 16px;
 	min-width: 4em;
 }
-.inputli input,{
+.inputli input{
 	border:1px solid #e7e7eb;
 	width:253px;
 	height:30px;
 	padding:9px 10px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0; 
 }
 .inputli select{
 	border:1px solid #e7e7eb;
@@ -301,8 +306,11 @@
 .wrap.batch_export1 .wrap_content{
 	padding: 112px 25px 105px 55px;
 	position: relative;
+	font-size: 0;
 }
 .imgli{
+	font-size: 14px;
+	letter-spacing: normal;
 	border:1px solid #e7e7eb;
 	width:178px;
 	height:178px;
@@ -316,6 +324,10 @@
 	max-height: 150px;
 	margin: auto;
 	margin: 14px;
+}
+.imgli:last-child img{
+	width: 1000px;
+	content: url(@a6_b);
 }
 .imgli.selected .img_container{
 	background:#f4f5f9;
@@ -334,7 +346,7 @@
 }
 .wrap.batch_export .wrap_right {
     width: 500px;
-    margin-left: 450px;
+    margin-left: 400px;
 }
 .wrap.batch_export2 .wrap_right img{
 	width: 400px;
