@@ -80,20 +80,17 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
     $scope.editor.activity-type = type
     $scope.new-activity-type = type
     $ '.activity-image-preview' .attr 'src', $scope.pre-image-url
-    # set-scope-editor $scope.empty-activity
 
   $scope.select-one-activity = !->
     $scope.current-activity = @activity
     $scope.new-activity-type = @activity.type
     $activitySM.go-to-state ['\#activity-main']
-    debugger
     set-edit-area @activity
     $scope.editor.activity-type = @activity.type
     $scope.new-activity-type = null
     $ '.activity-image-preview' .attr 'src', $scope.base-image-url + @activity.pic
 
   $scope.format-activity-time = (begin, end, expiry)->
-    debugger
     value = ''
     if !expiry
       if parse-int(begin) is 0 and parse-int(end) is 0
@@ -289,7 +286,6 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
       content: $ '#activity-content' .val!
       type: $scope.new-activity-type
 
-    debugger
     if parse-int($scope.editor.activity-expiry-type) is 0
       data.date_begin = 0
       data.date_end = 0

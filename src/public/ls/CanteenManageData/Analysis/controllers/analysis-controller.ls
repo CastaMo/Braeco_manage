@@ -60,7 +60,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
 
   # ====== 5 页面数据初始化 ======
   init-page-data = !->
-    $scope.get-statistics-by-unit!
+    # $scope.get-statistics-by-unit!
 
   # ====== 6 $scope事件函数定义 ======
   $scope.get-statistics-by-unit = !->
