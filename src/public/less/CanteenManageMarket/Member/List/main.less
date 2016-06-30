@@ -32,6 +32,8 @@
             clear: left;
             .search-input {
                 input {
+                    color: #4A4A4A;
+                    font-size: 16px;
                     padding-left: 5px;
                     border: 1px solid #E7E7EB;
                     width: 200px;
@@ -162,7 +164,8 @@
                 margin-left: 10px;
                 float: left;
                 input {
-                    font-size: 14px;
+                    font-size: 16px;
+                    color: #4A4A4A;
                     padding-left: 5px;
                     border: 1px solid #E7E7EB;
                     border-radius: 3px;
@@ -264,6 +267,8 @@
                         width: 70px;
                     }
                     input {
+                        font-size: 14px;
+                        color: #4A4A4A;
                         padding-left: 5px;
                         border: 1px solid #E7E7EB;
                         margin: 4px 0 0 8px;
@@ -305,6 +310,7 @@
                         font-size: 14px;
                     }
                     input {
+                        color: #4A4A4A;
                         border: 1px solid #E7E7EB;
                         padding-left: 5px;
                         font-size: 14px;
@@ -348,11 +354,18 @@
                     }
                     .cancel-btn {
                         border: solid 1px @border-grey-color;
+                        &:hover {
+                            background-color: #F4F5F9;
+                        }
                     }
                     .confirm-btn {
                         float: right;
                         background-color: @orange-color;
                         color: #fff;
+                        &:hover {
+                            background-color: #FFB300;
+                            border-color: #FFB300;
+                        }
                     }
                 }
             }
