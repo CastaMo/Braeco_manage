@@ -186,17 +186,17 @@ main-manage = let
 			val  = parseInt val
 			if iswifi == true
 				if val>=0
-					ob.next!.show!
-					ob.next!.next!.show!
-				if val>=1
+					ob.next!.hide!
 					ob.next!.next!.hide!
+				if val>=1
+					ob.next!.show!
 					if val>=2
-						ob.next!.hide!
+						ob.next!.next!.show!
 			else
 				if val ==0
-					ob.next!.show!
-				if val==1
 					ob.next!.hide!
+				if val==1
+					ob.next!.show!
 
 	Operation = (op)->
 		@prototype = new Change-state op
