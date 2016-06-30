@@ -306,7 +306,7 @@ main-manage = let
             refund-method-container-dom.click !-> _refund-method-container-click-event data-obj
         else
             refund-method-container-dom.append $ "<icon class='refund-disable-icon'></icon>"
-            refund-method-container-dom.append $ "<p style='color: #8d8d8d'>退款</p>"
+            refund-method-container-dom.append $ "<p class='refund-disable-word'>退款</p>"
             refund-method-container-dom.append $ "<div class='refund-disable-description'><p>"+data-obj.refund+"</p></div>"
             $(refund-method-container-dom.find "icon").hover !-> _refund-disable-container-hover-event event
         td-methods-dom.append refund-method-container-dom

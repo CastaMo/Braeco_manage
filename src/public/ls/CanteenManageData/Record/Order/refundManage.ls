@@ -21,6 +21,9 @@ refund-manage = let
         current-num = parse-int _get-current-num-by-sub-icon target
         if current-num > 0
             current-num -= 1
+            if current-num === 0
+                $ target .css('visibility', 'hidden')
+            $ target .parent! .find "icon:last-child" .remove-class 'refund-add-disable-icon'
         _set-current-num-by-sub-icon target,current-num
         _set-current-total _get-current-total!
         _unset-checkbox!
@@ -31,6 +34,10 @@ refund-manage = let
         max-num = parse-int _get-max-num-by-add-icon target
         if current-num < max-num
             current-num += 1
+            if current-num > 0
+                $ target .parent! .find "icon:first-child" .css('visibility', 'visible')
+            if current-num === max-num
+                $ target .add-class 'refund-add-disable-icon'
         _set-current-num-by-add-icon target,current-num
         _set-current-total _get-current-total!
         if _get-current-sum! === _total-sum
@@ -192,7 +199,7 @@ refund-manage = let
             "description": description,
             "password": $.md5 password,
         }
-        json-data.refund = refunds
+        json-data.refund = JSON.stringify refunds
         json-data = JSON.stringify json-data
         $.ajax {type: "POST", url: "/order/refund/"+_data-obj.id, data: json-data, dataType: 'JSON', contentType:"application/json", success: _refund-post-success}
         _set-password-comfirm-button-disable!
@@ -253,7 +260,7 @@ refund-manage = let
         <tr>
         <td class='table-cat-col'>项目</td>
         <td class='table-num-col'>数量</td>
-        <td class='table-pri-col'>单价（元）</td>
+        <td class='table-pri-col'>实收（元）</td>
         </tr>
         </thead>"
         for single-food,index in _data-obj.content
@@ -279,6 +286,7 @@ refund-manage = let
     _gene-food-table-num-col = (food-sum)->
         td-dom = $ "<td class='table-num-col'></td>"
         sub-icon-dom = $ "<icon class='sub-icon refund-sub-icon'></icon>"
+        sub-icon-dom.css("visibility", "hidden")
         sub-icon-dom.click !-> _sub-icon-click-event event
         td-dom.append $ sub-icon-dom
         td-dom.append $ "<span class='cur-td'>0</span>"

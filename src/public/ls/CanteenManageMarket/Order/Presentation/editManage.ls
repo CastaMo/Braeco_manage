@@ -66,7 +66,7 @@ edit-manage = let
             @condition-input = $ "<input type='text' name='condition' value='"+@condition+"'>"
             @dom.append @condition-input
             @dom.append $ "<span class='money-content'>元</span>
-            <span>立减</span>"
+            <span>立送</span>"
             @presentation-input = $ "<input type='text' name='presentation' value='"+@presentation+"'>"
             @dom.append @presentation-input
             @dom.append $ "<span class='number-content'>一份</span>"
