@@ -13,7 +13,8 @@ block content
 			#tables_head
 				.table_operation.select_all
 					.table_operation_img
-					span 全选
+					span 全选 
+						span.selected_num
 				.table_operation.add
 					.table_operation_img
 					span 添加
@@ -36,8 +37,8 @@ block content
 						.checkbox.checked
 					.popup.edit
 						.arrow
-						input(type='text' name='word' class='table_name')
-						input(type='text' name='new' class='table_name' length='4')
+						input(type='text' name='word' class='table_name hide')
+						input(type='text' name='new' class='table_name' length='4' placeholder='比如A011,01')
 						.btns
 							.btn.cancle 取消
 							.btn.confirm 确认
@@ -49,7 +50,7 @@ block content
 					.popup.edit
 						.arrow
 						.popup_cover
-						input(type='text' name='word' placeholder='请输入桌号' class='table_name')
+						input(type='text' name='word' placeholder='比如A011,01' class='table_name')
 						.btns
 							.btn.cancle 取消
 							.btn.confirm 确认
@@ -67,8 +68,8 @@ block content
 							input(type='number' name='sum' placeholder='请输入桌位数量')
 						.inputli
 							.input_desc 起始编号
-							input(type='text' name='start' placeholder='请输入起始桌位号' class='table_name')
-							.little_gray 比如 01，A011，最多四位哦！
+							input(type='text' name='start' placeholder='批量添加的座位号只能输纯数字哦' class='table_name')
+							.little_gray 比如 01，0011，最多四位哦！
 					.btns
 						.btn.cancle 取消
 						.btn.confirm 确认
@@ -98,7 +99,7 @@ block content
 					.btns
 						.btn.cancle 取消
 						.btn.confirm 下一步
-				.wrap.batch_export.batch_export2
+				.wrap.batch_export.batch_export2(type='naked')
 					.wrap_head 导出设置 
 						.cancle_cross
 					.wrap_content
@@ -112,13 +113,14 @@ block content
 							.inputli
 								.input_desc 导出方式
 								select(name='send_email')
-									option(value='0') 发送到邮箱
-									option(value='1') 直接下载
+									option(value='1') 发送到邮箱
+									option(value='0') 直接下载
 							.inputli
 								.input_desc 
 								input(type='text' name='email' placeholder='请输入您的邮箱地址')
 								.tip
 					div(style='clear:both')
+					.message 直接下载需要 <b></b> 秒左右
 					.btns
 						.btn.cancle 取消
 						.btn.confirm 导出
@@ -135,8 +137,8 @@ block content
 							.inputli
 								.input_desc 折扣优惠
 								select(name='discount')
-									option(value='0') 有折扣优惠
-									option(value='1') 没有折扣
+									option(value='1') 有折扣优惠
+									option(value='0') 没有折扣
 							.inputli
 								.input_desc 
 								input(type='text' name='discount_value' placeholder='请输入折扣')
@@ -145,9 +147,9 @@ block content
 							.inputli
 								.input_desc wifi密码
 								select(name='wifi')
-									option(value='0') 有wifi密码
+									option(value='2') 有wifi密码
 									option(value='1') 仅有wifi名称
-									option(value='2') 无wifi
+									option(value='0') 无wifi
 							.inputli
 								.input_desc 
 								input(type='text' name='wifi_name' placeholder='请输入wifi名称')
@@ -159,8 +161,8 @@ block content
 							.inputli
 								.input_desc 导出方式
 								select(name='send_email')
-									option(value='0') 发送到邮箱
-									option(value='1') 直接下载
+									option(value='1') 发送到邮箱
+									option(value='0') 直接下载
 							.inputli
 								.input_desc 
 								input(type='text' name='email' placeholder='请输入您的邮箱地址')
@@ -168,6 +170,7 @@ block content
 						.wrap_right
 							img(src='http://brae.co/public/images/qrcode/2square000.png')
 					div(style='clear:both')
+					.message 直接下载需要 <b></b> 秒左右
 					.btns
 						.btn.cancle 取消
 						.btn.confirm 导出
@@ -184,8 +187,8 @@ block content
 							.inputli
 								.input_desc 折扣优惠
 								select(name='discount')
-									option(value='0') 有折扣优惠
-									option(value='1') 没有折扣
+									option(value='1') 有折扣优惠
+									option(value='0') 没有折扣
 							.inputli
 								.input_desc 
 								input(type='text' name='discount_value' placeholder='请输入折扣')
@@ -194,9 +197,9 @@ block content
 							.inputli
 								.input_desc wifi密码
 								select(name='wifi')
-									option(value='0') 有wifi密码
+									option(value='2') 有wifi密码
 									option(value='1') 仅有wifi名称
-									option(value='2') 无wifi
+									option(value='0') 无wifi
 							.inputli
 								.input_desc 
 								input(type='text' name='wifi_name' placeholder='请输入wifi名称')
@@ -208,8 +211,8 @@ block content
 							.inputli
 								.input_desc 导出方式
 								select(name='send_email')
-									option(value='0') 发送到邮箱
-									option(value='1') 直接下载
+									option(value='1') 发送到邮箱
+									option(value='0') 直接下载
 							.inputli
 								.input_desc 
 								input(type='text' name='email' placeholder='请输入您的邮箱地址')
@@ -217,22 +220,21 @@ block content
 						.wrap_right
 							img(src='http://brae.co/public/images/qrcode/2circle000.png')
 					div(style='clear:both')
+					.message 直接下载需要 <b></b> 秒左右
 					.btns
 						.btn.cancle 取消
 						.btn.confirm 导出
-				.wrap.batch_export.batch_export5
+				.wrap.batch_export.batch_export5(type='card')
 					.wrap_head 导出设置 
 						.cancle_cross
 					.wrap_content
 						.wrap_left
-							img
-						.wrap_right
 							.inputli
 								.input_desc wifi密码
 								select(name='wifi')
-									option(value='0') 有wifi密码
+									option(value='2') 有wifi密码
 									option(value='1') 仅有wifi名称
-									option(value='2') 无wifi
+									option(value='0') 无wifi
 							.inputli
 								.input_desc 
 								input(type='text' name='wifi_name' placeholder='请输入wifi名称')
@@ -241,20 +243,23 @@ block content
 								.input_desc 
 								input(type='text' name='wifi_password' placeholder='请输入wifi密码')
 								.tip
-							.inputli
-								.input_desc 二维码边长
-								input(type='text' name='length' )
-								.input_unit cm
+							//- .inputli
+							//- 	.input_desc 二维码边长
+							//- 	input(type='text' name='length' )
+							//- 	.input_unit cm
 							.inputli
 								.input_desc 导出方式
 								select(name='send_email')
-									option(value='0') 发送到邮箱
-									option(value='1') 直接下载
+									option(value='1') 发送到邮箱
+									option(value='0') 直接下载
 							.inputli
 								.input_desc 
 								input(type='text' name='email' placeholder='请输入您的邮箱地址')
 								.tip
+						.wrap_right
+							img
 					div(style='clear:both')
+					.message 直接下载需要 <b></b> 秒左右
 					.btns
 						.btn.cancle 取消
 						.btn.confirm 导出

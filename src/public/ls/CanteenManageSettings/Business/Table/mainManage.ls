@@ -4,8 +4,12 @@ main-manage = let
 		tables = []
 		operations = []
 		covers = []
-		for x in $ '.table_qr' 
-			tables.push(new Table x )
+		for let x in $ '.table_qr' 
+			temp = new Table x
+			$ temp.prototype.dom .click !~>			
+				temp.prototype.change-click-state!
+				change-num-tip!
+			tables.push temp
 		for x in $ '.table_operation'
 			operations.push(new Operation x)
 
@@ -37,22 +41,20 @@ main-manage = let
 						show-global-message '要先点击选择桌位哦！'
 		# 导出二维码
 		for win in $ '.wrap.batch_export:gt(0)'
-			new-cover = new Cover(win,'/Table/Qrcode/Download',(
-				(result)!->
-					result = JSON.parse result
-					if result.message == 'success'
-						location.reload true
-				))
-				covers.push(new-cover)
+			success = (result)!->
+				result = JSON.parse result
+				if result.message == 'success'
+					location.reload!
+			new-cover = new Cover win,'/Table/Qrcode/Download',success	
+			covers.push(new-cover)
 		# 单个桌位修改
 		for win in $ '.popup.edit:not(last)'
-			new-cover = new Cover win,'/table/edit',(
-				(result)!->
-					result = JSON.parse result
-						if result.message == 'success'
-							alert '修改成功'
-							set-timeout (!->location.reload!), 3000
-				)
+			success = (result)!->
+				result = JSON.parse result
+				if result.message == 'success'
+					alert '修改成功'
+					set-timeout (!->location.reload!), 3000
+			new-cover = new Cover win,'/table/edit',success
 			covers.push(new-cover)
 		# 单个桌位添加
 		# 批量桌位添加
@@ -74,16 +76,16 @@ main-manage = let
 			)
 			covers.push(new-cover)
 		# 批量桌位删除
-		new-cover = new Cover ($ '.batch_delete' .get 0).'/Table/remove',(
+		new-cover = new Cover ($ '.batch_delete' .get 0),'/Table/remove',(
 			(result)!->
 				result = JSON.parse result
-					if result.message == 'success'
-						alert '修改成功'
-						set-timeout (!->location.reload!), 3000
-					else if result.message == 'Empty content'
-						alert '桌号为空'
-					else
-						alert result.message
+				if result.message == 'success'
+					alert '修改成功'
+					set-timeout (!->location.reload!), 3000
+				else if result.message == 'Empty content'
+					alert '桌号为空'
+				else
+					alert result.message
 			)
 		covers.push(new-cover)
 		# 选择导出模板
@@ -99,6 +101,10 @@ main-manage = let
 			else
 				show-global-message '要先点击选择模板哦！'
 		select_all = (flag)!->
+			if flag == false
+				$ '.table_operation.select_all .selected_num' .text '('+(($ '.table_qr').length-1)+'/'+(($ '.table_qr').length-1)+')'
+			else
+				$ '.table_operation.select_all .selected_num' .text '(0/'+(($ '.table_qr').length-1)+')'
 			for x,i in tables
 				if i<tables.length-1
 					x.prototype.change-click-state flag 
@@ -123,6 +129,7 @@ main-manage = let
 				case 0,2,3,4,5 then 
 					wrap.find 'input' .val ''
 					wrap.find 'select' .val ''
+					disable-download-directly wrap,arg1
 				case 1 then wrap.find '.imgli' .removeClass 'selected'
 				case 6 then
 					selected = get-disabled-table!
@@ -135,7 +142,22 @@ main-manage = let
 				little-wrap = $ arg1 .find '.edit'
 				little-wrap.find 'input' .val($ arg1 .find '.num' .text!)
 				little-wrap.fadeIn 300
-			
+		# i= 2       裸码，限制50个
+		# i= 3、4、5 其他码，限制25个
+		disable-download-directly = (ob,i)!->
+			num = get-disabled-table-num!
+			if i==2
+				ob.find '.message b' .text (num*0.5).toFixed(1)
+				if num>50
+					disable-select-email ob.find 'select[name=send_email]',(num*0.5).toFixed(1)
+			else if i==3||i==4||i==5
+				ob.find '.message b' .text num
+				if num>25
+					disable-select-email ob.find 'select[name=send_email]',num
+		disable-select-email = (ob,t)!->
+			ob.val('1')
+			ob.prop('disabled',true)
+			ob.parents('.inputli').next().hide()
 		# 获取选中的桌位数目
 		get-disabled-table-num = ->
 			num = 0
@@ -153,6 +175,9 @@ main-manage = let
 				if x.prototype.able == false
 					return x.prototype.dom
 			return null
+		# 显示选中的number
+		change-num-tip =!->
+			$ '.table_operation.select_all .selected_num' .text '('+get-disabled-table-num!+'/'+(($ '.table_qr').length-1)+')'
 		# 导出二维码的输入框们
 		$ '.wrap select' .change ->
 			if ($ @ .attr 'name')!='pay'
@@ -180,8 +205,6 @@ main-manage = let
 	Table = (t)->
 		@prototype = new Change-state t
 		that = @prototype
-		$ that.dom .click !~>			
-			that.change-click-state!
 		$ that.dom .find '.popup' .click ->
 			return false
 		@
@@ -206,6 +229,8 @@ main-manage = let
 				return true
 			return false
 		@valid =(reg)~>
+			if ($ @dom .is ':visible' )== false
+				return true
 			val = @dom.value
 			if @empty!
 				return false
@@ -214,10 +239,10 @@ main-manage = let
 					return false
 			if $ @dom .hasClass 'table_name'
 				if val.length>4
-					show-global-message '桌位号不能太长哦！'
+					show-global-message '桌位号太长啦，请不要超过四哦'
 					return false
 			# 验证邮箱是否合法
-			if ($ @dom .attr 'name')=='mail'
+			if ($ @dom .attr 'name')=='email'
 				if !/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test val
 					show-global-message '请输入正确的邮箱地址！'
 					return false
@@ -251,13 +276,11 @@ main-manage = let
 		@mysubmit = (url,success)!~>
 			util.ajax {
 				type :'post'
-				url : @url
+				url : _url
 				data : JSON.stringify @.get-cover-data!
-				success :success
-				always : (result)!->
-					console.log result
+				success : _success
 				unavailabled : (result)!->
-					console.log result
+					alert '请求失败'+result
 			}
 		@valid = !~>
 			for x in @inputs
@@ -266,7 +289,6 @@ main-manage = let
 					return false
 			return true
 		@get-cover-data =~>
-			console.log @inputs
 			if $ that.dom .hasClass 'batch_export'
 				return get-qrcode-data!
 			else if $ that.dom .hasClass 'batch_delete'
@@ -284,16 +306,16 @@ main-manage = let
 		get-qrcode-data = ~>
 			mydata = get-select-val!
 			mydata.content = get-disabled-table-text!
-			for x in $ '.batch_export2 input:visible'
+			for x in $ that.dom .find 'input:visible'
 				mydata[$ x .attr 'name'] = $ x .val!
-			mydata.type = $ '.batch_export' .attr 'type'
+			mydata.type = $ that.dom .attr 'type'
 			mydata
 		get-disabled-table-text =->
 			for temp in $ '.table_qr.disabled'
 				$ temp .find '.num' .text!
-		get-select-val = ->
+		get-select-val = ~>
 			mydata = {}
-			for x in $ '.batch_export2 select'
+			for x in $ that.dom .find 'select'
 				mydata[$ x .attr 'name' ] = $ x .val!
 			mydata
 		@
@@ -335,6 +357,7 @@ main-manage = let
 				_new-table.removeClass 'new'
 				_new-table.insertBefore _initial-new-table
 			_initial-new-table.remove!
+			$ '.table_operation.select_all .selected_num' .text '(0/'+_all-data.length+')'
 
 	initial: (json-data)!->
 		init-all-data json-data
