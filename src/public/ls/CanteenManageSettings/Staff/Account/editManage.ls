@@ -43,14 +43,19 @@ edit-manage = let
     _full-cover-save-btn-click-event = !->
         password = _full-cover-password-input-dom.val!
         comfirm-password = _full-cover-comfirm-password-input-dom.val!
+        re = /^[\w]{6,16}$/
         if password === ''
             alert "请输入密码"
+        else if (re.test password) === false
+            alert "请输入6至12位由数字和字母组成的密码"
         else if comfirm-password === ''
             alert '请确认密码'
         else if password !== comfirm-password
             alert "两次输入的密码不一致"
         else if password === comfirm-password
             _new-password := password
+            _full-cover-password-input-dom.val ""
+            _full-cover-comfirm-password-input-dom.val ""
             _full-cover-dom.fade-out 100
     
     _manage-permission-btn-click-event = !->
@@ -95,20 +100,20 @@ edit-manage = let
         phone = _phone-input-dom.val!
         role = _role-select-dom.val!
         if name === ''
-            error-message.push "请输入姓名"
+            alert "请输入姓名"
+            return false
         if phone === ''
-            error-message.push "请输入电话号码"
+            alert "请输入电话号码"
+            return false
         if phone !== ''
             re = /(^(13\d|15[^4,\D]|17[13678]|18\d)\d{8}|170[^346,\D]\d{7})$/
             if not re.test(phone)
-                error-message.push "电话号码格式不正确"
+                alert "电话号码格式不正确"
+                return false
         if role === 'default'
-            error-message.push "请选择角色"
-        if error-message.length === 0
-            true
-        else
-            _display-error-message error-message
-            false
+            alert "请选择角色"
+            return false
+        return true
 
     _display-error-message = (error-message)!->
         _error-message-block-dom.show!
@@ -120,8 +125,14 @@ edit-manage = let
         _set-save-btn-able!
         if data.message === 'success'
             location.reload!
+        else if data.message === 'Waiter role not found'
+            alert "未找到该角色"
+        else if data.message === 'User not found'
+            alert "该店员不存在"
+        else if data.message === 'Is not waiter of current dinner'
+            alert "该店员并不是当前餐厅的店员"
         else
-            _display-error-message ["添加失败"]
+            alert "添加失败"
 
     _set-save-btn-disable = !->
         _save-btn-dom.prop "disabled",true

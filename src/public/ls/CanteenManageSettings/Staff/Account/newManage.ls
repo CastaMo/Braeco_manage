@@ -60,26 +60,34 @@ new-manage = let
         comfirm-password = _comfirm-password-input-dom.val!
         role = _role-select-dom.val!
         if name === ''
-            error-message.push "请输入姓名"
+            alert "请输入姓名"
+            return false
         if phone === ''
-            error-message.push "请输入电话号码"
+            alert "请输入电话号码"
+            return false
         if phone !== ''
             re = /(^(13\d|15[^4,\D]|17[13678]|18\d)\d{8}|170[^346,\D]\d{7})$/
             if not re.test(phone)
-                error-message.push "电话号码格式不正确"
+                alert "电话号码格式不正确"
+                return false
         if password === ''
-            error-message.push "请输入密码"
+            alert "请输入密码"
+            return false
+        if password !== ''
+            re = /^[\w]{6,16}$/
+            if (re.test password) === false
+                alert "请输入6至12位由数字和字母组成的密码"
+                return false
         if comfirm-password === ''
-            error-message.push "请确认密码"
+            alert "请确认密码"
+            return false
         if password !== comfirm-password
-            error-message.push "两次输入的密码不一致"
+            alert "两次输入的密码不一致"
+            return false
         if role === 'default'
-            error-message.push "请选择角色"
-        if error-message.length === 0
-            true
-        else
-            _display-error-message error-message
-            false
+            alert "请选择角色"
+            return false
+        return true
 
     _display-error-message = (error-message)!->
         _error-message-block-dom.show!
@@ -89,10 +97,14 @@ new-manage = let
 
     _save-post-success = (data)!->
         _set-save-btn-able!
-        if data.message === "success"
+        if data.message === "success" or data.message === 'Already is waiter of current dinner'
             location.reload!
+        else if data.message === 'Already is waiter of current dinner'
+            alert '未找到该角色'
+        else if data.message === 'Already is waiter of another dinner'
+            alert '已经是其他餐厅的店员了，不能成为当前餐厅的店员'
         else
-            _display-error-message ["添加失败"]
+            alert '添加失败'
 
     _set-save-btn-disable = !->
         _save-btn-dom.prop "disabled",true
