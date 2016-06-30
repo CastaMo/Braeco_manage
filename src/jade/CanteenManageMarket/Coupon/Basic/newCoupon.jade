@@ -23,19 +23,19 @@
 				p 代金券预览
 		#right-field
 			#up-field
-				._required 带*号的为必填项
+				._required 带 * 号的为必填项
 				#face-value
-					span._content 面值*
+					span._content 面值 *
 					.face-value-input
 						input._face-value.check-input(maxlength = "6")
 						span._unit 元
 				#valid-period
-					span._content 有效期*
+					span._content 有效期 *
 					select._valid-period
 						option(value = "0") 日期区间
 						option(value = "1") 有效天数
 				#date-period
-					span._content 日期区间*
+					span._content 日期区间 *
 					._date-period
 						.date-period-start.mydatepicker
 							input._date-period-start
@@ -47,13 +47,13 @@
 						.clear
 					p._date-period-tip 有效期： 至 
 				#valid-day
-					span._content 有效天数*
+					span._content 有效天数 *
 					.valid-day-input
 						input._valid-day.check-input(maxlength = "6")
 						span._unit 天
 					p.valid-day-input-tip 领取后 天有效，过期无效
 				#use-condition
-					span._content 使用门槛*
+					span._content 使用门槛 *
 					.use-condition-input
 						span 消费满
 						input._use-condition.check-input(maxlength = "7")
@@ -61,17 +61,17 @@
 						span 可用
 			#down-field
 				#distribute-coupon
-					span._content 自动发券*
+					span._content 自动发券 *
 					select._distribute-coupon
 						option(value = "0") 顾客点餐前发券
 						option(value = "1") 顾客支付下单后发券
 				#max-coupon
-					span._content 发放上限*
+					span._content 发放上限 *
 					.max-coupon-input
 						input._max-coupon.check-input(maxlength = "10")
 						span._unit 张
 				#max-own-select
-					span._content 领取上限*
+					span._content 领取上限 *
 					select._max-own-select
 						option(value = "0") 整个有效期内每人限领
 						option(value = "1") 有效期内每人每天限领
@@ -81,7 +81,7 @@
 						input._max-own.check-input(maxlength = "10")
 						span._unit 张
 				#apply-area
-					span._content 适用业务*
+					span._content 适用业务 *
 					.apply._first.true
 						input._fun1(type = "checkbox" checked = "checked")
 						span 堂食
@@ -95,7 +95,7 @@
 						input._fun4(type = "checkbox" checked = "checked")
 						span 外带
 				#multiple-use
-					span._content 叠加使用*
+					span._content 叠加使用 *
 					.multiple-use-input
 						input._multiple-use.check-input(maxlength = "10")
 						span._unit 张

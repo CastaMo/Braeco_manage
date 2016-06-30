@@ -34,7 +34,7 @@
                 background-color: #F4F5F9;
             }
             .lastPage {
-                margin: 0 20px 0 20px;
+                margin: 0 8px 0 0;
                 padding: 0;
                 float: right;
                 width: 30px;
@@ -54,7 +54,7 @@
                 height: 20px;
             }
             .nextPage {
-                margin: 0 20px 0 20px;
+                margin: 0 10px 0 8px;
                 padding: 0;
                 float: right;
                 width: 30px;
@@ -82,7 +82,7 @@
                 padding: 0;
                 height: 28px;
                 width: 58px;
-                margin-left: 20px;
+                margin-left: 10px;
                 color: #4A4A4A;
                 font-size: 14px;
                 border: 1px solid #E7E7EB;
@@ -92,11 +92,14 @@
         .coupon {
             cursor: pointer;
             margin-right: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             float: left;
             border: 1px solid #E7E7EB;
             height: 150px;
             width: 225px;
+            &:hover {
+                border-color: #FFC107;
+            }
             .coupon-identify {
                 margin: 20px 0 0 10px;
                 border-bottom: 1px solid #E7E7EB;
@@ -130,13 +133,25 @@
             position: relative;
             margin: 30px 0 0 30px;
             .new-btn {
+                zoom: 50%;
+                line-height: 60px;
+                font-size: 28px;
+                background-repeat: no-repeat;
                 background-color: #FFC107;
+                background-position: 30px 15px;
                 color: #FFFFFF;
-                text-align: center;
-                height: 30px;
-                width: 120px;
+                height: 60px;
+                width: 240px;
+                border-radius: 10px;
                 &:hover {
-                    background-color: #E5B113;
+                    background-color: #FFB300;
+                }
+                .plus-img {
+                    height: 28px;
+                    width: 28px;
+                }
+                p {
+                    margin-left: 60px;
                 }
             }
         }
@@ -296,7 +311,7 @@
             ._unit {
                 position: relative;
                 left: -25px;
-                color: #C8C7CC;
+                color: #4A4A4A;
             }
             input {
                 color: #4A4A4A;
@@ -340,6 +355,7 @@
                         margin-left: 85px;
                     }
                     .datepicker-img {
+                        cursor: pointer;
                         background-position: 5px 6px;
                         margin-left: -1px;
                         background-repeat: no-repeat;
@@ -440,7 +456,7 @@
                     border: none;
                     color: white;
                     &:hover {
-                        background-color: #E5B113;
+                        background-color: #FFB300;
                     }
                 }
                 .stop-confirm {
@@ -470,7 +486,8 @@
                             width: 120px;
                             background-color: #FFC107;
                             &:hover {
-                                background-color: #F4F5F9;
+                                background-color: #FFB300;
+                                border-color: #FFB300;
                             }
                         }
                         .confirm-cancel-btn {
@@ -481,7 +498,7 @@
                             border-radius: 10px;
                             width: 120px;
                             &:hover {
-                                background-color: #E5B113;
+                                background-color: #F4F5F9;
                             }
                         }
                     }
@@ -534,6 +551,10 @@
                     opacity: 1;
                 }
             }
+            ._pre-QRcode-content,
+            ._pre-distribute-coupon {
+                color: #9B9B9B;
+            }
         }
         &.stop {
             #pre-btn-field #run-coupon {
@@ -559,10 +580,14 @@
                 display: none;
             }
             #detailCoupon-content {
-                color: #9B9B9B;
+                color: #C8C7CC;
                 ._QRcode {
                     opacity: 0.4;
                 }
+            }
+            ._pre-QRcode-content,
+            ._pre-distribute-coupon {
+                color: #C8C7CC;
             }
         }
         &.pass {
@@ -576,10 +601,14 @@
                 display: none;
             }
             #detailCoupon-content {
-                color: #9B9B9B;
+                color: #C8C7CC;
                 ._QRcode {
                     opacity: 0.4;
                 }
+            }
+            ._pre-QRcode-content,
+            ._pre-distribute-coupon {
+                color: #C8C7CC;
             }
         }
         #pre-btn-field {
@@ -603,7 +632,7 @@
                 border-top-left-radius: 5px;
                 border-bottom-left-radius: 5px;
                 &:hover {
-                    background-color: #E5B113;
+                    background-color: #FFB300;
                 }
                 .run-btn {
                     margin-left: 13px;
@@ -657,7 +686,8 @@
                             width: 120px;
                             background-color: #FFC107;
                             &:hover {
-                                background-color: #F4F5F9;
+                                background-color: #FFB300;
+                                border-color: #FFB300;
                             }
                         }
                         .confirm-cancel-btn {
@@ -668,7 +698,7 @@
                             border-radius: 10px;
                             width: 120px;
                             &:hover {
-                                background-color: #E5B113;
+                                background-color: #F4F5F9;
                             }
                         }
                     }
@@ -776,20 +806,31 @@
                     margin: 40px 0 0 30px;
                     ._pre-distribute-coupon {
                         font-size: 13px;
-                        color: #9B9B9B;
                     }
                 }
                 #pre-QRcode-coupon {
                     margin: 30px 0 0 30px;
                     ._pre-QRcode-content {
                         font-size: 13px;
-                        color: #9B9B9B;
                     }
                     ._QRcode {
+                        border: 1px solid #F0F0F0;
                         margin-top: 15px;
-                        width: 200px;
-                        height: 200px;
+                        width: 190px;
+                        height: 190px;
                     }
+                }
+            }
+        }
+        #return-field {
+            margin: 30px 0 0 30px;
+            .return-btn {
+                text-align: center;
+                border: 1px solid #F0F0F0;
+                height: 32px;
+                width: 96px;
+                &:hover {
+                    background-color: #F4F5F9;
                 }
             }
         }
