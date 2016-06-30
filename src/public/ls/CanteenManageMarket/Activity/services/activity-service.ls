@@ -5,19 +5,10 @@ activity-module = angular.module 'ManageMarketActivity'
 # activity部分状态机配置
 
 activity-state-machine-options =
-  initial: ['\#activity-main']
-  views: ['\#activity-main', '\#upload-canteen-image', '\#activity-spinner']
+  initial: ['\#activity-list']
+  views: ['\#activity-main', '\#activity-spinner', '\#activity-list']
   transitions: [
-    {
-      from: ['\#activity-main']
-      to: ['\#activity-main', '\#upload-canteen-image']
-      on: ['.upload-canteen-photo click']
-    },
-    {
-      from: ['\#activity-main', '\#upload-canteen-image']
-      to: ['\#activity-main']
-      on: ['.upload-canteen-image-mask click', '.upload-canteen-image-close click', '\#canteen-image-cancel click']
-    }
+    {from: ['\#activity-main'], to: ['\#activity-list'], on: ['.activity-tab click']}
   ]
   show-state: ['activity-fade-in']
   hide-state: ['activity-fade-out']

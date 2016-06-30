@@ -6,7 +6,7 @@ analysis-module = angular.module 'ManageDataAnalysis'
 
 analysis-state-machine-options =
   initial: ['\#analysis-main']
-  views: ['\#analysis-main']
+  views: ['\#analysis-main', '\#analysis-spinner']
   transitions: []
   show-state: ['analysis-fade-in']
   hide-state: ['analysis-fade-out']

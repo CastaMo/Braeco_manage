@@ -1,7 +1,7 @@
 
 # ====== 控制器 ======
 
-angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope', '$scope', '$location', '$resource', '$activitySM', '$http', ($rootScope, $scope, $location, $resource, $activitySM, $http)!->
+angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope', '$scope', '$location', '$resource', '$http', '$activitySM' ($rootScope, $scope, $location, $resource, $http, $activitySM)!->
 
   # ====== 1 $scope变量初始化 ======
   init-scope-variable = !->
@@ -11,7 +11,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
       themes: null
 
     $scope.base-image-url = 'http://static.brae.co/images/activity/'
-    $scope.pre-image-url = 'http://ww4.sinaimg.cn/large/ed796d65gw1f4etfd2bn8j20e807l0tw.jpg'
+    $scope.pre-image-url = 'http://ww2.sinaimg.cn/large/ed796d65gw1f5c4ujggb4j20ku0b4aa1.jpg'
 
     # 编辑区域数据
     $scope.editor =
@@ -22,6 +22,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
       activity-upload-image: null
       activity-brief: ''
       activity-content: ''
+      activity-type: ''
 
     # 设置编辑区为空的数据
     $scope.empty-activity =
@@ -32,10 +33,11 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
       content: ''
       pic: $scope.pre-image-url
 
-
     $scope.new-activity-type = null # 新建活动的类型
     $scope.current-activity = null
     $scope.is-image-change = null # 判断编辑图片是否发生更改
+
+    $scope.selected-tab = 'sales'
 
   # ====== 2 $rootScope变量初始化 ======
   init-rootScope-variable = !->
@@ -72,6 +74,48 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
     init-page-dom!
 
   # ====== 7 $scope事件函数定义 ======
+  $scope.new-activity-by-type = (event, type)!->
+    $activitySM.go-to-state ['\#activity-main']
+    set-edit-area $scope.empty-activity
+    $scope.editor.activity-type = type
+    $scope.new-activity-type = type
+    $ '.activity-image-preview' .attr 'src', $scope.pre-image-url
+    # set-scope-editor $scope.empty-activity
+
+  $scope.select-one-activity = !->
+    $scope.current-activity = @activity
+    $scope.new-activity-type = @activity.type
+    $activitySM.go-to-state ['\#activity-main']
+    debugger
+    set-edit-area @activity
+    $scope.editor.activity-type = @activity.type
+    $scope.new-activity-type = null
+    $ '.activity-image-preview' .attr 'src', $scope.base-image-url + @activity.pic
+
+  $scope.format-activity-time = (begin, end, expiry)->
+    debugger
+    value = ''
+    if !expiry
+      if parse-int(begin) is 0 and parse-int(end) is 0
+        value = '该活动为永久活动'
+      else
+        begin-time = ''; end-time = ''
+        if begin then
+          begin = new Date(parse-int(begin) * 1000)
+          begin-time = begin.to-locale-date-string!
+        if end then
+          end = new Date(parse-int(end) * 1000)
+          end-time = end.to-locale-date-string!
+        value = begin-time.replace(/\//g, '.') + '-' + end-time.replace(/\//g, '.')
+    else
+      if parse-int(expiry) is 0
+        value = '该活动为永久活动'
+      else
+        value = $scope.editor.activity-start-date + '-' + $scope.editor.activity-end-date
+        value = value.replace /[年月]/g, '.'
+        value = value.replace /[日]/g, ''
+    value
+
   $scope.cancle-the-edit = (event)!->
     if confirm '放弃正在编辑的内容'
       switch $scope.new-activity-type
@@ -125,8 +169,11 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
 
     set-edit-area @activity
 
-  $scope.upload-canteen-photo = (event)!->
-    alert '这部分内容还没有完成，还在写呢~'
+  $scope.set-selected-tab = (event, tab)!->
+    $ '.activity-tab' .remove-class 'choose'
+    $ event.current-target .add-class 'choose'
+    $scope.selected-tab = tab
+
 
   # ====== 8 工具函数定义 ======
   init-datepicker = !->
@@ -170,6 +217,8 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
   init-scope-activities = (results)!->
     $scope.activities.sales = []
     $scope.activities.themes = []
+
+    console.log results
 
     results.for-each (item)!->
       if item.type is 'theme'
@@ -233,7 +282,8 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
       content: $ '#activity-content' .val!
       type: $scope.new-activity-type
 
-    if parse-int($scope.expiry-date) is 0
+    debugger
+    if parse-int($scope.editor.activity-expiry-type) is 0
       data.date_begin = 0
       data.date_end = 0
     else
@@ -272,6 +322,18 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
     set-date-input-area activity.date_begin, activity.date_end
     set-letter-number-label activity.title, activity.intro, activity.content
 
+    set-scope-editor activity
+
+  set-scope-editor = (activity)!->
+    $scope.editor =
+      activity-name: activity.title
+      activity-expiry-type: if parse-int(activity.date_begin) is 0 then '0' else '1'
+      activity-start-date: $ '#activity-start-date' .val!
+      activity-end-date: $ '#activity-end-date' .val!
+      activity-upload-image: null
+      activity-brief: activity.intro
+      activity-content: activity.content
+
   set-date-input-area = (date-begin, date-end)!->
     if parse-int(date-begin) is 0 and parse-int(date-end) is 0
       $scope.editor.activityExpiryType = '0'
@@ -293,6 +355,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
         reader = new FileReader!
         reader.onload = (e)->
           $ image .attr 'src', e.target.result .css 'background-color', 'white'
+          $ '.activity-image-preview' .attr 'src', e.target.result
 
         reader.readAsDataURL input.files[0]
 
@@ -302,12 +365,12 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
 
   # 取得Activity数据
   retrieve-activity-data = !->
-    $activitySM.go-to-state ['\#activity-main', '\#activity-spinner']
+    $activitySM.go-to-state ['\#activity-list', '\#activity-spinner']
 
     result = $scope.resource.activities-retrieve.save {}, {}, !->
       init-scope-activities result.data
       init-editor!
-      $activitySM.go-to-state ['\#activity-main']
+      $activitySM.go-to-state ['\#activity-list']
 
   # 通过Id删除activity
   delete-activity-by-id = (id)!->
