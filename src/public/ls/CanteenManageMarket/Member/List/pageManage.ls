@@ -25,15 +25,16 @@ page-manage = let
 			->
 				_unshow-all-cover-dom!
 				_modify-dom.remove-class "hide"
-				_full-cover-dom.fade-in 100
+				_full-cover-dom.fade-in 200
 		"recharge"		:		let
 			->
 				_unshow-all-cover-dom!
 				_recharge-dom.remove-class "hide"
-				_full-cover-dom.fade-in 100
+				_full-cover-dom.fade-in 200
 		"exit"		:		let
 			->
-				_full-cover-dom.fade-out 100, !-> _unshow-all-cover-dom!
+				_full-cover-dom.fade-out 200
+				_unshow-all-cover-dom!
 	}
 
 	initial: ->
