@@ -37,7 +37,7 @@ let win = window, doc = document
 		}
 		"limit" 		:			{
 			min 		:			1
-			max 		:			99
+			max 		:			100000
 			word 		:			"份"
 		}
 	}
