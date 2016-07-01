@@ -106,6 +106,19 @@ main-manage = let
 				show-wrap 0, i+2
 			else
 				show-global-message '要先点击选择模板哦！'
+		$ 'select[name=pay]' .change !->
+			_change-module!
+		$ 'select[name=discount]' .change !->
+			_change-module!
+		_change-module =!->
+			wrap = $ '.wrap:visible' 
+			a = 'http://static.brae.co/export/qrcode/'
+			a += wrap.attr 'type'
+			a += wrap.find 'select[name=pay]' .val!
+			a += wrap.find 'select[name=discount]' .val!
+			a += '.png'
+			wrap.find '.wrap_right img' .attr 'src',a
+
 		select_all = (flag)!->
 			if flag == false
 				$ '.table_operation.select_all .selected_num' .text '('+(($ '.table_qr').length-1)+'/'+(($ '.table_qr').length-1)+')'
@@ -279,9 +292,10 @@ main-manage = let
 			if @valid!
 				if $ self.dom .hasClass 'batch_export'
 					if $ self.dom .find 'select[name=send_email]' .val! == '0'
-						console.log 'form'
 						$ '#export input[name=data]' .val(JSON.stringify @.get-cover-data!)
 						$ '#export' .submit!
+					else 
+						@mysubmit!
 				else 
 					@mysubmit!
 

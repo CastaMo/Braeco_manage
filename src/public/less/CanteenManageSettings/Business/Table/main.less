@@ -317,12 +317,15 @@ form#export{
     font-size: 12px;
     position: absolute;
     text-align: center;
-    margin-bottom: 8px;
+    bottom: 80px;
 }
 .wrap .btns{
 	text-align: center;
-	border-top:1px solid #e7e7eb;
-	height:71px;
+    border-top: 1px solid #e7e7eb;
+    height: 71px;
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
 }
 .wrap .btn{
 	float: none;
@@ -354,10 +357,6 @@ form#export{
 	margin: auto;
 	margin: 14px;
 }
-.imgli:last-child img{
-	height: 1000px;
-	content: url(@a6_a);
-}
 .imgli.selected .img_container{
 	background:#f4f5f9;
 }
@@ -375,11 +374,13 @@ form#export{
 }
 .wrap.batch_export .wrap_right {
     width: 500px;
+    height: 420px;
+    margin-top: 20px;
     margin-left: 400px;
 }
 .wrap.batch_export .wrap_right img{
-	width: 400px;
-	height: 400px;
+	width: 360px;
+	height: 360px;
 }
 .wrap.batch_export .inputli{
 	margin: 20px 40px;
@@ -390,11 +391,11 @@ form#export{
 	margin: 50px 50px 58px 107px 
 }
 .wrap.batch_export5 .wrap_right img{
-	content: url(@a6_a);
-	width: 280px;
-    height: 400px;
-    margin: 0;
-}.wrap.batch_export2 .wrap_right{
+	width: 180px;
+    height: 360px;
+    margin: 0 10px;
+}
+.wrap.batch_export2 .wrap_right{
 	margin-top: 120px;
 }
 .little_gray {

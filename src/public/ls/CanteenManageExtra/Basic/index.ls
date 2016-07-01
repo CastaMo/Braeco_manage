@@ -146,8 +146,8 @@ do ->
 					ajax-for-token key,self._change_num
 		afte-upload-img = ->
 			text
-			for key of self.mychange
-				text = key + ':' + self.mychange[key].result+'<br>'
+			for key,val of self.mychange
+				text = key + ':' + val.result+'<br>'
 			show-global-message text
 			close-loading!
 		ajax-for-token = (n,order)!->
@@ -161,10 +161,9 @@ do ->
 						ajax-for-qiniu result,n,order
 				unavailabled : (result)!->
 					self.mychange[i+''].result='上传失败，请重试'
-				always : (result)!->
-					
 				}
 		ajax-for-qiniu = (data,n,order)!->
+			console.log n
 			$ 'iframe' .eq n .attr 'order',order
 			$ '.form' .eq n .find 'input[name=token]' .val data.token
 			$ '.form' .eq n .find 'input[name=key]' .val data.key
@@ -186,7 +185,7 @@ do ->
 					self.mychange[i+''].result='删除失败，请重试!'
 			}
 		$ 'iframe' .load !->
-			console.log 'loading...'
+			console.log 'loading...'+($ @ .attr 'order')
 			i = parseInt($ @ .attr 'order' )
 			if(i<=self._change_num)
 				self.mychange[i+''].result = '上传成功！'
