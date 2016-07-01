@@ -220,6 +220,25 @@
                                     background-size: 250px 60px;
                                     background-repeat: no-repeat;
                                     background-position: center;
+
+                                    .pin-icon {
+                                        cursor: pointer;
+                                        z-index: 11;
+                                        float: right;
+                                        width: 25px;
+                                        height: 25px;
+                                        margin-top: -50px;
+                                        margin-right: 25px;
+                                        background-size: 25px 25px;
+                                        background-repeat: no-repeat;
+                                        background-position: center;
+                                    }
+                                    .pinned-icon {
+                                        background-image: url(@pinned-icon-url);
+                                    }
+                                    .unpinned-icon {
+                                        background-image: url(@unpinned-icon-url);
+                                    }
                                 }
                                 .order-details-body {
                                     font-size: 12px;
