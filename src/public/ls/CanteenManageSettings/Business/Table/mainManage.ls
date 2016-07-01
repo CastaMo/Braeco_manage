@@ -38,50 +38,56 @@ main-manage = let
 						case 3  then  show-wrap 0,1
 						case 4  then  show-wrap 0,6
 					else
-						show-global-message '要先点击选择桌位哦！'
+						alert '要先点击选择桌位哦！'
 		# 导出二维码
 		for win in $ '.wrap.batch_export:gt(0)'
-			success = (result)!->
-				result = JSON.parse result
-				if result.message == 'success'
-					location.reload!
-			new-cover = new Cover win,'/Table/Qrcode/Download',success	
+			new-cover = new Cover win,'/Table/Qrcode/Download',(
+				(result)!->
+					result = JSON.parse result
+					if result.message == 'success'
+						alert '桌号正在生成，稍后发送到您的邮箱，请稍等！'
+			)
 			covers.push(new-cover)
 		# 单个桌位修改
 		for win in $ '.popup.edit:not(last)'
-			success = (result)!->
-				result = JSON.parse result
-				if result.message == 'success'
-					alert '修改成功'
-					set-timeout (!->location.reload!), 3000
-			new-cover = new Cover win,'/table/edit',success
+			new-cover = new Cover win,'/table/edit',(
+				(result)!->
+					result = JSON.parse result
+					if result.message == 'success'
+						alert '修改成功',true
+						set-timeout (!->location.reload!), 2000
+					else if result.message =='Table exist'
+						alert '新的桌号已经存在'
+					else
+						alert result.message
+			)
 			covers.push(new-cover)
 		# 单个桌位添加
 		# 批量桌位添加
 		for win in $ '.batch_add'
 			new-cover = new Cover win,'/Table/add',(
-			(result)!->
-				result = JSON.parse result
-				if result.message == 'success'
-					alert '修改成功'
-					set-timeout (!->location.reload!), 3000
-				else if result.message == 'Invalid numbe'
-					alert '参数取值范围非法'
-				else if result.message == 'Duplicate entry'
-					alert '存在重复桌号'
-				else if 'Used word'
-					alert '该桌号已经存在'
-				else
-					alert result.message
-			)
+				(result)!->
+					result = JSON.parse result
+					if result.message == 'success'
+						alert '添加成功',true
+						set-timeout (!->location.reload!), 2000
+					else if result.message == 'Invalid numbe'
+						alert '参数取值范围非法'
+					else if result.message == 'Duplicate entry'
+						alert '存在重复桌号'
+					else if 'Used word'
+						alert '该桌号已经存在'
+					else
+						alert result.message
+				)
 			covers.push(new-cover)
 		# 批量桌位删除
 		new-cover = new Cover ($ '.batch_delete' .get 0),'/Table/remove',(
 			(result)!->
 				result = JSON.parse result
 				if result.message == 'success'
-					alert '修改成功'
-					set-timeout (!->location.reload!), 3000
+					alert '删除成功',true
+					set-timeout (!->location.reload!), 2000
 				else if result.message == 'Empty content'
 					alert '桌号为空'
 				else
@@ -99,7 +105,20 @@ main-manage = let
 			if i>=0
 				show-wrap 0, i+2
 			else
-				show-global-message '要先点击选择模板哦！'
+				alert '要先点击选择模板哦！'
+		$ 'select[name=pay]' .change !->
+			_change-module!
+		$ 'select[name=discount]' .change !->
+			_change-module!
+		_change-module =!->
+			wrap = $ '.wrap:visible' 
+			a = 'http://static.brae.co/export/qrcode/'
+			a += wrap.attr 'type'
+			a += wrap.find 'select[name=pay]' .val!
+			a += wrap.find 'select[name=discount]' .val!
+			a += '.png'
+			wrap.find '.wrap_right img' .attr 'src',a
+
 		select_all = (flag)!->
 			if flag == false
 				$ '.table_operation.select_all .selected_num' .text '('+(($ '.table_qr').length-1)+'/'+(($ '.table_qr').length-1)+')'
@@ -225,7 +244,7 @@ main-manage = let
 		@dom = ob
 		@empty = ~>
 			if $ @dom .val! == '' || /\s/.test($ @dom .val!)
-				show-global-message '输入不可为空'
+				alert '输入不可为空'
 				return true
 			return false
 		@valid =(reg)~>
@@ -239,18 +258,18 @@ main-manage = let
 					return false
 			if $ @dom .hasClass 'table_name'
 				if val.length>4
-					show-global-message '桌位号太长啦，请不要超过四哦'
+					alert '桌位号太长啦，请不要超过四哦'
 					return false
 			# 验证邮箱是否合法
 			if ($ @dom .attr 'name')=='email'
 				if !/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test val
-					show-global-message '请输入正确的邮箱地址！'
+					alert '请输入正确的邮箱地址！'
 					return false
 			# 数字输入框的长度
 			len = $ @dom .attr 'length' 
 			if len!=undefined
 				if (!/\d/.test len)||(val.length>parseInt len)
-					show-global-message '该输入框只能输入数字，且长度不能大于'+len
+					alert '该输入框只能输入数字，且长度不能大于'+len
 					return false
 			return true
 		@focus =!~>
@@ -265,13 +284,20 @@ main-manage = let
 		@inputs = []
 		_url = url
 		_success = success
-		that = @prototype
+		self = @prototype
 
-		for x in $ that.dom .find 'input'
+		for x in $ self.dom .find 'input'
 			@inputs.push new My-input x
-		$ that.dom .find '.btn.confirm' .click !~>
+		$ self.dom .find '.btn.confirm' .click !~>
 			if @valid!
-				@mysubmit!
+				if $ self.dom .hasClass 'batch_export'
+					if $ self.dom .find 'select[name=send_email]' .val! == '0'
+						$ '#export input[name=data]' .val(JSON.stringify @.get-cover-data!)
+						$ '#export' .submit!
+					else 
+						@mysubmit!
+				else 
+					@mysubmit!
 
 		@mysubmit = (url,success)!~>
 			util.ajax {
@@ -289,9 +315,9 @@ main-manage = let
 					return false
 			return true
 		@get-cover-data =~>
-			if $ that.dom .hasClass 'batch_export'
+			if $ self.dom .hasClass 'batch_export'
 				return get-qrcode-data!
-			else if $ that.dom .hasClass 'batch_delete'
+			else if $ self.dom .hasClass 'batch_delete'
 				return get-disabled-table-text!
 			else
 				get-input-data!
@@ -306,16 +332,16 @@ main-manage = let
 		get-qrcode-data = ~>
 			mydata = get-select-val!
 			mydata.content = get-disabled-table-text!
-			for x in $ that.dom .find 'input:visible'
+			for x in $ self.dom .find 'input:visible'
 				mydata[$ x .attr 'name'] = $ x .val!
-			mydata.type = $ that.dom .attr 'type'
+			mydata.type = $ self.dom .attr 'type'
 			mydata
 		get-disabled-table-text =->
 			for temp in $ '.table_qr.disabled'
 				$ temp .find '.num' .text!
 		get-select-val = ~>
 			mydata = {}
-			for x in $ that.dom .find 'select'
+			for x in $ self.dom .find 'select'
 				mydata[$ x .attr 'name' ] = $ x .val!
 			mydata
 		@
@@ -337,13 +363,6 @@ main-manage = let
 				$ '#popup_cover' .hide!
 		@
 	time-out-id = ''
-	# 显示全局信息提示
-	show-global-message = (str)->
-		ob = $ '#global_message' 
-		ob.show!
-		ob.html str 
-		clearTimeout time-out-id
-		time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
 	class init-all-data 
 		(d) ->
 			_all-data := d

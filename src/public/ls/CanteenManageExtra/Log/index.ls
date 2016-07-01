@@ -36,8 +36,12 @@ do !->
 
 		_page-jump =->
 			t = $ 'input[name=jump]' .val!
+			curr = parseInt($ '.page_text span' .eq 1 .text!)
+			console.log t,curr
 			if a =='' || /\s/.test(a)
 				return alert '请输入跳转的页码'
+			else if parseInt(t)> curr
+				alert '当前数据只有 <b>'+curr+'</b> 页哦！'
 			else
 				a = _get-url-data!
 				a.pn = t
@@ -81,6 +85,8 @@ do !->
 			ymdhis += _add-zero time.getUTCDate! 
 			ymdhis
 		_date-to-unix = (d,add)->
+			if d == ''
+				return ''
 			if add ==1
 				return ((new Date d ).getTime!)/1000 + 3600*24-1
 			return (new Date d ).getTime!/1000
@@ -91,7 +97,7 @@ do !->
 		_get-url-data = ->
 			st = _date-to-unix($ 'input[name=st]' .val!)
 			en =  _date-to-unix($ 'input[name=en]' .val!,1)
-			if(st>=en)
+			if(st!='' && en!=''&&st>=en)
 				return alert '日期选择框的开始时间不可以大于结束时间哦！'
 			a = 
 				st : st
@@ -104,8 +110,6 @@ do !->
 			a = '?' + a.substr(1)
 		do _fill = !~>
 			setDate = new Init-date 'input.time',_unix-to-date(@pages.register_time)
-			_fill-date-input($ 'input.time' .eq(0),@pages.st )
-			_fill-date-input($ 'input.time' .eq(1),@pages.en )
 			_fill-table!
 			_fill-page-num!
 

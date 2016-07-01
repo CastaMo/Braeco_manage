@@ -26,6 +26,7 @@
 }
 .table_operation.select_all{
 	margin-left: 30px;
+	width: 120px;
 }
 .selected_num{
 	font-size: 12px;
@@ -101,7 +102,8 @@
 .table_qr.add_new .cross{
 	background: url(@cross_img) no-repeat;
 	background-size: contain;
-    margin: 26px 32px 10px 32px;
+    margin: auto;
+    margin-top: 25px;
     width: 35px;
     height: 32px;
 }
@@ -166,6 +168,9 @@
     padding: 0;
 
 }
+.btn:hover{
+	background-color: #F4F5F9;
+}
 .btn.confirm {
     background: #ffc107;
     border-radius: 5px;
@@ -174,6 +179,10 @@
     color: white;
     margin-left: 18px;
     border: none;
+}
+.btn.confirm:hover{
+    background-color: #FFB300;
+    border-color: #FFB300;
 }
 .btns {
     margin-top: 20px;
@@ -305,15 +314,18 @@ form#export{
 }
 .wrap .message{
 	width: 100%;
-    font-size: 14px;
+    font-size: 12px;
     position: absolute;
     text-align: center;
-    margin-bottom: 8px;
+    bottom: 80px;
 }
 .wrap .btns{
 	text-align: center;
-	border-top:1px solid #e7e7eb;
-	height:71px;
+    border-top: 1px solid #e7e7eb;
+    height: 71px;
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
 }
 .wrap .btn{
 	float: none;
@@ -345,10 +357,6 @@ form#export{
 	margin: auto;
 	margin: 14px;
 }
-.imgli:last-child img{
-	height: 1000px;
-	content: url(@a6_a);
-}
 .imgli.selected .img_container{
 	background:#f4f5f9;
 }
@@ -366,11 +374,13 @@ form#export{
 }
 .wrap.batch_export .wrap_right {
     width: 500px;
+    height: 420px;
+    margin-top: 20px;
     margin-left: 400px;
 }
 .wrap.batch_export .wrap_right img{
-	width: 400px;
-	height: 400px;
+	width: 360px;
+	height: 360px;
 }
 .wrap.batch_export .inputli{
 	margin: 20px 40px;
@@ -381,11 +391,11 @@ form#export{
 	margin: 50px 50px 58px 107px 
 }
 .wrap.batch_export5 .wrap_right img{
-	content: url(@a6_a);
-	width: 280px;
-    height: 400px;
-    margin: 0;
-}.wrap.batch_export2 .wrap_right{
+	width: 180px;
+    height: 360px;
+    margin: 0 10px;
+}
+.wrap.batch_export2 .wrap_right{
 	margin-top: 120px;
 }
 .little_gray {
@@ -408,6 +418,10 @@ form#export{
 
 .table_operation.select_all .table_operation_img{
 	background: url(@select_all) no-repeat;
+	background-size: contain;
+}
+.table_operation.select_all.disabled .table_operation_img{
+	background: url(@select_all_disabled) no-repeat;
 	background-size: contain;
 }
 .table_operation.add .table_operation_img{
