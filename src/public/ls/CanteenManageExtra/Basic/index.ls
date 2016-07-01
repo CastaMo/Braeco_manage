@@ -74,7 +74,8 @@ do ->
 		ajax-callback = (result)!->
 			result = JSON.parse result
 			if result.message == 'success'
-				location.reload true
+				alert '添加成功'
+				set-timeout (!->location.reload!), 2000
 			else if result.message == 'Wrong password'
 				show-global-message '原密码<b>错误</b>,请重新输入'
 				$ '#wrap_password input' .eq 0 .val ''
@@ -185,6 +186,7 @@ do ->
 					self.mychange[i+''].result='删除失败，请重试!'
 			}
 		$ 'iframe' .load !->
+			console.log 'loading...'
 			i = parseInt($ @ .attr 'order' )
 			if(i<=self._change_num)
 				self.mychange[i+''].result = '上传成功！'
@@ -284,11 +286,13 @@ do ->
 # *********************************** 初始  **************************************
 # ********************************************************************************
 	_main-init =(d)!->
-		$ '.info_value' .eq(0).text d.data.phone
-		$ '.info_value' .eq(1).text d.data.email
-		$ '.info_value' .eq(2).text d.data.dinner_name
-		$ '.info_value' .eq(3).text d.data.address
-		$ '.info_value' .eq(4).text d.data.contact_phone
+
+		$ '.info_value' .eq 0 .text d.data.phone
+		_set-or-edit($ '.info_value' .eq(1),d.data.email)
+		$ '.info_value' .eq 2 .text d.data.dinner_name
+		_set-or-edit($ '.info_value' .eq(3),d.data.address)
+		_set-or-edit($ '.info_value' .eq(4),d.data.contact_phone)
+
 		$ '.info_value.info_img:eq(0) img' .attr 'src',d.data.covers[0]
 		for x,i in d.data.covers
 			$ '#carousel .carousel_imgs' .append('<img class="carousel_img" src="'+x+'"></img>')
@@ -307,6 +311,11 @@ do ->
 				$ '.wrap_printers' .eq 0 .append('<label class="printer">'+x.remark+'<input value="' + x.id + '" name="printer" type="radio"></label>')
 		carousel = new My-carousel $ '#carousel'
 		inputs = new My-inputs $ '.wrap:not(#wrap_pics) input' 
+	_set-or-edit =(ob,x)!->
+		if x!=undefined
+			ob.text x
+		else
+			ob.next!.text('设置')
 
 	if window.all-data 
 		then _main-init JSON.parse window.all-data; window.all-data = null;
