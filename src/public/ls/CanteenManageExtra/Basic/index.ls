@@ -44,7 +44,7 @@ do ->
 					success : (result)!->
 						ajax-callback result
 					unavailabled : (result)!->
-						show-global-message '提交失败，请重试！'
+						alert '提交失败，请重试！'
 					}
 
 		for let blue, i in @blues
@@ -74,14 +74,14 @@ do ->
 		ajax-callback = (result)!->
 			result = JSON.parse result
 			if result.message == 'success'
-				alert '添加成功'
+				alert '添加成功',true
 				set-timeout (!->location.reload!), 2000
 			else if result.message == 'Wrong password'
-				show-global-message '原密码<b>错误</b>,请重新输入'
+				alert '原密码<b>错误</b>,请重新输入'
 				$ '#wrap_password input' .eq 0 .val ''
 				$ '#wrap_password input' .eq 0 .focus!
 			else
-				show-global-message '提交失败，原因：'+result.message
+				alert '提交失败，原因：'+result.message
 
 	My-inputs = (input)!->
 		# 特殊字符
@@ -118,7 +118,7 @@ do ->
 				$ @ .val($ @ .val().replace myreg,'' )
 			temp.show-message = (str)!->
 				$ temp .focus!
-				show-global-message str
+				alert str
 
 	Wrap-pics = !->
 		self = util.getById 'wrap_pics'
@@ -148,7 +148,7 @@ do ->
 			text
 			for key,val of self.mychange
 				text = key + ':' + val.result+'<br>'
-			show-global-message text
+			alert text
 			close-loading!
 		ajax-for-token = (n,order)!->
 			util.ajax {
@@ -201,7 +201,7 @@ do ->
 		# *************** 没有菊花图，家荣那里有一种 ***************
 		# **********************************************************
 		show-loading = (index)!->
-			show-global-message '正在上传...'
+			alert '正在上传...'
 		close-loading = !->
 			console.log '关闭菊花'
 		add-img-input = !->
@@ -271,13 +271,7 @@ do ->
 
 
 	time-out-id = ''
-	# 显示全局信息提示
-	show-global-message = (str)->
-		ob = $ '#global_message' 
-		ob.show!
-		ob.html str 
-		clearTimeout time-out-id
-		time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
+
 	_uplad-imgs = new Wrap-pics!
 	wrap = new My-wrap!
 

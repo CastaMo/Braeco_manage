@@ -38,7 +38,7 @@ main-manage = let
 						case 3  then  show-wrap 0,1
 						case 4  then  show-wrap 0,6
 					else
-						show-global-message '要先点击选择桌位哦！'
+						alert '要先点击选择桌位哦！'
 		# 导出二维码
 		for win in $ '.wrap.batch_export:gt(0)'
 			new-cover = new Cover win,'/Table/Qrcode/Download',(
@@ -54,7 +54,7 @@ main-manage = let
 				(result)!->
 					result = JSON.parse result
 					if result.message == 'success'
-						alert '修改成功'
+						alert '修改成功',true
 						set-timeout (!->location.reload!), 2000
 					else if result.message =='Table exist'
 						alert '新的桌号已经存在'
@@ -69,7 +69,7 @@ main-manage = let
 				(result)!->
 					result = JSON.parse result
 					if result.message == 'success'
-						alert '添加成功'
+						alert '添加成功',true
 						set-timeout (!->location.reload!), 2000
 					else if result.message == 'Invalid numbe'
 						alert '参数取值范围非法'
@@ -86,7 +86,7 @@ main-manage = let
 			(result)!->
 				result = JSON.parse result
 				if result.message == 'success'
-					alert '删除成功'
+					alert '删除成功',true
 					set-timeout (!->location.reload!), 2000
 				else if result.message == 'Empty content'
 					alert '桌号为空'
@@ -105,7 +105,7 @@ main-manage = let
 			if i>=0
 				show-wrap 0, i+2
 			else
-				show-global-message '要先点击选择模板哦！'
+				alert '要先点击选择模板哦！'
 		$ 'select[name=pay]' .change !->
 			_change-module!
 		$ 'select[name=discount]' .change !->
@@ -244,7 +244,7 @@ main-manage = let
 		@dom = ob
 		@empty = ~>
 			if $ @dom .val! == '' || /\s/.test($ @dom .val!)
-				show-global-message '输入不可为空'
+				alert '输入不可为空'
 				return true
 			return false
 		@valid =(reg)~>
@@ -258,18 +258,18 @@ main-manage = let
 					return false
 			if $ @dom .hasClass 'table_name'
 				if val.length>4
-					show-global-message '桌位号太长啦，请不要超过四哦'
+					alert '桌位号太长啦，请不要超过四哦'
 					return false
 			# 验证邮箱是否合法
 			if ($ @dom .attr 'name')=='email'
 				if !/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test val
-					show-global-message '请输入正确的邮箱地址！'
+					alert '请输入正确的邮箱地址！'
 					return false
 			# 数字输入框的长度
 			len = $ @dom .attr 'length' 
 			if len!=undefined
 				if (!/\d/.test len)||(val.length>parseInt len)
-					show-global-message '该输入框只能输入数字，且长度不能大于'+len
+					alert '该输入框只能输入数字，且长度不能大于'+len
 					return false
 			return true
 		@focus =!~>
@@ -363,13 +363,6 @@ main-manage = let
 				$ '#popup_cover' .hide!
 		@
 	time-out-id = ''
-	# 显示全局信息提示
-	show-global-message = (str)->
-		ob = $ '#global_message' 
-		ob.show!
-		ob.html str 
-		clearTimeout time-out-id
-		time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
 	class init-all-data 
 		(d) ->
 			_all-data := d
