@@ -273,7 +273,8 @@ main-manage = let
 					return false
 			# 批量添加桌位，一次不能超过200
 			else if name =='sum'
-				if (parseInt val )>200
+				console.log "val", val
+				if (val)>200
 					alert '批量添加一次不能超过200个桌位！'
 					return false
 			# 数字输入框的长度

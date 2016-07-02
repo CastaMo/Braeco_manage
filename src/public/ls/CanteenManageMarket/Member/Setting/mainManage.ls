@@ -33,7 +33,7 @@ main-manage = let
 			$("\#level-table tr").eq(i+1).children("td").eq(2).html("#{_ladder[i].discount}% （#{_ladder[i].discount/10}折）")
 			$("._lv#{i}-upgrade").val(_ladder[i].EXP)
 			$("._lv#{i}-discout").val(_ladder[i].discount)
-			$("\#level-#{i} ._tip-2-discout").html("（#{_ladder[i].discount/10} 折）")
+			$("\#level-#{i} ._tip-2-discout").html("#{_ladder[i].discount/10} 折")
 		for j from 0 to 4 by 1
 			$("\#recharge-table tr").eq(j+1).children("td").eq(0).html("#{j+1}")
 			$("\#recharge-table tr").eq(j+1).children("td").eq(1).html("#{charge_ladder[j].pay}元")
@@ -129,10 +129,14 @@ main-manage = let
 				if $('._tip-1-input').val() < 100
 					_check-gift := 0
 					return true
+				else
+					_check-gift := 1
+					$('._tip-1-input').val('')
+					alert('消费赠送积分为正整数，范围 0-100')
+					return false
 			else
-				_check-gift := 1
 				$('._tip-1-input').val('')
-				alert('消费赠送积分为正整数，范围 0-100')
+				alert('消费赠送积分为整整失去后')
 				return false
 
 		$("._lv1-upgrade").blur !->
