@@ -74,7 +74,7 @@ do ->
 		ajax-callback = (result)!->
 			result = JSON.parse result
 			if result.message == 'success'
-				alert '添加成功',true
+				alert '修改成功',true
 				set-timeout (!->location.reload!), 2000
 			else if result.message == 'Wrong password'
 				alert '原密码<b>错误</b>,请重新输入'
@@ -138,18 +138,16 @@ do ->
 				self.mychange[index+''] = {}
 				self.mychange[index+''].action = 'change'
 			self._change_num =0
+			console.log self.mychange
 			for key of self.mychange
 				self._change_num += 1
 				if self.mychange[key].action == 'delete'
 					ajax-for-delete key,self._change_num
 				else if  self.mychange[key].action == 'change'
 					ajax-for-token key,self._change_num
-		afte-upload-img = ->
-			text
-			for key,val of self.mychange
-				text = key + ':' + val.result+'<br>'
-			alert text
+		after-upload-img = ->
 			close-loading!
+			# set-timeout (!->location.reload!), 2000
 		ajax-for-token = (n,order)!->
 			util.ajax {
 				type : 'post'
@@ -160,10 +158,9 @@ do ->
 					if result.message == 'success'
 						ajax-for-qiniu result,n,order
 				unavailabled : (result)!->
-					self.mychange[i+''].result='上传失败，请重试'
+					alert '上传失败，请重试'
 				}
 		ajax-for-qiniu = (data,n,order)!->
-			console.log n
 			$ 'iframe' .eq n .attr 'order',order
 			$ '.form' .eq n .find 'input[name=token]' .val data.token
 			$ '.form' .eq n .find 'input[name=key]' .val data.key
@@ -177,20 +174,19 @@ do ->
 				success : (result)!->
 					result = JSON.parse result
 					if result.message == 'success'
-						self.mychange[n+''].result='删除成功'
+						alert '删除成功'
 				always : (result)!->
 					if order==self._change_num
-						afte-upload-img!
+						after-upload-img!
 				unavailabled : (result)!->
-					self.mychange[i+''].result='删除失败，请重试!'
+					alert '删除失败，请重试!'
 			}
 		$ 'iframe' .load !->
-			console.log 'loading...'+($ @ .attr 'order')
 			i = parseInt($ @ .attr 'order' )
 			if(i<=self._change_num)
-				self.mychange[i+''].result = '上传成功！'
+				alert '上传成功！'
 				if i == self._change_num
-					afte-upload-img!
+					after-upload-img!
 
 		img-preview = (index,src)!->
 			$ '.little_pic_li' .eq index .find('img').attr 'src', src
@@ -201,28 +197,28 @@ do ->
 		# *************** 没有菊花图，家荣那里有一种 ***************
 		# **********************************************************
 		show-loading = (index)!->
-			alert '正在上传...'
+			_show_global_message '正在上传...'
 		close-loading = !->
-			console.log '关闭菊花'
-		add-img-input = !->
-			n = ($ '.little_pic_li' .length) - ($ '.little_pic_li.pic' .length)
-			if $ '.little_pic_li' .length < 5 && n<1
-				last = $ '.little_pic_li:last'
-				last.clone true .removeClass 'pic change' .insertAfter last
-				i = $ '.little_pic_li.pic' .length-1
-				last.find '.form' .attr 'target',('res'+i)
-				last.find '.iframe' .attr 'name',('res'+i)
+			_close_global_message!
+		add-img-input = (pic)!->
+			len = $ '.little_pic_li:visible' .length
+			console.log len
+			if len<5
+				$ '.little_pic_li' .eq len .css 'display','inline-block'
 		delete-img-input = (n)!->
 			ob = $ '.little_pic_li' .eq n
 			if ob.hasClass 'change'  #删除刚添加的图片（还未保存的）
 				delete self.mychange[n+'']
 			else
-				self.mychange[n+''] = {}
-				self.mychange[n+''].action = 'delete'
-			ob.remove!
-			n = ($ '.little_pic_li' .length) - ($ '.little_pic_li.pic' .length)
+				x= $ '.little_pic_li' .eq n .attr('self_order')
+				self.mychange[x] = {}
+				self.mychange[x].action = 'delete'
+			ob.hide!
+			ob.removeClass 'pic'
+			ob.insertAfter $ '.little_pic_li:visible:last' 
+			n = ($ '.little_pic_li:visible' .length) - ($ '.little_pic_li.pic' .length)
 			if(n == 0)
-				add-img-input!
+				add-img-input 'pic'
 	My-carousel = (dom)!->
 		@dom = dom
 		@imgs = $ dom .find '.carousel_img'
@@ -269,8 +265,11 @@ do ->
 			$ ob .animate {'left':dest,'opacity':op2},1000
 		_add-carousel-animation!
 
-
-	time-out-id = ''
+	_show_global_message = (str)!->
+		$ '#global_message' .html str
+		$ '#global_message' .fade-in 300
+	_close_global_message=!->
+		$ '#global_message' .fade-out 300
 
 	_uplad-imgs = new Wrap-pics!
 	wrap = new My-wrap!
@@ -285,19 +284,19 @@ do ->
 		$ '.info_value' .eq 2 .text d.data.dinner_name
 		_set-or-edit($ '.info_value' .eq(3),d.data.address)
 		_set-or-edit($ '.info_value' .eq(4),d.data.contact_phone)
-
-		$ '.info_value.info_img:eq(0) img' .attr 'src',d.data.covers[0]
-		for x,i in d.data.covers
-			$ '#carousel .carousel_imgs' .append('<img class="carousel_img" src="'+x+'"></img>')
-			$ '#carousel .carousel_dots' .append('<div class="carousel_dot"></div>')
-			newPic = $ '.little_pic_li:last' .clone(true)
-			newPic.find 'img' .attr 'src',x
-			newPic.addClass 'pic'
-			newPic.find 'form' .attr('target','res'+i)
-			newPic.find 'iframe' .attr('name','res'+i)
-			newPic.insertBefore($ '.little_pic_li:last' )
-			if i>=4
-				$ '.little_pic_li:last' .remove!
+		if d.data.covers!=null
+			$ '.info_value.info_img:eq(0) img' .attr 'src',d.data.covers[0]
+			for x,i in d.data.covers
+				$ '#carousel .carousel_imgs' .append('<img class="carousel_img" src="'+x+'"></img>')
+				$ '#carousel .carousel_dots' .append('<div class="carousel_dot"></div>')
+				newPic = $ '.little_pic_li' .eq i
+				newPic.attr('self_order',i)
+				newPic.find 'img' .attr 'src',x
+				newPic.addClass 'pic'
+			if d.data.covers.length<5
+				$ '.little_pic_li' .eq d.data.covers.length .css 'display','inline-block'
+		else 
+			$ '.little_pic_li' .eq 0 .css 'display','inline-block'
 		if d.data.wxpay
 			$ '.info_value.info_img1 img' .attr 'src',d.data.wxpay.qrurl
 			for x in d.data.wxpay.printer

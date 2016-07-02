@@ -38,7 +38,7 @@ main-manage = let
 						case 3  then  show-wrap 0,1
 						case 4  then  show-wrap 0,6
 					else
-						alert '要先点击选择桌位哦！'
+						alert '请先点击选择桌位！'
 		# 导出二维码
 		for win in $ '.wrap.batch_export:gt(0)'
 			new-cover = new Cover win,'/Table/Qrcode/Download',(
@@ -49,7 +49,7 @@ main-manage = let
 			)
 			covers.push(new-cover)
 		# 单个桌位修改
-		for win in $ '.popup.edit:not(last)'
+		for win in $ '.popup.edit:not(:last)'
 			new-cover = new Cover win,'/table/edit',(
 				(result)!->
 					result = JSON.parse result
@@ -64,7 +64,7 @@ main-manage = let
 			covers.push(new-cover)
 		# 单个桌位添加
 		# 批量桌位添加
-		for win in $ '.batch_add'
+		for win in $ '.batch_add,.popup.edit:last'
 			new-cover = new Cover win,'/Table/add',(
 				(result)!->
 					result = JSON.parse result
@@ -86,8 +86,7 @@ main-manage = let
 			(result)!->
 				result = JSON.parse result
 				if result.message == 'success'
-					alert '删除成功',true
-					set-timeout (!->location.reload!), 2000
+					location.reload!
 				else if result.message == 'Empty content'
 					alert '桌号为空'
 				else
@@ -105,7 +104,7 @@ main-manage = let
 			if i>=0
 				show-wrap 0, i+2
 			else
-				alert '要先点击选择模板哦！'
+				alert '请先点击选择模板！'
 		$ 'select[name=pay]' .change !->
 			_change-module!
 		$ 'select[name=discount]' .change !->
@@ -151,11 +150,8 @@ main-manage = let
 					disable-download-directly wrap,arg1
 				case 1 then wrap.find '.imgli' .removeClass 'selected'
 				case 6 then
-					selected = get-disabled-table!
-					a = ''
-					for temp,i in selected
-						a += '、' + $ selected[i] .find '.num' .text!
-					wrap.find '.delete_tables b' .text ' '+a.substr 1
+					selected = get-disabled-table-num!
+					wrap.find '.delete_tables b' .text '已选中'+selected+'张二维码'
 			case 1 then
 				$ '#popup_cover' .show!
 				little-wrap = $ arg1 .find '.edit'
@@ -196,7 +192,14 @@ main-manage = let
 			return null
 		# 显示选中的number
 		change-num-tip =!->
-			$ '.table_operation.select_all .selected_num' .text '('+get-disabled-table-num!+'/'+(($ '.table_qr').length-1)+')'
+			numerator = get-disabled-table-num!
+			denominator =($ '.table_qr').length-1
+			$ '.table_operation.select_all .selected_num' .text '('+numerator+'/'+denominator+')'
+			if numerator == denominator
+				operations[0].change-click-state false
+			else
+				operations[0].change-click-state true
+
 		# 导出二维码的输入框们
 		$ '.wrap select' .change ->
 			if ($ @ .attr 'name')!='pay'
@@ -257,8 +260,8 @@ main-manage = let
 				if !reg.test val
 					return false
 			if $ @dom .hasClass 'table_name'
-				if val.length>4
-					alert '桌位号太长啦，请不要超过四哦'
+				if _count_str_length(val)>8
+					alert '桌位号太长，最多可输入4个中文字符或者8个英文字符'
 					return false
 			# 验证邮箱是否合法
 			if ($ @dom .attr 'name')=='email'
@@ -362,7 +365,9 @@ main-manage = let
 				$ @dom .fadeOut 300
 				$ '#popup_cover' .hide!
 		@
-	time-out-id = ''
+	_count_str_length=(str)->
+		x = str.match(/[\u4E00-\u9FA5\uF900-\uFA2D]/g)
+		return str.length+x.length
 	class init-all-data 
 		(d) ->
 			_all-data := d

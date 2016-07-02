@@ -65,16 +65,17 @@ block content
 					.wrap_content
 						.inputli
 							.input_desc 桌位数量
-							input(type='number' name='sum' placeholder='请输入桌位数量')
+							input(type='number' name='sum' placeholder='批量添加一次最多60个桌位')
 						.inputli
 							.input_desc 起始编号
 							input(type='text' name='start' placeholder='批量添加的座位号只能输纯数字哦' class='table_name')
-							.little_gray 比如 01，0011，最多四位哦！
+							.little_gray 比如 1，100,最多四位哦！
 					.btns
 						.btn.cancle 取消
 						.btn.confirm 确认
 				.wrap.batch_export.batch_export1
 					.wrap_head 选择导出模板
+						.cancle_cross
 					.wrap_content
 						.imgli
 							.img_container

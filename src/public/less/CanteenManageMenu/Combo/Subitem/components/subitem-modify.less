@@ -61,11 +61,17 @@
 							}
 							.addition {
 								float: left;
+								position: relative;
 								span {
 									margin: 0 8px;
 								}
 								input {
 									width: 60px;
+								}
+								span.symbol {
+									line-height: 32px;
+									position: absolute;
+									right: -30px;
 								}
 								&.static_combo {
 									span.symbol:before {
@@ -116,9 +122,9 @@
 													.transition(0.3s);
 												}
 												.left-part {
-													width: 168px;
+													width: 148px;
 													p {
-														width: 140px;
+														width: 120px;
 														.ellipsisWithLineNum(1);
 													}
 												}

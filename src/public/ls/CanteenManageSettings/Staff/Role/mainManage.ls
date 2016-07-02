@@ -25,7 +25,7 @@ main-manage = let
     _delete-btn-click-event = (role) ->
         if confirm "是否确定删除该角色"
             $.ajax {type: "POST", url: "/Waiter/Role/Remove/"+role.id,\
-                dataType: 'JSON', contentType: "application/json", success: _delete-post-success}
+                dataType: 'JSON', contentType: "application/json", success: _delete-post-success, error: _delete-post-fail}
             role.delete-method-dom.unbind "click"
 
     _delete-post-success = (data) !->
@@ -33,6 +33,10 @@ main-manage = let
             alert "未找到该角色"
         if data.message === "Cannot remove role with waiter still using"
             alert "还有员工使用此角色，无法删除"
+        location.reload!
+
+    _delete-post-fail = (data)!->
+        alert "请求删除角色失败"
         location.reload!
     
     class Role

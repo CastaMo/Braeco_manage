@@ -20,7 +20,7 @@ main-manage = let
     _delete-btn-click-event = (staff)->
         if confirm "是否确定删除"
             $.ajax {type: "POST", url: "/Waiter/Remove/"+staff.id,\
-                dataType: 'JSON', contentType: "application/json", success: _delete-post-success}
+                dataType: 'JSON', contentType: "application/json", success: _delete-post-success, error: _delete-post-fail}
             staff.delete-method-dom.unbind "click"
 
     _delete-post-success = (data)!->
@@ -28,6 +28,10 @@ main-manage = let
             alert "该店员不存在"
         if data.message === 'Is not waiter of current dinner'
             alert "该店员不是当前餐厅的员工"
+        location.reload!
+
+    _delete-post-fail = (data)!->
+        alert "请求删除店员失败"
         location.reload!
     
     class Staff

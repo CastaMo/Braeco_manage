@@ -234,12 +234,15 @@ main-manage = let
 
 		_cancel-btn-dom.click !->
 			$('#btn-filed .stop-confirm').fade-in 100
+			$('#btn-filed .confirm-mask').fade-in 100
 
 		$('#btn-filed .stop-confirm .confirm-btn').click !->
 			$('#btn-filed .stop-confirm').fade-out 100
+			$('#btn-filed .confirm-mask').fade-out 100
 
 		$('#btn-filed .stop-confirm .confirm-cancel-btn').click !->
 			$('#btn-filed .stop-confirm').fade-out 100
+			$('#btn-filed .confirm-mask').fade-out 100
 			page.toggle-page "basic"
 
 
@@ -294,7 +297,7 @@ main-manage = let
 					data 		:		{
 						JSON 	:		JSON.stringify(request-object)
 					}
-					callback 	:		(result)!-> location.reload!
+					callback 	:		(result)!-> alert('新建成功', true);setTimeout('location.reload()', 2000)
 				}
 			else if isValid is 1 
 				alert('保存失败，尚有未填写项目')

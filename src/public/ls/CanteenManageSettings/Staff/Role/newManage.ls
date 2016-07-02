@@ -23,7 +23,7 @@ new-manage = let
     _data-print-dom = $ "\#staff-role-new input[value='268435456']" # 打印日结
 
     _all-tbd-index = [3, 9, 10, 14, 15, 20, 21, 29, 30]
-    _zero-permission = 1613809416
+    _zero-permission = 1613809160 # 1100000001100001100011000001000
 
     _checkbox-click-event = (event)!->
         value = parse-int ($ event.target).val!
@@ -114,29 +114,33 @@ new-manage = let
             }
             data = JSON.stringify data
             $.ajax {type: "POST", url: "/Waiter/Role/Add", data: data,\
-                dataType: "JSON", contentType: "application/json", success: _save-post-success}
+                dataType: "JSON", contentType: "application/json", success: _save-post-success, error: _save-post-fail}
             _set-save-btn-disable!
 
     _save-post-success = (data)!->
         _set-save-btn-able!
         if data.message === "success"
             location.reload!
+        else if data.message === 'Used name'
+            alert "角色名重复"
         else
-            _display-error-message ["添加失败"]
+            alert "添加角色失败"
+
+    _save-post-fail = (data)!->
+        _set-save-btn-able!
+        alert "请求添加店员失败"
 
     _check-input-field = ->
         error-message = []
         name = _name-input-dom.val!
         auth = _get-permission-value!
         if name === ''
-            error-message.push "请输入角色名"
+            alert "请输入角色名"
+            return false
         if auth === _zero-permission 
-            error-message.push "请选择角色权限"
-        if error-message.length === 0
-            true
-        else
-            _display-error-message error-message
-            false
+            alert "请选择角色权限"
+            return false
+        return true
     
     _display-error-message = (error-message)!->
         _error-message-block-dom.show!
