@@ -133,7 +133,7 @@ main-manage = let
 						JSON 	:		JSON.stringify(request-object)
 						user-id :		parentID;
 					}
-					callback 	:		(succes)!-> location.reload!
+					callback 	:		(succes)!-> alert('修改成功', true);setTimeout('location.reload()', 2000)
 				}
 			else alert('修改失败')
 
@@ -158,7 +158,7 @@ main-manage = let
 						JSON 	:		JSON.stringify(request-object)
 						user-id :		parentID;
 					}
-					callback 	:		(succes)!-> location.reload!
+					callback 	:		(succes)!-> alert('充值成功', true);setTimeout('location.reload()', 2000)
 				}
 			else alert('充值失败')
 
