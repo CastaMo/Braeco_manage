@@ -30,10 +30,14 @@
                 }
                 .reduce-start-btn-able {
                     background-image: url(@reduce-start-able-image-url);
+                    
                 }
                 .reduce-start-btn-disable {
-                    color: #000000;
+                    color: #4A4A4A;
                     background-image: url(@reduce-start-disable-image-url);
+                    &:hover {
+                        background-image: url(@reduce-start-able-hover-image-url);
+                    }
                 }
                 .reduce-stop-btn {
                     width: 127px;
@@ -47,12 +51,16 @@
                 }
                 .reduce-stop-btn-able {
                     background-image: url(@reduce-stop-able-image-url);
+                    &:hover {
+                        background-image: url(@reduce-stop-able-hover-image-url);
+                    }
                 }
                 .reduce-stop-btn-disable {
                     color: #ffffff;
                     background-image: url(@reduce-stop-disable-image-url);
                 }
                 .edit-btn {
+                    cursor: pointer;
                     float: right;
                     width: 96px;
                     height: 32px;
@@ -90,6 +98,7 @@
                         margin: 0px 10px;
                     }
                     .cancel-btn {
+                        cursor: pointer;
                         background-color: #ffffff;
                         border: none;
                         border: 1px solid #e7e7eb;
@@ -101,6 +110,7 @@
                         }
                     }
                     .comfirm-btn {
+                        cursor: pointer;
                         background-color: #ffc107;
                         border: none;
                         color: #ffffff;
@@ -255,6 +265,7 @@
                         color: #8d8d8d;
                     }
                     .add-ladder-btn {
+                        cursor: pointer;
                         width: 160px;
                         height: 32px;
                         margin-left: 90px;
@@ -285,6 +296,7 @@
                 }
                 .content-btn-block {
                     .cancel-btn {
+                        cursor: pointer;
                         width: 120px;
                         height: 32px;
                         margin-right: 30px;
@@ -299,6 +311,7 @@
                         }
                     }
                     .save-btn {
+                        cursor: pointer;
                         width: 120px;
                         height: 32px;
                         color: #ffffff;

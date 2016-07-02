@@ -48,7 +48,7 @@ print-manage = let
         else
             checked-printer-ids-json = JSON.stringify checked-printer-ids
             $.ajax {type: "POST", url: "/order/reprint/"+_order-id, data: checked-printer-ids-json,\
-                dataType: 'JSON', contentType:"application/json", success: _print-success}
+                dataType: 'JSON', contentType:"application/json", success: _print-success, error: _print-fail}
             _set-comfirm-button-disable!
     
     _print-success = (data)!->
@@ -59,7 +59,15 @@ print-manage = let
             printer-choose-block-dom.empty!       
         else if data.message === 'All of selected printers are unusable'
             alert "没有匹配的打印机"
-        
+        else
+            alert "请求打印失败"
+
+    _print-fail = (data)!->
+        _set-comfirm-button-able!
+        alert "请求打印失败"
+        _full-cover-dom.fade-out 100
+        printer-choose-block-dom = $ "\#full-cover .printer-choose-block"
+        printer-choose-block-dom.empty!
         
     _hide-print-page = !->
         refund-page-dom = $ "\#full-cover .refund-block"
@@ -67,7 +75,16 @@ print-manage = let
         refund-page-dom.hide!
         print-page-dom.show!
     
+    
+        
+    _get-printer-infomation = !->
+        $.ajax {type: "POST", url: "/dinner/printer/get", dataType: 'JSON',\
+            contentType:"application/json", success: _gene-printer-chooser, error: _get-printer-fail}
+
     _gene-printer-chooser = (data)!->
+        if data.message !== 'success'
+            alert '请求打印机信息失败'
+            return
         _printer := data.printer
         printer-choose-block-dom = $ "\#full-cover .printer-choose-block"
         for printer in data.printer
@@ -78,10 +95,12 @@ print-manage = let
             input-dom.change !-> _checkbox-change-event event
             print-item-dom.append input-dom
             printer-choose-block-dom.append print-item-dom
-        
-    _get-printer-infomation = !->
-        $.ajax {type: "POST", url: "/dinner/printer/get", dataType: 'JSON',\
-            contentType:"application/json", success: _gene-printer-chooser}
+
+    _get-printer-fail = (data)!->
+        alert '请求打印机信息失败'
+        _full-cover-dom.fade-out 100
+        printer-choose-block-dom = $ "\#full-cover .printer-choose-block"
+        printer-choose-block-dom.empty!
 
     _init-all-event = !->
         _close-button-dom.click !-> _close-button-dom-click-event!

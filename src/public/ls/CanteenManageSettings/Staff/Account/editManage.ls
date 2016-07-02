@@ -89,7 +89,7 @@ edit-manage = let
                 data.password = _new-password
             data = JSON.stringify data
             $.ajax {type: "POST", url: "/Waiter/update/"+_edited-staff.id, data: data,\
-                    dataType: "JSON", contentType: "application/json", success: _save-post-success}
+                    dataType: "JSON", contentType: "application/json", success: _save-post-success, fail: _save-post-fail}
             _set-save-btn-disable!
         # page.toggle-page "main"
     
@@ -133,6 +133,10 @@ edit-manage = let
             alert "该店员并不是当前餐厅的店员"
         else
             alert "添加失败"
+
+    _save-post-fail = (data)!->
+        _set-save-btn-able!
+        alert "请求修改店员失败"
 
     _set-save-btn-disable = !->
         _save-btn-dom.prop "disabled",true

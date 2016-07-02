@@ -48,7 +48,7 @@ new-manage = let
             }
             data = JSON.stringify data
             $.ajax {type: "POST", url: "/Waiter/Add/"+role, data: data,\
-                dataType: 'JSON', contentType: "application/json", success: _save-post-success}
+                dataType: 'JSON', contentType: "application/json", success: _save-post-success, error: _save-post-fail}
             _set-save-btn-disable!
     
     _check-input-field = ->
@@ -105,6 +105,10 @@ new-manage = let
             alert '已经是其他餐厅的店员了，不能成为当前餐厅的店员'
         else
             alert '添加失败'
+
+    _save-post-fail = (data)!->
+        _set-save-btn-able!
+        alert "请求添加店员失败"
 
     _set-save-btn-disable = !->
         _save-btn-dom.prop "disabled",true

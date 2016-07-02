@@ -201,7 +201,8 @@ refund-manage = let
         }
         json-data.refund = JSON.stringify refunds
         json-data = JSON.stringify json-data
-        $.ajax {type: "POST", url: "/order/refund/"+_data-obj.id, data: json-data, dataType: 'JSON', contentType:"application/json", success: _refund-post-success}
+        $.ajax {type: "POST", url: "/order/refund/"+_data-obj.id, data: json-data,\
+            dataType: 'JSON', contentType:"application/json", success: _refund-post-success, error: _refund-post-fail}
         _set-password-comfirm-button-disable!
     
     _refund-post-success = (data)!->
@@ -220,7 +221,13 @@ refund-manage = let
         else if data.message === 'Need to upload cert of wx pay'
             alert "需要上传微信证书"
             # refund-error-message.text "错误"
+        else
+            alert "请求退款失败"
         _set-password-comfirm-button-able!
+
+    _refund-post-fail = (data)!->
+        alert "请求退款失败"
+        location.reload!
         
     _is-refunded = (single-food)->
         if single-food.type === 0 and single-food.property.length > 0

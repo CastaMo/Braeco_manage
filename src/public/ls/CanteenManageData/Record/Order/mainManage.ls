@@ -15,8 +15,10 @@ main-manage = let
     _end-date-input-dom = $ '\#record-order-main .end-date'
     _search-btn-dom = $ "\#record-order-main .search-btn"
     _export-form-dom = $ "\#record-order-main \#export-form"
+    _export-form-class-dom = $ "\#record-order-main \#export-form-class"
     _export-form-st-dom = $ "\#record-order-main \#export-form-st"
     _export-form-en-dom = $ "\#record-order-main \#export-form-en"
+    _export-form-type-dom = $ "\#record-order-main \#export-form-type"
     _export-btn-dom = $ "\#record-order-main .export-btn"
     
     _pre-page-url-dom = $ ".ro-container-paginate .pre-page-url"
@@ -63,6 +65,7 @@ main-manage = let
             en = _page-data-obj.today + 24*3600-1
         else
             en = _page-data-obj.en
+        _export-form-type-dom.val _type-filter-dom.val!
         _export-form-st-dom.val st
         _export-form-en-dom.val en
         
@@ -82,7 +85,7 @@ main-manage = let
         end-date = _end-date-input-dom.val!
         _page-data-obj.en = _date-to-unix-timestamp new Date end-date
         _page-data-obj.en = _page-data-obj.en-8*3600+24*3600-1
-    
+
     _tr-hover-event = (event) !->
         if _is-one-pinned
             return
@@ -285,24 +288,39 @@ main-manage = let
         container-dom.click !-> _order-details-container-click-event event
         container-dom
 
-    _order-details-container-click-event = (event)!->
+    _tr-click-event = (event) !->
+        if _is-one-pinned
+            return
         target = $ event.target
-        while not target.has-class 'order-details-container'
+        while not target.is 'tr'
             target = $ target.parent!
-        container-dom = target
-        target = $ event.target
-        if target.is "icon" and target.has-class "pin-icon"
-            if _is-one-pinned
-                target.remove-class 'pinned-icon'
-                target.add-class 'unpinned-icon'
-                container-dom.remove-attr 'id'
-                _is-one-pinned := false
-                return
+        td-water-number = target.find '.td-water-number'
+        container-dom = td-water-number.find '.order-details-container'
         icon = container-dom.find ".order-details-header .pin-icon"
         icon.remove-class 'unpinned-icon'
         icon.add-class 'pinned-icon'
         _is-one-pinned := true
         container-dom.attr "id","pinned-order-container"
+        event.stop-propagation!
+
+    _order-details-container-click-event = (event)!->
+        # target = $ event.target
+        # while not target.has-class 'order-details-container'
+        #     target = $ target.parent!
+        # container-dom = target
+        # target = $ event.target
+        # if target.is "icon" and target.has-class "pin-icon"
+        #     if _is-one-pinned
+        #         target.remove-class 'pinned-icon'
+        #         target.add-class 'unpinned-icon'
+        #         container-dom.remove-attr 'id'
+        #         _is-one-pinned := false
+        #         return
+        # icon = container-dom.find ".order-details-header .pin-icon"
+        # icon.remove-class 'unpinned-icon'
+        # icon.add-class 'pinned-icon'
+        # _is-one-pinned := true
+        # container-dom.attr "id","pinned-order-container"
 
     _html-click-event = (event)!->
         if _is-one-pinned === false
@@ -319,13 +337,30 @@ main-manage = let
             icon.remove-class 'pinned-icon'
             icon.add-class 'unpinned-icon'
             pinned-container-dom.hide!
-            pinned-container-dom.remove-attr "id"
             _is-one-pinned := false
-
+            pinned-container-dom.remove-attr "id"
+            target = $ event.target
+            while not target.is 'html'
+                if target.is 'tr' and target.parent!.is 'tbody'
+                    target.trigger 'mouseenter'
+                    break
+                target = target.parent!
+        else
+            target = $ event.target
+            while not target.has-class 'order-details-container'
+                target = $ target.parent!
+            container-dom = target
+            target = $ event.target
+            if target.is "icon" and target.has-class "pin-icon"
+                target.remove-class 'pinned-icon'
+                target.add-class 'unpinned-icon'
+                _is-one-pinned := false
+                container-dom.remove-attr 'id'
 
     _gene-tr-dom = (data-obj)->
         tr-dom = $ "<tr></tr>"
         tr-dom.hover !-> (_tr-hover-event event), !-> _tr-leave-event event
+        tr-dom.click !-> _tr-click-event event
         unix-timestamp = parse-int data-obj.create_date
         date = _unix-timestamp-to-date unix-timestamp
         tr-dom.append $ "<td>"+date+"</td>"
