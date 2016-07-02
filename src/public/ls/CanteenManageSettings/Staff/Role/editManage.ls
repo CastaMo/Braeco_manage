@@ -25,7 +25,7 @@ edit-manage = let
     _staff-manage-dom = $ "\#staff-role-edit input[value='131072']" # 店员管理
 
     _all-tbd-index = [3, 9, 10, 14, 15, 20, 21, 29, 30]
-    _zero-permission = 1613809416
+    _zero-permission = 1613809160 # 1100000001100001100011000001000
 
     _edited-role = null
 

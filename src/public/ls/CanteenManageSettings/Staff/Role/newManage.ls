@@ -23,7 +23,7 @@ new-manage = let
     _data-print-dom = $ "\#staff-role-new input[value='268435456']" # 打印日结
 
     _all-tbd-index = [3, 9, 10, 14, 15, 20, 21, 29, 30]
-    _zero-permission = 1613809416
+    _zero-permission = 1613809160 # 1100000001100001100011000001000
 
     _checkbox-click-event = (event)!->
         value = parse-int ($ event.target).val!
@@ -113,7 +113,6 @@ new-manage = let
                 "auth": auth
             }
             data = JSON.stringify data
-            console.log data
             $.ajax {type: "POST", url: "/Waiter/Role/Add", data: data,\
                 dataType: "JSON", contentType: "application/json", success: _save-post-success, error: _save-post-fail}
             _set-save-btn-disable!

@@ -286,38 +286,38 @@ main-manage = let
         container-dom
 
     _tr-click-event = (event) !->
-        # if _is-one-pinned
-        #     return
-        # target = $ event.target
-        # while not target.is 'tr'
-        #     target = $ target.parent!
-        # td-water-number = target.find '.td-water-number'
-        # container-dom = td-water-number.find '.order-details-container'
-        # icon = container-dom.find ".order-details-header .pin-icon"
-        # icon.remove-class 'unpinned-icon'
-        # icon.add-class 'pinned-icon'
-        # _is-one-pinned := true
-        # container-dom.attr "id","pinned-order-container"
-        # event.stop-propagation!
-
-    _order-details-container-click-event = (event)!->
+        if _is-one-pinned
+            return
         target = $ event.target
-        while not target.has-class 'order-details-container'
+        while not target.is 'tr'
             target = $ target.parent!
-        container-dom = target
-        target = $ event.target
-        if target.is "icon" and target.has-class "pin-icon"
-            if _is-one-pinned
-                target.remove-class 'pinned-icon'
-                target.add-class 'unpinned-icon'
-                container-dom.remove-attr 'id'
-                _is-one-pinned := false
-                return
+        td-water-number = target.find '.td-water-number'
+        container-dom = td-water-number.find '.order-details-container'
         icon = container-dom.find ".order-details-header .pin-icon"
         icon.remove-class 'unpinned-icon'
         icon.add-class 'pinned-icon'
         _is-one-pinned := true
         container-dom.attr "id","pinned-order-container"
+        event.stop-propagation!
+
+    _order-details-container-click-event = (event)!->
+        # target = $ event.target
+        # while not target.has-class 'order-details-container'
+        #     target = $ target.parent!
+        # container-dom = target
+        # target = $ event.target
+        # if target.is "icon" and target.has-class "pin-icon"
+        #     if _is-one-pinned
+        #         target.remove-class 'pinned-icon'
+        #         target.add-class 'unpinned-icon'
+        #         container-dom.remove-attr 'id'
+        #         _is-one-pinned := false
+        #         return
+        # icon = container-dom.find ".order-details-header .pin-icon"
+        # icon.remove-class 'unpinned-icon'
+        # icon.add-class 'pinned-icon'
+        # _is-one-pinned := true
+        # container-dom.attr "id","pinned-order-container"
 
     _html-click-event = (event)!->
         if _is-one-pinned === false
@@ -334,15 +334,25 @@ main-manage = let
             icon.remove-class 'pinned-icon'
             icon.add-class 'unpinned-icon'
             pinned-container-dom.hide!
-            pinned-container-dom.remove-attr "id"
             _is-one-pinned := false
+            pinned-container-dom.remove-attr "id"
             target = $ event.target
             while not target.is 'html'
                 if target.is 'tr' and target.parent!.is 'tbody'
-                    console.log "html tr click"
                     target.trigger 'mouseenter'
                     break
                 target = target.parent!
+        else
+            target = $ event.target
+            while not target.has-class 'order-details-container'
+                target = $ target.parent!
+            container-dom = target
+            target = $ event.target
+            if target.is "icon" and target.has-class "pin-icon"
+                target.remove-class 'pinned-icon'
+                target.add-class 'unpinned-icon'
+                _is-one-pinned := false
+                container-dom.remove-attr 'id'
 
     _gene-tr-dom = (data-obj)->
         tr-dom = $ "<tr></tr>"

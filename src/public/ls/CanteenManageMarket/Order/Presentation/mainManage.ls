@@ -77,9 +77,11 @@ main-manage = let
 
 
     _give-stoping = !->
+        _presentation-start-btn-dom.remove-class "presentation-start-btn-able"
         _presentation-start-btn-dom.add-class "presentation-start-btn-disable"
         _presentation-start-btn-dom.text "启用满送"
         _presentation-start-btn-dom.click !-> _start-presentation-event!
+        _presentation-stop-btn-dom.remove-class "presentation-stop-btn-able"
         _presentation-stop-btn-dom.add-class "presentation-stop-btn-disable"
         _presentation-stop-btn-dom.text "满送停用中"
         _presentation-stop-btn-dom.unbind "click"
@@ -90,9 +92,11 @@ main-manage = let
 
     _give-on = !->
         _presentation-start-btn-dom.remove-class "presentation-start-btn-disable"
+        _presentation-start-btn-dom.add-class "presentation-start-btn-able"
         _presentation-start-btn-dom.text "满送启用中"
         _presentation-start-btn-dom.unbind "click"
         _presentation-stop-btn-dom.remove-class "presentation-stop-btn-disable"
+        _presentation-stop-btn-dom.add-class "presentation-stop-btn-able"
         _presentation-stop-btn-dom.text "停止满送"
         _presentation-stop-btn-dom.click !-> _presentation-stop-btn-click-event!
         _content-business-block-dom.remove-class "content-disabled"

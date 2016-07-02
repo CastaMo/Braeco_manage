@@ -76,9 +76,11 @@ main-manage = let
             _stop-alert-block-dom.hide!
 
     _reduce-stoping = !->
+        _reduce-start-btn-dom.remove-class "reduce-start-btn-able"
         _reduce-start-btn-dom.add-class "reduce-start-btn-disable"
         _reduce-start-btn-dom.text "启用满减"
         _reduce-start-btn-dom.click !-> _start-reduce-event!
+        _reduce-stop-btn-dom.remove-class "reduce-stop-btn-able"
         _reduce-stop-btn-dom.add-class "reduce-stop-btn-disable"
         _reduce-stop-btn-dom.text "满减停用中"
         _reduce-stop-btn-dom.unbind "click"
@@ -88,15 +90,16 @@ main-manage = let
 
     _reduce-on = !->
         _reduce-start-btn-dom.remove-class "reduce-start-btn-disable"
+        _reduce-start-btn-dom.add-class "reduce-start-btn-able"
         _reduce-start-btn-dom.text "满减启用中"
         _reduce-start-btn-dom.unbind "click"
         _reduce-stop-btn-dom.remove-class "reduce-stop-btn-disable"
+        _reduce-stop-btn-dom.add-class "reduce-stop-btn-able"
         _reduce-stop-btn-dom.text "停止满减"
         _reduce-stop-btn-dom.click !-> _reduce-stop-btn-click-event!
         _content-business-block-dom.remove-class "content-disabled"
         _content-ladder-block-dom.remove-class "content-disabled"
         $ "\#order-reduce-main .edit-infomation-content" .remove-class "content-disabled"
-
 
     _init-dom = !->
         if _order-promotion.reduce_ladder.length === 0
