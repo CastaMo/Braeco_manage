@@ -233,6 +233,9 @@ main-manage = let
 													if $(@).parents(".shown").find(".inner-shown-item").eq(i).find("input").parent().hasClass("true")
 														_checkNullSize++
 												if _checkNullSize is 0
+														$('#categories-choose ._all input').attr("checked", false)
+														$('#categories-choose ._all input').parent().removeClass "true"
+														$('#categories-choose ._all input').parent().addClass "false"
 														$(@).parents(".shown").find(".checkInput").attr("checked", false)
 														$(@).parents(".shown").find(".checkInput").parent().removeClass "true"
 														$(@).parents(".shown").find(".checkInput").parent().addClass "false"
@@ -242,13 +245,20 @@ main-manage = let
 											_apply.removeClass "false"
 											_apply.addClass "true"
 											if $(@).parents(".shown").find(".checkInput").parent().hasClass("false")
+												$('#categories-choose ._all input').attr("checked", true)
+												$('#categories-choose ._all input').parent().removeClass "false"
+												$('#categories-choose ._all input').parent().addClass "true"
 												$(@).parents(".shown").find(".checkInput").attr("checked", true)
 												$(@).parents(".shown").find(".checkInput").parent().removeClass "false"
 												$(@).parents(".shown").find(".checkInput").parent().addClass "true"
 								if $.inArray(categories[j].id, ban_cat) >= 0
-									$(".checkInput").attr("checked", false)
-									$(".shown").find("input").parent().removeClass "true"
-									$(".shown").find("input").parent().addClass "false"
+									if $.inArray(categories[j].id, ban_cat) is categories.length-1
+										$('#categories-choose ._all input').attr("checked", false)
+										$('#categories-choose ._all input').parent().removeClass "true"
+										$('#categories-choose ._all input').parent().addClass "false"
+									_new-categories.find(".checkInput").attr("checked", false)
+									_new-categories.find(".shown input").parent().removeClass "true"
+									_new-categories.find(".shown input").parent().addClass "false"
 								$('#printBranch .allChoose').last().append _new-categories
 						for m from 0 to tables.length-1 by 1
 							_new-tables = $ "<li>
@@ -286,7 +296,6 @@ main-manage = let
 												$('#tables-choose').find(".shown-item .checkbox-icon input").attr("checked", true)
 												$('#tables-choose').find(".shown-item .checkbox-icon").removeClass "false"
 												$('#tables-choose').find(".shown-item .checkbox-icon").addClass "true"
-							console.log "ban_table", ban_table
 							if $.inArray(tables[m], ban_table) >= 0
 								_new-tables.find("input").attr("checked", false)
 								_new-tables.find("input").parent().removeClass "true"
