@@ -212,25 +212,20 @@ main-manage = let
 
 		_up-jump-dom.click !->
 			if $("._up ._jump-input").val() isnt ''
-				if $("._up ._jump-input").val() > 1 and $("._up ._jump-input").val() <= _upsum
+				if $("._up ._jump-input").val() >= 1 and $("._up ._jump-input").val() <= _upsum
 					_jumpPage = $("._up ._jump-input").val!
-				else if $("._up ._jump-input").val() > _upsum
-					_jumpPage = _upnow
+					location.href = "/Manage/Market/Coupon/Basic?uppn=#{_jumpPage}&downpn=#{_downnow}"
 				else
-					_jumpPage = 1
-			else _jumpPage = _upnow
-			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_jumpPage}&downpn=#{_downnow}"
+					alert('请输入正确页码')
+			else alert('请输入正确页码')
 
 		_down-jump-dom.click !->
 			if $("._down ._jump-input").val() isnt ''
-				if $("._down ._jump-input").val() > 1 and $("._down ._jump-input").val() <= _downsum
+				if $("._down ._jump-input").val() >= 1 and $("._down ._jump-input").val() <= _downsum
 					_jumpPage = $("._down ._jump-input").val!
-				else if $("._down ._jump-input").val() > _downsum
-					_jumpPage = _downnow
-				else
-					_jumpPage = 1
-			else _jumpPage = _downnow
-			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_jumpPage}"
+					location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_jumpPage}"
+				else alert('请输入正确页码')
+			else alert('请输入正确页码')
 
 		_apply-dom.click !->
 			_apply = $(this).parent()
