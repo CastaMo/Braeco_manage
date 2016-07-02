@@ -252,16 +252,16 @@ main-manage = let
 					alert '输入不可为空'
 				return true
 			return false
-		@valid =(reg)~>
+		@valid =~>
 			if ($ @dom .is ':visible' )== false
 				return true
 			val = @dom.value
 			name = $ @dom .attr 'name'
 			if @empty!
 				return false
-			if reg!=undefined
-				if !reg.test val
-					return false
+			# if reg!=undefined
+			# 	if !reg.test val
+			# 		return false
 			if $ @dom .hasClass 'table_name'
 				if _count_str_length(val)>8
 					alert '桌位号太长，最多可输入4个中文字符或者8个英文字符'
