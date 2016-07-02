@@ -54,7 +54,7 @@ block content
 						.btns
 							.btn.cancle 取消
 							.btn.confirm 确认
-			form(id='export' action='/Table/Qrcode/Download' method='post')
+			form(id='export' action='/Table/Qrcode/Download' method='post' target='_blank')
 				input(name='data' type='text')
 			#popup_cover
 			#global_message 提示！
@@ -83,17 +83,17 @@ block content
 							span.gray
 						.imgli
 							.img_container
-								img(src='http://brae.co/public/images/qrcode/2square000.png')
+								img(src='http://static.brae.co/export/qrcode/square01.png')
 							.span 桌贴(方)
 							span.gray <br>尺寸：10 * 10 cm
 						.imgli
 							.img_container
-								img(src='http://brae.co/public/images/qrcode/2circle000.png')
+								img(src='http://static.brae.co/export/qrcode/circle01.png')
 							.span 桌贴(圆)
 							span.gray <br>尺寸：10 * 10 cm
 						.imgli
 							.img_container
-								img(src='')
+								img(src='http://static.brae.co/export/qrcode/card1a.png')
 							.span 桌牌
 							span.gray 尺寸A6<br>（ 14.8 * 10.5 cm ）
 					.btns
@@ -168,7 +168,7 @@ block content
 								input(type='text' name='email' placeholder='请输入您的邮箱地址')
 								.tip
 						.wrap_right
-							img(src='http://brae.co/public/images/qrcode/2square000.png')
+							img(src='http://static.brae.co/export/qrcode/square01.png')
 					div(style='clear:both')
 					.message 直接下载需要 <b></b> 秒左右
 					.btns
@@ -187,11 +187,11 @@ block content
 							.inputli
 								.input_desc 折扣优惠
 								select(name='discount')
-									option(value='1') 有折扣优惠
+									option(value='1') 扫码点餐95折优惠
 									option(value='0') 没有折扣
 							.inputli
 								.input_desc 
-								input(type='text' name='discount_value' placeholder='请输入折扣')
+								input(type='text' disabled='true' name='discount_value' placeholder='请输入折扣')
 								.input_unit 折
 								.tip
 							.inputli
@@ -218,7 +218,7 @@ block content
 								input(type='text' name='email' placeholder='请输入您的邮箱地址')
 								.tip
 						.wrap_right
-							img(src='http://brae.co/public/images/qrcode/2circle000.png')
+							img(src='http://static.brae.co/export/qrcode/circle01.png')
 					div(style='clear:both')
 					.message 直接下载需要 <b></b> 秒左右
 					.btns
@@ -257,7 +257,8 @@ block content
 								input(type='text' name='email' placeholder='请输入您的邮箱地址')
 								.tip
 						.wrap_right
-							img
+							img(src='http://static.brae.co/export/qrcode/card1a.png')
+							img(src='http://static.brae.co/export/qrcode/card1b.png')
 					div(style='clear:both')
 					.message 直接下载需要 <b></b> 秒左右
 					.btns
