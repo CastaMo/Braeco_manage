@@ -37,6 +37,7 @@ main-manage = let
 	_down-next-dom = $ "\._down .nextPage.btn"
 	_down-jump-dom = $ "\._down .jump-btn"
 	_return-dom = $ "\.return-btn"
+	_statistics-btn-dom = $ "\.statistics-btn"
 
 	class Coupon
 		(options)->
@@ -235,6 +236,10 @@ main-manage = let
 			else if _apply.hasClass("false")
 				_apply.removeClass "false"
 				_apply.addClass "true"
+
+		_statistics-btn-dom.click !->
+			_sta-coupon-id = $("._pre-batch-number").html!
+			location.href = "/Manage/Data/Analysis#" + _sta-coupon-id
 
 		_new-btn-dom.click !->
 			page.toggle-page "new"
