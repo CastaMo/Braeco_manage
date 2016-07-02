@@ -38,7 +38,7 @@ block content
 					.popup.edit
 						.arrow
 						input(type='text' name='word' class='table_name hide')
-						input(type='text' name='new' class='table_name' length='4' placeholder='比如A011,01')
+						input(type='text' name='new' class='table_name' placeholder='比如A011,01')
 						.btns
 							.btn.cancle 取消
 							.btn.confirm 确认
@@ -65,10 +65,10 @@ block content
 					.wrap_content
 						.inputli
 							.input_desc 桌位数量
-							input(type='number' name='sum' placeholder='批量添加一次最多60个桌位')
+							input(type='number' name='sum' placeholder='批量添加一次最多200个桌位')
 						.inputli
 							.input_desc 起始编号
-							input(type='text' name='start' placeholder='批量添加的座位号只能输纯数字哦' class='table_name')
+							input(type='text' name='start' placeholder='批量添加的座位号只能输纯数字哦' class='table_name' length='3')
 							.little_gray 比如 1，100,最多四位哦！
 					.btns
 						.btn.cancle 取消
@@ -200,7 +200,7 @@ block content
 								select(name='wifi')
 									option(value='2') 有wifi密码
 									option(value='1') 仅有wifi名称
-									option(value='0') 无wifi
+									//- option(value='0') 无wifi
 							.inputli
 								.input_desc 
 								input(type='text' name='wifi_name' placeholder='请输入wifi名称')

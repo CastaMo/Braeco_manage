@@ -46,6 +46,7 @@ main-manage = let
 					result = JSON.parse result
 					if result.message == 'success'
 						alert '桌号正在生成，稍后发送到您的邮箱，请稍等！'
+						set-timeout (!->location.reload!), 2000
 			)
 			covers.push(new-cover)
 		# 单个桌位修改
@@ -151,7 +152,7 @@ main-manage = let
 				case 1 then wrap.find '.imgli' .removeClass 'selected'
 				case 6 then
 					selected = get-disabled-table-num!
-					wrap.find '.delete_tables b' .text '已选中'+selected+'张二维码'
+					wrap.find '.delete_tables b' .text selected+'张二维码'
 			case 1 then
 				$ '#popup_cover' .show!
 				little-wrap = $ arg1 .find '.edit'
@@ -192,7 +193,7 @@ main-manage = let
 			return null
 		# 显示选中的number
 		change-num-tip =!->
-			numerator = get-disabled-table-num!
+			numerator = $ '.table_qr.disabled:not(.add_new)' .length
 			denominator =($ '.table_qr').length-1
 			$ '.table_operation.select_all .selected_num' .text '('+numerator+'/'+denominator+')'
 			if numerator == denominator
@@ -246,14 +247,16 @@ main-manage = let
 	My-input = (ob)->
 		@dom = ob
 		@empty = ~>
-			if $ @dom .val! == '' || /\s/.test($ @dom .val!)
-				alert '输入不可为空'
+			if @dom.getAttribute('disabled')!='true' 
+				if $ @dom .val! == '' || /\s/.test($ @dom .val!)
+					alert '输入不可为空'
 				return true
 			return false
 		@valid =(reg)~>
 			if ($ @dom .is ':visible' )== false
 				return true
 			val = @dom.value
+			name = $ @dom .attr 'name'
 			if @empty!
 				return false
 			if reg!=undefined
@@ -264,15 +267,20 @@ main-manage = let
 					alert '桌位号太长，最多可输入4个中文字符或者8个英文字符'
 					return false
 			# 验证邮箱是否合法
-			if ($ @dom .attr 'name')=='email'
+			if name=='email'
 				if !/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test val
 					alert '请输入正确的邮箱地址！'
+					return false
+			# 批量添加桌位，一次不能超过200
+			else if name =='sum'
+				if (parseInt val )>200
+					alert '批量添加一次不能超过200个桌位！'
 					return false
 			# 数字输入框的长度
 			len = $ @dom .attr 'length' 
 			if len!=undefined
 				if (!/\d/.test len)||(val.length>parseInt len)
-					alert '该输入框只能输入数字，且长度不能大于'+len
+					alert '该输入框只能输入0~999之间的数字'
 					return false
 			return true
 		@focus =!~>
@@ -367,6 +375,7 @@ main-manage = let
 		@
 	_count_str_length=(str)->
 		x = str.match(/[\u4E00-\u9FA5\uF900-\uFA2D]/g)
+		x = x || ''
 		return str.length+x.length
 	class init-all-data 
 		(d) ->

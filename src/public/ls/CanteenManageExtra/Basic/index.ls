@@ -80,6 +80,8 @@ do ->
 				alert '原密码<b>错误</b>,请重新输入'
 				$ '#wrap_password input' .eq 0 .val ''
 				$ '#wrap_password input' .eq 0 .focus!
+			else if result.message == 'message:Used email'
+				alert '修改失败，该邮箱已被使用！'
 			else
 				alert '提交失败，原因：'+result.message
 
@@ -93,15 +95,19 @@ do ->
 		for let temp in @inputs
 			temp.is-valid = (reg,str)->
 				if @.getAttribute('type')== 'radio'
-					if $ 'input[name=printer]' .val! == ''
+					if $ 'input[name=printer]:checked' .val! == undefined
 						@show-message '请选择一个打印机'
 						return false
 					else
 						return true
 				else 
-					if @value == '' || /^\s*$/g.test @value
-						@show-message '输入不可为空！'
-						return false
+					if @.getAttribute('empty_is_vlaid')==undefined 
+						if @value == '' || /^\s*$/g.test @value
+							@show-message '输入不可为空！'
+							return false
+					else if (@getAttribute 'name' ) == 'password'
+						if @value.length<6 || @value.length>16
+							alert '密码长度为6-16个字符'
 					else if (@getAttribute 'name' ) == 'email'
 						if ! /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test @value
 							@show-message '请输入正确的邮箱地址'
