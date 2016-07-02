@@ -81,7 +81,6 @@ main-manage = let
 				_new-printer.find(".switch-icon").addClass("able-icon")
 				_new-printer.find(".switch-btn p").html("启用")
 				_new-printer.find(".single-hover").css("display", "block")
-				_new-printer.find
 			_new-printer.find(".printerPage").html("#{printer[i].page}联")
 			if printer[i].size is 0
 				_new-printer.find(".printerSize").html("小")
@@ -91,9 +90,11 @@ main-manage = let
 			_new-printer.find(".switch-btn").click !->
 				if $(@).find("p").html() is "停用"
 					$(@).parent().find(".stop-confirm").fade-in 300
+					$(".confirm-mask").fade-in 300
 				else $(@).parent().find(".stop-confirm-btn").click!
 			_new-printer.find(".stop-confirm-cancel-btn").click !->
 				$(@).parent().parent().fade-out 300
+				$(".confirm-mask").fade-out 300
 			_new-printer.find(".stop-confirm-btn").click !->
 				request-object = {}
 				_hrefID = Number($(@).parent().parent().parent().parent().find(".printerID").html!)
@@ -102,15 +103,15 @@ main-manage = let
 					_able = 1
 				else if $(@).parent().parent().parent().parent().find(".switch-btn p").html() is "停用"
 					_able = 0
+				request-object.id = Number($(@).parent().parent().parent().parent().find(".printerID").html!)
 				require_.get("able").require {
 					data 			:		{
 						JSON 		:		JSON.stringify(request-object)
 						able 		:		_able
 						printer-id 	:		_hrefID;
 					}
-					callback 		:		(result)!-> window.location.reload!
+					callback 		:		(result)!-> location.reload!
 				}
-				request-object.id = Number($(@).parent().parent().parent().parent().find(".printerID").html!)
 			_new-printer.find(".setting-btn").click !->
 				checkedBan = $(@).parent().parent().find(".printerID").html!
 				console.log "checkedBan", checkedBan
@@ -371,7 +372,7 @@ main-manage = let
 					JSON 	:		JSON.stringify(request-object)
 					printer-id:		Number($("._printID").html!)
 				}
-				callback 	:		(result)!-> location.reload!
+				callback 	:		(result)!-> alert('修改成功', true);setTimeout('location.reload()', 2000)
 			}
 			
 

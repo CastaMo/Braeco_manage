@@ -21,6 +21,7 @@ class SubitemModifyView extends VBase
 		@name-dom 									= @$el.find ".name-field input"
 		@remark-dom 								= @$el.find ".remark-field input"
 		@combo-type-select-dom 			= @$el.find ".price-field select"
+		@addition-dom 							= @$el.find ".addition"
 		@number-dom 								= @$el.find ".price-field input"
 
 	init-all-dom: !->
@@ -45,11 +46,13 @@ class SubitemModifyView extends VBase
 
 	init-all-event: !->
 
+		@all-choose-dom.click !~> @all-choose-btn-click-event!
+
+		@combo-type-select-dom.change !~> @combo-type-select-change-event @combo-type-select-dom.val!
+
 		@$el.find(".cancel-btn").click !~> @cancel-btn-click-event!
 
 		@$el.find(".confirm-btn").click !~> @confirm-btn-click-event!
-
-		@all-choose-dom.click !~> @all-choose-btn-click-event!
 
 		for let category-id, category-dom of @all-category-doms
 			category-dom.click !~>
@@ -103,6 +106,9 @@ class SubitemModifyView extends VBase
 	all-choose-btn-click-event: !->
 		@subitem-modify-controller.toggle-is-all-choose!
 
+	combo-type-select-change-event: (combo-type)!->
+		@addition-dom[0].class-name = "addition #{combo-type}"
+
 	change-choose-for-all-choose: (is-choose)!->
 		if is-choose
 			@all-choose-dom.add-class "choose"
@@ -137,6 +143,7 @@ class SubitemModifyView extends VBase
 		@name-dom.val subitem.name
 		@remark-dom.val subitem.remark
 		@combo-type-select-dom.val subitem.type
+		@combo-type-select-change-event subitem.type
 		if subitem.type is "static_combo"
 			@number-dom.val subitem.price
 		else
@@ -147,6 +154,7 @@ class SubitemModifyView extends VBase
 		@name-dom.val null
 		@remark-dom.val null
 		@combo-type-select-dom.val null
+		@combo-type-select-change-event @combo-type-select-dom.val!
 		@number-dom.val null
 
 	create-category-elem-dom: !->
