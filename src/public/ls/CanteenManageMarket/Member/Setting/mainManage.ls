@@ -136,7 +136,7 @@ main-manage = let
 					return false
 			else
 				$('._tip-1-input').val('')
-				alert('消费赠送积分为整整失去后')
+				alert('消费赠送积分为正整数')
 				return false
 
 		$("._lv1-upgrade").blur !->

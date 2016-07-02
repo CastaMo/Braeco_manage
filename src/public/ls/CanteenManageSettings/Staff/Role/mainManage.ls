@@ -14,6 +14,7 @@ main-manage = let
     '接单','辅助点单','会员充值','修改积分','退款','重打订单','打印日结小票','（待定）','（待定）']
 
     _all-tbd-index = [3, 9, 10, 14, 15, 20, 21, 29, 30]
+    _zero-permission = 1613809160 # 1100000001100001100011000001000
 
     _new-btn-click-event = !->
         page.toggle-page 'new'
@@ -52,13 +53,28 @@ main-manage = let
 
         gene-permission-string: !->
             permission-string = []
-            binary-string = @permission.to-string 2
+            break-point = [4,7,5,6,9]
+            permission-value = (_zero-permission .|. @permission )
+            binary-string = permission-value.to-string 2
+            level = 0
+            count = break-point[level]
+            permission-level = []
             for i from binary-string.length-1 to 0 by -1
+                count -= 1
+                if count === 0
+                    permission-string.push permission-level
+                    permission-level = []
+                    level += 1
+                    count = break-point[level]
                 if binary-string.length-1-i in _all-tbd-index
                     continue
                 if binary-string[i] === '1'
-                    permission-string.push _all-permission[binary-string.length-1-i]
-            @permission-dom.text permission-string.join '，'
+                    permission-level.push _all-permission[binary-string.length-1-i]
+            @permission-dom.text ''
+            for string-array in permission-string
+                if string-array.length > 0
+                    string = string-array.join '，'
+                    @permission-dom.append $ "<div>"+string+"</div>"
 
         set-dom-value: !->
             @name-dom.text @name

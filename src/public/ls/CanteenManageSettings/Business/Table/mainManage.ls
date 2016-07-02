@@ -158,8 +158,8 @@ main-manage = let
 				little-wrap = $ arg1 .find '.edit'
 				little-wrap.find 'input' .val($ arg1 .find '.num' .text!)
 				little-wrap.fadeIn 300
-		# i= 2       裸码，限制50个
-		# i= 3、4、5 其他码，限制25个
+		# i= 2       裸码，限制50个     0.5秒一个
+		# i= 3、4、5 其他码，限制25个   2秒一个
 		disable-download-directly = (ob,i)!->
 			num = get-disabled-table-num!
 			if i==2
@@ -167,10 +167,10 @@ main-manage = let
 				if num>50
 					disable-select-email ob.find 'select[name=send_email]',(num*0.5).toFixed(1)
 			else if i==3||i==4||i==5
-				ob.find '.message b' .text num
+				ob.find '.message b' .text num*2
 				if num>25
-					disable-select-email ob.find 'select[name=send_email]',num
-		disable-select-email = (ob,t)!->
+					disable-select-email ob.find 'select[name=send_email]'
+		disable-select-email = (ob)!->
 			ob.val('1')
 			ob.prop('disabled',true)
 			ob.parents('.inputli').next().hide()
@@ -250,18 +250,18 @@ main-manage = let
 			if @dom.getAttribute('disabled')!='true' 
 				if $ @dom .val! == '' || /\s/.test($ @dom .val!)
 					alert '输入不可为空'
-				return true
+					return true
 			return false
-		@valid =~>
+		@valid =(reg)~>
 			if ($ @dom .is ':visible' )== false
 				return true
 			val = @dom.value
 			name = $ @dom .attr 'name'
 			if @empty!
 				return false
-			# if reg!=undefined
-			# 	if !reg.test val
-			# 		return false
+			if reg!=undefined
+				if !reg.test val
+					return false
 			if $ @dom .hasClass 'table_name'
 				if _count_str_length(val)>8
 					alert '桌位号太长，最多可输入4个中文字符或者8个英文字符'
@@ -273,8 +273,7 @@ main-manage = let
 					return false
 			# 批量添加桌位，一次不能超过200
 			else if name =='sum'
-				console.log "val", val
-				if (val)>200
+				if (parseInt val )>200
 					alert '批量添加一次不能超过200个桌位！'
 					return false
 			# 数字输入框的长度
@@ -312,14 +311,18 @@ main-manage = let
 					@mysubmit!
 
 		@mysubmit = (url,success)!~>
-			util.ajax {
-				type :'post'
-				url : _url
-				data : JSON.stringify @.get-cover-data!
-				success : _success
-				unavailabled : (result)!->
-					alert '请求失败'+result
-			}
+			btn = $ self.dom .find '.btn.confirm' 
+			if btn.hasClass 'able'
+				btn.removeClass 'able'
+				util.ajax {
+					type :'post'
+					url : _url
+					data : JSON.stringify @.get-cover-data!
+					success : _success
+					unavailabled : (result)!->
+						alert '请求失败'+result
+					always : !~> $ self.dom .find 'btn.confirm' .addClass 'able'
+				}
 		@valid = !~>
 			for x in @inputs
 				if !x.valid!
@@ -389,7 +392,8 @@ main-manage = let
 				_new-table.find '.table_qr_light img' .attr 'src',x.url
 				_new-table.find '.table_qr_light .num' .text x.word
 				_new-table.removeClass 'new'
-				_new-table.insertBefore _initial-new-table
+				# _new-table.insertBefore _initial-new-table
+				$ '#tables_container' .append _new-table
 			_initial-new-table.remove!
 			$ '.table_operation.select_all .selected_num' .text '(0/'+_all-data.length+')'
 
