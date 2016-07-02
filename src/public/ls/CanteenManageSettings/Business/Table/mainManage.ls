@@ -272,7 +272,7 @@ main-manage = let
 					alert '请输入正确的邮箱地址！'
 					return false
 			# 批量添加桌位，一次不能超过200
-			else if name =='sum'
+			if name =='sum'
 				if (parseInt val )>200
 					alert '批量添加一次不能超过200个桌位！'
 					return false
