@@ -5,22 +5,22 @@
   .analysis-main-containers
     .container(ng-show='selectedTab == "member"')
       .filters
-        select.time-type(ng-model='filter.memberTimeType' ng-change='getStatisticsByUnit($event)')
+        select.time-type(ng-model='filter.memberTimeType' ng-change='getStatisticsByType($event)')
           option(value='day') 按日查看
           option(value='week') 按周查看
           option(value='month') 按月查看
           option(value='year') 按年查看
 
         //- 日、周
-        input.time-type-datepicker.member-time-type-datepicker(type='text' data-toggle="datepicker" ng-model='filter.memberSelectedDate' ng-change='getStatisticsByUnit($event)' ng-show='filter.memberTimeType == "day" || filter.memberTimeType == "week"')
+        input.time-type-datepicker.member-time-type-datepicker(type='text' data-toggle="datepicker" ng-model='filter.memberDate' ng-change='getStatisticsByType($event)' ng-show='filter.memberTimeType == "day" || filter.memberTimeType == "week"')
         .calendar-icon(ng-show='filter.memberTimeType == "day" || filter.memberTimeType == "week"')
 
         //- 月
-        select.member-selected-month(ng-show='filter.memberTimeType == "month"' ng-model='filter.memberSelectedMonth' ng-change='getStatisticsByUnit($event)')
+        select.member-selected-month(ng-show='filter.memberTimeType == "month"' ng-model='filter.memberSelectedMonth' ng-change='getStatisticsByType($event)')
           option(ng-repeat='month in filter.allMonths' value='{{ month }}') {{ month }}
 
         //- 年
-        select.member-selected-year(ng-show='filter.memberTimeType == "year"' ng-model='filter.memberSelectedYear' ng-change='getStatisticsByUnit($event)')
+        select.member-selected-year(ng-show='filter.memberTimeType == "year"' ng-model='filter.memberSelectedYear' ng-change='getStatisticsByType($event)')
           option(ng-repeat='year in filter.allYears' value='{{ year }}') {{ year }}
 
       .data-panel
@@ -28,19 +28,19 @@
           .container
             .title 当前会员数
             .current-members-numbers
-              span.number {{ member.newMembers + member.returnCustomers }}
+              span.number {{ memberCount }}
               span 名
             .new-members.info-item
               span.left 新增会员
               span.right {{ member.newMembers }} 名
             .return-customer.info-item
               span.left 回头客
-              span.right {{ member.returnCustomers }} 人
+              span.right {{ member.oldMembers }} 人
 
         .member-class.data-panel-item(ng-click='setSelectedPanel($event, "member-class")')
           .container
             .title 会员等级分布
-            .info-item(ng-repeat='class in member.memberClasses')
+            .info-item(ng-repeat='class in memberClass track by $index')
               span.left Lv.{{ $index }}:
               span.right {{ class }} 名
 
@@ -48,7 +48,7 @@
           .container
             .title 当前余额池
             .balance
-              span.number {{ member.membershipCharge + member.membershipSpend }}
+              span.number {{ sumBalance }}
               span 元
             .member-recharge.info-item
               span.left 会员充值
@@ -67,36 +67,36 @@
       .filters
         div.type-filter
           select.coupon-type(ng-model='filter.couponsSelectedCouponType')
-            option(value='1') 代金券
+            option(value='0') 代金券
           span 批次号
-          select.batch-number(ng-model='filter.couponsSelectedBatchNumber')
-            option(value='1') 123456
+          select.batch-number(ng-model='filter.couponsSelectedBatchNumber' ng-change='selectBatchNumber($event)')
+            option(ng-repeat='batchNumber in filter.couponsBatchNumber' value='{{ batchNumber }}') {{ batchNumber }}
           //- button.filter-button 筛选
         div.time-filter
-          select.time-type(ng-model='filter.couponsTimeType')
+          select.time-type(ng-model='filter.couponsTimeType' ng-change='getStatisticsByType($event)')
             option(value='day') 按日查看
             option(value='week') 按周查看
             option(value='month') 按月查看
             option(value='year') 按年查看
 
           //- 日、周
-          input.time-type-datepicker.coupons-time-type-datepicker(type='text' data-toggle="datepicker" ng-model='filter.couponsSelectedDate' ng-show='filter.couponsTimeType == "day" || filter.couponsTimeType == "week"')
+          input.time-type-datepicker.coupons-time-type-datepicker(type='text' data-toggle="datepicker" ng-model='filter.couponsDate' ng-show='filter.couponsTimeType == "day" || filter.couponsTimeType == "week"' ng-change='getStatisticsByType($event)')
           .calendar-icon(ng-show='filter.couponsTimeType == "day" || filter.couponsTimeType == "week"')
 
           //- 月
-          select.member-selected-month(ng-show='filter.couponsTimeType == "month"' ng-model='filter.couponsSelectedMonth')
+          select.member-selected-month(ng-show='filter.couponsTimeType == "month"' ng-model='filter.couponsSelectedMonth' ng-change='getStatisticsByType($event)')
             option(ng-repeat='month in filter.allMonths' value='{{ month }}') {{ month }}
 
           //- 年
-          select.member-selected-year(ng-show='filter.couponsTimeType == "year"' ng-model='filter.couponsSelectedYear')
+          select.member-selected-year(ng-show='filter.couponsTimeType == "year"' ng-model='filter.couponsSelectedYear' ng-change='getStatisticsByType($event)')
             option(ng-repeat='year in filter.allYears' value='{{ year }}') {{ year }}
 
       .coupon-graph
         .top-bar
           span 合计：
-          span 浏览次数：{{ 6666 }} 次
-          span 领取次数：{{ 42323 }} 次
-          span 核销次数：{{ 1000 }} 次
+          span 浏览次数：{{ coupons.coupon_detail[filter.couponsSelectedBatchNumber].scan.sum }} 次
+          span 领取次数：{{ coupons.coupon_detail[filter.couponsSelectedBatchNumber].get.sum }} 次
+          span 核销次数：{{ coupons.coupon_detail[filter.couponsSelectedBatchNumber].consume.sum }} 次
         .graphs-wrapper
           .graphs-container
             canvas#analysis-coupons-graph
