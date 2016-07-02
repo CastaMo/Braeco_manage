@@ -10,8 +10,6 @@ module.exports = function(router) {
   router.get('/Manage/Data/Analysis', function(req, res) {
     res.render('./CanteenManageData/Analysis/develop');
   });
-
-  // router.post('/Dinner/Manage/Statistic', getCallbackHandleForRequest("POST", cookie));
-
+  router.get('/Manage/Data/Analysis/JSON', getCallbackHandleForRequest("GET", cookie));
   return router;
 };
