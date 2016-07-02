@@ -266,7 +266,8 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
 
   set-waiting-state = !->
     $timeout !->
-      $statisticsSM.go-to-state ['\#statistics-main', '\#statistics-spinner-circle']
+      $statisticsSM.go-to-state ['\#statistics-spinner-circle']
+      # $statisticsSM.go-to-state ['\#statistics-main', '\#statistics-spinner-circle']
     , 0
 
   set-ready-state = !->
@@ -330,6 +331,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     dataset-item = get-dataset-item!
 
     datasets = get-line-chart-datasets color-settings, data, legends, dataset-item
+    console.log datasets
 
     labels = get-line-chart-labels!
 
