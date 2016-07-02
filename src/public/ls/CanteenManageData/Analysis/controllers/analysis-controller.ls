@@ -526,7 +526,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     labels = []
 
     for i from 1 to 24
-      item = i + '时'
+      item = i
       labels.push item
 
     labels
@@ -560,7 +560,14 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
       date-object = get-date-object-from-zh-cn-string $scope.filter.coupons-selected-month
     day-number = get-days-number-of-month date-object.year, date-object.month
 
-    [i + '日' for i from 1 to day-number]
+    [i for i from 1 to day-number]
+    # labels = []
+    # for i from 1 to day-number
+    #   if i % 3 == 1
+    #     labels.push i
+    #   else
+    #     labels.push ''
+    # labels
 
   get-days-number-of-month = (year, month)->
     new Date(year, month, 0).getDate!
