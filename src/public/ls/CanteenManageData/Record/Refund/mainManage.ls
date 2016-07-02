@@ -65,8 +65,16 @@ main-manage = let
         location.href = _construct-url st,en,pn
 
     _export-btn-click-event = !->
-        _export-form-st-dom.val _page-data-obj.st
-        _export-form-en-dom.val _page-data-obj.en
+        if st === null
+            st = _page-data-obj.today
+        else
+            st = _page-data-obj.st
+        if en === null
+            en = _page-data-obj.today + 24*3600-1
+        else
+            en = _page-data-obj.en
+        _export-form-st-dom.val st
+        _export-form-en-dom.val en
 
     _jump-btn-click-event = !->
         st = _page-data-obj.old-st
