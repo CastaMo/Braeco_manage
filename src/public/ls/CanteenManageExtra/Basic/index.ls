@@ -139,26 +139,15 @@ do ->
 		
 		self.mysubmit = !->
 			show-loading!
-			# for x in $ self .find '.little_pic_li.change'
-			# 	index = $ x .index!
-			# 	self.mychange[index+''] = {}
-			# 	self.mychange[index+''].action = 'change'
-			# self._change_num =0
-			# console.log self.mychange
-			# for key of self.mychange
-			# 	self._change_num += 1
-			# 	if self.mychange[key].action == 'delete'
-			# 		ajax-for-delete key,self._change_num
-			# 	else if  self.mychange[key].action == 'change'
-			# 		ajax-for-token key,self._change_num
-			x = []
-			for x in $ self .find '.little_pic_li.change'
-				key = x.getAttribute 'key'
+			keys = []
+			for x in $ self .find '.little_pic_li.pic:visible'
+				keys.push x.getAttribute 'key'
+			ajax-for-renew(keys)
 
 		after-upload-img = ->
 			close-loading!
-			# set-timeout (!->location.reload!), 2000
-		ajax-for-token = (ob)!->
+			set-timeout (!->location.reload!), 2000
+		ajax-for-token = (ob,n)!->
 			util.ajax {
 				type : 'post'
 				url : '/Pic/Upload/Token/Covertemp'
@@ -166,8 +155,8 @@ do ->
 				success : (result)!->
 					result = JSON.parse result
 					if result.message == 'success'
-						ob.attr 'key',result.key
-						ajax-for-qiniu result,
+						ob.attr 'key',result.key.substr(14)
+						ajax-for-qiniu result,n
 				unavailabled : (result)!->
 					alert '上传失败，请重试'
 				}
@@ -175,7 +164,20 @@ do ->
 			$ '.form' .eq n .find 'input[name=token]' .val data.token
 			$ '.form' .eq n .find 'input[name=key]' .val data.key
 			$ '.form' .eq n .submit!
-			
+		ajax-for-renew =(keys)!->
+			util.ajax {
+				type : 'post'
+				url : '/Dinner/Cover/Renew'
+				async :'true'
+				data : JSON.stringify keys
+				success : (result)!->
+					result = JSON.parse result
+					if result.message == 'success'
+						after-upload-img!
+				unavailabled : (result)!->
+					alert '保存失败，请重试'
+					set-timeout (!->location.reload!), 2000
+				}
 		$ 'iframe' .load !->
 			i = parseInt($ @ .attr 'order' )
 			if(i<=self._change_num)
