@@ -149,7 +149,9 @@ main-manage = let
 				property.choose-dom.html choose-inner-html
 				property.spread-dom.html spread-inner-html
 
-			@name-dom.html @name
+			remark-str = ""
+			if @remark then remark-str = "(#{@remark})"
+			@name-dom.html "#{@name}#{remark-str}"
 			_update-choose-and-spread-dom @
 			@using-num-dom.html @belong-to.length
 

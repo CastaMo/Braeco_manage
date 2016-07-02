@@ -44,7 +44,7 @@ do ->
 					success : (result)!->
 						ajax-callback result
 					unavailabled : (result)!->
-						show-global-message '提交失败，请重试！'
+						alert '提交失败，请重试！'
 					}
 
 		for let blue, i in @blues
@@ -72,14 +72,16 @@ do ->
 			$ '#wrap_contianer' .fadeOut 300
 			self.wraps.eq index .hide!
 		ajax-callback = (result)!->
+			result = JSON.parse result
 			if result.message == 'success'
-				location.reload true
-			else if 'Wrong password'
-				show-global-message '原密码<b>错误</b>,请重新输入'
+				alert '添加成功',true
+				set-timeout (!->location.reload!), 2000
+			else if result.message == 'Wrong password'
+				alert '原密码<b>错误</b>,请重新输入'
 				$ '#wrap_password input' .eq 0 .val ''
 				$ '#wrap_password input' .eq 0 .focus!
 			else
-				show-global-message '提交失败，原因：'+result.message
+				alert '提交失败，原因：'+result.message
 
 	My-inputs = (input)!->
 		# 特殊字符
@@ -116,7 +118,7 @@ do ->
 				$ @ .val($ @ .val().replace myreg,'' )
 			temp.show-message = (str)!->
 				$ temp .focus!
-				show-global-message str
+				alert str
 
 	Wrap-pics = !->
 		self = util.getById 'wrap_pics'
@@ -136,7 +138,6 @@ do ->
 				self.mychange[index+''] = {}
 				self.mychange[index+''].action = 'change'
 			self._change_num =0
-			console.log self.mychange
 			for key of self.mychange
 				self._change_num += 1
 				if self.mychange[key].action == 'delete'
@@ -145,11 +146,11 @@ do ->
 					ajax-for-token key,self._change_num
 		afte-upload-img = ->
 			text
-			for key of self.mychange
-				text = key + ':' + self.mychange[key].result+'<br>'
-			show-global-message text
+			for key,val of self.mychange
+				text = key + ':' + val.result+'<br>'
+			alert text
 			close-loading!
-		ajax-for-token = (n,file,order)!->
+		ajax-for-token = (n,order)!->
 			util.ajax {
 				type : 'post'
 				url : '/pic/upload/token/cover/' + n
@@ -157,17 +158,16 @@ do ->
 				success : (result)!->
 					result = JSON.parse result
 					if result.message == 'success'
-						ajax-for-qiniu data,n,order
+						ajax-for-qiniu result,n,order
 				unavailabled : (result)!->
 					self.mychange[i+''].result='上传失败，请重试'
-				always : (result)!->
-					
 				}
 		ajax-for-qiniu = (data,n,order)!->
-			$ 'iframe' .eq(0).attr 'order',order
+			console.log n
+			$ 'iframe' .eq n .attr 'order',order
 			$ '.form' .eq n .find 'input[name=token]' .val data.token
 			$ '.form' .eq n .find 'input[name=key]' .val data.key
-			$ '.form' .get n .submit!
+			$ '.form' .eq n .submit!
 			
 		ajax-for-delete = (n,order)!->
 			util.ajax {
@@ -177,15 +177,16 @@ do ->
 				success : (result)!->
 					result = JSON.parse result
 					if result.message == 'success'
-						self.mychange[i+''].result='删除成功'
+						self.mychange[n+''].result='删除成功'
 				always : (result)!->
 					if order==self._change_num
 						afte-upload-img!
 				unavailabled : (result)!->
 					self.mychange[i+''].result='删除失败，请重试!'
 			}
-		$ 'iframe' .load ->
-			i = parseInt($ @ .attr 'order')
+		$ 'iframe' .load !->
+			console.log 'loading...'+($ @ .attr 'order')
+			i = parseInt($ @ .attr 'order' )
 			if(i<=self._change_num)
 				self.mychange[i+''].result = '上传成功！'
 				if i == self._change_num
@@ -200,7 +201,7 @@ do ->
 		# *************** 没有菊花图，家荣那里有一种 ***************
 		# **********************************************************
 		show-loading = (index)!->
-			console.log '正在上传'
+			alert '正在上传...'
 		close-loading = !->
 			console.log '关闭菊花'
 		add-img-input = !->
@@ -270,13 +271,7 @@ do ->
 
 
 	time-out-id = ''
-	# 显示全局信息提示
-	show-global-message = (str)->
-		ob = $ '#global_message' 
-		ob.show!
-		ob.html str 
-		clearTimeout time-out-id
-		time-out-id := setTimeout('$("#global_message").fadeOut(300)',2000)
+
 	_uplad-imgs = new Wrap-pics!
 	wrap = new My-wrap!
 
@@ -284,11 +279,13 @@ do ->
 # *********************************** 初始  **************************************
 # ********************************************************************************
 	_main-init =(d)!->
-		$ '.info_value' .eq(0).text d.data.phone
-		$ '.info_value' .eq(1).text d.data.email
-		$ '.info_value' .eq(2).text d.data.dinner_name
-		$ '.info_value' .eq(3).text d.data.address
-		$ '.info_value' .eq(4).text d.data.contact_phone
+
+		$ '.info_value' .eq 0 .text d.data.phone
+		_set-or-edit($ '.info_value' .eq(1),d.data.email)
+		$ '.info_value' .eq 2 .text d.data.dinner_name
+		_set-or-edit($ '.info_value' .eq(3),d.data.address)
+		_set-or-edit($ '.info_value' .eq(4),d.data.contact_phone)
+
 		$ '.info_value.info_img:eq(0) img' .attr 'src',d.data.covers[0]
 		for x,i in d.data.covers
 			$ '#carousel .carousel_imgs' .append('<img class="carousel_img" src="'+x+'"></img>')
@@ -299,12 +296,19 @@ do ->
 			newPic.find 'form' .attr('target','res'+i)
 			newPic.find 'iframe' .attr('name','res'+i)
 			newPic.insertBefore($ '.little_pic_li:last' )
+			if i>=4
+				$ '.little_pic_li:last' .remove!
 		if d.data.wxpay
 			$ '.info_value.info_img1 img' .attr 'src',d.data.wxpay.qrurl
 			for x in d.data.wxpay.printer
 				$ '.wrap_printers' .eq 0 .append('<label class="printer">'+x.remark+'<input value="' + x.id + '" name="printer" type="radio"></label>')
 		carousel = new My-carousel $ '#carousel'
 		inputs = new My-inputs $ '.wrap:not(#wrap_pics) input' 
+	_set-or-edit =(ob,x)!->
+		if x!=undefined
+			ob.text x
+		else
+			ob.next!.text('设置')
 
 	if window.all-data 
 		then _main-init JSON.parse window.all-data; window.all-data = null;

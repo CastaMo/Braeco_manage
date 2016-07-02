@@ -26,7 +26,7 @@ require-manage = let
 		}
 
 	_correct-URL = {
-		"modify"		:		(ajax-object,data)-> ajax-object.url += ""
+		"modify"		:		(ajax-object,data)-> ajax-object.url += "z"
 	}
 
 	_set-header = {}

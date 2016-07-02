@@ -240,6 +240,21 @@ module.exports = function(grunt) {
                 port: '<%= secret.port %>',
                 createDirectories: true
             },
+            config: {
+                options: {
+                    path: '<%= secret.path %>/application'
+                },
+                files: {
+                    "./": ["<%= dirs.dest_path %>public/<%= dirs.version %>**/main.min*.js",
+                        "<%= dirs.dest_path %>public/<%= dirs.version %>**/extra.min*.js",
+                        "<%= dirs.dest_path %>public/<%= dirs.version %>**/main.min*.css",
+                        "<%= dirs.dest_path %>public/<%= dirs.version %>**/extra.min*.css",
+                        "<%= dirs.dest_path %>public/<%= dirs.version %>**/base64.min*.css",
+                        "<%= dirs.dest_path %>public/**/specialCommon/**",
+                        "<%= dirs.dest_path %>public/<%= dirs.version %>**/hash.json"
+                    ]
+                }
+            },
             module_static: {
                 options: {
                     path: '<%= secret.path %>/application'
@@ -254,21 +269,6 @@ module.exports = function(grunt) {
                 },
                 files: {
                     "./": ["<%= dirs.dest_path %>module/**/*.php"]
-                }
-            },
-            config: {
-                options: {
-                    path: '<%= secret.path %>/application'
-                },
-                files: {
-                    "./": ["<%= dirs.dest_path %>public/<%= dirs.version %>**/main.min*.js",
-                        "<%= dirs.dest_path %>public/<%= dirs.version %>**/extra.min*.js",
-                        "<%= dirs.dest_path %>public/<%= dirs.version %>**/main.min*.css",
-                        "<%= dirs.dest_path %>public/<%= dirs.version %>**/extra.min*.css",
-                        "<%= dirs.dest_path %>public/<%= dirs.version %>**/base64.min*.css",
-                        "<%= dirs.dest_path %>public/**/specialCommon/**",
-                        "<%= dirs.dest_path %>public/<%= dirs.version %>**/hash.json"
-                    ]
                 }
             }
         },

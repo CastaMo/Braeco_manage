@@ -66,7 +66,9 @@ class SubitemMainView extends VBase
 	update-subitem-dom-by-id: (subitem-id)!->
 		subitem = @subitem-main-controller.get-subitem-by-id subitem-id
 		subitem-dom-object = @all-subitem-doms[subitem-id]
-		subitem-dom-object.name-dom.html subitem.name
+
+
+		subitem-dom-object.name-dom.html "#{subitem.name}"
 		subitem-dom-object.remark-dom.html subitem.remark
 
 		if subitem.type is "static_combo"

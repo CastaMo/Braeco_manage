@@ -1,6 +1,7 @@
 main-manage = let
 	page = require_ = null
 	jumpPage = null
+	_isSearchValid = 0
 	_length = ""
 	[get-JSON, deep-copy] = [util.get-JSON, util.deep-copy]
 	activityArr = $("")
@@ -25,13 +26,13 @@ main-manage = let
 			if event.keyCode is 13 then _search-dom.trigger "click"
 
 		$('#_input1').keyup !->
-			if event.keyCode is 13 then _save-dom.trigger "click"
+			if event.keyCode is 13 then _modify-save-dom.trigger "click"
 
 		$('#_input2').keyup !->
-			if event.keyCode is 13 then _save-dom.trigger "click"
+			if event.keyCode is 13 then _recharge-save-dom.trigger "click"
 
 		$('#_suppPhone').keyup !->
-			if event.keyCode is 13 then _save-dom.trigger "click"
+			if event.keyCode is 13 then _recharge-save-dom.trigger "click"
 
 		$("._jump-input").keyup !->
 			if event.keyCode is 13 then _jump-dom.trigger "click"
@@ -40,8 +41,9 @@ main-manage = let
 	_init-all-blur = !->
 		$("._searchInput").blur !->
 			if $('._searchInput').val() == '' or /^[1-9]\d*$/.test($('._searchInput').val())
-				return true
+				_isSearchValid := 0
 			else
+				_isSearchValid := 1
 				$('._searchInput').val('')
 				alert('搜索会员只能输入数字')
 				return false
@@ -82,7 +84,8 @@ main-manage = let
 		_search-dom.click !->
 			searchNum = $('._searchInput').val!
 			searchNum = Number(searchNum)
-			location.href = "/Manage/Market/Member/List?search=" + searchNum
+			if _isSearchValid is 0
+				location.href = "/Manage/Market/Member/List?search=#{searchNum}"		
 
 		_last-page-dom.click !->
 			pageArrJSON = $('#page-JSON-field').html!
@@ -115,6 +118,10 @@ main-manage = let
 
 		_modify-save-dom.click !->
 			if $('#_input1').val() != ''
+				if $('#_input1').val() > 1000000
+					$('#_input1').val('')
+					alert('请输入0-1000000的整数')
+					return
 				_length = _members.length
 				modify-input = $('#_input1').val!
 				parentID = $('.displayID').html!
@@ -126,12 +133,16 @@ main-manage = let
 						JSON 	:		JSON.stringify(request-object)
 						user-id :		parentID;
 					}
-					success 	:		(result)!-> location.reload!
+					callback 	:		(succes)!-> location.reload!
 				}
 			else alert('修改失败')
 
 		_recharge-save-dom.click !->
 			if $('#_input2').val() != ''
+				if $('#_input2').val() > 10000
+					$('#_input2').val('')
+					alert('请输入1-10000的整数')
+					return
 				_length = _members.length
 				parentID = $('.displayID').html!
 				recharge-input = $('#_input2').val!
@@ -147,7 +158,7 @@ main-manage = let
 						JSON 	:		JSON.stringify(request-object)
 						user-id :		parentID;
 					}
-					success 	:		(result)!-> location.reload!
+					callback 	:		(succes)!-> location.reload!
 				}
 			else alert('充值失败')
 

@@ -30,6 +30,8 @@ main-manage = let
     
     _hover-timer = null
     _leave-timer = null
+
+    _is-one-pinned = false
     
     _construct-url = (st,en,pn,type)->
         if st === null
@@ -82,6 +84,8 @@ main-manage = let
         _page-data-obj.en = _page-data-obj.en-8*3600+24*3600-1
     
     _tr-hover-event = (event) !->
+        if _is-one-pinned
+            return
         target = $ event.target
         while not target.is('tr')
             target = $ target.parent!
@@ -90,6 +94,8 @@ main-manage = let
         order-details-container.show!
     
     _tr-leave-event = (event) !->
+        if _is-one-pinned
+            return
         target = $ event.target
         while not target.is('tr')
             target = $ target.parent!
@@ -244,36 +250,77 @@ main-manage = let
         sum
     
     _gene-order-details-container =(data-obj)->
-       container-dom = $ "<div class='order-details-container'></div>"
-       container-dom.append $ "<div class='order-details-header order-details-header-image'>"+data-obj.serial+"</div>"
-       order-details-body-dom = $ "<div class='order-details-body'></div>"
-       order-details-body-dom.append $ "<p class='order-pay-method'>"+data-obj.channel+"</p>"
-       order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"</p>"
+        container-dom = $ "<div class='order-details-container'></div>"
+        order-details-header-dom = $ "<div class='order-details-header order-details-header-image'><p>"+data-obj.serial+
+        "</p></div>"
+        pin-icon-dom = "<icon class='pin-icon unpinned-icon'></icon>"
+        order-details-header-dom.append pin-icon-dom
+        container-dom.append order-details-header-dom
+        order-details-body-dom = $ "<div class='order-details-body'></div>"
+        order-details-body-dom.append $ "<p class='order-pay-method'>"+data-obj.channel+"</p>"
+        order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"</p>"
        
-       infomation-dom = $ "<div class='order-infomation info-number'></div>"
-       infomation-dom.append $ "<span>会员编号： </span><span>"+data-obj.eaterid_of_dinner+"</span>"
-       order-details-body-dom.append infomation-dom
-       
-       infomation-dom = $ "<div class='order-infomation info-order-pay-time'></div>"
-       unix-timestamp = parse-int data-obj.create_date
-       date = _unix-timestamp-to-date unix-timestamp
-       infomation-dom.append $ "<span>成交时间： </span><span>"+date+"</span>"
-       order-details-body-dom.append infomation-dom
-       
-       infomation-dom = $ "<div class='order-infomation info-order-number'></div>"
-       infomation-dom.append $ "<span>订单号： </span>"
-       infomation-dom.append $ "<span>"+data-obj.id+"</span>"
-       order-details-body-dom.append infomation-dom
+        infomation-dom = $ "<div class='order-infomation info-number'></div>"
+        infomation-dom.append $ "<span>会员编号： </span><span>"+data-obj.eaterid_of_dinner+"</span>"
+        order-details-body-dom.append infomation-dom
+        
+        infomation-dom = $ "<div class='order-infomation info-order-pay-time'></div>"
+        unix-timestamp = parse-int data-obj.create_date
+        date = _unix-timestamp-to-date unix-timestamp
+        infomation-dom.append $ "<span>成交时间： </span><span>"+date+"</span>"
+        order-details-body-dom.append infomation-dom
+        
+        infomation-dom = $ "<div class='order-infomation info-order-number'></div>"
+        infomation-dom.append $ "<span>订单号： </span>"
+        infomation-dom.append $ "<span>"+data-obj.id+"</span>"
+        order-details-body-dom.append infomation-dom
 
-       order-details-body-dom.append _gene-food-block-dom data-obj.content
+        order-details-body-dom.append _gene-food-block-dom data-obj.content
+
+        order-details-body-dom.append _gene-promotion-block-dom data-obj.content
        
-       order-details-body-dom.append _gene-promotion-block-dom data-obj.content
-       
-       order-details-body-dom.append _gene-sum-block-dom data-obj.content, data-obj.price
-       
-       
-       container-dom.append order-details-body-dom
-       container-dom
+        order-details-body-dom.append _gene-sum-block-dom data-obj.content, data-obj.price
+
+        container-dom.append order-details-body-dom
+        container-dom.click !-> _order-details-container-click-event event
+        container-dom
+
+    _order-details-container-click-event = (event)!->
+        target = $ event.target
+        while not target.has-class 'order-details-container'
+            target = $ target.parent!
+        container-dom = target
+        target = $ event.target
+        if target.is "icon" and target.has-class "pin-icon"
+            if _is-one-pinned
+                target.remove-class 'pinned-icon'
+                target.add-class 'unpinned-icon'
+                container-dom.remove-attr 'id'
+                _is-one-pinned := false
+                return
+        icon = container-dom.find ".order-details-header .pin-icon"
+        icon.remove-class 'unpinned-icon'
+        icon.add-class 'pinned-icon'
+        _is-one-pinned := true
+        container-dom.attr "id","pinned-order-container"
+
+    _html-click-event = (event)!->
+        if _is-one-pinned === false
+            return
+        target = $ event.target
+        is-outside = true
+        while (not target.is 'html') and _is-one-pinned
+            if (target.attr 'id') === 'pinned-order-container'
+                is-outside := false
+            target = target.parent!
+        if is-outside
+            pinned-container-dom = $ "\#pinned-order-container"
+            icon = pinned-container-dom.find ".order-details-header .pin-icon"
+            icon.remove-class 'pinned-icon'
+            icon.add-class 'unpinned-icon'
+            pinned-container-dom.hide!
+            pinned-container-dom.remove-attr "id"
+            _is-one-pinned := false
 
 
     _gene-tr-dom = (data-obj)->
@@ -306,7 +353,7 @@ main-manage = let
             refund-method-container-dom.click !-> _refund-method-container-click-event data-obj
         else
             refund-method-container-dom.append $ "<icon class='refund-disable-icon'></icon>"
-            refund-method-container-dom.append $ "<p style='color: #8d8d8d'>退款</p>"
+            refund-method-container-dom.append $ "<p class='refund-disable-word'>退款</p>"
             refund-method-container-dom.append $ "<div class='refund-disable-description'><p>"+data-obj.refund+"</p></div>"
             $(refund-method-container-dom.find "icon").hover !-> _refund-disable-container-hover-event event
         td-methods-dom.append refund-method-container-dom
@@ -349,6 +396,7 @@ main-manage = let
         _jump-btn-dom.click !-> _jump-btn-click-event!
         _start-date-input-dom.change !-> _start-date-input-dom-change-event!
         _end-date-input-dom.change !-> _end-date-input-dom-change-event!
+        ($ "html").click !-> _html-click-event event
 
     _init-page-info = !->
         st = _page-data-obj.st
