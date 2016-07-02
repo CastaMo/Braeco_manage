@@ -57,6 +57,8 @@ main-manage = let
         location.href = _construct-url st,en,pn,type
     
     _export-btn-click-event = !->
+        st = _page-data-obj.st
+        en = _page-data-obj.en
         if st === null
             st = _page-data-obj.today
         else
