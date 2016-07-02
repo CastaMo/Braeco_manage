@@ -20,7 +20,7 @@ block content
 					.info_value 杯口咖啡
 					.blue#change_password 重置密码
 			.info_li
-				.info_desc 邮箱地址
+				.info_desc 邮箱
 				.info_value 1@qq.com
 				.blue#change_email 修改
 		.myli
@@ -137,8 +137,56 @@ block content
 						span 最多上传5张图片
 					.little_pics
 						.little_pic_li
-							iframe(name='' class='iframe')
-							form.form(target = '' enctype="multipart/form-data" action="http://upload.qiniu.com/" method="post")
+							iframe(name='res0' class='iframe')
+							form.form(target = 'res0' enctype="multipart/form-data" action="http://upload.qiniu.com/" method="post")
+								input(type='file' name='file')
+								input(type='text' name='token')
+								input(type='text' name='key')
+							.little_pic
+								img
+								.delet_img
+							.empty_pic
+								.cross
+								span 点击上传图片
+						.little_pic_li
+							iframe(name='res1' class='iframe')
+							form.form(target = 'res1' enctype="multipart/form-data" action="http://upload.qiniu.com/" method="post")
+								input(type='file' name='file')
+								input(type='text' name='token')
+								input(type='text' name='key')
+							.little_pic
+								img
+								.delet_img
+							.empty_pic
+								.cross
+								span 点击上传图片
+						.little_pic_li
+							iframe(name='res2' class='iframe')
+							form.form(target = 'res2' enctype="multipart/form-data" action="http://upload.qiniu.com/" method="post")
+								input(type='file' name='file')
+								input(type='text' name='token')
+								input(type='text' name='key')
+							.little_pic
+								img
+								.delet_img
+							.empty_pic
+								.cross
+								span 点击上传图片
+						.little_pic_li
+							iframe(name='res3' class='iframe')
+							form.form(target = 'res3' enctype="multipart/form-data" action="http://upload.qiniu.com/" method="post")
+								input(type='file' name='file')
+								input(type='text' name='token')
+								input(type='text' name='key')
+							.little_pic
+								img
+								.delet_img
+							.empty_pic
+								.cross
+								span 点击上传图片
+						.little_pic_li
+							iframe(name='res4' class='iframe')
+							form.form(target = 'res4' enctype="multipart/form-data" action="http://upload.qiniu.com/" method="post")
 								input(type='file' name='file')
 								input(type='text' name='token')
 								input(type='text' name='key')
