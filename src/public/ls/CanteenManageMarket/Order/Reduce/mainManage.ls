@@ -26,32 +26,48 @@ main-manage = let
         edit.get-promotion-and-init _order-promotion
         page.toggle-page "edit"
 
+    _reduce-start-btn-click-event = !->
+        _start-reduce-event!
+
+    _start-cancel-btn-click-event = !->
+        _start-alert-block-dom.hide!
+
+    _start-comfirm-btn-click-event = !->
+        location.href = "/Manage/Market/Activity"
+
     _reduce-stop-btn-click-event = !->
-        _stop-alert-block-dom.show!
+        if _start-alert-block-dom.is ":hidden"
+            _stop-alert-block-dom.show!
 
     _stop-cancel-btn-click-event = !->
         _stop-alert-block-dom.hide!
 
     _stop-comfirm-btn-click-event = !->
         _stop-reduce-event!
-
-    _start-comfirm-btn-click-event = !->
-        location.href = "/Manage/Market/Activity"
+        _stop-alert-block-dom.hide!
 
     _start-reduce-event = !->
         $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Reduce/Turn/On",\
-            dataType: "JSON", contentType: "application/json", success: _start-reduce-success}
+            dataType: "JSON", contentType: "application/json", success: _start-reduce-success, error: _start-refuce-fail}
 
     _stop-reduce-event = !->
         $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Reduce/Turn/Off",\
-            dataType: "JSON", contentType: "application/json", success: _stop-reduce-success}
+            dataType: "JSON", contentType: "application/json", success: _stop-reduce-success, error: _stop-reduce-fail}
 
     _start-reduce-success = !->
         _start-alert-block-dom.show!
         _reduce-on!
 
+    _start-refuce-fail = !->
+        alert "请求开启满减失败"
+        location.reload!
+
     _stop-reduce-success = !->
         _reduce-stoping!
+
+    _stop-reduce-fail = !->
+        alert "请求停止满减失败"
+        location.reload!
 
     _body-click-event = (event)!->
         if (not ($ event.target).is ".reduce-start-btn") and _start-alert-block-dom.is ':visible'
@@ -60,9 +76,11 @@ main-manage = let
             _stop-alert-block-dom.hide!
 
     _reduce-stoping = !->
+        _reduce-start-btn-dom.remove-class "reduce-start-btn-able"
         _reduce-start-btn-dom.add-class "reduce-start-btn-disable"
         _reduce-start-btn-dom.text "启用满减"
         _reduce-start-btn-dom.click !-> _start-reduce-event!
+        _reduce-stop-btn-dom.remove-class "reduce-stop-btn-able"
         _reduce-stop-btn-dom.add-class "reduce-stop-btn-disable"
         _reduce-stop-btn-dom.text "满减停用中"
         _reduce-stop-btn-dom.unbind "click"
@@ -72,15 +90,16 @@ main-manage = let
 
     _reduce-on = !->
         _reduce-start-btn-dom.remove-class "reduce-start-btn-disable"
+        _reduce-start-btn-dom.add-class "reduce-start-btn-able"
         _reduce-start-btn-dom.text "满减启用中"
         _reduce-start-btn-dom.unbind "click"
         _reduce-stop-btn-dom.remove-class "reduce-stop-btn-disable"
+        _reduce-stop-btn-dom.add-class "reduce-stop-btn-able"
         _reduce-stop-btn-dom.text "停止满减"
         _reduce-stop-btn-dom.click !-> _reduce-stop-btn-click-event!
         _content-business-block-dom.remove-class "content-disabled"
         _content-ladder-block-dom.remove-class "content-disabled"
         $ "\#order-reduce-main .edit-infomation-content" .remove-class "content-disabled"
-
 
     _init-dom = !->
         if _order-promotion.reduce_ladder.length === 0
@@ -100,9 +119,10 @@ main-manage = let
 
     _init-all-event = !->
         _edit-btn-dom.click !-> _edit-btn-click-event!
-        _stop-comfirm-btn-dom.click !-> _stop-comfirm-btn-click-event!
         _start-comfirm-btn-dom.click !-> _start-comfirm-btn-click-event!
-        $ "body" .click !-> _body-click-event event
+        _start-cancel-btn-dom.click !-> _start-cancel-btn-click-event!
+        _stop-comfirm-btn-dom.click !-> _stop-comfirm-btn-click-event!
+        _stop-cancel-btn-dom.click !-> _stop-cancel-btn-click-event!
         
     _init-depend-module = !->
         page 	:= require "./pageManage.js"

@@ -31,7 +31,8 @@ edit-manage = let
             console.log JSON.stringify result
             json-result = JSON.stringify result
             $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Give/Update", data: json-result,\
-                dataType: "JSON", contentType: "application/json", success: _update-presentation-success}
+                dataType: "JSON", contentType: "application/json", success: _update-presentation-success, error: _update-presentation-fail}
+            _set-save-button-disable!
 
     _checkbox-change-event = (event)!->
         checkbox = $ event.target
@@ -44,8 +45,21 @@ edit-manage = let
             parent.add-class 'unchecked-checkbox-item'
 
     _update-presentation-success = (data)!->
-        console.log data
-        location.reload!
+        _set-save-button-able!
+        if data.message === 'success'
+            location.reload!
+        else
+            alert "请求修改规则失败"
+
+    _update-presentation-fail = (data)!->
+        _set-save-button-able!
+        alert "请求修改规则失败"
+
+    _set-save-button-disable = !->
+        _save-btn-dom.prop 'disabled', true
+
+    _set-save-button-able = !->
+        _save-btn-dom.prop 'disabled', false
 
     _reset-dom =!->
         _ladder-content-dom.empty!
