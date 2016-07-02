@@ -59,22 +59,28 @@ main-manage = let
 
 		_level-cancel-btn-dom.click !->
 			$('#modify-level .stop-confirm').fade-in 100
+			$('#modify-level .confirm-mask').fade-in 100
 
 		_charge-cancel-btn-dom.click !->
 			$('#modify-recharge .stop-confirm').fade-in 100
+			$('#modify-recharge .confirm-mask').fade-in 100
 
 		_level-confirm-btn-dom.click !->
 			$('#modify-level .stop-confirm').fade-out 100
+			$('#modify-level .confirm-mask').fade-out 100
 
 		_charge-confirm-btn-dom.click !->
 			$('#modify-recharge .stop-confirm').fade-out 100
+			$('#modify-recharge .confirm-mask').fade-out 100
 
 		_level-cancel-confirm-btn-dom.click !->
 			$('#modify-level .stop-confirm').fade-out 100
+			$('#modify-level .confirm-mask').fade-out 100
 			page.toggle-page "basic"
 
 		_charge-cancel-confirm-btn-dom.click !->
 			$('#modify-recharge .stop-confirm').fade-out 100
+			$('#modify-recharge .confirm-mask').fade-out 100
 			page.toggle-page "basic"
 
 		_level-finish-btn-dom.click !->
@@ -96,7 +102,7 @@ main-manage = let
 					data 		:		{
 						JSON 	:		JSON.stringify(request-object)
 					}
-					callback 	:		(result)!-> location.reload!
+					callback 	:		(result)!-> alert('修改成功', true);setTimeout('location.reload()', 2000)
 				}
 			else alert('修改失败，请注意各项大小')
 
@@ -113,7 +119,7 @@ main-manage = let
 					data 		:		{
 						JSON 	:		JSON.stringify(request-object)
 					}
-					callback 	:		(result)!-> location.reload!
+					callback 	:		(result)!-> alert('修改成功', true);setTimeout('location.reload()', 2000)
 				}
 			else alert('修改失败，请注意各项大小')
 
