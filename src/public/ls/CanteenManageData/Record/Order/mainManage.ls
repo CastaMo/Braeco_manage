@@ -15,8 +15,10 @@ main-manage = let
     _end-date-input-dom = $ '\#record-order-main .end-date'
     _search-btn-dom = $ "\#record-order-main .search-btn"
     _export-form-dom = $ "\#record-order-main \#export-form"
+    _export-form-class-dom = $ "\#record-order-main \#export-form-class"
     _export-form-st-dom = $ "\#record-order-main \#export-form-st"
     _export-form-en-dom = $ "\#record-order-main \#export-form-en"
+    _export-form-type-dom = $ "\#record-order-main \#export-form-type"
     _export-btn-dom = $ "\#record-order-main .export-btn"
     
     _pre-page-url-dom = $ ".ro-container-paginate .pre-page-url"
@@ -63,6 +65,7 @@ main-manage = let
             en = _page-data-obj.today + 24*3600-1
         else
             en = _page-data-obj.en
+        _export-form-type-dom.val _type-filter-dom.val!
         _export-form-st-dom.val st
         _export-form-en-dom.val en
         
