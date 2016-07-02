@@ -25,6 +25,7 @@ main-manage = let
 		console.log "all", all
 
 	_init-table = !->
+		$("html, body").animate({ scrollTop: 0 }, "fast");
 		console.log "printer", printer
 		console.log "categories", categories
 		console.log "tables", tables
