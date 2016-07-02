@@ -92,47 +92,48 @@ module.exports = function(passport) {
 	// });
 
 	router.post('/dinner/printer/get', function(req, res, next) {
-		res.json({
-			"message": "success",
-			"printer": [
-				{
-			    "id": 159,
-				"width": 0,
-				"size": 18,
-				"page": 1,
-				"name": "815501495",
-				"remark": "杯口-无切刀",
-				"ban": [],
-				"ban_cat": [],
-				"offset": 0,
-				"separate": 0
-				},
-				{
-			    "id": 160,
-				"width": 0,
-				"size": 18,
-				"page": 1,
-				"name": "815501495",
-				"remark": "杯口-无切刀-分开",
-				"ban": [],
-				"ban_cat": [],
-				"offset": 0,
-				"separate": 1
-				},
-				{
-			    "id": 162,
-				"width": 0,
-				"size": 18,
-				"page": 1,
-				"name": "815502045",
-				"remark": "闲置2",
-				"ban": [],
-				"ban_cat": [],
-				"offset": 0,
-				"separate": 0
-				}
-			]
-		});
+		res.status(500).send('hello world');
+		// res.json({
+		// 	"message": "success",
+		// 	"printer": [
+		// 		{
+		// 	    "id": 159,
+		// 		"width": 0,
+		// 		"size": 18,
+		// 		"page": 1,
+		// 		"name": "815501495",
+		// 		"remark": "杯口-无切刀",
+		// 		"ban": [],
+		// 		"ban_cat": [],
+		// 		"offset": 0,
+		// 		"separate": 0
+		// 		},
+		// 		{
+		// 	    "id": 160,
+		// 		"width": 0,
+		// 		"size": 18,
+		// 		"page": 1,
+		// 		"name": "815501495",
+		// 		"remark": "杯口-无切刀-分开",
+		// 		"ban": [],
+		// 		"ban_cat": [],
+		// 		"offset": 0,
+		// 		"separate": 1
+		// 		},
+		// 		{
+		// 	    "id": 162,
+		// 		"width": 0,
+		// 		"size": 18,
+		// 		"page": 1,
+		// 		"name": "815502045",
+		// 		"remark": "闲置2",
+		// 		"ban": [],
+		// 		"ban_cat": [],
+		// 		"offset": 0,
+		// 		"separate": 0
+		// 		}
+		// 	]
+		// });
 	});
 
 	router.post('/order/reprint/:orderid', function(req, res, next) {
@@ -140,26 +141,28 @@ module.exports = function(passport) {
 		var printer = req.body;
 		console.log(orderid);
 		console.log(printer);
-		res.json({'message':'success'});
+		res.status(500).send({'message': 'error'});
+		// res.json({'message':'success'});
 	});
 
 	router.post('/order/refund/:orderid', function(req, res, next) {
-		var orderid = req.params.orderid;
-		var data = req.body;
-		console.log(orderid);
-		console.log(data);
-		setTimeout(function() {
-			var r = Math.floor(Math.random() * (3 - 0 + 1) + 0);
-			if (r == 0) {
-				res.json({"message":"success"});
-			} else if (r == 1) {
-				res.json({"message":"Order not found"});
-			} else if (r == 2) {
-				res.json({"message":"Invalid dish to refund"});
-			} else {
-				res.json({"message":"Need to upload cert of wx pay"});
-			}
-		}, 1000);
+		// var orderid = req.params.orderid;
+		// var data = req.body;
+		// console.log(orderid);
+		// console.log(data);
+		// setTimeout(function() {
+		// 	var r = Math.floor(Math.random() * (3 - 0 + 1) + 0);
+		// 	if (r == 0) {
+		// 		res.json({"message":"success"});
+		// 	} else if (r == 1) {
+		// 		res.json({"message":"Order not found"});
+		// 	} else if (r == 2) {
+		// 		res.json({"message":"Invalid dish to refund"});
+		// 	} else {
+		// 		res.json({"message":"Need to upload cert of wx pay"});
+		// 	}
+		// }, 1000);
+		res.status(500).send({'message': 'error'});
 	});
 
 	router.post('/Dinner/Manage/Orders/Excel', function(req, res, next) {

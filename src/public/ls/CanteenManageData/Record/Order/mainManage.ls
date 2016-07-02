@@ -82,7 +82,7 @@ main-manage = let
         end-date = _end-date-input-dom.val!
         _page-data-obj.en = _date-to-unix-timestamp new Date end-date
         _page-data-obj.en = _page-data-obj.en-8*3600+24*3600-1
-    
+
     _tr-hover-event = (event) !->
         if _is-one-pinned
             return
@@ -285,6 +285,21 @@ main-manage = let
         container-dom.click !-> _order-details-container-click-event event
         container-dom
 
+    _tr-click-event = (event) !->
+        # if _is-one-pinned
+        #     return
+        # target = $ event.target
+        # while not target.is 'tr'
+        #     target = $ target.parent!
+        # td-water-number = target.find '.td-water-number'
+        # container-dom = td-water-number.find '.order-details-container'
+        # icon = container-dom.find ".order-details-header .pin-icon"
+        # icon.remove-class 'unpinned-icon'
+        # icon.add-class 'pinned-icon'
+        # _is-one-pinned := true
+        # container-dom.attr "id","pinned-order-container"
+        # event.stop-propagation!
+
     _order-details-container-click-event = (event)!->
         target = $ event.target
         while not target.has-class 'order-details-container'
@@ -321,11 +336,18 @@ main-manage = let
             pinned-container-dom.hide!
             pinned-container-dom.remove-attr "id"
             _is-one-pinned := false
-
+            target = $ event.target
+            while not target.is 'html'
+                if target.is 'tr' and target.parent!.is 'tbody'
+                    console.log "html tr click"
+                    target.trigger 'mouseenter'
+                    break
+                target = target.parent!
 
     _gene-tr-dom = (data-obj)->
         tr-dom = $ "<tr></tr>"
         tr-dom.hover !-> (_tr-hover-event event), !-> _tr-leave-event event
+        tr-dom.click !-> _tr-click-event event
         unix-timestamp = parse-int data-obj.create_date
         date = _unix-timestamp-to-date unix-timestamp
         tr-dom.append $ "<td>"+date+"</td>"

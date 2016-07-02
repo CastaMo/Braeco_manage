@@ -26,33 +26,48 @@ main-manage = let
         edit.get-promotion-and-init _order-promotion
         page.toggle-page "edit"
 
+    _presentation-start-btn-click-event = !->
+        _start-presentation-event!
+
+    _start-cancel-btn-click-event = !->\
+        _start-alert-block-dom.hide!
+
+    _start-comfirm-btn-click-event = !->
+        location.href = "/Manage/Market/Activity"
+
     _presentation-stop-btn-click-event = !->
-        _stop-alert-block-dom.show!
+        if _start-alert-block-dom.is ":hidden"
+            _stop-alert-block-dom.show!
 
     _stop-cancel-btn-click-event = !->
         _stop-alert-block-dom.hide!
 
     _stop-comfirm-btn-click-event = !->
         _stop-presentation-event!
-
-    _start-comfirm-btn-click-event = !->
-        location.href = "/Manage/Market/Activity"
+        _stop-alert-block-dom.hide!
         
     _start-presentation-event = !->
         $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Give/Turn/On",\
-            dataType: "JSON", contentType: "application/json", success: _start-presentation-success}
+            dataType: "JSON", contentType: "application/json", success: _start-presentation-success, error: _start-presentation-fail}
 
     _stop-presentation-event = !->
         $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Give/Turn/Off",\
-            dataType: "JSON", contentType: "application/json", success: _stop-presentation-success}
-
+            dataType: "JSON", contentType: "application/json", success: _stop-presentation-success, error: _stop-presentation-fail}
 
     _start-presentation-success = (data)!->
         _start-alert-block-dom.show!
         _give-on!
 
+    _start-presentation-fail = (data)!->
+        alert "请求开启满送失败"
+        location.reload!
+
     _stop-presentation-success = (data)!->
         _give-stoping!
+
+    _stop-presentation-fail = (data)!->
+        alert "请求停止满送失败"
+        location.reload!
 
     _body-click-event = (event)!->
         if (not ($ event.target).is ".presentation-start-btn") and _start-alert-block-dom.is ':visible'
@@ -104,9 +119,10 @@ main-manage = let
 
     _init-all-event = !->
         _edit-btn-dom.click !-> _edit-btn-click-event!
-        _stop-comfirm-btn-dom.click !-> _stop-comfirm-btn-click-event!
         _start-comfirm-btn-dom.click !-> _start-comfirm-btn-click-event!
-        $ "body" .click !-> _body-click-event event
+        _start-cancel-btn-dom.click !-> _start-cancel-btn-click-event!
+        _stop-comfirm-btn-dom.click !-> _stop-comfirm-btn-click-event!
+        _stop-cancel-btn-dom.click !-> _stop-cancel-btn-click-event!
         
     _init-depend-module = !->
         page    := require "./pageManage.js"

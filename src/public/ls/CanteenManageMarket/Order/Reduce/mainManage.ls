@@ -26,32 +26,48 @@ main-manage = let
         edit.get-promotion-and-init _order-promotion
         page.toggle-page "edit"
 
+    _reduce-start-btn-click-event = !->
+        _start-reduce-event!
+
+    _start-cancel-btn-click-event = !->
+        _start-alert-block-dom.hide!
+
+    _start-comfirm-btn-click-event = !->
+        location.href = "/Manage/Market/Activity"
+
     _reduce-stop-btn-click-event = !->
-        _stop-alert-block-dom.show!
+        if _start-alert-block-dom.is ":hidden"
+            _stop-alert-block-dom.show!
 
     _stop-cancel-btn-click-event = !->
         _stop-alert-block-dom.hide!
 
     _stop-comfirm-btn-click-event = !->
         _stop-reduce-event!
-
-    _start-comfirm-btn-click-event = !->
-        location.href = "/Manage/Market/Activity"
+        _stop-alert-block-dom.hide!
 
     _start-reduce-event = !->
         $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Reduce/Turn/On",\
-            dataType: "JSON", contentType: "application/json", success: _start-reduce-success}
+            dataType: "JSON", contentType: "application/json", success: _start-reduce-success, error: _start-refuce-fail}
 
     _stop-reduce-event = !->
         $.ajax {type: "POST", url: "/Dinner/Manage/Discount/Reduce/Turn/Off",\
-            dataType: "JSON", contentType: "application/json", success: _stop-reduce-success}
+            dataType: "JSON", contentType: "application/json", success: _stop-reduce-success, error: _stop-reduce-fail}
 
     _start-reduce-success = !->
         _start-alert-block-dom.show!
         _reduce-on!
 
+    _start-refuce-fail = !->
+        alert "请求开启满减失败"
+        location.reload!
+
     _stop-reduce-success = !->
         _reduce-stoping!
+
+    _stop-reduce-fail = !->
+        alert "请求停止满减失败"
+        location.reload!
 
     _body-click-event = (event)!->
         if (not ($ event.target).is ".reduce-start-btn") and _start-alert-block-dom.is ':visible'
@@ -100,9 +116,10 @@ main-manage = let
 
     _init-all-event = !->
         _edit-btn-dom.click !-> _edit-btn-click-event!
-        _stop-comfirm-btn-dom.click !-> _stop-comfirm-btn-click-event!
         _start-comfirm-btn-dom.click !-> _start-comfirm-btn-click-event!
-        $ "body" .click !-> _body-click-event event
+        _start-cancel-btn-dom.click !-> _start-cancel-btn-click-event!
+        _stop-comfirm-btn-dom.click !-> _stop-comfirm-btn-click-event!
+        _stop-cancel-btn-dom.click !-> _stop-cancel-btn-click-event!
         
     _init-depend-module = !->
         page 	:= require "./pageManage.js"
