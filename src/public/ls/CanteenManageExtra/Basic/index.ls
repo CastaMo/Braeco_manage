@@ -80,6 +80,8 @@ do ->
 				alert '原密码<b>错误</b>,请重新输入'
 				$ '#wrap_password input' .eq 0 .val ''
 				$ '#wrap_password input' .eq 0 .focus!
+			else if result.message == 'message:Used email'
+				alert '修改失败，该邮箱已被使用！'
 			else
 				alert '提交失败，原因：'+result.message
 
@@ -93,15 +95,19 @@ do ->
 		for let temp in @inputs
 			temp.is-valid = (reg,str)->
 				if @.getAttribute('type')== 'radio'
-					if $ 'input[name=printer]' .val! == ''
+					if $ 'input[name=printer]:checked' .val! == undefined
 						@show-message '请选择一个打印机'
 						return false
 					else
 						return true
 				else 
-					if @value == '' || /^\s*$/g.test @value
-						@show-message '输入不可为空！'
-						return false
+					if @.getAttribute('empty_is_vlaid')==undefined 
+						if @value == '' || /^\s*$/g.test @value
+							@show-message '输入不可为空！'
+							return false
+					else if (@getAttribute 'name' ) == 'password'
+						if @value.length<6 || @value.length>16
+							alert '密码长度为6-16个字符'
 					else if (@getAttribute 'name' ) == 'email'
 						if ! /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test @value
 							@show-message '请输入正确的邮箱地址'
@@ -122,65 +128,56 @@ do ->
 
 	Wrap-pics = !->
 		self = util.getById 'wrap_pics'
-		self.mychange = {}
 		$ self .find 'input[type=file]' .change !->
 			ob = $ @ .parents '.little_pic_li' 
 			index = ob.index!
 			ob.addClass 'change'
 			img-preview index,util.getObjectURL(@.files[0])
+			ajax-for-token ob,index
 		$ self .find '.little_pic_li .delet_img' .click !->
 			delete-img-input($ @ .parents('.little_pic_li').index!)
 		
 		self.mysubmit = !->
 			show-loading!
-			for x in $ self .find '.little_pic_li.change'
-				index = $ x .index!
-				self.mychange[index+''] = {}
-				self.mychange[index+''].action = 'change'
-			self._change_num =0
-			console.log self.mychange
-			for key of self.mychange
-				self._change_num += 1
-				if self.mychange[key].action == 'delete'
-					ajax-for-delete key,self._change_num
-				else if  self.mychange[key].action == 'change'
-					ajax-for-token key,self._change_num
+			keys = []
+			for x in $ self .find '.little_pic_li.pic:visible'
+				keys.push x.getAttribute 'key'
+			ajax-for-renew(keys)
+
 		after-upload-img = ->
 			close-loading!
-			# set-timeout (!->location.reload!), 2000
-		ajax-for-token = (n,order)!->
+			set-timeout (!->location.reload!), 2000
+		ajax-for-token = (ob,n)!->
 			util.ajax {
 				type : 'post'
-				url : '/pic/upload/token/cover/' + n
+				url : '/Pic/Upload/Token/Covertemp'
 				async :'true'
 				success : (result)!->
 					result = JSON.parse result
 					if result.message == 'success'
-						ajax-for-qiniu result,n,order
+						ob.attr 'key',result.key.substr(14)
+						ajax-for-qiniu result,n
 				unavailabled : (result)!->
 					alert '上传失败，请重试'
 				}
-		ajax-for-qiniu = (data,n,order)!->
-			$ 'iframe' .eq n .attr 'order',order
+		ajax-for-qiniu = (data,n)!->
 			$ '.form' .eq n .find 'input[name=token]' .val data.token
 			$ '.form' .eq n .find 'input[name=key]' .val data.key
 			$ '.form' .eq n .submit!
-			
-		ajax-for-delete = (n,order)!->
+		ajax-for-renew =(keys)!->
 			util.ajax {
 				type : 'post'
-				url : '/Dinner/Cover/Remove/'+n
+				url : '/Dinner/Cover/Renew'
 				async :'true'
+				data : JSON.stringify keys
 				success : (result)!->
 					result = JSON.parse result
 					if result.message == 'success'
-						alert '删除成功'
-				always : (result)!->
-					if order==self._change_num
 						after-upload-img!
 				unavailabled : (result)!->
-					alert '删除失败，请重试!'
-			}
+					alert '保存失败，请重试'
+					set-timeout (!->location.reload!), 2000
+				}
 		$ 'iframe' .load !->
 			i = parseInt($ @ .attr 'order' )
 			if(i<=self._change_num)
@@ -207,12 +204,6 @@ do ->
 				$ '.little_pic_li' .eq len .css 'display','inline-block'
 		delete-img-input = (n)!->
 			ob = $ '.little_pic_li' .eq n
-			if ob.hasClass 'change'  #删除刚添加的图片（还未保存的）
-				delete self.mychange[n+'']
-			else
-				x= $ '.little_pic_li' .eq n .attr('self_order')
-				self.mychange[x] = {}
-				self.mychange[x].action = 'delete'
 			ob.hide!
 			ob.removeClass 'pic'
 			ob.insertAfter $ '.little_pic_li:visible:last' 
@@ -291,6 +282,7 @@ do ->
 				$ '#carousel .carousel_dots' .append('<div class="carousel_dot"></div>')
 				newPic = $ '.little_pic_li' .eq i
 				newPic.attr('self_order',i)
+				newPic.attr('key',x.substr(36))
 				newPic.find 'img' .attr 'src',x
 				newPic.addClass 'pic'
 			if d.data.covers.length<5

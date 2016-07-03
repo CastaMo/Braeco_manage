@@ -7,6 +7,7 @@ main-manage = let
 	ban = []
 	ban_cat = []
 	ban_table = []
+	_remark-dom = $ "\._printRemark"
 	_cancel-btn-dom = $ "\.cancel-btn"
 	_save-btn-dom = $ "\.save-btn"
 	_printCut-dom = $ "\._printCut"
@@ -200,11 +201,11 @@ main-manage = let
 									if $(@).hasClass "open" and not $(event.target).hasClass "checkInput"
 										$(@).removeClass "open"
 										$(@).addClass "close"
-										$(@).parent().find(".inner-shown-item").fade-out 300
+										$(@).parent().find(".inner-shown-item").slide-up 300
 									else if $(@).hasClass "close" and not $(event.target).hasClass "checkInput"
 										$(@).removeClass "close"
 										$(@).addClass "open"
-										$(@).parent().find(".inner-shown-item").fade-in 300
+										$(@).parent().find(".inner-shown-item").slide-down 300
 								for k from 0 to categories[j].dishes.length-1 by 1
 									_new-dish = $  "<li class = 'inner-shown-item'>
 														<span class = 'dish_name'></span>
@@ -294,6 +295,27 @@ main-manage = let
 				page.toggle-page "modify"
 
 	_init-all-event = !->
+		_remark-dom.blur !->
+			str = _remark-dom.val!
+			console.log "str", str
+			chineses = str.match(/[\u4E00-\u9FA5\uF900-\uFA2D]/g)
+			cn-len = if chineses then chineses.length else 0
+			other-len = str.length - cn-len
+			total = cn-len * 2 + other-len
+			console.log "total", total
+			change-total = 0
+			change-str = ''
+			if total > 24
+				for i from 0 to 23
+					if str[i].match(/[\u4E00-\u9FA5\uF900-\uFA2D]/g)
+						change-total += 2
+					else 
+						change-total += 1
+					if change-total > 24
+						change-str
+					else change-str += str[i]
+				_remark-dom.val(change-str)
+
 		_test-dom.click !->
 			request-object = {}
 			require_.get("test").require {
@@ -302,6 +324,7 @@ main-manage = let
 				}
 				callback 	:		(result)!-> location.reload!
 			}
+
 		_printCut-dom.change !->
 			if $("._printCut").val() is "true"
 				$("._printFont").val(1)
@@ -318,12 +341,15 @@ main-manage = let
 
 		_cancel-btn-dom.click !->
 			$('#modify-btn-field .stop-confirm').fade-in 100
+			$('#modify-btn-field .confirm-mask').fade-in 100
 
 		_modify-confirm-btn-dom.click !->
 			$('#modify-btn-field .stop-confirm').fade-out 100
+			$('#modify-btn-field .confirm-mask').fade-out 100
 
 		_modify-confirm-cancel-btn-dom.click !->
 			$('#modify-btn-field .stop-confirm').fade-out 100
+			$('#modify-btn-field .confirm-mask').fade-out 100
 			page.toggle-page "basic"
 
 		_save-btn-dom.click !->
