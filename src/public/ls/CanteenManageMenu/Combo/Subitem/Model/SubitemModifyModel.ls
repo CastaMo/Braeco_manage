@@ -98,9 +98,20 @@ class SubitemModifyModel extends MBase
 		return obj
 
 	check-self-config-data-is-valid: ->
+
+		is-ch-code = (num)->
+			return num >= 0x4E00 and num <= 0x9FFF
+
+		get-total-length-for-str = (str)->
+			count = 0
+			for i in [0 to str.length - 1]
+				if is-ch-code str.char-code-at i then count += 2
+				else count += 1
+			return count
+
 		err-msg = ""; valid-flag = true
-		if @config-data.name.length <= 0 or @config-data.name.length > 32 then err-msg += "子项名称长度应为1~32位<br>"; valid-flag = false
-		if @config-data.remark.length > 32 then err-msg += "子项备注长度应为0~32位<br>"; valid-flag = false
+		if get-total-length-for-str(@config-data.name) <= 0 or get-total-length-for-str(@config-data.name) > 32 then err-msg += "子项名称长度应为1~32位(一个中文字符占2个单位)<br>"; valid-flag = false
+		if get-total-length-for-str(@config-data.remark) > 32 then err-msg += "子项备注长度应为0~32位(一个中文字符占2个单位)<br>"; valid-flag = false
 		if @config-data.type is "discount_combo"
 			if Number @config-data.num < 0 or Number @config-data.num > 10000 then err-msg += "子项折扣应为0~100%<br>"; valid-flag = false
 		else

@@ -33,9 +33,20 @@ edit-manage = let
 		if _src := _current-category.pic then _display-img-dom.css {"background-image":"url(#{_src})"}
 
 	_check-is-valid = ->
+		is-ch-code = (num)->
+			return num >= 0x4E00 and num <= 0x9FFF
+
+		get-total-length-for-str = (str)->
+			count = 0
+			for i in [0 to str.length - 1]
+				if is-ch-code str.char-code-at i then count += 2
+				else count += 1
+			return count
+
 		_name := _name-input-dom.val()
 		if _name.length is 0 then alert "请输入品类名称"; return false
-		if _name.length > 21 then alert "输入的品类名称长度大于21"; return false
+
+		if get-total-length-for-str(_name) > 21 then alert "输入的品类名称长度大于21(一个中文字符占2个单位)"; return false
 		if main.is-exist-name _name, _current-category.id then alert "已存在该名字的品类, 请输入其他品类名"; return false
 		if _pic-input-dom[0].files[0]
 			if _pic-input-dom[0].files[0].type.substr(0, 5) isnt "image" then alert "请上传正确的格式图片"; return false
