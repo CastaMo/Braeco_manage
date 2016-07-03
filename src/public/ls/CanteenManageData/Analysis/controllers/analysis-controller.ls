@@ -1,5 +1,5 @@
 # =============== 控制器 ================
-angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$resource', '$timeout', '$analysisSM', ($scope, $resource, $timeout, $analysisSM)!->
+angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$resource', '$timeout', '$analysisSM', '$braecoConsole', ($scope, $resource, $timeout, $analysisSM, $braecoConsole)!->
 
   # ====== 1 $scope变量初始化 ======
   init-scope-variable = !->
@@ -69,7 +69,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
 
   # ====== 6 $scope事件函数定义 ======
   $scope.select-batch-number = (event)!->
-    console.log 'here is select-batch-number'
+    $braecoConsole 'here is select-batch-number'
     init-chart!
 
   $scope.get-statistics-by-type = !->
@@ -101,16 +101,16 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
   # ====== 8 工具函数定义 ======
   init-chart = !->
     if $scope.selected-tab is 'member' and $scope.selected-panel is 'member-class'
-      console.log 'init member-class pie chart'
+      $braecoConsole 'init member-class pie chart'
       init-pie-chart!
     else if $scope.selected-tab is 'member' and $scope.selected-panel is 'current-members'
-      console.log 'init current-members line chart'
+      $braecoConsole 'init current-members line chart'
       init-line-chart!
     else if $scope.selected-tab is 'member' and $scope.selected-panel is 'current-balance'
-      console.log 'init current-balance line chart'
+      $braecoConsole 'init current-balance line chart'
       init-line-chart!
     else if $scope.selected-tab is 'coupons'
-      console.log 'init coupons line chart'
+      $braecoConsole 'init coupons line chart'
       init-line-chart!
 
   init-line-chart = (type)!->
@@ -179,7 +179,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     $ '.triangle' .css 'left', left
 
     $scope.selected-panel = type
-    console.log 'here is set-selected-panel'
+    $braecoConsole 'here is set-selected-panel'
     init-chart!
 
   init-date-inputs = !->
@@ -426,15 +426,15 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
   get-line-chart-raw-data = ->
     chart-data = []
     if $scope.selected-tab is 'member' and $scope.selected-panel is 'current-members'
-      console.log 'init current-members line chart'
+      $braecoConsole 'init current-members line chart'
       chart-data.push $scope.statistic.new_membership_detail
       chart-data.push $scope.statistic.old_membership_detail
     else if $scope.selected-tab is 'member' and $scope.selected-panel is 'current-balance'
-      console.log 'init current-balance line chart'
+      $braecoConsole 'init current-balance line chart'
       chart-data.push $scope.statistic.membership_charge_detail
       chart-data.push $scope.statistic.membership_spend_detail
     else if $scope.selected-tab is 'coupons'
-      console.log 'init coupons line chart'
+      $braecoConsole 'init coupons line chart'
       if $scope.coupons.coupon_sum isnt 0
         chart-data.push $scope.coupons.coupon_detail[$scope.filter.coupons-selected-batch-number].scan.detail
         chart-data.push $scope.coupons.coupon_detail[$scope.filter.coupons-selected-batch-number].get.detail
@@ -465,7 +465,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
       data: []
       backgroundColor: 'rgba(75,192,192,0.4)'
       borderColor: 'rgba(75,192,192,1)'
-      borderWidth: 1
+      borderWidth: 3
       borderCapStyle: 'butt'
       borderDash: []
       borderDashOffset: 0.0
@@ -526,7 +526,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     labels = []
 
     for i from 1 to 24
-      item = i + '时'
+      item = i
       labels.push item
 
     labels
@@ -560,7 +560,14 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
       date-object = get-date-object-from-zh-cn-string $scope.filter.coupons-selected-month
     day-number = get-days-number-of-month date-object.year, date-object.month
 
-    [i + '日' for i from 1 to day-number]
+    [i for i from 1 to day-number]
+    # labels = []
+    # for i from 1 to day-number
+    #   if i % 3 == 1
+    #     labels.push i
+    #   else
+    #     labels.push ''
+    # labels
 
   get-days-number-of-month = (year, month)->
     new Date(year, month, 0).getDate!
@@ -621,7 +628,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
       set-member-class-data-panel!
       set-current-balance-data-panel!
 
-      console.log '$scope.statistic: ', $scope.statistic
+      $braecoConsole '$scope.statistic: ', $scope.statistic
 
       # init-chart!
       # set-ready-state!
@@ -633,7 +640,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
       debugger
       $scope.coupons = result.statistic
       set-batch-numbers-array!
-      console.log $scope.coupons
+      $braecoConsole $scope.coupons
 
     retrieve-coupons-data-callback
 
@@ -652,7 +659,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     result = $scope.resource.statistic.save {}, post-data, !->
       callback? result
       set-ready-state! # 去掉loading
-      console.log 'here is retrieve-statistics-by-type'
+      $braecoConsole 'here is retrieve-statistics-by-type'
       init-chart!
 
   retrieve-member-class-and-sumbalance = !->
@@ -669,7 +676,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
       callback result
 
       if $scope.selected-tab is 'coupons'
-        console.log 'retrieve-member-class-and-sumbalance'
+        $braecoConsole 'retrieve-member-class-and-sumbalance'
         init-chart!
 
   # ====== 10 初始化函数执行 ======
