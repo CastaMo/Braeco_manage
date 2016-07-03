@@ -12,6 +12,7 @@ module.exports = function(router) {
   });
 
   router.post('/Dinner/Manage/Statistic', getCallbackHandleForRequest("POST", cookie));
+  router.post('/Dinner/Manage/Statistic/Print', getCallbackHandleForRequest("POST", cookie));
 
   return router;
 };
