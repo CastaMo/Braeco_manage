@@ -37,7 +37,6 @@ do !->
 		_page-jump =->
 			t = $ 'input[name=jump]' .val!
 			curr = parseInt($ '.page_text span' .eq 1 .text!)
-			console.log t,curr
 			if a =='' || /\s/.test(a)
 				return alert '请输入跳转的页码'
 			else if parseInt(t)> curr
@@ -47,6 +46,8 @@ do !->
 				a.pn = t
 				window.location.href = _get-url a
 		_fill-page-num =!~>
+			$ 'input[name=st]' .val(_unix-to-date @pages.st)
+			$ 'input[name=en]' .val(_unix-to-date @pages.en,1 )
 			$ 'select[name=type]' .val @pages.type
 			$ '.page_text span' .eq(0).text(@pages.pn)
 			$ '.page_text span' .eq(1).text(@pages.sum_pages)
@@ -77,13 +78,19 @@ do !->
 				ob.val(_unix-to-date t )
 			else
 				ob.val(new Date().Format('yyyy-MM-dd'))
-		_unix-to-date  = (time)->
-			time = parseInt(time) + 8 * 60 * 60;
-			time = new Date time * 1000 
-			ymdhis = time.getUTCFullYear! + "-"
-			ymdhis += _add-zero(time.getUTCMonth!+1) + "-"
-			ymdhis += _add-zero time.getUTCDate! 
-			ymdhis
+		_unix-to-date  = (time,add)->
+			if time
+				if add==1
+					time = parseInt(time)+add + 8 * 60 * 60;
+				else 
+					time = parseInt(time) + 8 * 60 * 60;
+				time = new Date time * 1000 
+				ymdhis = time.getUTCFullYear! + "-"
+				ymdhis += _add-zero(time.getUTCMonth!+1) + "-"
+				ymdhis += _add-zero time.getUTCDate! 
+				return ymdhis
+			else 
+				return ''
 		_date-to-unix = (d,add)->
 			if d == ''
 				return ''
