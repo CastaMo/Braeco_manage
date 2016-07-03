@@ -79,7 +79,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
     set-edit-area $scope.empty-activity
     $scope.editor.activity-type = type
     $scope.new-activity-type = type
-    $ '.activity-image-preview' .attr 'src', $scope.pre-image-url
+    $ '.activity-image-preview img' .attr 'src', $scope.pre-image-url
 
   $scope.select-one-activity = !->
     $scope.current-activity = @activity
@@ -88,7 +88,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
     set-edit-area @activity
     $scope.editor.activity-type = @activity.type
     $scope.new-activity-type = null
-    $ '.activity-image-preview' .attr 'src', $scope.base-image-url + @activity.pic
+    $ '.activity-image-preview img' .attr 'src', $scope.base-image-url + @activity.pic
 
   $scope.format-activity-time = (begin, end, expiry)->
     value = ''
@@ -108,9 +108,9 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
       if parse-int(expiry) is 0
         value = '该活动为永久活动'
       else
-        value = $scope.editor.activity-start-date + '-' + $scope.editor.activity-end-date
-        value = value.replace /[年月]/g, '.'
-        value = value.replace /[日]/g, ''
+        value = $scope.editor.activity-start-date.replace(/[-]/g, '.') + '-' + $scope.editor.activity-end-date.replace(/[-]/g, '.')
+        # value = value
+        # value = value.replace /[日]/g, ''
     value
 
   $scope.cancle-the-edit = (event)!->
@@ -232,7 +232,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
 
   init-letter-number-limit = !->
     elements = [
-      {input: '#activity-name', num: 10, letter-number: '.activity-name .letter-number'},
+      {input: '#activity-name', num: 20, letter-number: '.activity-name .letter-number'},
       {input: '#activity-brief', num: 40, letter-number: '.activity-brief .letter-number'},
       {input: '#activity-content', num: 200, letter-number: '.activity-content .letter-number'}
     ]
@@ -358,7 +358,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
         reader = new FileReader!
         reader.onload = (e)->
           $ image .attr 'src', e.target.result .css 'background-color', 'white'
-          $ '.activity-image-preview' .attr 'src', e.target.result
+          $ '.activity-image-preview img' .attr 'src', e.target.result
 
         reader.readAsDataURL input.files[0]
 
@@ -374,6 +374,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
       init-scope-activities result.data
       init-editor!
       $activitySM.go-to-state ['\#activity-list']
+      $('body').scroll-top -9999
 
   # 通过Id删除activity
   delete-activity-by-id = (id)!->
@@ -387,6 +388,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
       else
         alert '活动删除失败'
         $activitySM.go-to-state ['\#activity-main']
+      $('body').scroll-top -9999
 
   # 新建活动：1 先取服务器token和key，2 再通过token和key把图片上传到七牛云服务器，3 最后新建活动本身
   create-activity-by-image-and-data = (data)!->
@@ -397,6 +399,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
       else
         alert '图片上传失败，活动创建失败'
         $activitySM.go-to-state ['\#activity-main']
+      $('body').scroll-top -9999
 
   upload-image-to-qiniu = (token, key, data, callback)!->
     base64-src = get-base64-str!
@@ -433,6 +436,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
       else
         alert '活动创建失败'
         $activitySM.go-to-state ['\#activity-main']
+      $('body').scroll-top -9999
 
   update-activity-by-id = (data)!->
     $activitySM.go-to-state ['\#activity-main', '\#activity-spinner']
@@ -443,6 +447,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
       else
         alert '活动修改失败'
         $activitySM.go-to-state ['\#activity-main']
+      $('body').scroll-top -9999
 
   update-activity-with-image = (data)!->
     $activitySM.go-to-state ['\#activity-main', '\#activity-spinner']
@@ -454,6 +459,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
       else
         alert '活动修改失败'
         $activitySM.go-to-state ['\#activity-main']
+      $('body').scroll-top -9999
 
   # ====== 10 初始化函数执行 ======
 

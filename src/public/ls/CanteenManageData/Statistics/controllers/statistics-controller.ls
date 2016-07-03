@@ -68,6 +68,14 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
   init-page-data = !->
 
   # ====== 6 $scope事件函数定义 ======
+  $scope.sum-alipay = (alipay_wap, alipay_qr_f2f)->
+    if !alipay_wap then alipay_wap = 0
+    if !alipay_qr_f2f then alipay_qr_f2f = 0
+
+    sum = alipay_wap + alipay_qr_f2f
+    if sum.to-string!.index-of('.') isnt -1 then sum = sum.to-fixed 2
+    sum
+
   $scope.get-statistics-by-unit = !->
 
     set-waiting-state!
@@ -79,7 +87,6 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
         set-datepicker-start-and-end-date!
 
       $scope.statistic = result.statistic
-      debugger
       set-turnover-data!
       set-orders-data!
 
@@ -150,7 +157,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     $.fn.datepicker.setDefaults options
 
   init-datepicker = !->
-    $ '[data-toggle="datepicker"]' .datepicker {language: 'zh-CN', start-view: 1}
+    $ '[data-toggle="datepicker"]' .datepicker {language: 'zh-CN', start-view: 0, format: 'yyyy-mm-dd'}
     $scope.datepicker.date-begin = $ '.date-begin'
 
   init-date-inputs = !->
@@ -266,8 +273,8 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
 
   set-waiting-state = !->
     $timeout !->
-      $statisticsSM.go-to-state ['\#statistics-spinner-circle']
-      # $statisticsSM.go-to-state ['\#statistics-main', '\#statistics-spinner-circle']
+      # $statisticsSM.go-to-state ['\#statistics-spinner-circle']
+      $statisticsSM.go-to-state ['\#statistics-main', '\#statistics-spinner-circle']
     , 0
 
   set-ready-state = !->
@@ -409,7 +416,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       data: []
       backgroundColor: 'rgba(75,192,192,0.4)'
       borderColor: 'rgba(75,192,192,1)'
-      borderWidth: 1
+      borderWidth: 3
       borderCapStyle: 'butt'
       borderDash: []
       borderDashOffset: 0.0
@@ -523,7 +530,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     labels = []
 
     for i from 1 to 24
-      item = i + '时'
+      item = i
       labels.push item
 
     labels
@@ -553,7 +560,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     date-object = get-date-object-from-zh-cn-string $scope.statistics-filter.selected-month
     day-number = get-days-number-of-month date-object.year, date-object.month
 
-    [i + '日' for i from 1 to day-number]
+    [i for i from 1 to day-number]
 
   get-days-number-of-month = (year, month)->
     new Date(year, month, 0).getDate!
@@ -563,9 +570,8 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
 
   get-line-chart-datasets  = (color-settings, data, legends, dataset-item)->
     datasets = []
-    length = 7
 
-    for i from 0 to length
+    for i from 0 to data.length - 1
       dataset-item.backgroundColor = color-settings.backgroundColors[i]
       dataset-item.borderColor = color-settings.borderColors[i]
       dataset-item.pointHoverBackgroundColor = color-settings.pointHoverBackgroundColors[i]
@@ -602,7 +608,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       data-details.for-each (item)!->
         labels.push item.name
 
-    labels
+    labels.slice 0, 12
 
   get-pie-chart-data-datasets = ->
     backgroundColor = get-pie-chart-data-datasets-backgroundColor-and-hoverBackgroundColor!
@@ -611,6 +617,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       backgroundColor: backgroundColor
       hoverBackgroundColor: backgroundColor
 
+    debugger
     datasets = []
     datasets.push dataset-item
     datasets
@@ -627,7 +634,8 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       data-details = $scope.statistic.category_detail
       data-details.for-each (item)!->
         data.push item.sum
-    data
+    debugger
+    data.slice 0, 12
 
   get-pie-chart-data-datasets-backgroundColor-and-hoverBackgroundColor = ->
     type = $scope.selected-sales-type
@@ -638,6 +646,9 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       length = $scope.statistic.dish_detail.length
     else if type is 'category'
       length = $scope.statistic.category_detail.length
+
+    debugger
+    if length > 12 then length = 12
 
     for i from 1 to length
       colors.push get-rand-color(4)
@@ -660,8 +671,6 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
 
     post-data = {}
     post-data <<< date-obj
-
-    debugger
 
     switch type
     | 'year'    => post-data.unit = 'year'
