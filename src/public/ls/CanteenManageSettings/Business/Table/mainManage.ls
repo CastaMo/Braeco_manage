@@ -9,11 +9,12 @@ main-manage = let
 			$ temp.prototype.dom .click !~>			
 				temp.prototype.change-click-state!
 				change-num-tip!
+				return false
 			tables.push temp
 		for x in $ '.table_operation'
 			operations.push(new Operation x)
 
-		add-new = tables[tables.length-1].prototype
+		add-new = tables[0].prototype
 		$ add-new.dom .click !->
 			show-wrap 1,@
 
@@ -24,6 +25,15 @@ main-manage = let
 		$ operations[0].dom .click ->
 			operations[0].change-click-state!
 			select_all operations[0].able
+			false
+		$ 'body' .click !->
+			select_all true
+			operations[0].change-click-state true
+		$ '.popup_cover,#popup_cover,#wrap' .click ->
+			return false
+		$ '#extrabar-top' .click ->
+			window.scrollTo 0,0
+			return false
 		# 添加、修改、导出、删除
 		# 先确定已经选择座位，再显示弹出框
 		for let i from 1 to 4
@@ -39,6 +49,7 @@ main-manage = let
 						case 4  then  show-wrap 0,6
 					else
 						alert '请先点击选择桌位！'
+				false
 		# 导出二维码
 		for win in $ '.wrap.batch_export:gt(0)'
 			new-cover = new Cover win,'/Table/Qrcode/Download',(
@@ -50,7 +61,7 @@ main-manage = let
 			)
 			covers.push(new-cover)
 		# 单个桌位修改
-		for win in $ '.popup.edit:not(:last)'
+		for win in $ '.popup.edit:not(:first)'
 			new-cover = new Cover win,'/table/edit',(
 				(result)!->
 					result = JSON.parse result
@@ -65,7 +76,7 @@ main-manage = let
 			covers.push(new-cover)
 		# 单个桌位添加
 		# 批量桌位添加
-		for win in $ '.batch_add,.popup.edit:last'
+		for win in $ '.batch_add,.popup.edit:first'
 			new-cover = new Cover win,'/Table/add',(
 				(result)!->
 					result = JSON.parse result
@@ -100,12 +111,14 @@ main-manage = let
 		$ '.imgli' .click ->
 			$ '.imgli' .removeClass 'selected'
 			$ @ .addClass 'selected'
+			return false
 		$ '.wrap.batch_export1 .btn.confirm' .click !->
 			i = $ '.imgli.selected' .index!
 			if i>=0
 				show-wrap 0, i+2
 			else
 				alert '请先点击选择模板！'
+			return false
 		$ 'select[name=pay]' .change !->
 			_change-module!
 		$ 'select[name=discount]' .change !->
@@ -124,9 +137,8 @@ main-manage = let
 				$ '.table_operation.select_all .selected_num' .text '('+(($ '.table_qr').length-1)+'/'+(($ '.table_qr').length-1)+')'
 			else
 				$ '.table_operation.select_all .selected_num' .text '(0/'+(($ '.table_qr').length-1)+')'
-			for x,i in tables
-				if i<tables.length-1
-					x.prototype.change-click-state flag 
+			for i from 1 to tables.length-1
+				tables[i].prototype.change-click-state flag 
 
 		# i = 0 : wrap   arg1表示wrap的下标,arg2表示这个wrap需要的参数
 		#          0 批量添加             input清空
@@ -156,6 +168,8 @@ main-manage = let
 			case 1 then
 				$ '#popup_cover' .show!
 				little-wrap = $ arg1 .find '.edit'
+				h = $ arg1 .offset!.top-200
+				window.scrollTo 0,h
 				little-wrap.find 'input' .val($ arg1 .find '.num' .text!)
 				little-wrap.fadeIn 300
 		# i= 2       裸码，限制50个     0.5秒一个
@@ -173,7 +187,6 @@ main-manage = let
 		disable-select-email = (ob)!->
 			ob.val('1')
 			ob.prop('disabled',true)
-			ob.parents('.inputli').next().hide()
 		# 获取选中的桌位数目
 		get-disabled-table-num = ->
 			num = 0
@@ -309,6 +322,7 @@ main-manage = let
 						@mysubmit!
 				else 
 					@mysubmit!
+			return false
 
 		@mysubmit = (url,success)!~>
 			btn = $ self.dom .find '.btn.confirm' 
@@ -321,7 +335,8 @@ main-manage = let
 					success : _success
 					unavailabled : (result)!->
 						alert '请求失败'+result
-					always : !~> $ self.dom .find 'btn.confirm' .addClass 'able'
+					always : !~> 
+						$ self.dom .find '.btn.confirm' .addClass 'able'
 				}
 		@valid = !~>
 			for x in @inputs
@@ -366,6 +381,7 @@ main-manage = let
 
 		$ @dom .find '.cancle_cross,.btn.cancle' .click !~>
 			@close-wrap!
+			return false
 
 		# i = '.wrap'  
 		# i = '.poput' 
