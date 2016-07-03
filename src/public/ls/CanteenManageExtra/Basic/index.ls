@@ -16,11 +16,9 @@ do ->
 						return false
 				if($ temp .attr('id')=='wrap_password')
 					if inputs[0].value == inputs[1].value
-						inputs[1].show-message '新密码不能和旧密码一样哦！'
-						return false
+						return inputs[1].show-message '新密码不能和旧密码一样哦！'
 					if inputs[1].value != inputs[2].value
-						inputs[2].show-message '确认密码应该和新密码一样哦！'
-						return false
+						return inputs[2].show-message '确认密码应该和新密码一样哦！'
 				return true
 			temp.get-my-data = ->
 				data ={}
@@ -98,33 +96,32 @@ do ->
 					if $ 'input[name=printer]:checked' .val! == undefined
 						@show-message '请选择一个打印机'
 						return false
-					else
-						return true
 				else 
-					if @.getAttribute('empty_is_vlaid')==undefined 
+					if @.getAttribute('empty_is_vlaid') != 'true' 
 						if @value == '' || /^\s*$/g.test @value
 							@show-message '输入不可为空！'
 							return false
-					else if (@getAttribute 'name' ) == 'password'
-						if @value.length<6 || @value.length>16
-							alert '密码长度为6-16个字符'
-					else if (@getAttribute 'name' ) == 'email'
-						if ! /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test @value
-							@show-message '请输入正确的邮箱地址'
-							return false
-					# 固定电话和手机号码的验证太麻烦，此处略过
-					# else if (@getAttribute 'name' ) == 'phone'
-					# 	if ! /^[0-9\-\s]+$|^1[34578][0-9]{9}/.test @value
-					# 		@show-message '只能输入固定座机或者手机号码哦！'
-					# 		console.log 'phone'
-					# 		return false
-					return true
-				
+						if (@getAttribute 'type' ) == 'password'
+							if @value.length<6 || @value.length>16
+								@show-message '密码长度为6-16个字符'
+								return false
+						else if (@getAttribute 'name' ) == 'email'
+							if ! /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test @value
+								@show-message '请输入正确的邮箱地址'
+								return false
+						# 固定电话和手机号码的验证太麻烦，此处略过
+						# else if (@getAttribute 'name' ) == 'phone'
+						# 	if ! /^[0-9\-\s]+$|^1[34578][0-9]{9}/.test @value
+						# 		@show-message '只能输入固定座机或者手机号码哦！'
+						# 		console.log 'phone'
+						# 		return false
+				return true				
 			$ temp .blur !->
 				$ @ .val($ @ .val().replace myreg,'' )
-			temp.show-message = (str)!->
+			temp.show-message = (str)->
 				$ temp .focus!
 				alert str
+				return false
 
 	Wrap-pics = !->
 		self = util.getById 'wrap_pics'
@@ -173,17 +170,12 @@ do ->
 				success : (result)!->
 					result = JSON.parse result
 					if result.message == 'success'
+						alert '修改成功！'
 						after-upload-img!
 				unavailabled : (result)!->
 					alert '保存失败，请重试'
 					set-timeout (!->location.reload!), 2000
 				}
-		$ 'iframe' .load !->
-			i = parseInt($ @ .attr 'order' )
-			if(i<=self._change_num)
-				alert '上传成功！'
-				if i == self._change_num
-					after-upload-img!
 
 		img-preview = (index,src)!->
 			$ '.little_pic_li' .eq index .find('img').attr 'src', src
@@ -291,6 +283,7 @@ do ->
 			$ '.little_pic_li' .eq 0 .css 'display','inline-block'
 		if d.data.wxpay
 			$ '.info_value.info_img1 img' .attr 'src',d.data.wxpay.qrurl
+			$ 'input[name=page]' .val d.data.wxpay.page
 			for x in d.data.wxpay.printer
 				$ '.wrap_printers' .eq 0 .append('<label class="printer">'+x.remark+'<input value="' + x.id + '" name="printer" type="radio"></label>')
 		carousel = new My-carousel $ '#carousel'

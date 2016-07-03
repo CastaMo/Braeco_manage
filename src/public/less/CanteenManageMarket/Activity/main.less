@@ -38,12 +38,18 @@
 
       &:hover {
         cursor: pointer;
-        border-bottom: 3px solid #ffc107;
+        border-bottom: 3px solid #E7E7EB;
       }
     }
     .choose {
       cursor: pointer;
       border-bottom: 3px solid #ffc107;
+      color: #ffc107;
+
+      &:hover {
+        border-bottom: 3px solid #ffc107;
+        color: #ffc107;
+      }
     }
   }
 }
@@ -175,9 +181,13 @@
       padding-top: 44px;
 
       .activity-image-preview {
-        display: inline-block;
-        width: 190px;
         height: 95px;
+        overflow: hidden;
+        img {
+          display: inline-block;
+          width: 190px;
+        }
+        // height: 95px;
       }
 
       .activity-title {
@@ -185,7 +195,7 @@
         line-height: 24px;
         .icon {
           display: inline-block;
-          background: #8b572a;
+          background-color: #8b572a;
           border-radius: 1.12px;
           width: 30px;
           height: 18px;
@@ -194,6 +204,9 @@
           text-align: center;
           color: white;
           margin-right: 5px;
+        }
+        .icon:nth-child(2) {
+          background-color: #910012;
         }
         .content {
           display: inline-block;
@@ -268,32 +281,6 @@
         text-align: center;
       }
 
-      // .upload-canteen-photo {
-      //   height: 107px;
-      //   border-bottom: 1px solid @activity-border-color;
-      //   line-height: 107px;
-      //   text-align: center;
-      //   color: rgba(161, 161, 161, 1);
-      //   // transition: all 0.5s;
-
-      //   span {
-      //     display: inline-block;
-      //     width: 100%;
-      //     height: 100%;
-      //   }
-
-      //   #canteen-photo {
-      //     display: none;
-      //   }
-
-      //   &:hover, label:hover {
-      //     background-color: rgba(244, 245, 249, 1);
-      //     cursor: pointer;
-      //     color: black;
-      //     // transition: all 0.5s;
-      //   }
-      // }
-
       .activity-items {
         .promotion-activity, .theme-activity {
           height: 30px;
@@ -306,11 +293,7 @@
           }
         }
         ul {
-          // max-height: 244px;
-          // padding-right: 10px;
           width: 220px;
-          // overflow-y: scroll;
-          // overflow-x: hidden;
 
           li {
             height: 60px;
@@ -367,7 +350,6 @@
             &:hover {
               background-color: #FFFCF6;
               cursor: pointer;
-              // transition: all 0.5s;
             }
           }
         }
@@ -417,6 +399,7 @@
       .form-container {
         width: 428px;
         padding: 21px;
+        padding-bottom: 0px;
 
         .warn {
           color: rgba(141, 141, 141, 1);
@@ -429,48 +412,6 @@
             display: inline-block;
             width: @form-label-width;
             font-size: 14px;
-          }
-        }
-
-        .activity-name {
-          input {
-            width: 200px;
-          }
-          span {
-            display: inline-block;
-            margin-left: @form-label-width;
-            color: rgba(200, 199, 204, 1);
-            font-size: 14px;
-          }
-          .letter-number {
-            margin: 0px;
-            position: relative;
-            top: -25px;
-            left: 15px;
-            font-size: 16px;
-          }
-        }
-
-        .date-range {
-          .disabled {
-            color: rgba(200, 199, 204, 1);
-            text-decoration: line-through;
-          }
-          label {
-            display: inline;
-          }
-          .date-range-label {
-            display: inline-block;
-            width: @form-label-width;
-          }
-          input {
-            width: 140px;
-          }
-          #activity-start-date {
-            margin-right: 5px;
-          }
-          #activity-end-date {
-            margin-left: 5px;
           }
         }
 
@@ -492,11 +433,34 @@
               width: 180px;
               height: 96px;
               overflow: hidden;
+              position: relative;
+
+              .mask {
+                width: 100%;
+                height: 80%;
+                position: absolute;
+                background-color: rgba(210, 207, 210, 0.8);
+                opacity: 0;
+                transition: all 0.5s;
+                padding-top: 10%;
+                padding-bottom: 10%;
+
+                div {
+                  text-align: center;
+                }
+              }
 
               #activity-image-preview {
                 width: 100%;
-                height: 100%;
                 display: block;
+              }
+
+              &:hover {
+                .mask {
+                  opacity: 1;
+                  position: absolute;
+                  transition: all 0.5s;
+                }
               }
             }
           }
@@ -506,6 +470,25 @@
               display: inline-block;
               width: 0px;
               height: 0px;
+          }
+        }
+
+        .activity-name {
+          input {
+            width: 322px;
+          }
+          span {
+            display: inline-block;
+            margin-left: @form-label-width;
+            color: rgba(200, 199, 204, 1);
+            font-size: 14px;
+          }
+          .letter-number {
+            margin: 0px;
+            position: relative;
+            top: -25px;
+            left: 15px;
+            font-size: 16px;
           }
         }
 
@@ -533,6 +516,33 @@
           }
         }
 
+        .date-range-select {
+          width: 322px;
+        }
+
+        .date-range {
+          .disabled {
+            color: rgba(200, 199, 204, 1);
+            text-decoration: line-through;
+          }
+          label {
+            display: inline;
+          }
+          .date-range-label {
+            display: inline-block;
+            width: @form-label-width;
+          }
+          input {
+            width: 149px;
+          }
+          #activity-start-date {
+            margin-right: 5px;
+          }
+          #activity-end-date {
+            margin-left: 5px;
+          }
+        }
+
         .activity-content {
           height: 262px;
 
@@ -556,6 +566,14 @@
             width: 90px;
             display: inline-block;
           }
+        }
+
+        .divider {
+          position: relative;
+          left: -21px;
+          width: 471px;
+          border-top: 1px solid @activity-border-color;
+          margin-bottom: 21px;
         }
 
         .action-buttons {
