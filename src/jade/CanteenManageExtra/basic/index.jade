@@ -60,15 +60,15 @@ block content
 					.wrap_input_li
 						.wrap_desc 输入旧密码*
 						.wrap_input
-							input(type='password' name='oldpass')
+							input(type='password' name='oldpass' placeholder='6-16个字符')
 					.wrap_input_li
 						.wrap_desc 输入新密码*
 						.wrap_input
-							input(type='password' name='newpass')
+							input(type='password' name='newpass' placeholder='6-16个字符')
 					.wrap_input_li
 						.wrap_desc 确认密码*
 						.wrap_input
-							input(type='password' name='confirmpass')
+							input(type='password' name='confirmpass' placeholder='6-16个字符')
 				.btns
 					.btn.cancle 取消
 					.btn.confirm 保存
@@ -85,7 +85,7 @@ block content
 					.wrap_input_li
 						.wrap_desc 新邮箱地址*
 						.wrap_input
-							input(type='email' name='email' placeholder='请输入邮箱地址')
+							input(type='email' empty_is_vlaid='true' name='email' placeholder='请输入邮箱地址')
 				.btns
 					.btn.cancle 取消
 					.btn.confirm 保存
@@ -100,9 +100,9 @@ block content
 						.wrap_input
 							span 广州大学城
 					.wrap_input_li
-						.wrap_desc 新地址*
+						.wrap_desc 新地址
 						.wrap_input
-							input(type='text' name='address' placeholder='请输入地址')
+							input(type='text' name='address' length='128' placeholder='请输入地址')
 				.btns
 					.btn.cancle 取消
 					.btn.confirm 保存
@@ -119,7 +119,7 @@ block content
 					.wrap_input_li
 						.wrap_desc 新联系方式*
 						.wrap_input
-							input(type='text' name='contact_phone' placeholder='只能输入固定座机或者手机号码哦')
+							input(type='text' name='contact_phone' length='32' placeholder='只能输入固定座机或者手机号码哦')
 				.btns
 					.btn.cancle 取消
 					.btn.confirm 保存
@@ -204,7 +204,11 @@ block content
 				span 关联打印机
 				.close_wrap
 			.wrap_content
-				.wrap_inputs			
+				.wrap_inputs
+					.wrap_input_li
+						.wrap_desc 打印联数
+						.wrap_input
+							input(type='number' name='page' empty_is_vlaid='true' length='255' placeholder='默认为1')		
 					.wrap_printers
 				.btns
 					.btn.cancle 取消

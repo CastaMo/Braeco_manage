@@ -38,10 +38,10 @@ block content
 					.popup.edit
 						.arrow
 						input(type='text' name='word' class='table_name hide')
-						input(type='text' name='new' class='table_name' length='4' placeholder='比如A011,01')
+						input(type='text' name='new' class='table_name' placeholder='比如A011,01')
 						.btns
 							.btn.cancle 取消
-							.btn.confirm 确认
+							.btn.confirm.able 确认
 				.table_qr.add_new
 					.table_qr_light
 						.cross
@@ -53,7 +53,7 @@ block content
 						input(type='text' name='word' placeholder='比如A011,01' class='table_name')
 						.btns
 							.btn.cancle 取消
-							.btn.confirm 确认
+							.btn.confirm.able 确认
 			form(id='export' action='/Table/Qrcode/Download' method='post' target='_blank')
 				input(name='data' type='text')
 			#popup_cover
@@ -65,14 +65,14 @@ block content
 					.wrap_content
 						.inputli
 							.input_desc 桌位数量
-							input(type='number' name='sum' placeholder='批量添加一次最多60个桌位')
+							input(type='number' name='sum' placeholder='批量添加一次最多200个桌位')
 						.inputli
 							.input_desc 起始编号
-							input(type='text' name='start' placeholder='批量添加的座位号只能输纯数字哦' class='table_name')
+							input(type='text' name='start' placeholder='批量添加的座位号只能输纯数字哦' class='table_name' length='3')
 							.little_gray 比如 1，100,最多四位哦！
 					.btns
 						.btn.cancle 取消
-						.btn.confirm 确认
+						.btn.confirm.able 确认
 				.wrap.batch_export.batch_export1
 					.wrap_head 选择导出模板
 						.cancle_cross
@@ -99,7 +99,7 @@ block content
 							span.gray 尺寸A6<br>（ 14.8 * 10.5 cm ）
 					.btns
 						.btn.cancle 取消
-						.btn.confirm 下一步
+						.btn.confirm.able 下一步
 				.wrap.batch_export.batch_export2(type='naked')
 					.wrap_head 导出设置 
 						.cancle_cross
@@ -124,7 +124,7 @@ block content
 					.message 直接下载需要 <b></b> 秒左右
 					.btns
 						.btn.cancle 取消
-						.btn.confirm 导出
+						.btn.confirm.able 导出
 				.wrap.batch_export.batch_export3(type='square')
 					.wrap_head 选择导出模板 
 						.cancle_cross
@@ -174,7 +174,7 @@ block content
 					.message 直接下载需要 <b></b> 秒左右
 					.btns
 						.btn.cancle 取消
-						.btn.confirm 导出
+						.btn.confirm.able 导出
 				.wrap.batch_export.batch_export4(type='circle')
 					.wrap_head 选择导出模板 
 						.cancle_cross
@@ -200,7 +200,7 @@ block content
 								select(name='wifi')
 									option(value='2') 有wifi密码
 									option(value='1') 仅有wifi名称
-									option(value='0') 无wifi
+									//- option(value='0') 无wifi
 							.inputli
 								.input_desc 
 								input(type='text' name='wifi_name' placeholder='请输入wifi名称')
@@ -224,7 +224,7 @@ block content
 					.message 直接下载需要 <b></b> 秒左右
 					.btns
 						.btn.cancle 取消
-						.btn.confirm 导出
+						.btn.confirm.able 导出
 				.wrap.batch_export.batch_export5(type='card')
 					.wrap_head 导出设置 
 						.cancle_cross
@@ -259,12 +259,12 @@ block content
 								.tip
 						.wrap_right
 							img(src='http://static.brae.co/export/qrcode/card1a.png')
-							img(src='http://static.brae.co/export/qrcode/card1b.png')
+							//- img(src='http://static.brae.co/export/qrcode/card1b.png')
 					div(style='clear:both')
 					.message 直接下载需要 <b></b> 秒左右
 					.btns
 						.btn.cancle 取消
-						.btn.confirm 导出
+						.btn.confirm.able 导出
 				.wrap.batch_delete
 					.wrap_head 删除桌位 
 						.cancle_cross
@@ -274,7 +274,7 @@ block content
 						span 该操作无法恢复，确认删除？
 
 					.btns
-						.btn.confirm 确认
+						.btn.confirm.able 确认
 						.btn.cancle 取消
 
 

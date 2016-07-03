@@ -26,6 +26,7 @@ input.time {
     background: url(@datepicker_img_pic) no-repeat;
     background-size: 16px 16px;
     background-position: 6px;
+    cursor: pointer;
 }
 span.dao{
 	margin: 9px;
@@ -45,9 +46,13 @@ span.dao{
     cursor: pointer;
 }
 select{
-    padding: 7px 6px;
+    height: 30px;
     border: 1px solid #e7e7eb;
     margin-left: 15px;
+    font-family: inherit;
+    font-size: 14px;
+    color: inherit;
+    padding-left: 10px;
 }
 table{
 	border-collapse: collapse;
@@ -91,7 +96,10 @@ td{
 #page>div{
 	display: inline-block;
 	vertical-align: bottom;
-    margin: 0 30px;
+    margin: 0 10px;
+}
+#page .page_text{
+    margin: 0 8px;
 }
 #page .left{
     width: 30px;
@@ -123,7 +131,6 @@ td{
     height: 28px;
     width: 58px;
     margin: 0;
-    margin-left: -20px;
     color: #4A4A4A;
     font-size: 14px;
     border: 1px solid #E7E7EB;

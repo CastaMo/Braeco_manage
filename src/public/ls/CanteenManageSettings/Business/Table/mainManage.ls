@@ -46,6 +46,7 @@ main-manage = let
 					result = JSON.parse result
 					if result.message == 'success'
 						alert '桌号正在生成，稍后发送到您的邮箱，请稍等！'
+						set-timeout (!->location.reload!), 2000
 			)
 			covers.push(new-cover)
 		# 单个桌位修改
@@ -151,14 +152,14 @@ main-manage = let
 				case 1 then wrap.find '.imgli' .removeClass 'selected'
 				case 6 then
 					selected = get-disabled-table-num!
-					wrap.find '.delete_tables b' .text '已选中'+selected+'张二维码'
+					wrap.find '.delete_tables b' .text selected+'张二维码'
 			case 1 then
 				$ '#popup_cover' .show!
 				little-wrap = $ arg1 .find '.edit'
 				little-wrap.find 'input' .val($ arg1 .find '.num' .text!)
 				little-wrap.fadeIn 300
-		# i= 2       裸码，限制50个
-		# i= 3、4、5 其他码，限制25个
+		# i= 2       裸码，限制50个     0.5秒一个
+		# i= 3、4、5 其他码，限制25个   2秒一个
 		disable-download-directly = (ob,i)!->
 			num = get-disabled-table-num!
 			if i==2
@@ -166,10 +167,10 @@ main-manage = let
 				if num>50
 					disable-select-email ob.find 'select[name=send_email]',(num*0.5).toFixed(1)
 			else if i==3||i==4||i==5
-				ob.find '.message b' .text num
+				ob.find '.message b' .text num*2
 				if num>25
-					disable-select-email ob.find 'select[name=send_email]',num
-		disable-select-email = (ob,t)!->
+					disable-select-email ob.find 'select[name=send_email]'
+		disable-select-email = (ob)!->
 			ob.val('1')
 			ob.prop('disabled',true)
 			ob.parents('.inputli').next().hide()
@@ -192,7 +193,7 @@ main-manage = let
 			return null
 		# 显示选中的number
 		change-num-tip =!->
-			numerator = get-disabled-table-num!
+			numerator = $ '.table_qr.disabled:not(.add_new)' .length
 			denominator =($ '.table_qr').length-1
 			$ '.table_operation.select_all .selected_num' .text '('+numerator+'/'+denominator+')'
 			if numerator == denominator
@@ -246,14 +247,16 @@ main-manage = let
 	My-input = (ob)->
 		@dom = ob
 		@empty = ~>
-			if $ @dom .val! == '' || /\s/.test($ @dom .val!)
-				alert '输入不可为空'
-				return true
+			if @dom.getAttribute('disabled')!='true' 
+				if $ @dom .val! == '' || /\s/.test($ @dom .val!)
+					alert '输入不可为空'
+					return true
 			return false
 		@valid =(reg)~>
 			if ($ @dom .is ':visible' )== false
 				return true
 			val = @dom.value
+			name = $ @dom .attr 'name'
 			if @empty!
 				return false
 			if reg!=undefined
@@ -264,15 +267,20 @@ main-manage = let
 					alert '桌位号太长，最多可输入4个中文字符或者8个英文字符'
 					return false
 			# 验证邮箱是否合法
-			if ($ @dom .attr 'name')=='email'
+			if name=='email'
 				if !/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test val
 					alert '请输入正确的邮箱地址！'
+					return false
+			# 批量添加桌位，一次不能超过200
+			if name =='sum'
+				if (parseInt val )>200
+					alert '批量添加一次不能超过200个桌位！'
 					return false
 			# 数字输入框的长度
 			len = $ @dom .attr 'length' 
 			if len!=undefined
 				if (!/\d/.test len)||(val.length>parseInt len)
-					alert '该输入框只能输入数字，且长度不能大于'+len
+					alert '该输入框只能输入0~999之间的数字'
 					return false
 			return true
 		@focus =!~>
@@ -303,14 +311,18 @@ main-manage = let
 					@mysubmit!
 
 		@mysubmit = (url,success)!~>
-			util.ajax {
-				type :'post'
-				url : _url
-				data : JSON.stringify @.get-cover-data!
-				success : _success
-				unavailabled : (result)!->
-					alert '请求失败'+result
-			}
+			btn = $ self.dom .find '.btn.confirm' 
+			if btn.hasClass 'able'
+				btn.removeClass 'able'
+				util.ajax {
+					type :'post'
+					url : _url
+					data : JSON.stringify @.get-cover-data!
+					success : _success
+					unavailabled : (result)!->
+						alert '请求失败'+result
+					always : !~> $ self.dom .find 'btn.confirm' .addClass 'able'
+				}
 		@valid = !~>
 			for x in @inputs
 				if !x.valid!
@@ -367,6 +379,7 @@ main-manage = let
 		@
 	_count_str_length=(str)->
 		x = str.match(/[\u4E00-\u9FA5\uF900-\uFA2D]/g)
+		x = x || ''
 		return str.length+x.length
 	class init-all-data 
 		(d) ->
@@ -379,7 +392,8 @@ main-manage = let
 				_new-table.find '.table_qr_light img' .attr 'src',x.url
 				_new-table.find '.table_qr_light .num' .text x.word
 				_new-table.removeClass 'new'
-				_new-table.insertBefore _initial-new-table
+				# _new-table.insertBefore _initial-new-table
+				$ '#tables_container' .append _new-table
 			_initial-new-table.remove!
 			$ '.table_operation.select_all .selected_num' .text '(0/'+_all-data.length+')'
 
