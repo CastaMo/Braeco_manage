@@ -40,7 +40,7 @@ main-manage = let
 
 	_init-all-blur = !->
 		$("._searchInput").blur !->
-			if $('._searchInput').val() == '' or /^[1-9]\d*$/.test($('._searchInput').val())
+			if $('._searchInput').val() == '' or /^[0-9]\d*$/.test($('._searchInput').val())
 				_isSearchValid := 0
 			else
 				_isSearchValid := 1
@@ -77,7 +77,7 @@ main-manage = let
 				return true
 			else
 				$('._jump-input').val('')
-				alert('该输入框只能输入数字')
+				alert('请输入正确页码')
 				return false
 
 	_init-all-event = !->
@@ -103,11 +103,11 @@ main-manage = let
 			jumpPage = $("._jump-input").val!
 			pageArrJSON = $('#page-JSON-field').html!
 			pageArr = JSON.parse(pageArrJSON)
-			if jumpPage >= 1 and jumpPage <= pageArr.sum_pages then pageArr.pn = jumpPage
-			pageArrJSON = JSON.stringify(pageArr)
-			$('#page-JSON-field').html(pageArrJSON)
-			location.href = "/Manage/Market/Member/List?by=create_date&in=#{pageArr.in}&pn=" + pageArr.pn
-
+			if jumpPage isnt ''
+				if jumpPage >= 1 and jumpPage <= pageArr.sum_pages
+					location.href = "/Manage/Market/Member/List?by=create_date&in=#{pageArr.in}&pn=" + jumpPage
+				else alert('请输入正确页码')
+			else alert('请输入正确页码')
 		_close-dom.click !->
 			page.cover-page "exit"
 			_init-table!
