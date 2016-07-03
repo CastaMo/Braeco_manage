@@ -21,7 +21,7 @@ class NewView
 		@c-name-dom 							= @$el.find ".c-name-field input"
 		@e-name-dom 							= @$el.find ".e-name-field input"
 		@type-dom 								= @$el.find ".price-field select"
-		@price-dom 								= @$el.find ".price-field input"
+		@price-dom 								= @$el.find ".price-field .input-field"
 		@pic-upload-dom 					= @$el.find ".pic-field input\#new-pic"
 		@pic-dom 									= @$el.find ".pic-field .img"
 		@subitem-list-dom 				= @$el.find "ul.subitem-list"

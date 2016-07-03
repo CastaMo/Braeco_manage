@@ -66,13 +66,24 @@ class NewController
 		if @config-data.type isnt "combo_static" then @config-data.price = 0
 
 	check-is-valid: !->
+
+		is-ch-code = (num)->
+			return num >= 0x4E00 and num <= 0x9FFF
+
+		get-total-length-for-str = (str)->
+			count = 0
+			for i in [0 to str.length - 1]
+				if is-ch-code str.char-code-at i then count += 2
+				else count += 1
+			return count
+
 		err-msg = ""; valid-flag = true
-		if @config-data.name.length <= 0 or @config-data.name.length > 32 then err-msg += "套餐名称长度应为1~32位\n"; valid-flag = false
-		if @config-data.name2.length > 32 then err-msg += "英文名长度应为0~32位\n"; valid-flag = false
+		if get-total-length-for-str(@config-data.name) <= 0 or get-total-length-for-str(@config-data.name) > 32 then err-msg += "套餐名称长度应为1~32位(一个中文字符占2个单位)\n"; valid-flag = false
+		if get-total-length-for-str(@config-data.name2) > 32 then err-msg += "英文名长度应为0~32位(一个中文字符占2个单位)\n"; valid-flag = false
 		if @config-data.type is "combo_static"
 			if @config-data.price.length is 0 or Number(@config-data.price) < 0 or Number(@config-data.price) > 9999 then err-msg += "默认价格范围应为0~9999元\n"; valid-flag = false
-		if @config-data.tag.length > 18 then err-msg += "标签长度应为0~18位\n"; valid-flag = false
-		if @config-data.detail.length > 400 then err-msg += "详情长度应为0~400位\n"; valid-flag = false
+		if get-total-length-for-str(@config-data.tag) > 18 then err-msg += "标签长度应为0~18位(一个中文字符占2个单位)\n"; valid-flag = false
+		if get-total-length-for-str(@config-data.detail) > 400 then err-msg += "详情长度应为0~400位(一个中文字符占2个单位)\n"; valid-flag = false
 		if @config-data.groups.length > 40 or @config-data.groups.length <= 0 then err-msg += "属性组数量应为1~40个\n"; valid-flag = false
 		for elem, i in @config-data.require
 			if 	elem.length is 0 or
