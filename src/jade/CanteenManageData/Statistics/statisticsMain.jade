@@ -9,7 +9,9 @@
           option(value='year') 按年查看
 
         //- day and week
-        input.date-range.date-begin(data-toggle="datepicker" ng-model='statisticsFilter.dateBegin' ng-show='statisticsFilter.dateType == "day" || statisticsFilter.dateType == "week"'  ng-change='getStatisticsByUnit($event)')
+        .day-and-week-input
+          input.date-range.date-begin(data-toggle="datepicker" ng-model='statisticsFilter.dateBegin' ng-show='statisticsFilter.dateType == "day" || statisticsFilter.dateType == "week"'  ng-change='getStatisticsByUnit($event)')
+          span.after-seven-days(ng-if='statisticsFilter.dateType == "week"') 后七天
 
         //- month
         select.month-select(ng-show='statisticsFilter.dateType == "month"' ng-model='statisticsFilter.selectedMonth'  ng-change='getStatisticsByUnit($event)')

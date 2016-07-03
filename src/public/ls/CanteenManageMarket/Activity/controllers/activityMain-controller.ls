@@ -10,7 +10,8 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
       sales: null
       themes: null
 
-    $scope.base-image-url = 'http://static.brae.co/images/activity/'
+    # $scope.base-image-url = 'http://static.brae.co/images/activity/'
+    $scope.base-image-url = ''
     $scope.pre-image-url = 'http://ww2.sinaimg.cn/large/ed796d65gw1f5c4ujggb4j20ku0b4aa1.jpg'
 
     # 编辑区域数据
@@ -383,7 +384,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
     result = $scope.resource.activities-deleting.save {id: id}, {}, !->
 
       if result.message is 'success'
-        alert '活动删除成功'
+        alert '活动删除成功', true
         retrieve-activity-data!
       else
         alert '活动删除失败'
@@ -429,7 +430,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
   create-activity-by-data = (data)!->
     result = $scope.resource.activities-creating.save {type: data.type}, data, !->
       if result.message is 'success'
-        alert '活动创建成功'
+        alert '活动创建成功', true
         retrieve-activity-data!
         $scope.new-activity-type = null
         init-editor!
@@ -442,7 +443,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
     $activitySM.go-to-state ['\#activity-main', '\#activity-spinner']
     result = $scope.resource.activities-update.save {id: data.id}, data, !->
       if result.message is 'success'
-        alert '活动修改成功'
+        alert '活动修改成功', true
         retrieve-activity-data!
       else
         alert '活动修改失败'

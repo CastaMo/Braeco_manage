@@ -56,6 +56,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
   init-resource-variable = !->
     $scope.resource = {}
     $scope.resource.statistics = $resource '/Dinner/Manage/Statistic'
+    $scope.resource.ticket = $resource '/Dinner/Manage/Statistic/Print'
 
   # ====== 4 页面元素初始化 ======
   init-page-dom = !->
@@ -112,12 +113,20 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     | 'sales-volume'       => init-pie-chart!
 
   $scope.print-small-ticket = (event)!->
-    alert '打印日结小票功能还没实现哦'
+    unit = $scope.statistics-filter.date-type
+    date = $scope.statistics-filter.date-begin.split '-'
+    year = date[0]; month = date[1]; day = date[2]
+
+    callback = (result)!->
+      if result.message is 'success' then alert '打印成功', true
+      else alert '打印失败', false
+
+    retrieve-statistics-ticket year, month, day, callback
 
   $scope.set-data-by-data-type = (event)!->
     set-turnover-data!
     set-orders-data!
-    init-line-chart!
+    init-chart!
 
   $scope.set-selected-sales-type = (event, type)!->
 
@@ -169,6 +178,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     , 500
 
   init-chart = !->
+    debugger
     type = $scope.current-data-box
 
     switch type
@@ -330,6 +340,8 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     Chart.defaults.global.tooltips.enabled = true
     Chart.defaults.global.tooltips.mode = 'label'
     Chart.defaults.global.legend.labels.boxWidth = 15
+    # Chart.defaults.global.tooltips
+
 
   set-scope-chart-data = !->
     color-settings = get-line-chart-color-settings!
@@ -433,7 +445,9 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       pointHoverBorderColor: "rgba(220, 220, 220, 0.4)"
       pointHoverBorderWidth: 1
 
-      hidden: true
+      lineTension: 0.6
+
+      hidden: false
 
   get-line-chart-color-settings = ->
     color-settings =
@@ -477,14 +491,25 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     data-type = $scope.statistics-filter.data-type
 
     detail-data = get-detail-data current-data-box
-    detail-data-types = get-detail-data-type!
-
+    detail-data-types = get-detail-data-type current-data-box
+    debugger
     chart-data = get-chart-datasets-data date-type, detail-data-types, detail-data[data-type]
 
     chart-data
 
   get-chart-datasets-data = (date-type, detail-data-types, detail-data)->
     chart-data = []
+
+    if detail-data['alipay_wap'] and detail-data['alipay_qr_f2f']
+      detail-data['alipay'] = {}
+      detail-data['alipay'].detail = detail-data['alipay_wap'].detail.map (num, idx)->
+        num + detail-data['alipay_qr_f2f'].detail[idx];
+    else if detail-data['alipay_wap']
+      detail-data['alipay'] = {}
+      detail-data['alipay'].detail = detail-data['alipay_wap'].detail
+    else if detail-data['alipay_qr_f2f']
+      detail-data['alipay'] = {}
+      detail-data['alipay'].detail = detail-data['alipay_qr_f2f'].detail
 
     detail-data-types.for-each (item)!->
       if detail-data[item] isnt undefined
@@ -496,10 +521,20 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
         | 'month' => chart-data.push [i - i for i from 0 to 29] # 临时
         | 'year'  => chart-data.push [i - i for i from 0 to 11]
 
+    debugger
+    # result = []
+
+    # chart-data.for-each (item, index, array)!->
+    #   console.log item, index, array
+
     chart-data
 
-  get-detail-data-type = ->
-    ['all', 'cash', 'p2p_wx_pub', 'wx_pub', 'alipay_wap', 'alipay_qr_f2f', 'bfb_wap', 'prepayment']
+  get-detail-data-type = (current-data-box)->
+    if current-data-box is 'turnover'
+      ['all', 'cash', 'p2p_wx_pub', 'alipay', 'bfb_wap']
+    else if current-data-box is 'orders'
+      ['all', 'cash', 'p2p_wx_pub', 'alipay', 'bfb_wap', 'prepayment']
+    # ['all', 'cash', 'p2p_wx_pub', 'wx_pub', 'alipay_wap', 'alipay_qr_f2f', 'bfb_wap', 'prepayment']
 
   get-detail-data = (current-data-box)->
     detail-data = null
@@ -511,7 +546,10 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     detail-data
 
   get-line-chart-legends = ->
-    legend = ['所有', '现金', '微信P2P', '微信代收', '支付宝网页付', '支付宝扫码', '百度钱包', '会员余额']
+    if $scope.current-data-box is 'turnover'
+      legend = ['所有', '现金', '微信支付', '支付宝', '百度钱包']
+    else if $scope.current-data-box is 'orders'
+      legend = ['所有', '现金', '微信支付', '支付宝', '百度钱包', '会员余额']
 
   get-line-chart-labels = ->
     type = $scope.statistics-filter.date-type
@@ -568,7 +606,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
   get-year-labels = ->
     ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
 
-  get-line-chart-datasets  = (color-settings, data, legends, dataset-item)->
+  get-line-chart-datasets = (color-settings, data, legends, dataset-item)->
     datasets = []
 
     for i from 0 to data.length - 1
@@ -579,7 +617,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       dataset-item.label = legends[i]
 
       temp = JSON.parse JSON.stringify(dataset-item) # trick deep clone
-      if i is 0 then temp.hidden = false
+      # if i is 0 then temp.hidden = false
 
       datasets.push temp
 
@@ -682,6 +720,14 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     result = $scope.resource.statistics.save {}, post-data, !->
       console.log 'function: retrieve-statistics-by-year, get initial statistics done!'
       callback? result
+
+  # 打印日结小票
+  retrieve-statistics-ticket = (year, month, day, callback)!->
+    $statisticsSM.go-to-state ['\#statistics-main', '\#statistics-spinner-circle']
+    post-data = { unit: 'day', year: year, month: month, day: day }
+    result = $scope.resource.ticket.save {}, post-data, !->
+      callback result
+      $statisticsSM.go-to-state ['\#statistics-main']
 
   # ====== 10 初始化函数执行 ======
 

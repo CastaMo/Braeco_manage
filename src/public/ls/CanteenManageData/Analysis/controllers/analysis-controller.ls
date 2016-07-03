@@ -53,7 +53,9 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
   init-resource-variable = !->
     $scope.resource = {}
     $scope.resource.statistic = $resource '/Dinner/Manage/Statistic'
-    $scope.resource.analysis = $resource '/Manage/Data/Analysis/JSON'
+    # $scope.resource.analysis = $resource '/Manage/Data/Analysis/JSON'
+    $scope.resource.membership = $resource '/Membership/Analysis/Get'
+    $scope.resource.coupon = $resource '/coupon/get'
 
   # ====== 4 页面元素初始化 ======
   init-page-dom = !->
@@ -666,18 +668,21 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     $analysisSM.go-to-state ['\#analysis-main', '\#analysis-spinner']
 
     callback = (result)!->
-      data = JSON.parse result.data
+      data = result.data
       $scope.member-class = data.distribution
       $scope.sum-balance = data.sum_balance
       $scope.member-count = data.count
       $analysisSM.go-to-state ['\#analysis-main']
 
-    result = $scope.resource.analysis.get {}, !->
+    result = $scope.resource.membership.save {}, !->
       callback result
 
       if $scope.selected-tab is 'coupons'
         $braecoConsole 'retrieve-member-class-and-sumbalance'
         init-chart!
+
+  retrieve-all-batch-number = !->
+
 
   # ====== 10 初始化函数执行 ======
 
