@@ -47,6 +47,7 @@ require-manage = let
 
 	_require-fail-callback = {
 		"message"					:		-> alert "Invalid $value"
+		"Create wx coupon fail"		: 		-> alert "微信卡券创建失败"
 	}
 
 	_require-handle = (name, config)->

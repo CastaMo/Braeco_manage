@@ -286,6 +286,11 @@ do ->
 			$ 'input[name=page]' .val d.data.wxpay.page
 			for x in d.data.wxpay.printer
 				$ '.wrap_printers' .eq 0 .append('<label class="printer">'+x.remark+'<input value="' + x.id + '" name="printer" type="radio"></label>')
+			select_printer = parseInt d.data.wxpay.select_printer
+			if select_printer>0
+				ob = $ 'input[value='+select_printer+']' 
+				$ '.wrap_printers' .eq 0 .prepend(ob.parents '.printer' .remove!)
+				ob.attr 'checked',true
 		carousel = new My-carousel $ '#carousel'
 		inputs = new My-inputs $ '.wrap:not(#wrap_pics) input' 
 	_set-or-edit =(ob,x)!->
