@@ -112,7 +112,7 @@ refund-manage = let
             _total-sum += single-food.sum
     
     _is-total-current-ok = ->
-        if _get-total-sum === 0
+        if _get-current-sum! === 0
             false
         else
             true
@@ -122,8 +122,7 @@ refund-manage = let
         #     true
 
     _set-current-total = (current-total)!->
-        # if current-total === 0.0 or !_is-description-input-ok!
-        if _is-total-current-ok! or !_is-description-input-ok!
+        if !_is-total-current-ok! or !_is-description-input-ok!
             _set-comfirm-button-disable!
             _password-block-disappear!
         else
