@@ -68,7 +68,7 @@ do !->
 			body = $ '.center tbody' .empty!
 			for temp in @tables
 				newtr = $ '<tr>'
-				newtr.append '<td>'+ (_unix-to-date temp.time)+'</td>'
+				newtr.append '<td>'+ (_unix-to-date temp.time,true)+'</td>'
 				newtr.append '<td>'+ temp.executor+'</td>'
 				newtr.append '<td>'+ temp.msg+'</td>'
 				newtr.append '<td>'+ temp.type+'</td>'
@@ -88,6 +88,11 @@ do !->
 				ymdhis = time.getUTCFullYear! + "-"
 				ymdhis += _add-zero(time.getUTCMonth!+1) + "-"
 				ymdhis += _add-zero time.getUTCDate! 
+				if add === true
+					ymdhis +='<br>'
+					ymdhis += " " + _add-zero(time.getUTCHours!) + ":"
+					ymdhis += _add-zero(time.getUTCMinutes!) + ":"
+					ymdhis += _add-zero(time.getUTCSeconds!)
 				return ymdhis
 			else 
 				return ''
@@ -99,8 +104,9 @@ do !->
 			return (new Date d ).getTime!/1000
 
 		_add-zero = (x)->
-			x>=10 ? x : ('0'+x)
-			x
+			if x>=10
+				return x
+			return '0'+x
 		_get-url-data = ->
 			st = _date-to-unix($ 'input[name=st]' .val!)
 			en =  _date-to-unix($ 'input[name=en]' .val!,1)
