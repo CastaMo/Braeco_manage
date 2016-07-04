@@ -116,7 +116,18 @@ main-manage = let
             tr-dom.append $ "<td>"+@.order+"</td>"
             tr-dom.append @gene-refund-items-dom!
             tr-dom.append $ "<td>"+@.amount+"</td>"
-            tr-dom.append $ "<td>"+@.channel+"</td>"
+            td-dom = $ "<td></td>"
+            channel-p-dom = $ "<p>"+@.channel+"</p>"
+            status-p-dom = $ "<p>"+@.status+"</p>"
+            if @.status === '退款成功'
+                status-p-dom.add-class "status-content-green"
+            else if @.status === '退款中'
+                status-p-dom.add-class "status-content-yellow"
+            else if @.status === '退款失败'
+                status-p-dom.add-class "status-content-red"
+            td-dom.append channel-p-dom
+            td-dom.append status-p-dom
+            tr-dom.append td-dom
             tr-dom.append $ "<td>"+@.description+"</td>"
             _table-body-dom.append tr-dom
 
