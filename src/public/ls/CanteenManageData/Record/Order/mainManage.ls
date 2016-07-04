@@ -89,6 +89,7 @@ main-manage = let
         _page-data-obj.en = _page-data-obj.en-8*3600+24*3600-1
 
     _tr-hover-event = (event) !->
+        console.log "hover!"
         if _is-one-pinned
             return
         target = $ event.target
@@ -99,6 +100,7 @@ main-manage = let
         order-details-container.show!
     
     _tr-leave-event = (event) !->
+        console.log "leave"
         if _is-one-pinned
             return
         target = $ event.target
@@ -310,7 +312,7 @@ main-manage = let
             order-details-body-dom.append _gene-description-block-dom data-obj.describtion
 
         container-dom.append order-details-body-dom
-        container-dom.click !-> _order-details-container-click-event event
+        container-dom.click (event)!-> _order-details-container-click-event event
         container-dom
 
     _tr-click-event = (event) !->
@@ -384,8 +386,8 @@ main-manage = let
 
     _gene-tr-dom = (data-obj)->
         tr-dom = $ "<tr></tr>"
-        tr-dom.hover !-> (_tr-hover-event event), !-> _tr-leave-event event
-        tr-dom.click !-> _tr-click-event event
+        tr-dom.hover ((event)!-> _tr-hover-event event), ((event)!-> _tr-leave-event event)
+        tr-dom.click (event)!-> _tr-click-event event
         unix-timestamp = parse-int data-obj.create_date
         date = _unix-timestamp-to-date unix-timestamp
         tr-dom.append $ "<td>"+date+"</td>"
@@ -421,7 +423,7 @@ main-manage = let
             refund-method-container-dom.append $ "<icon class='refund-disable-icon'></icon>"
             refund-method-container-dom.append $ "<p class='refund-disable-word'>退款</p>"
             refund-method-container-dom.append $ "<div class='refund-disable-description'><p>"+data-obj.refund+"</p></div>"
-            $(refund-method-container-dom.find "icon").hover !-> _refund-disable-container-hover-event event
+            $(refund-method-container-dom.find "icon").hover (event)!-> _refund-disable-container-hover-event event
         td-methods-dom.append refund-method-container-dom
         print-method-container-dom = $ "<div class='method-container'>
         <icon class='print-icon'></icon>
@@ -462,7 +464,7 @@ main-manage = let
         _jump-btn-dom.click !-> _jump-btn-click-event!
         _start-date-input-dom.change !-> _start-date-input-dom-change-event!
         _end-date-input-dom.change !-> _end-date-input-dom-change-event!
-        ($ "html").click !-> _html-click-event event
+        ($ "html").click (event)!-> _html-click-event event
 
     _init-page-info = !->
         st = _page-data-obj.st
