@@ -76,7 +76,7 @@ class NewController
 				if is-ch-code str.char-code-at i then count += 2
 				else count += 1
 			return count
-
+		console.log @config-data
 		err-msg = ""; valid-flag = true
 		if get-total-length-for-str(@config-data.name) <= 0 or get-total-length-for-str(@config-data.name) > 32 then err-msg += "套餐名称长度应为1~32位(一个中文字符占2个单位)\n"; valid-flag = false
 		if get-total-length-for-str(@config-data.name2) > 32 then err-msg += "英文名长度应为0~32位(一个中文字符占2个单位)\n"; valid-flag = false

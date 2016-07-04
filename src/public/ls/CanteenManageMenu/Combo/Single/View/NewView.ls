@@ -21,7 +21,8 @@ class NewView
 		@c-name-dom 							= @$el.find ".c-name-field input"
 		@e-name-dom 							= @$el.find ".e-name-field input"
 		@type-dom 								= @$el.find ".price-field select"
-		@price-dom 								= @$el.find ".price-field .input-field"
+		@price-display-dom 				= @$el.find ".price-field .input-field"
+		@price-dom 								= @$el.find ".price-field .input-field input"
 		@pic-upload-dom 					= @$el.find ".pic-field input\#new-pic"
 		@pic-dom 									= @$el.find ".pic-field .img"
 		@subitem-list-dom 				= @$el.find "ul.subitem-list"
@@ -56,8 +57,8 @@ class NewView
 		eventbus.on "controller:new:add-subitem", !~> @add-subitem-dom!; @update-all-subitem-dom!
 
 	type-dom-change-event: (type)!->
-		if type is "combo_static" then @price-dom.fade-in 200
-		else @price-dom.fade-out 200; @price-dom.val null
+		if type is "combo_static" then @price-display-dom.fade-in 200
+		else @price-display-dom.fade-out 200; @price-dom.val null
 
 	pic-upload-event: (file)!->
 		if parse-int(file.size / 1024) > 4097 then return alert "图片大小不能超过4M"
