@@ -245,12 +245,6 @@ main-manage = let
        sum-block-dom.append "<span class='right-span'>总价："+price+"</span>"
        sum-block-dom.append "<div class='clear'></div>"
        $ sum-block-dom
-    
-    _gene-description-block-dom = (description) ->
-        description-block-dom = $ "<div class='details-block'></div>"
-        description-block-dom.append "<p>------------------ 备注 -------------------</p>"
-        description-block-dom.append "<div class='description-content'>"+description+"</div>"
-        $ description-block-dom
 
     _get-food-number-sum = (content-obj) ->
         sum = 0
@@ -284,10 +278,11 @@ main-manage = let
         else
             infomation-dom.append $ "<span>会员编号： </span><span>"+data-obj.eaterid_of_dinner+"</span>"
         order-details-body-dom.append infomation-dom
-
-        infomation-dom = $ "<div class='order-infomation info-phone'></div>"
-        infomation-dom.append $ "<span>手机号码： </span><span>"+data-obj.phone+"</span>"
-        order-details-body-dom.append infomation-dom
+        
+        if data-obj.phone !== '-'
+            infomation-dom = $ "<div class='order-infomation info-phone'></div>"
+            infomation-dom.append $ "<span>手机号码： </span><span>"+data-obj.phone+"</span>"
+            order-details-body-dom.append infomation-dom
         
         infomation-dom = $ "<div class='order-infomation info-order-pay-time'></div>"
         unix-timestamp = parse-int data-obj.create_date
@@ -300,14 +295,17 @@ main-manage = let
         infomation-dom.append $ "<span>"+data-obj.id+"</span>"
         order-details-body-dom.append infomation-dom
 
+        if data-obj.describtion !== null
+            infomation-dom = $ "<div class='order-infomation'></div>"
+            infomation-dom.append $ "<span>备注： </span>"
+            infomation-dom.append $ "<span>"+data-obj.describtion+"</span>"
+            order-details-body-dom.append infomation-dom
+
         order-details-body-dom.append _gene-food-block-dom data-obj.content
 
         order-details-body-dom.append _gene-promotion-block-dom data-obj.content
        
         order-details-body-dom.append _gene-sum-block-dom data-obj.content, data-obj.price
-
-        if data-obj.describtion !== null
-            order-details-body-dom.append _gene-description-block-dom data-obj.describtion
 
         container-dom.append order-details-body-dom
         container-dom.click (event)!-> _order-details-container-click-event event
