@@ -14,5 +14,6 @@ module.exports = function(router) {
   router.post('/Membership/Analysis/Get', getCallbackHandleForRequest("POST", cookie));
   router.post('/coupon/get', getCallbackHandleForRequest("POST", cookie));
   router.post('/Dinner/Manage/Membership/Excel', getCallbackHandleForRequest("POST", cookie));
+  router.post('/Dinner/Manage/Excel/16', getCallbackHandleForRequest("POST", cookie));
   return router;
 };

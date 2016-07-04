@@ -25,7 +25,10 @@
         select.member-selected-year(ng-show='filter.memberTimeType == "year"' ng-model='filter.memberSelectedYear' ng-change='getStatisticsByType($event)')
           option(ng-repeat='year in filter.allYears' value='{{ year }}') {{ year }}
 
-        .membership-excel-producer-button(ng-click='produceMembershipExcel($event)') 导出
+        form(name='excelForm' method='POST' action='/Dinner/Manage/Excel/16' ng-submit='produceMembershipExcel($event)' style='display:inline-block;vertical-align:bottom;float:right' target='_blank')
+          input(type='text' name='st' value='1466352000' style='display:none')
+          input(type='text' name='en' value='1466438400' style='display:none')
+          input.membership-excel-producer-button(type='submit' value='导出')
 
       .data-panel
         .current-members.data-panel-item.choose(ng-click='setSelectedPanel($event, "current-members")')
