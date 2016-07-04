@@ -49,9 +49,13 @@
         .day-and-week-input {
           position: relative;
           display: inline-block;
+          font-size: 0px;
+          input {
+            font-size: 14px;
+          }
           .after-seven-day {
             position: absolute;
-            left: 80px;
+            left: 85px;
             top: 6px;
             font-size: 10px;
           }
@@ -68,12 +72,12 @@
           height: 28px;
           border: 1px solid #e7e7eb;
           line-height: 30px;
-          vertical-align: middle;
           border-left: 0px;
           background-image: url(@calendar-icon-url);
           background-size: 80%;
           background-repeat: no-repeat;
           background-position: 3px 4px;
+          vertical-align: bottom;
 
           &:hover {
             cursor: pointer;

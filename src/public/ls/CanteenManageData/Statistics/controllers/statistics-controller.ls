@@ -449,7 +449,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
 
       pointBorderColor: "rgba(0,0,0,0.5)"
       pointBackgroundColor: "\#fff"
-      pointBorderWidth: 1
+      pointBorderWidth: 2
       pointRadius: 5
       pointHitRadius: 10
 
