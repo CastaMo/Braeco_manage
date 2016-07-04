@@ -16,6 +16,7 @@
 
     .filter-wrapper {
       // height: 30px;
+      position: relative;
 
       .filter-container {
         .date-type, .date-range, .data-type, .print-small-ticket, .month-select, .year-select {
@@ -30,6 +31,17 @@
         .date-range, .month-select, .year-select {
           margin-right: 10px;
         }
+        .day-and-week-input {
+          display: inline-block;
+          position: relative;
+          .after-seven-days {
+            position: absolute;
+            left: 75px;
+            top: 6px;
+            font-size: 12px;
+          }
+        }
+
         .date-end {
           margin-left: 10px;
         }
@@ -60,7 +72,7 @@
 
       .statistics-type-container {
         border: 1px @statistics-border-color solid;
-        height: 270px;
+        height: 225px;
 
         .choose {
           background-color: @statistics-type-choose-color;
@@ -71,7 +83,7 @@
         }
 
         .data-box {
-          height: 270px;
+          height: 225px;
           width: 233px;
           display: inline-block;
           float: left;
@@ -210,12 +222,11 @@
 
         .graph {
           border: 1px @statistics-border-color solid;
-          height: 380px;
-          padding: 10px;
-          padding-top: 30px;
+          height: 325px;
+          padding: 20px;
 
           #statistics-line-chart {
-            height: 370px !important;
+            // height: 370px !important;
           }
           #statistics-pie-chart {
             width: 100% !important;
@@ -250,25 +261,25 @@
             text-align: center;
           }
           .rank {
-            width: 100px;
+            width: 100 / 699 * 99%;
           }
           .category-name {
-            width: 199px;
+            width: 199 / 699 * 99%;
           }
           .dish-name {
-            width: 199px;
+            width: 199 / 699 * 99%;
           }
           .sales-sum {
-            width: 100px;
+            width: 100 / 699 * 99%;
           }
           .sales-amount {
-            width: 101px;
+            width: 101 / 699 * 99%;
             border-right: 0px;
           }
         }
         .category-list-head, .category-list-item {
           .category-name {
-            width: 399px;
+            width: 399 / 699 * 99%;
           }
         }
       }
@@ -346,8 +357,8 @@
 
   .sk-circle {
     // margin: 100px auto;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     position: relative;
   }
   .sk-circle .sk-child {

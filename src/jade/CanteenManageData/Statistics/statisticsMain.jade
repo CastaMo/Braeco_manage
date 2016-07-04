@@ -9,7 +9,9 @@
           option(value='year') 按年查看
 
         //- day and week
-        input.date-range.date-begin(data-toggle="datepicker" ng-model='statisticsFilter.dateBegin' ng-show='statisticsFilter.dateType == "day" || statisticsFilter.dateType == "week"'  ng-change='getStatisticsByUnit($event)')
+        .day-and-week-input
+          input.date-range.date-begin(data-toggle="datepicker" ng-model='statisticsFilter.dateBegin' ng-show='statisticsFilter.dateType == "day" || statisticsFilter.dateType == "week"'  ng-change='getStatisticsByUnit($event)')
+          span.after-seven-days(ng-if='statisticsFilter.dateType == "week"') 后七天
 
         //- month
         select.month-select(ng-show='statisticsFilter.dateType == "month"' ng-model='statisticsFilter.selectedMonth'  ng-change='getStatisticsByUnit($event)')
@@ -57,15 +59,15 @@
               span.left 现金:
               span.right {{ turnover.cash | datafilter }} 元
             .p2p_wx_pub-pay.data-box-item
-              span.left 微信P2P:
+              span.left 微信支付:
               span.right {{ turnover.p2p_wx_pub | datafilter }} 元
-            .wx_pub-pay.data-box-item
+            //- .wx_pub-pay.data-box-item
               span.left 微信代收:
               span.right {{ turnover.wx_pub | datafilter }} 元
             .alipay_wap-pay.data-box-item
-              span.left 支付宝网页付:
-              span.right {{ turnover.alipay_wap | datafilter }} 元
-            .alipay_qr_f2f-pay.data-box-item
+              span.left 支付宝:
+              span.right {{ sumAlipay(turnover.alipay_wap, turnover.alipay_qr_f2f) }} 元
+            //- .alipay_qr_f2f-pay.data-box-item
               span.left 支付宝扫码:
               span.right {{ turnover.alipay_qr_f2f | datafilter }} 元
             .bfb_wap-pay.data-box-item
@@ -87,15 +89,15 @@
               span.left 现金:
               span.right {{ orders.cash | datafilter }} 单
             .p2p_wx_pub-pay.data-box-item
-              span.left 微信P2P:
+              span.left 微信支付:
               span.right {{ orders.p2p_wx_pub | datafilter }} 单
-            .wx_pub-pay.data-box-item
+            //- .wx_pub-pay.data-box-item
               span.left 微信代收:
               span.right {{ orders.wx_pub | datafilter }} 单
             .alipay_wap-pay.data-box-item
-              span.left 支付宝网页付:
-              span.right {{ orders.alipay_wap | datafilter }} 单
-            .alipay_qr_f2f-pay.data-box-item
+              span.left 支付宝:
+              span.right {{ sumAlipay(orders.alipay_wap, orders.alipay_qr_f2f) }} 单
+            //- .alipay_qr_f2f-pay.data-box-item
               span.left 支付宝扫码:
               span.right {{ orders.alipay_qr_f2f | datafilter }} 单
             .bfb_wap-pay.data-box-item
@@ -109,7 +111,7 @@
           .data-box-wrapper
             .title 销量排行
             ul
-              li(ng-repeat='dish in statistic.dish_detail | limitTo: 7')
+              li(ng-repeat='dish in statistic.dish_detail | limitTo: 6')
                 span.left {{ $index + 1 }}
                 span.right {{ dish.name }}
 

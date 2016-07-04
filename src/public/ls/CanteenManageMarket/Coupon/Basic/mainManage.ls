@@ -37,6 +37,7 @@ main-manage = let
 	_down-next-dom = $ "\._down .nextPage.btn"
 	_down-jump-dom = $ "\._down .jump-btn"
 	_return-dom = $ "\.return-btn"
+	_statistics-btn-dom = $ "\.statistics-btn"
 
 	class Coupon
 		(options)->
@@ -212,25 +213,20 @@ main-manage = let
 
 		_up-jump-dom.click !->
 			if $("._up ._jump-input").val() isnt ''
-				if $("._up ._jump-input").val() > 1 and $("._up ._jump-input").val() <= _upsum
+				if $("._up ._jump-input").val() >= 1 and $("._up ._jump-input").val() <= _upsum
 					_jumpPage = $("._up ._jump-input").val!
-				else if $("._up ._jump-input").val() > _upsum
-					_jumpPage = _upnow
+					location.href = "/Manage/Market/Coupon/Basic?uppn=#{_jumpPage}&downpn=#{_downnow}"
 				else
-					_jumpPage = 1
-			else _jumpPage = _upnow
-			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_jumpPage}&downpn=#{_downnow}"
+					alert('请输入正确页码')
+			else alert('请输入正确页码')
 
 		_down-jump-dom.click !->
 			if $("._down ._jump-input").val() isnt ''
-				if $("._down ._jump-input").val() > 1 and $("._down ._jump-input").val() <= _downsum
+				if $("._down ._jump-input").val() >= 1 and $("._down ._jump-input").val() <= _downsum
 					_jumpPage = $("._down ._jump-input").val!
-				else if $("._down ._jump-input").val() > _downsum
-					_jumpPage = _downnow
-				else
-					_jumpPage = 1
-			else _jumpPage = _downnow
-			location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_jumpPage}"
+					location.href = "/Manage/Market/Coupon/Basic?uppn=#{_upnow}&downpn=#{_jumpPage}"
+				else alert('请输入正确页码')
+			else alert('请输入正确页码')
 
 		_apply-dom.click !->
 			_apply = $(this).parent()
@@ -240,6 +236,10 @@ main-manage = let
 			else if _apply.hasClass("false")
 				_apply.removeClass "false"
 				_apply.addClass "true"
+
+		_statistics-btn-dom.click !->
+			_sta-coupon-id = $("._pre-batch-number").html!
+			location.href = "/Manage/Data/Analysis#" + _sta-coupon-id
 
 		_new-btn-dom.click !->
 			page.toggle-page "new"
