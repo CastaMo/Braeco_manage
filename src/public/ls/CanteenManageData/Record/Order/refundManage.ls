@@ -69,10 +69,10 @@ refund-manage = let
         while index < pri-tds.length
             j-cur-td = $ cur-tds[index]
             j-pri-td = $ pri-tds[index]
-            current-total += (parse-int j-cur-td.text!) * parse-float j-pri-td.text!
+            current-total += (parse-float j-cur-td.text!) * parse-float j-pri-td.text!
             index += 1
-        Math.min current-total, parse-float _data-obj.price
-    
+        (Math.min current-total, parse-float _data-obj.price).to-fixed 2
+
     _get-current-sum = ->
         current-sum = 0
         cur-tds = $ '.cur-td'
@@ -112,13 +112,18 @@ refund-manage = let
             _total-sum += single-food.sum
     
     _is-total-current-ok = ->
-        if (parse-float ($ "\#refund-money").text!) === 0.0
+        if _get-total-sum === 0
             false
         else
             true
+        # if (parse-float ($ "\#refund-money").text!) === 0.0
+        #     false
+        # else
+        #     true
 
     _set-current-total = (current-total)!->
-        if current-total === 0.0 or !_is-description-input-ok!
+        # if current-total === 0.0 or !_is-description-input-ok!
+        if _is-total-current-ok! or !_is-description-input-ok!
             _set-comfirm-button-disable!
             _password-block-disappear!
         else
@@ -130,6 +135,8 @@ refund-manage = let
         index = 0
         while index < cur-tds.length
             j-cur-td = $ cur-tds[index]
+            j-cur-td .parent! .find "icon:last-child" .add-class 'refund-add-disable-icon'
+            j-cur-td .parent! .find "icon:first-child" .css('visibility', 'visible')
             j-cur-td.text j-cur-td.next!.text!
             index += 1
     
@@ -138,6 +145,8 @@ refund-manage = let
         index = 0
         while index < cur-tds.length
             j-cur-td = $ cur-tds[index]
+            j-cur-td .parent! .find "icon:last-child" .remove-class 'refund-add-disable-icon'
+            j-cur-td .parent! .find "icon:first-child" .css('visibility', 'hidden')
             j-cur-td.text "0"
             index += 1
     
