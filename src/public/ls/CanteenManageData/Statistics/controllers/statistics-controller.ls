@@ -178,7 +178,6 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     , 500
 
   init-chart = !->
-    debugger
     type = $scope.current-data-box
 
     switch type
@@ -252,9 +251,10 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     base-month = register-time-date-obj.month
 
     # 注册年份的月份数
-    for i from 0 to total-months-obj.register-year-month-gap
-      month = base-year + '年' + (base-month + i) + '月'
-      all-months.push month
+    if total-months-obj.year-gap >= 0
+      for i from 0 to total-months-obj.register-year-month-gap
+        month = base-year + '年' + (base-month + i) + '月'
+        all-months.push month
 
     base-year++
 
@@ -267,9 +267,12 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     base-year = base-year + total-months-obj.year-gap
 
     # 今年的月份数
+
     for i from 0 to total-months-obj.now-year-month-gap - 1
       month = base-year + '年' + (i + 1) + '月'
       all-months.push month
+
+    debugger
 
     $scope.statistics-filter.all-months = all-months
 
@@ -378,12 +381,14 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
 
   set-pie-chart-global-defaults = !->
 
-
   # {register-year-month-gap:, year-gap:, now-year-month-gap:}
   get-total-months-obj = (register-time-date-obj, now-date-obj)->
     obj = {}
     obj.year-gap = now-date-obj.year - register-time-date-obj.year - 1
-    obj.register-year-month-gap = 12 - register-time-date-obj.month
+    if obj.year-gap >= 0
+      obj.register-year-month-gap = 12 - register-time-date-obj.month
+    else
+      obj.register-year-month-gap = now-date-obj.month
     obj.now-year-month-gap = now-date-obj.month
     obj
 
@@ -492,7 +497,6 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
 
     detail-data = get-detail-data current-data-box
     detail-data-types = get-detail-data-type current-data-box
-    debugger
     chart-data = get-chart-datasets-data date-type, detail-data-types, detail-data[data-type]
 
     chart-data
@@ -521,7 +525,6 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
         | 'month' => chart-data.push [i - i for i from 0 to 29] # 临时
         | 'year'  => chart-data.push [i - i for i from 0 to 11]
 
-    debugger
     # result = []
 
     # chart-data.for-each (item, index, array)!->
@@ -655,7 +658,6 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       backgroundColor: backgroundColor
       hoverBackgroundColor: backgroundColor
 
-    debugger
     datasets = []
     datasets.push dataset-item
     datasets
@@ -672,7 +674,6 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       data-details = $scope.statistic.category_detail
       data-details.for-each (item)!->
         data.push item.sum
-    debugger
     data.slice 0, 12
 
   get-pie-chart-data-datasets-backgroundColor-and-hoverBackgroundColor = ->
@@ -685,7 +686,6 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     else if type is 'category'
       length = $scope.statistic.category_detail.length
 
-    debugger
     if length > 12 then length = 12
 
     for i from 1 to length

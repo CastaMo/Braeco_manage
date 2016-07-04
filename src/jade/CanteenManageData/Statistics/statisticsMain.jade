@@ -113,7 +113,7 @@
             ul
               li(ng-repeat='dish in statistic.dish_detail | limitTo: 6')
                 span.left {{ $index + 1 }}
-                span.right {{ dish.name }}
+                span.right {{ dish.name | dishNameFilter }}
 
     .graph-wrapper
       .graph-container
@@ -138,8 +138,8 @@
 
           .dish-list-item(ng-repeat='item in statistic.dish_detail')
             .rank.list-item {{ $index + 1 }}
-            .category-name.list-item {{ item.catname }}
-            .dish-name.list-item {{ item.name }}
+            .category-name.list-item(title='{{ item.catname }}') {{ item.catname | dishNameFilter }}
+            .dish-name.list-item(title='{{ item.name }}') {{ item.name | dishNameFilter }}
             .sales-sum.list-item {{ item.sum }}
             .sales-amount.list-item {{ item.amount }}
 
@@ -152,6 +152,6 @@
 
           .category-list-item(ng-repeat='item in statistic.category_detail')
             .rank.list-item {{ $index + 1 }}
-            .category-name.list-item {{ item.name }}
+            .category-name.list-item(title='{{ item.name }}') {{ item.name | dishNameFilter }}
             .sales-sum.list-item {{ item.sum }}
             .sales-amount.list-item {{ item.amount }}
