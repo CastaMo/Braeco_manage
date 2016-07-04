@@ -71,6 +71,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
 
   # ====== 6 $scope事件函数定义 ======
   $scope.produce-membership-excel = (event)->
+    debugger
     time-obj = get-excel-start-and-end-time!
     set-excel-form-input-value time-obj
 
@@ -117,7 +118,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     time-obj
 
   get-day-time-obj = ->
-    st = (new Date($scope.filter.member-date)).value-of!
+    st = (new Date($scope.filter.member-date + ' 00:00:00')).value-of!
     en = $scope.now-time.value-of!
 
     time-obj = { st: st / 1000, en: en / 1000 }
