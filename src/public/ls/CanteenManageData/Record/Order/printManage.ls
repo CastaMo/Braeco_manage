@@ -92,7 +92,7 @@ print-manage = let
             print-item-dom.append $ "<p>"+printer.remark+"</p>"
             input-dom = $ "<input type='checkbox' class='printer-checkbox'>"
             input-dom.val printer.id
-            input-dom.change !-> _checkbox-change-event event
+            input-dom.change (event)!-> _checkbox-change-event event
             print-item-dom.append input-dom
             printer-choose-block-dom.append print-item-dom
 

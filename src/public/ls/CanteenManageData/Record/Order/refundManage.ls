@@ -295,12 +295,12 @@ refund-manage = let
         td-dom = $ "<td class='table-num-col'></td>"
         sub-icon-dom = $ "<icon class='sub-icon refund-sub-icon'></icon>"
         sub-icon-dom.css("visibility", "hidden")
-        sub-icon-dom.click !-> _sub-icon-click-event event
+        sub-icon-dom.click (event)!-> _sub-icon-click-event event
         td-dom.append $ sub-icon-dom
         td-dom.append $ "<span class='cur-td'>0</span>"
         td-dom.append $ "<span style='display: none'>"+food-sum+"</span>"
         add-icon-dom = $ "<icon class='add-icon refund-add-icon'></icon>"
-        add-icon-dom.click !-> _add-icon-click-event event
+        add-icon-dom.click (event)!-> _add-icon-click-event event
         td-dom.append $ add-icon-dom
         $ td-dom
         
@@ -326,7 +326,7 @@ refund-manage = let
         conclusion-block-dom = $ "<div class='refund-conclusion-block'></div>"
         span-checkbox-dom = $ "<span class='left-span checkbox-item unchecked-checkbox-item'></span>"
         checkbox-dom = $ "<input class='left-span' type='checkbox' id='all-refund-checkbox'>"
-        checkbox-dom.change !-> _checkbox-change-event event
+        checkbox-dom.change (event)!-> _checkbox-change-event event
         span-checkbox-dom.append checkbox-dom
         span-checkbox-dom.append $ "<div class='left-span'>全单退款</div>"
         span-checkbox-dom.append $ "<div class='clear'></div>"

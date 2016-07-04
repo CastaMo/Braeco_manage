@@ -183,7 +183,7 @@ new-manage = let
     _set-bound-click-able = (dom)!->
         dom.unbind "click"
         dom.parent!.remove-class "disabled-checkbox-item"
-        dom.click !-> _checkbox-click-event event
+        dom.click (event)!-> _checkbox-click-event event
         _set-checkbox-unchecked dom.parent!
         _set-checkbox-unchecked dom.parent!.parent!.parent!
 
@@ -203,7 +203,7 @@ new-manage = let
     _init-event = !->
         _cancel-btn-dom.click !-> _cancel-btn-click-event!
         _save-btn-dom.click !-> _save-btn-click-event!
-        _checkbox-dom.click !-> _checkbox-click-event event
+        _checkbox-dom.click (event)!-> _checkbox-click-event event
         _unbind-click-event!
         _member-dom.click !-> _member-dom-click-event!
         _order-dom.click !-> _order-dom-click-event!

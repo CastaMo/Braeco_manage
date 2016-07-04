@@ -176,7 +176,7 @@ edit-manage = let
         _cancel-btn-dom.click !-> _cancel-btn-click-event!
         _save-btn-dom.click !-> _save-btn-click-event!
         _add-btn-dom.click !-> _add-btn-click-event!
-        _checkbox-inputs-dom.change !-> _checkbox-change-event event
+        _checkbox-inputs-dom.change (event)!-> _checkbox-change-event event
 
     _init-depend-module = !->
         page    := require "./pageManage.js"
