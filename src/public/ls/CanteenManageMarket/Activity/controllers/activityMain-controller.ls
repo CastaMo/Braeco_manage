@@ -396,6 +396,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
     $activitySM.go-to-state ['\#activity-main', '\#activity-spinner']
     result = $scope.resource.image-add-token.save {}, !->
       if result.message is 'success'
+        alert '正在上传图片，如果图片较大，请耐心等候...'
         upload-image-to-qiniu result.token, result.key, data, create-activity-by-data
       else
         alert '图片上传失败，活动创建失败'
@@ -418,6 +419,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
       data: base64-src
 
     success = (response)!->
+      alert '图片上传成功，正在创建活动，请稍后...', true
       console.log '图片成功上传到七牛服务器'
       callback? data
 
