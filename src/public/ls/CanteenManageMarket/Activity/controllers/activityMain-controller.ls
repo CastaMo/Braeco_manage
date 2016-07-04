@@ -1,7 +1,7 @@
 
 # ====== 控制器 ======
 
-angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope', '$scope', '$location', '$resource', '$http', '$activitySM' ($rootScope, $scope, $location, $resource, $http, $activitySM)!->
+angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope', '$scope', '$location', '$resource', '$http', '$activitySM', '$braecoConsole', ($rootScope, $scope, $location, $resource, $http, $activitySM, $braecoConsole)!->
 
   # ====== 1 $scope变量初始化 ======
   init-scope-variable = !->
@@ -128,6 +128,12 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
     editor-data = get-editor-data!
     editor-data.id = $scope.current-activity.id
 
+    debugger
+
+    if is-form-exit-empty-value!
+      alert '请填写所有需要的内容'
+      return
+
     if $scope.is-image-change is null
 
       update-activity-by-id editor-data
@@ -137,6 +143,10 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
   $scope.create-activity = (event)!->
     if $scope.is-image-change is null
       alert '请上传图片'
+      return
+
+    if is-form-exit-empty-value!
+      alert '请填写所有需要的内容'
       return
 
     data = get-editor-data!
@@ -223,7 +233,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
     $scope.activities.sales = []
     $scope.activities.themes = []
 
-    console.log results
+    $braecoConsole results
 
     results.for-each (item)!->
       if item.type is 'theme'
@@ -363,6 +373,16 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
 
         reader.readAsDataURL input.files[0]
 
+  is-form-exit-empty-value = ->
+    if $scope.editor.activityExpiryType is '0'
+      if $scope.editor.activity-name is '' or $scope.editor.activity-brief is '' or $scope.editor.activity-content is '' or !$scope.editor.activity-name or !$scope.editor.activity-brief or !$scope.editor.activity-content
+        return true
+    else if $scope.editor.activityExpiryType is '1'
+      if $scope.editor.activity-name is '' or $scope.editor.activity-brief is '' or $scope.editor.activity-content is '' or $scope.editor.activityStartDate is '' or $scope.editor.activityEndDate is '' or !$scope.editor.activity-name or !$scope.editor.activity-brief or !$scope.editor.activity-content or !$scope.editor.activityStartDate or !$scope.editor.activityEndDate
+          return true
+
+    return false
+
   # ====== 9 数据访问函数 ======
 
   # Activity CRUD 数据操作
@@ -420,7 +440,7 @@ angular.module 'ManageMarketActivity' .controller 'activity-main', ['$rootScope'
 
     success = (response)!->
       alert '图片上传成功，正在创建活动，请稍后...', true
-      console.log '图片成功上传到七牛服务器'
+      $braecoConsole '图片成功上传到七牛服务器'
       callback? data
 
     error = (response)!->

@@ -71,6 +71,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
 
   # ====== 6 $scope事件函数定义 ======
   $scope.produce-membership-excel = (event)->
+    debugger
     time-obj = get-excel-start-and-end-time!
     set-excel-form-input-value time-obj
 
@@ -117,7 +118,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     time-obj
 
   get-day-time-obj = ->
-    st = (new Date($scope.filter.member-date)).value-of!
+    st = (new Date($scope.filter.member-date + ' 00:00:00')).value-of!
     en = $scope.now-time.value-of!
 
     time-obj = { st: st / 1000, en: en / 1000 }
@@ -277,7 +278,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     for i from register-time-date-obj.year to now-date-obj.year
       year = i + '年'
       all-years.push year
-    $scope.filter.all-years = all-years
+    $scope.filter.all-years = all-years.reverse!
 
   set-all-months = (register-time-date-obj, now-date-obj)!->
     all-months = []
@@ -307,7 +308,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
       month = base-year + '年' + (i + 1) + '月'
       all-months.push month
 
-    $scope.filter.all-months = all-months
+    $scope.filter.all-months = all-months.reverse!
 
   set-selected-month-and-year = !->
     $scope.filter.member-selected-month = $scope.filter.all-months[0]

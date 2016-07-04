@@ -2,6 +2,20 @@ StateMachine = require './../tools/stateMachine-tool.js'
 
 statistics-module = angular.module 'ManageDataStatistics'
 
+# 变量：是否允许console.log
+statistics-module.value 'allowConsole', false
+
+# 前端console.log服务
+statistics-module.factory '$braecoConsole', ['allowConsole', (allowConsole)->
+  func = null
+  if allowConsole
+    # http://stackoverflow.com/a/9521992
+    func = !-> console.log.apply console, arguments
+  else
+    func = !->
+  func
+]
+
 # statistics部分状态机配置
 
 statistics-state-machine-options =
