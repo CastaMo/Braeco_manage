@@ -76,7 +76,7 @@ do ->
 			result = JSON.parse result
 			if result.message == 'success'
 				alert '修改成功',true
-				# set-timeout (!->location.reload!), 2000
+				set-timeout (!->location.reload!), 2000
 			else if result.message == 'Wrong password'
 				alert '原密码<b>错误</b>,请重新输入'
 				$ '#wrap_password input' .eq 0 .val ''
