@@ -246,6 +246,12 @@ main-manage = let
        sum-block-dom.append "<div class='clear'></div>"
        $ sum-block-dom
     
+    _gene-description-block-dom = (description) ->
+        description-block-dom = $ "<div class='details-block'></div>"
+        description-block-dom.append "<p>------------------ 备注 -------------------</p>"
+        description-block-dom.append "<div class='description-content'>"+description+"</div>"
+        $ description-block-dom
+
     _get-food-number-sum = (content-obj) ->
         sum = 0
         for single-food in content-obj
@@ -256,17 +262,31 @@ main-manage = let
     
     _gene-order-details-container =(data-obj)->
         container-dom = $ "<div class='order-details-container'></div>"
-        order-details-header-dom = $ "<div class='order-details-header order-details-header-image'><p>"+data-obj.serial+
-        "</p></div>"
+        if data-obj.serial === '推送失败'
+            order-details-header-dom = $ "<div class='order-details-header order-details-header-image'><p>"+"接单失败"+
+            "</p></div>"
+        else
+            order-details-header-dom = $ "<div class='order-details-header order-details-header-image'><p>"+data-obj.serial+
+            "</p></div>"
         pin-icon-dom = "<icon class='pin-icon unpinned-icon'></icon>"
         order-details-header-dom.append pin-icon-dom
         container-dom.append order-details-header-dom
         order-details-body-dom = $ "<div class='order-details-body'></div>"
         order-details-body-dom.append $ "<p class='order-pay-method'>"+data-obj.channel+"</p>"
-        order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"</p>"
+        if (parse-int data-obj.table) === NaN
+            order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"</p>"
+        else
+            order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"号桌</p>"
        
         infomation-dom = $ "<div class='order-infomation info-number'></div>"
-        infomation-dom.append $ "<span>会员编号： </span><span>"+data-obj.eaterid_of_dinner+"</span>"
+        if data-obj.eaterid_of_dinner === null
+            infomation-dom.append $ "<span>会员编号： </span><span>"+'-'+"</span>"
+        else
+            infomation-dom.append $ "<span>会员编号： </span><span>"+data-obj.eaterid_of_dinner+"</span>"
+        order-details-body-dom.append infomation-dom
+
+        infomation-dom = $ "<div class='order-infomation info-phone'></div>"
+        infomation-dom.append $ "<span>手机号码： </span><span>"+data-obj.phone+"</span>"
         order-details-body-dom.append infomation-dom
         
         infomation-dom = $ "<div class='order-infomation info-order-pay-time'></div>"
@@ -285,6 +305,9 @@ main-manage = let
         order-details-body-dom.append _gene-promotion-block-dom data-obj.content
        
         order-details-body-dom.append _gene-sum-block-dom data-obj.content, data-obj.price
+
+        if data-obj.describtion !== null
+            order-details-body-dom.append _gene-description-block-dom data-obj.describtion
 
         container-dom.append order-details-body-dom
         container-dom.click !-> _order-details-container-click-event event
@@ -367,11 +390,17 @@ main-manage = let
         date = _unix-timestamp-to-date unix-timestamp
         tr-dom.append $ "<td>"+date+"</td>"
         
-        tr-dom.append $ "<td>"+data-obj.eaterid_of_dinner+"</td>"
+        if data-obj.eaterid_of_dinner === null
+            tr-dom.append $ "<td>"+"-"+"</td>"
+        else
+            tr-dom.append $ "<td>"+data-obj.eaterid_of_dinner+"</td>"
         tr-dom.append $ "<td>"+data-obj.id+"</td>"
         
         td-water-number-dom = $ "<td class='td-water-number'></td>"
-        number-content-dom = $ "<p class='td-water-number-content'>"+data-obj.serial+"</p>"
+        if data-obj.serial === '推送失败'
+            number-content-dom = $ "<p class='td-water-number-content'>"+"接单失败"+"</p>"
+        else
+            number-content-dom = $ "<p class='td-water-number-content'>"+data-obj.serial+"</p>"
         td-water-number-dom.append number-content-dom
         td-water-number-dom.append _gene-order-details-container data-obj
         tr-dom.append td-water-number-dom

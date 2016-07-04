@@ -209,7 +209,7 @@ refund-manage = let
         refund-error-message = $ "\#refund-error-message"
         if data.message === 'success'
             alert "退款成功", true
-            location.reload!
+            set-timeout (!-> location.reload!),2000
         else if data.message === 'Wrong password'
             alert "密码错误"
             # refund-error-message.text "密码错误"
@@ -228,7 +228,7 @@ refund-manage = let
 
     _refund-post-fail = (data)!->
         alert "请求退款失败"
-        location.reload!
+        set-timeout (!-> location.reload!),2000
         
     _is-refunded = (single-food)->
         if single-food.type === 0 and single-food.property.length > 0
