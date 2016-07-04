@@ -9,3 +9,12 @@ angular.module 'ManageDataStatistics' .filter 'datafilter', ->
     else return data
 
   datafilter
+
+angular.module 'ManageDataStatistics' .filter 'dishNameFilter', ->
+
+  dishNameFilter = (name)->
+    if name.length > 12
+      name = name.slice(0, 11) + '...'
+    name
+
+  dishNameFilter

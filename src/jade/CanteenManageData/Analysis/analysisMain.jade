@@ -1,7 +1,7 @@
 #analysis-main(ng-controller='data-analysis')
   .analysis-main-tabs
     .tab.choose(ng-click='setSelectedTab($event, "member")') 会员发展
-    .tab(ng-click='setSelectedTab($event, "coupons")') 卡券核销
+    .tab.coupons-tab(ng-click='setSelectedTab($event, "coupons")') 卡券核销
   .analysis-main-containers
     .container(ng-show='selectedTab == "member"')
       .filters
@@ -12,8 +12,10 @@
           option(value='year') 按年查看
 
         //- 日、周
-        input.time-type-datepicker.member-time-type-datepicker(type='text' data-toggle="datepicker" ng-model='filter.memberDate' ng-change='getStatisticsByType($event)' ng-show='filter.memberTimeType == "day" || filter.memberTimeType == "week"')
-        .calendar-icon(ng-show='filter.memberTimeType == "day" || filter.memberTimeType == "week"')
+        .day-and-week-input
+          input.time-type-datepicker.member-time-type-datepicker(type='text' data-toggle="datepicker" ng-model='filter.memberDate' ng-change='getStatisticsByType($event)' ng-show='filter.memberTimeType == "day" || filter.memberTimeType == "week"')
+          .calendar-icon(ng-show='filter.memberTimeType == "day" || filter.memberTimeType == "week"')
+          span.after-seven-day(ng-show='filter.memberTimeType == "week"') 后七天
 
         //- 月
         select.member-selected-month(ng-show='filter.memberTimeType == "month"' ng-model='filter.memberSelectedMonth' ng-change='getStatisticsByType($event)')
@@ -22,6 +24,8 @@
         //- 年
         select.member-selected-year(ng-show='filter.memberTimeType == "year"' ng-model='filter.memberSelectedYear' ng-change='getStatisticsByType($event)')
           option(ng-repeat='year in filter.allYears' value='{{ year }}') {{ year }}
+
+        .membership-excel-producer-button(ng-click='produceMembershipExcel($event)') 导出
 
       .data-panel
         .current-members.data-panel-item.choose(ng-click='setSelectedPanel($event, "current-members")')

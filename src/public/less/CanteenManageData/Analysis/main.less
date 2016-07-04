@@ -9,13 +9,15 @@
     left: 0px;
     bottom: 40px;
     height: 28px;
-    font-size: 16px;
+    // http://stackoverflow.com/a/11456539
+    font-size: 0px;
 
     .tab {
       display: inline-block;
       width: 103px;
       text-align: center;
       padding-bottom: 14px;
+      font-size: 16px;
 
       &:hover {
         cursor: pointer;
@@ -43,6 +45,16 @@
           width: 100px;
           border: 1px solid #e7e7eb;
           margin-right: 19px;
+        }
+        .day-and-week-input {
+          position: relative;
+          display: inline-block;
+          .after-seven-day {
+            position: absolute;
+            left: 80px;
+            top: 6px;
+            font-size: 10px;
+          }
         }
         .time-type-datepicker {
           display: inline-block;
@@ -86,6 +98,22 @@
         }
         .type-filter, .time-filter {
           margin-bottom: 20px;
+        }
+        .membership-excel-producer-button {
+          background: #ffffff;
+          border: 1px solid #e7e7eb;
+          border-radius: 8px;
+          width: 66px;
+          height: 30px;
+          font-size: 14px;
+          display: inline-block;
+          line-height: 30px;
+          text-align: center;
+          float: right;
+
+          &:hover {
+            cursor: pointer;
+          }
         }
       }
       .data-panel {
