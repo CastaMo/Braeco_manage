@@ -44,7 +44,7 @@ new-manage = let
 		if _name.length is 0 then alert "请输入品类名称"; return false
 
 		if get-total-length-for-str(_name) > 21 then alert "输入的品类名称长度大于21(一个中文字符占2个单位)"; return false
-		if main.is-exist-name _name, _current-category.id then alert "已存在该名字的品类, 请输入其他品类名"; return false
+		if main.is-exist-name _name then alert "已存在该名字的品类, 请输入其他品类名"; return false
 		if _pic-input-dom[0].files[0]
 			if _pic-input-dom[0].files[0].type.substr(0, 5) isnt "image" then alert "请上传正确的格式图片"; return false
 		return true
