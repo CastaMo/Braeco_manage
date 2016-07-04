@@ -208,6 +208,7 @@ refund-manage = let
     _refund-post-success = (data)!->
         refund-error-message = $ "\#refund-error-message"
         if data.message === 'success'
+            alert "退款成功", true
             location.reload!
         else if data.message === 'Wrong password'
             alert "密码错误"
