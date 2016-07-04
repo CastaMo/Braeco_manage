@@ -89,7 +89,6 @@ main-manage = let
         _page-data-obj.en = _page-data-obj.en-8*3600+24*3600-1
 
     _tr-hover-event = (event) !->
-        console.log "hover!"
         if _is-one-pinned
             return
         target = $ event.target
@@ -100,7 +99,6 @@ main-manage = let
         order-details-container.show!
     
     _tr-leave-event = (event) !->
-        console.log "leave"
         if _is-one-pinned
             return
         target = $ event.target

@@ -16,7 +16,7 @@
                 option(value="eatin") 堂食
                 option(value="takeout") 外带
                 option(value="membership") 会员卡充值
-            form(id="export-form" action="/Dinner/Manage/Orders/Excel" method="POST" target="_blank")
+            form(id="export-form" action="/Dinner/Manage/Orders/Excel" method="POST")
                 input(id="export-form-class" name="class" type='number' value="1" style="display:none")
                 input(id="export-form-st" name="st" type='number' value="0" style="display:none")
                 input(id="export-form-en" name="en" type='number' value="0" style="display:none")
