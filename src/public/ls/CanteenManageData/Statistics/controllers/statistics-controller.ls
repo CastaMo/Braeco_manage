@@ -1,5 +1,5 @@
 # =============== 控制器 ================
-angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', '$resource', '$timeout', '$statisticsSM', ($scope, $resource, $timeout, $statisticsSM)!->
+angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', '$resource', '$timeout', '$statisticsSM', '$braecoConsole', ($scope, $resource, $timeout, $statisticsSM, $braecoConsole)!->
 
   # ====== 1 $scope变量初始化 ======
   init-scope-variable = !->
@@ -91,7 +91,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       set-turnover-data!
       set-orders-data!
 
-      console.log '$scope.statistic: ', $scope.statistic
+      $braecoConsole '$scope.statistic: ', $scope.statistic
       init-chart!
       set-ready-state!
 
@@ -116,7 +116,6 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     unit = $scope.statistics-filter.date-type
     date = null
 
-    debugger
 
     switch unit
     | 'day', 'week'  => date = $scope.statistics-filter.date-begin.split '-'
@@ -230,7 +229,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       $scope.statistic-chart.destroy!
       $scope.statistic-chart = null
 
-    console.log line-chart-option
+    $braecoConsole line-chart-option
 
     $scope.statistic-chart = new Chart ctx, line-chart-option
 
@@ -280,7 +279,6 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       month = base-year + '年' + (i + 1) + '月'
       all-months.push month
 
-    debugger
 
     $scope.statistics-filter.all-months = all-months.reverse!
 
@@ -361,7 +359,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     dataset-item = get-dataset-item!
 
     datasets = get-line-chart-datasets color-settings, data, legends, dataset-item
-    console.log datasets
+    $braecoConsole datasets
 
     labels = get-line-chart-labels!
 
@@ -536,7 +534,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     # result = []
 
     # chart-data.for-each (item, index, array)!->
-    #   console.log item, index, array
+    #   $braecoConsole item, index, array
 
     chart-data
 
@@ -726,7 +724,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     | otherwise => throw new Error('The parameter "type" is none of ["year", "month", "week", "day"]')
 
     result = $scope.resource.statistics.save {}, post-data, !->
-      console.log 'function: retrieve-statistics-by-year, get initial statistics done!'
+      $braecoConsole 'function: retrieve-statistics-by-year, get initial statistics done!'
       callback? result
 
   # 打印日结小票
