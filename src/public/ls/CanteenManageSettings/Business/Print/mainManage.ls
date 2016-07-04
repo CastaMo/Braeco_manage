@@ -227,20 +227,6 @@ main-manage = let
 											$(@).attr("checked", false)
 											_apply.removeClass "true"
 											_apply.addClass "false"
-											if $(@).parents(".shown").find(".checkInput").parent().hasClass("true")
-												_checkNullSize = 0
-												checkNullSize = $(@).parents(".shown").find(".inner-shown-item input").length
-												for i from 0 to checkNullSize-1 by 1
-													if $(@).parents(".shown").find(".inner-shown-item").eq(i).find("input").parent().hasClass("true")
-														_checkNullSize++
-												if _checkNullSize is 0
-														$('#categories-choose ._all input').attr("checked", false)
-														$('#categories-choose ._all input').parent().removeClass "true"
-														$('#categories-choose ._all input').parent().addClass "false"
-														$(@).parents(".shown").find(".checkInput").attr("checked", false)
-														$(@).parents(".shown").find(".checkInput").parent().removeClass "true"
-														$(@).parents(".shown").find(".checkInput").parent().addClass "false"
-												console.log "_che", _checkNullSize
 										else if _apply.hasClass("false")
 											$(@).attr("checked", true)
 											_apply.removeClass "false"
