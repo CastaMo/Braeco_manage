@@ -63,7 +63,7 @@ class NewController
 
 	set-config-data: (options)!->
 		@config-data = options
-		if @config-data.type isnt "combo_sum" then @config-data.price = 0
+		if @config-data.type isnt "combo_static" then @config-data.price = 0
 
 	check-is-valid: !->
 
