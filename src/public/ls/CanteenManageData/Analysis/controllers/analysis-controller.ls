@@ -53,21 +53,8 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
   init-resource-variable = !->
     $scope.resource = {}
     $scope.resource.statistic = $resource '/Dinner/Manage/Statistic'
-    # $scope.resource.analysis = $resource '/Manage/Data/Analysis/JSON'
     $scope.resource.membership = $resource '/Membership/Analysis/Get'
     $scope.resource.coupon = $resource '/coupon/get'
-    $scope.resource.membership-excel = $resource '/Dinner/Manage/Membership/Excel', options =
-      save:
-        headers:
-          accept: 'application/vnd.ms-excel'
-
-        transformResponse: (data, headers)->
-          excel = null
-          if data then excel = new Blob [data], { type: 'application/vnd.ms-excel' }
-          file-name = get-file-name-from-header headers('content-disposition')
-          result = { blob: excel, file-name: file-name }
-
-          { response: result }
 
   # ====== 4 页面元素初始化 ======
   init-page-dom = !->
@@ -83,8 +70,9 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     retrieve-all-batch-number!
 
   # ====== 6 $scope事件函数定义 ======
-  $scope.produce-membership-excel = (event)!->
-    retrieve-membership-excel!
+  $scope.produce-membership-excel = (event)->
+    time-obj = get-excel-start-and-end-time!
+    set-excel-form-input-value time-obj
 
   $scope.select-batch-number = (event)!->
     $braecoConsole 'here is select-batch-number'
@@ -116,7 +104,61 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     init-page-dom!
     init-page-data!
 
-  # ====== 8 工具函数定义 ======、
+  # ====== 8 工具函数定义 ======
+  get-excel-start-and-end-time = ->
+    unit = $scope.filter.member-time-type
+    time-obj = null
+    switch unit
+    | 'day'   => time-obj = get-day-time-obj!
+    | 'week'  => time-obj = get-week-time-obj!
+    | 'month' => time-obj = get-month-time-obj!
+    | 'year'  => time-obj = get-year-time-obj!
+
+    time-obj
+
+  get-day-time-obj = ->
+    st = (new Date($scope.filter.member-date)).value-of!
+    en = $scope.now-time.value-of!
+
+    time-obj = { st: st / 1000, en: en / 1000 }
+
+  get-week-time-obj = ->
+    st = new Date($scope.filter.member-date); temp = new Date(st)
+    en = temp.set-date temp.get-date! + 7
+
+    if en > $scope.now-time.value-of! then en = $scope.now-time
+
+    st = st.value-of?!
+    en = en.value-of?!
+
+    time-obj = { st: st / 1000, en: en /1000 }
+
+  get-month-time-obj = ->
+    date-obj = get-date-object-from-zh-cn-string $scope.filter.member-selected-month
+    date = date-obj.year + '-' + date-obj.month + '-1'
+
+    st = new Date(date)
+    en = st.set-month st.get-month! + 1
+
+    if en > $scope.now-time then en = $scope.now-time
+
+    st = st.value-of?!
+    en = en.value-of?!
+
+    { st: st / 1000, en: en / 1000 }
+
+  get-year-time-obj = ->
+    date-obj = get-date-object-from-zh-cn-string $scope.filter.member-selected-year
+    date = date-obj.year + '-1-1'; st = new Date(date)
+    date = (date-obj.year + 1) + '-1-1'; en = new Date(date)
+    if en > $scope.now-time then en = $scope.now-time
+
+    { st: st.value-of! / 1000, en: en.value-of! / 1000 }
+
+  set-excel-form-input-value = (time-obj)!->
+    $ 'input[name=st]' .val time-obj.st
+    $ 'input[name=en]' .val time-obj.en
+
   get-file-name-from-header = (header)->
     if !header then return null;
     result = header.split(";")[1].trim().split("=")[1]
@@ -145,7 +187,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
       init-line-chart!
 
   init-line-chart = (type)!->
-    debugger
+
     set-line-chart-global-defaults!
     options = get-line-chart-options!
     data = get-line-chart-data!
@@ -157,7 +199,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
       type: 'line'
       data: data
       options: options
-    debugger
+
     if $scope.selected-tab is 'member'
       $scope.analysis-member-chart = new Chart ctx, line-chart-option
     else
@@ -476,7 +518,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     chart-data
 
   get-line-chart-legends = ->
-    debugger
+
     if $scope.selected-tab is 'member' and $scope.selected-panel is 'current-members'
       return get-member-number-line-chart-legends!
     else if $scope.selected-tab is 'member' and $scope.selected-panel is 'current-balance'
@@ -716,24 +758,24 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     $analysisSM.go-to-state ['\#analysis-main', '\#analysis-spinner']
 
     callback = (result)!->
-      debugger
+
       set-batch-numbers-array result.coupon
 
     result = $scope.resource.coupon.save {}, {}, !->
       callback result
       $analysisSM.go-to-state ['\#analysis-main']
 
-  retrieve-membership-excel = !->
-    $analysisSM.go-to-state ['\#analysis-main', '\#analysis-spinner']
+  # retrieve-membership-excel = !->
+  #   $analysisSM.go-to-state ['\#analysis-main', '\#analysis-spinner']
 
-    post-data = { st: 1466352000, en: 1466438400 }
-    callback = !->
-      # new Blob([result], { type: 'application/vnd.ms-excel' })
-      alert '导出成功', true
-      $analysisSM.go-to-state ['\#analysis-main']
+  #   post-data = { st: 1466352000, en: 1466438400 }
+  #   callback = !->
+  #     # new Blob([result], { type: 'application/vnd.ms-excel' })
+  #     alert '导出成功', true
+  #     $analysisSM.go-to-state ['\#analysis-main']
 
-    $scope.resource.membership-excel.save {}, post-data, !->
-      callback!
+  #   $scope.resource.membership-excel.save {}, post-data, !->
+  #     callback!
 
   # ====== 10 初始化函数执行 ======
 
