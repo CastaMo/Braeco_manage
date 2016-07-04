@@ -114,14 +114,22 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
 
   $scope.print-small-ticket = (event)!->
     unit = $scope.statistics-filter.date-type
-    date = $scope.statistics-filter.date-begin.split '-'
+    date = null
+
+    debugger
+
+    switch unit
+    | 'day', 'week'  => date = $scope.statistics-filter.date-begin.split '-'
+    | 'month'        => date-obj = get-date-object-from-zh-cn-string $scope.statistics-filter.selected-month; date = []; date.push date-obj.year; date.push date-obj.month; date.push date-obj.day
+    | 'year'         => date-obj = get-date-object-from-zh-cn-string $scope.statistics-filter.selected-year; date = []; date.push date-obj.year; date.push date-obj.month; date.push date-obj.day
+
     year = date[0]; month = date[1]; day = date[2]
 
     callback = (result)!->
-      if result.message is 'success' then alert '打印成功', true
+      if result and result.message is 'success' then alert '打印成功', true
       else alert '打印失败', false
 
-    retrieve-statistics-ticket year, month, day, callback
+    retrieve-statistics-ticket unit, year, month, day, callback
 
   $scope.set-data-by-data-type = (event)!->
     set-turnover-data!
@@ -722,9 +730,9 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       callback? result
 
   # 打印日结小票
-  retrieve-statistics-ticket = (year, month, day, callback)!->
+  retrieve-statistics-ticket = (unit, year, month, day, callback)!->
     $statisticsSM.go-to-state ['\#statistics-main', '\#statistics-spinner-circle']
-    post-data = { unit: 'day', year: year, month: month, day: day }
+    post-data = { unit: unit, year: year, month: month, day: day }
     result = $scope.resource.ticket.save {}, post-data, !->
       callback result
       $statisticsSM.go-to-state ['\#statistics-main']
