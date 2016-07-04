@@ -24,11 +24,14 @@ do ->
 				data ={}
 				if($ temp .attr('id')=='wrap_pics')
 					return null
+
 				inputs = $ temp .find 'input'
 				for x in inputs
 					name = x.getAttribute 'name'
 					if name == 'oldpass'
 						data[name] = $.md5 x.value
+					else if name == 'printer'
+						data[name] = $ 'input[name=printer]:checked' .val!
 					else
 						data[name] = x.value
 				data
