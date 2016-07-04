@@ -27,7 +27,8 @@
   bottom: 39px;
 
   .activity-tabs {
-    font-size: 16px;
+    // http://stackoverflow.com/a/11456539
+    font-size: 0px;
     line-height: 37px;
     height: 37px;
 
@@ -35,6 +36,7 @@
       display: inline-block;
       width: 113px;
       text-align: center;
+      font-size: 16px;
 
       &:hover {
         cursor: pointer;
@@ -401,6 +403,11 @@
         padding: 21px;
         padding-bottom: 0px;
 
+        form {
+          // http://stackoverflow.com/a/11456539
+          font-size: 0px;
+        }
+
         .warn {
           color: rgba(141, 141, 141, 1);
           font-size: 14px;
@@ -533,7 +540,7 @@
             width: @form-label-width;
           }
           input {
-            width: 149px;
+            width: 148px;
           }
           #activity-start-date {
             margin-right: 5px;

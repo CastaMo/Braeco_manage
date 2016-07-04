@@ -56,6 +56,18 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     # $scope.resource.analysis = $resource '/Manage/Data/Analysis/JSON'
     $scope.resource.membership = $resource '/Membership/Analysis/Get'
     $scope.resource.coupon = $resource '/coupon/get'
+    $scope.resource.membership-excel = $resource '/Dinner/Manage/Membership/Excel', options =
+      save:
+        headers:
+          accept: 'application/vnd.ms-excel'
+
+        transformResponse: (data, headers)->
+          excel = null
+          if data then excel = new Blob [data], { type: 'application/vnd.ms-excel' }
+          file-name = get-file-name-from-header headers('content-disposition')
+          result = { blob: excel, file-name: file-name }
+
+          { response: result }
 
   # ====== 4 页面元素初始化 ======
   init-page-dom = !->
@@ -68,8 +80,12 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
   init-page-data = !->
     retrieve-member-class-and-sumbalance!
     retrieve-statistics-by-type get-current-unit!, get-current-type!, get-current-date-obj!, get-current-callback-by-type!
+    retrieve-all-batch-number!
 
   # ====== 6 $scope事件函数定义 ======
+  $scope.produce-membership-excel = (event)!->
+    retrieve-membership-excel!
+
   $scope.select-batch-number = (event)!->
     $braecoConsole 'here is select-batch-number'
     init-chart!
@@ -100,7 +116,20 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     init-page-dom!
     init-page-data!
 
-  # ====== 8 工具函数定义 ======
+  # ====== 8 工具函数定义 ======、
+  get-file-name-from-header = (header)->
+    if !header then return null;
+    result = header.split(";")[1].trim().split("=")[1]
+    result.replace /"/g, ''
+
+  init-selected-batch-number = !->
+    id = location.hash.slice 1
+    if id isnt ''
+      $scope.filter.coupons-selected-batch-number = id + ''
+      $timeout !->
+        $ '.coupons-tab' .click!
+      , 0
+
   init-chart = !->
     if $scope.selected-tab is 'member' and $scope.selected-panel is 'member-class'
       $braecoConsole 'init member-class pie chart'
@@ -215,9 +244,10 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     base-month = register-time-date-obj.month
 
     # 注册年份的月份数
-    for i from 0 to total-months-obj.register-year-month-gap
-      month = base-year + '年' + (base-month + i) + '月'
-      all-months.push month
+    if total-months-obj.year-gap >= 0
+      for i from 0 to total-months-obj.register-year-month-gap
+        month = base-year + '年' + (base-month + i) + '月'
+        all-months.push month
 
     base-year++
 
@@ -230,6 +260,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     base-year = base-year + total-months-obj.year-gap
 
     # 今年的月份数
+
     for i from 0 to total-months-obj.now-year-month-gap - 1
       month = base-year + '年' + (i + 1) + '月'
       all-months.push month
@@ -267,9 +298,10 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     $scope.member.membership-charge = $scope.statistic.membership_charge
     $scope.member.membership-spend = $scope.statistic.membership_spend
 
-  set-batch-numbers-array = !->
-    $scope.filter.coupons-batch-number = Object.keys($scope.coupons.coupon_detail)
-    $scope.filter.coupons-selected-batch-number = $scope.filter.coupons-batch-number[0]
+  set-batch-numbers-array = (coupons)!->
+    $scope.filter.coupons-batch-number = coupons
+    if !$scope.filter.coupons-selected-batch-number
+      $scope.filter.coupons-selected-batch-number = coupons[0]
 
   destroy-current-chart = !->
     if $scope.selected-tab is 'member'
@@ -590,7 +622,10 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
   get-total-months-obj = (register-time-date-obj, now-date-obj)->
     obj = {}
     obj.year-gap = now-date-obj.year - register-time-date-obj.year - 1
-    obj.register-year-month-gap = 12 - register-time-date-obj.month
+    if obj.year-gap >= 0
+      obj.register-year-month-gap = 12 - register-time-date-obj.month
+    else
+      obj.register-year-month-gap = now-date-obj.month
     obj.now-year-month-gap = now-date-obj.month
     obj
 
@@ -631,17 +666,13 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
       set-current-balance-data-panel!
 
       $braecoConsole '$scope.statistic: ', $scope.statistic
-
-      # init-chart!
-      # set-ready-state!
+      init-selected-batch-number!
 
     retrieve-member-data-callback
 
   get-retrieve-coupons-data-callback = ->
     retrieve-coupons-data-callback = (result)!->
-      debugger
       $scope.coupons = result.statistic
-      set-batch-numbers-array!
       $braecoConsole $scope.coupons
 
     retrieve-coupons-data-callback
@@ -682,7 +713,27 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
         init-chart!
 
   retrieve-all-batch-number = !->
+    $analysisSM.go-to-state ['\#analysis-main', '\#analysis-spinner']
 
+    callback = (result)!->
+      debugger
+      set-batch-numbers-array result.coupon
+
+    result = $scope.resource.coupon.save {}, {}, !->
+      callback result
+      $analysisSM.go-to-state ['\#analysis-main']
+
+  retrieve-membership-excel = !->
+    $analysisSM.go-to-state ['\#analysis-main', '\#analysis-spinner']
+
+    post-data = { st: 1466352000, en: 1466438400 }
+    callback = !->
+      # new Blob([result], { type: 'application/vnd.ms-excel' })
+      alert '导出成功', true
+      $analysisSM.go-to-state ['\#analysis-main']
+
+    $scope.resource.membership-excel.save {}, post-data, !->
+      callback!
 
   # ====== 10 初始化函数执行 ======
 
