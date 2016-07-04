@@ -87,8 +87,10 @@
             option(value='year') 按年查看
 
           //- 日、周
-          input.time-type-datepicker.coupons-time-type-datepicker(type='text' data-toggle="datepicker" ng-model='filter.couponsDate' ng-show='filter.couponsTimeType == "day" || filter.couponsTimeType == "week"' ng-change='getStatisticsByType($event)')
-          .calendar-icon(ng-show='filter.couponsTimeType == "day" || filter.couponsTimeType == "week"')
+          .day-and-week-input
+            input.time-type-datepicker.coupons-time-type-datepicker(type='text' data-toggle="datepicker" ng-model='filter.couponsDate' ng-show='filter.couponsTimeType == "day" || filter.couponsTimeType == "week"' ng-change='getStatisticsByType($event)')
+            .calendar-icon(ng-show='filter.couponsTimeType == "day" || filter.couponsTimeType == "week"')
+            span.after-seven-day(ng-show='filter.couponsTimeType == "week"') 后七天
 
           //- 月
           select.member-selected-month(ng-show='filter.couponsTimeType == "month"' ng-model='filter.couponsSelectedMonth' ng-change='getStatisticsByType($event)')
