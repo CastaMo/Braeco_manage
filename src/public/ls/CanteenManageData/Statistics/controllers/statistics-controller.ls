@@ -250,7 +250,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     for i from register-time-date-obj.year to now-date-obj.year
       year = i + '年'
       all-years.push year
-    $scope.statistics-filter.all-years = all-years
+    $scope.statistics-filter.all-years = all-years.reverse!
 
   set-scope-all-months = (register-time-date-obj, now-date-obj)!->
     all-months = []
@@ -282,7 +282,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
 
     debugger
 
-    $scope.statistics-filter.all-months = all-months
+    $scope.statistics-filter.all-months = all-months.reverse!
 
   set-selected-month-and-year = !->
     $scope.statistics-filter.selected-month = $scope.statistics-filter.all-months[0]

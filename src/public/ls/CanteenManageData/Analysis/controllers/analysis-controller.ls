@@ -277,7 +277,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     for i from register-time-date-obj.year to now-date-obj.year
       year = i + '年'
       all-years.push year
-    $scope.filter.all-years = all-years
+    $scope.filter.all-years = all-years.reverse!
 
   set-all-months = (register-time-date-obj, now-date-obj)!->
     all-months = []
@@ -307,7 +307,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
       month = base-year + '年' + (i + 1) + '月'
       all-months.push month
 
-    $scope.filter.all-months = all-months
+    $scope.filter.all-months = all-months.reverse!
 
   set-selected-month-and-year = !->
     $scope.filter.member-selected-month = $scope.filter.all-months[0]
