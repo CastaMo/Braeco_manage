@@ -3,7 +3,7 @@ StateMachine = require './../tools/stateMachine-tool.js'
 analysis-module = angular.module 'ManageDataAnalysis'
 
 # 变量：是否允许console.log
-analysis-module.value 'allowConsole', false
+analysis-module.value 'allowConsole', true
 
 # 前端console.log服务
 analysis-module.factory '$braecoConsole', ['allowConsole', (allowConsole)->
