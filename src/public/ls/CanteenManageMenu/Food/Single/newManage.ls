@@ -67,7 +67,7 @@ new-manange = let
 	###
 	_all-dc-type-name = [
 		"none", 		"sale", 		"discount",
-		"half", 		"limit"
+		"half", 		"limit", 		"combo_only"
 	]
 
 	###
