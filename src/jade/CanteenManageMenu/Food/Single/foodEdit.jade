@@ -78,36 +78,12 @@
 									.add-btn +
 								.sub-item-field
 									ul.property-sub-item-list
-										li.sub-item
-											p 蛋糕口味
-											.delete-icon
-										li.sub-item
-											p 蛋糕口味
-											.delete-icon
-										li.sub-item
-											p 蛋糕口味
-											.delete-icon
-										li.sub-item
-											p 蛋糕口味
-											.delete-icon
-										li.sub-item
-											p 蛋糕口味
-											.delete-icon
-										li.sub-item
-											p 蛋糕口味
-											.delete-icon
-										li.sub-item
-											p 蛋糕口味
-											.delete-icon
-										li.sub-item
-											p 蛋糕口味
-											.delete-icon
-										.clear
 							.clear
 						.right-part
 							.btn-field
 								.btn.manage-property-btn
-									p 管理属性组
+									a(href="javascript:open('/Manage/Menu/Food/Property')")
+										p 管理属性组
 								.clear
 						.clear
 					.remark-tag-container
@@ -179,8 +155,9 @@
 								option(value='none') 无
 								option(value='sale') 减价优惠
 								option(value='discount') 折扣优惠
-								option(value='half') 第二杯半价
+								option(value='half') 第二份半价
 								option(value='limit') 限量供应
+								option(value='combo_only') 仅套餐可点
 						.addtional.parallel-container
 							input(type="number" placeholder='(1-99)' max='99' min='1')
 							p 份

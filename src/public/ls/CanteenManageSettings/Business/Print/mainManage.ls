@@ -67,7 +67,8 @@ main-manage = let
 								</div>
 								<div class = 'clear'></div>
 							</div>"
-			_new-printer.find(".printerID").html(printer[i].id)
+			_new-printer.find(".printerID").html(printer[i].name)
+			_new-printer.find(".printerID").val(printer[i].id)
 			_new-printer.find(".printerRemark").html(printer[i].remark)
 			if printer[i].separate is true
 				_new-printer.find(".printerSeparate").html("是")
@@ -115,7 +116,7 @@ main-manage = let
 					callback 		:		(result)!-> location.reload!
 				}
 			_new-printer.find(".setting-btn").click !->
-				checkedBan = $(@).parent().parent().find(".printerID").html!
+				checkedBan = $(@).parent().parent().find(".printerID").val!
 				console.log "checkedBan", checkedBan
 				for n from 0 to printer.length-1 by 1
 					if printer[n].id is Number(checkedBan)
@@ -143,8 +144,8 @@ main-manage = let
 						$('#tables-choose .allChoose input').parent().removeClass "false"
 						$('#tables-choose .allChoose input').parent().addClass "true"
 				for i from 0 to printer.length-1 by 1
-					if $(@).parent().parent().find(".printerID").html! is "#{printer[i].id}"
-						$("._printID").html(printer[i].id)
+					if $(@).parent().parent().find(".printerID").val! is "#{printer[i].id}"
+						$("._printID").html(printer[i].name)
 						$("._printRemark").val(printer[i].remark)
 						$("._printCut").val("#{printer[i].separate}")
 						if printer[i].separate is true
@@ -227,20 +228,6 @@ main-manage = let
 											$(@).attr("checked", false)
 											_apply.removeClass "true"
 											_apply.addClass "false"
-											if $(@).parents(".shown").find(".checkInput").parent().hasClass("true")
-												_checkNullSize = 0
-												checkNullSize = $(@).parents(".shown").find(".inner-shown-item input").length
-												for i from 0 to checkNullSize-1 by 1
-													if $(@).parents(".shown").find(".inner-shown-item").eq(i).find("input").parent().hasClass("true")
-														_checkNullSize++
-												if _checkNullSize is 0
-														$('#categories-choose ._all input').attr("checked", false)
-														$('#categories-choose ._all input').parent().removeClass "true"
-														$('#categories-choose ._all input').parent().addClass "false"
-														$(@).parents(".shown").find(".checkInput").attr("checked", false)
-														$(@).parents(".shown").find(".checkInput").parent().removeClass "true"
-														$(@).parents(".shown").find(".checkInput").parent().addClass "false"
-												console.log "_che", _checkNullSize
 										else if _apply.hasClass("false")
 											$(@).attr("checked", true)
 											_apply.removeClass "false"
