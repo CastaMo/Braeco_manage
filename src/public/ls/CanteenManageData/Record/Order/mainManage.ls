@@ -56,7 +56,7 @@ main-manage = let
         type = _type-filter-dom.val!
         location.href = _construct-url st,en,pn,type
     
-    _export-btn-click-event = !->
+    _export-btn-click-event = (event)!->
         st = _page-data-obj.st
         en = _page-data-obj.en
         if st === null
@@ -70,6 +70,9 @@ main-manage = let
         _export-form-type-dom.val _type-filter-dom.val!
         _export-form-st-dom.val st
         _export-form-en-dom.val en
+        if st > en
+            event.prevent-default!
+            alert "结束日期不能小于开始日期"
         
     _jump-btn-click-event = !->
         st = _page-data-obj.old-st
@@ -267,7 +270,7 @@ main-manage = let
         container-dom.append order-details-header-dom
         order-details-body-dom = $ "<div class='order-details-body'></div>"
         order-details-body-dom.append $ "<p class='order-pay-method'>"+data-obj.channel+"</p>"
-        if (parse-int data-obj.table) === NaN
+        if data-obj.type !== "堂食"
             order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"</p>"
         else
             order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"号桌</p>"
@@ -406,7 +409,11 @@ main-manage = let
         tr-dom.append $ "<td>"+data-obj.price+"元"+"</td>"
         
         tr-dom.append $ "<td class='td-type'>"+data-obj.type+"</td>"
-        tr-dom.append $ "<td>"+data-obj.channel+"</td>"
+
+        if data-obj.channel === "微信P2P"
+            tr-dom.append $ "<td>微信支付</td>"
+        else
+            tr-dom.append $ "<td>"+data-obj.channel+"</td>"
         
         td-methods-dom =  $ "<td class='td-methods'></td>"
         refund-method-container-dom = $ "<div class='method-container'></div>"
@@ -455,7 +462,7 @@ main-manage = let
     
     _init-all-event = !->
         _search-btn-dom.click !-> _search-btn-click-event!
-        _export-btn-dom.click !-> _export-btn-click-event!
+        _export-btn-dom.click (event)!-> _export-btn-click-event event
         _type-filter-dom.change !-> _type-filter-choose-event!
         _jump-btn-dom.click !-> _jump-btn-click-event!
         _start-date-input-dom.change !-> _start-date-input-dom-change-event!
