@@ -64,7 +64,7 @@ main-manage = let
         pn = 1
         location.href = _construct-url st,en,pn
 
-    _export-btn-click-event = !->
+    _export-btn-click-event = (event)!->
         st = _page-data-obj.st
         en = _page-data-obj.en
         if st === null
@@ -77,6 +77,9 @@ main-manage = let
             en = _page-data-obj.en
         _export-form-st-dom.val st
         _export-form-en-dom.val en
+        if st > en
+            event.prevent-default!
+            alert "结束日期不能小于开始日期"
 
     _jump-btn-click-event = !->
         st = _page-data-obj.old-st
@@ -192,7 +195,7 @@ main-manage = let
 
     _init-all-event = !->
         _search-btn-dom.click !-> _search-btn-click-event!
-        _export-btn-dom.click !-> _export-btn-click-event!
+        _export-btn-dom.click (event)!-> _export-btn-click-event event
         _jump-btn-dom.click !-> _jump-btn-click-event!
         _start-date-input-dom.change !-> _start-date-input-dom-change-event!
         _end-date-input-dom.change !-> _end-date-input-dom-change-event!
