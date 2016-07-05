@@ -211,6 +211,7 @@ edit-manage = let
     _set-bound-click-able = (dom)!->
         dom.unbind "click"
         dom.parent!.remove-class "disabled-checkbox-item"
+        dom.remove-attr "disabled"
         dom.click (event)!-> _checkbox-click-event event
         _set-checkbox-unchecked dom.parent!
         _set-checkbox-unchecked dom.parent!.parent!.parent!
@@ -218,6 +219,7 @@ edit-manage = let
     _set-bound-click-disable = (dom)!->
         dom.parent!.add-class "disabled-checkbox-item"
         dom.unbind "click"
+        dom.attr "disabled",true
         _set-checkbox-unchecked dom.parent!
 
     _init-depend-module = !->
