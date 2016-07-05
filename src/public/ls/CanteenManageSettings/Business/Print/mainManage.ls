@@ -100,13 +100,13 @@ main-manage = let
 				$(".confirm-mask").fade-out 300
 			_new-printer.find(".stop-confirm-btn").click !->
 				request-object = {}
-				_hrefID = Number($(@).parent().parent().parent().parent().find(".printerID").html!)
+				_hrefID = Number($(@).parent().parent().parent().parent().find(".printerID").val!)
 				console.log "_hrefID", _hrefID
 				if $(@).parent().parent().parent().parent().find(".switch-btn p").html() is "启用"
 					_able = 1
 				else if $(@).parent().parent().parent().parent().find(".switch-btn p").html() is "停用"
 					_able = 0
-				request-object.id = Number($(@).parent().parent().parent().parent().find(".printerID").html!)
+				request-object.id = Number($(@).parent().parent().parent().parent().find(".printerID").val!)
 				require_.get("able").require {
 					data 			:		{
 						JSON 		:		JSON.stringify(request-object)
@@ -146,6 +146,7 @@ main-manage = let
 				for i from 0 to printer.length-1 by 1
 					if $(@).parent().parent().find(".printerID").val! is "#{printer[i].id}"
 						$("._printID").html(printer[i].name)
+						$("._printID").val(printer[i].id)
 						$("._printRemark").val(printer[i].remark)
 						$("._printCut").val("#{printer[i].separate}")
 						if printer[i].separate is true
@@ -387,13 +388,13 @@ main-manage = let
 			else if $("._printCut").val() is "false"
 				request-object.separate = false
 			request-object.remark = $("._printRemark").val!
-			request-object.id = Number($("._printID").html!)
+			request-object.id = Number($("._printID").val!)
 			request-object.size = Number($("._printFont").val!)
 			console.log "request-object", request-object
 			require_.get("modify").require {
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
-					printer-id:		Number($("._printID").html!)
+					printer-id:		Number($("._printID").val!)
 				}
 				callback 	:		(result)!-> alert('修改成功', true);setTimeout('location.reload()', 2000)
 			}
