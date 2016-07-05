@@ -91,13 +91,13 @@ main-manage = let
 			pageArrJSON = $('#page-JSON-field').html!
 			pageArr = JSON.parse(pageArrJSON)
 			if pageArr.pn > 1 then pageArr.pn--
-			location.href = "/Manage/Market/Member/List?by=create_date&search=#{pageArr.search}&in=#{pageArr.in}&pn=" + pageArr.pn
+			location.href = "/Manage/Market/Member/List?by=#{pageArr.by}&search=#{pageArr.search}&in=#{pageArr.in}&pn=" + pageArr.pn
 
 		_next-page-dom.click !->
 			pageArrJSON = $('#page-JSON-field').html!
 			pageArr = JSON.parse(pageArrJSON)
 			if pageArr.pn < pageArr.sum_pages then pageArr.pn++
-			location.href = "/Manage/Market/Member/List?by=create_date&search=#{pageArr.search}&in=#{pageArr.in}&pn=" + pageArr.pn
+			location.href = "/Manage/Market/Member/List?by=#{pageArr.by}&search=#{pageArr.search}&in=#{pageArr.in}&pn=" + pageArr.pn
 
 		_jump-dom.click !->
 			jumpPage = $("._jump-input").val!
@@ -105,7 +105,7 @@ main-manage = let
 			pageArr = JSON.parse(pageArrJSON)
 			if jumpPage isnt ''
 				if jumpPage >= 1 and jumpPage <= pageArr.sum_pages
-					location.href = "/Manage/Market/Member/List?by=create_date&in=#{pageArr.in}&pn=" + jumpPage
+					location.href = "/Manage/Market/Member/List?by=#{pageArr.by}&in=#{pageArr.in}&pn=" + jumpPage
 				else alert('请输入正确页码')
 			else alert('请输入正确页码')
 		_close-dom.click !->
@@ -245,15 +245,15 @@ main-manage = let
 			$("._searchInput").val("#{pageArr.search}")
 		$(".page").html(pageArr.pn + "/" + pageArr.sum_pages)
 		if pageArr.in is "DESC" then
-			_loop-id-dom.attr("href", "?by=create_date&in=ASC&search=#{pageArr.search}&pn=#{pageArr.pn}")
-			_loop-level-dom.attr("href", "?by=EXP&in=ASC&search=#{pageArr.search}&pn=#{pageArr.pn}")
-			_loop-exp-dom.attr("href", "?by=EXP&in=ASC&search=#{pageArr.search}&pn=#{pageArr.pn}")
-			_loop-balance-dom.attr("href", "?by=balance&in=ASCC&search=#{pageArr.search}&pn=#{pageArr.pn}")
+			_loop-id-dom.attr("href", "?by=#{pageArr.by}&in=ASC&search=#{pageArr.search}&pn=#{pageArr.pn}")
+			_loop-level-dom.attr("href", "?by=#{pageArr.by}&in=ASC&search=#{pageArr.search}&pn=#{pageArr.pn}")
+			_loop-exp-dom.attr("href", "?by=#{pageArr.by}&in=ASC&search=#{pageArr.search}&pn=#{pageArr.pn}")
+			_loop-balance-dom.attr("href", "?by=#{pageArr.by}&in=ASC&search=#{pageArr.search}&pn=#{pageArr.pn}")
 		else if pageArr.in is "ASC" then
-			_loop-id-dom.attr("href", "?by=create_date&in=DESC&search=#{pageArr.search}&pn=#{pageArr.pn}")
-			_loop-level-dom.attr("href", "?by=EXP&in=DESC&search=#{pageArr.search}&pn=#{pageArr.pn}")
-			_loop-exp-dom.attr("href", "?by=EXP&in=DESC&search=#{pageArr.search}&pn=#{pageArr.pn}")
-			_loop-balance-dom.attr("href", "?by=balance&in=DESC&search=#{pageArr.search}&pn=#{pageArr.pn}")
+			_loop-id-dom.attr("href", "?by=#{pageArr.by}&in=DESC&search=#{pageArr.search}&pn=#{pageArr.pn}")
+			_loop-level-dom.attr("href", "?by=#{pageArr.by}&in=DESC&search=#{pageArr.search}&pn=#{pageArr.pn}")
+			_loop-exp-dom.attr("href", "?by=#{pageArr.by}&in=DESC&search=#{pageArr.search}&pn=#{pageArr.pn}")
+			_loop-balance-dom.attr("href", "?by=#{pageArr.by}&in=DESC&search=#{pageArr.search}&pn=#{pageArr.pn}")
 
 	_init-depend-module = !->
 		page := require "./pageManage.js"
