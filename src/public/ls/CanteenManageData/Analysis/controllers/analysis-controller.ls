@@ -138,8 +138,8 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     date-obj = get-date-object-from-zh-cn-string $scope.filter.member-selected-month
     date = date-obj.year + '-' + date-obj.month + '-1'
 
-    st = new Date(date)
-    en = st.set-month st.get-month! + 1
+    st = new Date(date); temp = new Date(st)
+    en = temp.set-month temp.get-month! + 1
 
     if en > $scope.now-time then en = $scope.now-time
 
