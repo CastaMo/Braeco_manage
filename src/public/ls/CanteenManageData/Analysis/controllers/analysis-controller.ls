@@ -766,18 +766,6 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
       callback result
       $analysisSM.go-to-state ['\#analysis-main']
 
-  # retrieve-membership-excel = !->
-  #   $analysisSM.go-to-state ['\#analysis-main', '\#analysis-spinner']
-
-  #   post-data = { st: 1466352000, en: 1466438400 }
-  #   callback = !->
-  #     # new Blob([result], { type: 'application/vnd.ms-excel' })
-  #     alert '导出成功', true
-  #     $analysisSM.go-to-state ['\#analysis-main']
-
-  #   $scope.resource.membership-excel.save {}, post-data, !->
-  #     callback!
-
   # ====== 10 初始化函数执行 ======
 
   init-data-statistic!
