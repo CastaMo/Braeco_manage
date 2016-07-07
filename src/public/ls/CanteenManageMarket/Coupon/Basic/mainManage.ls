@@ -48,7 +48,7 @@ main-manage = let
 
 	_init-all-coupon = !->
 		couponArrJSON = $('#json-field').html!
-		console.log "couponArrJSON", couponArrJSON
+		# console.log "couponArrJSON", couponArrJSON
 		_test = '{"0":[{"quantity":"1","remain":"1","cost":"1","cost_reduce":"1","description":null,"status":"1","daily":"0","max":"1","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/2eb8f0fd16faedf3c823542e1512ffb22e0e5b73.png","fun":"7","couponid":"19","indate":"2016-06-062016-06-06"},{"quantity":"3","remain":"3","cost":"3","cost_reduce":"12","description":null,"status":"0","daily":"0","max":"2","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/f86eb3aef5c7f98b14365d559e3c4acff9ff3d92.png","fun":"3","couponid":"18","indate":"3"},{"quantity":"1","remain":"1","cost":"1","cost_reduce":"1","description":null,"status":"2","daily":"0","max":"1","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/32fba3f289c338ca3d276c553aace573dad54fb1.png","fun":"7","couponid":"17","indate":"2016-06-062016-06-29"},{"quantity":"1","remain":"1","cost":"1","cost_reduce":"1","description":null,"status":"1","daily":"0","max":"1","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/0a0c6242d75b3964c79125ae54584fc5941274ba.png","fun":"3","couponid":"16","indate":"2016-06-062016-06-08"},{"quantity":"1","remain":"1","cost":"1","cost_reduce":"1","description":null,"status":"1","daily":"0","max":"1","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/2eb8f0fd16faedf3c823542e1512ffb22e0e5b73.png","fun":"7","couponid":"19","indate":"2016-06-062016-06-06"},{"quantity":"3","remain":"3","cost":"3","cost_reduce":"12","description":null,"status":"0","daily":"0","max":"2","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/f86eb3aef5c7f98b14365d559e3c4acff9ff3d92.png","fun":"3","couponid":"18","indate":"3"},{"quantity":"1","remain":"1","cost":"1","cost_reduce":"1","description":null,"status":"2","daily":"0","max":"1","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/32fba3f289c338ca3d276c553aace573dad54fb1.png","fun":"7","couponid":"17","indate":"2016-06-062016-06-29"},{"quantity":"1","remain":"1","cost":"1","cost_reduce":"1","description":null,"status":"1","daily":"0","max":"1","max_use":"1","pay":"0","url":"http:\/\/devel.brae.co\/public\/images\/qrcode\/coupon\/0a0c6242d75b3964c79125ae54584fc5941274ba.png","fun":"3","couponid":"16","indate":"2016-06-062016-06-08"}],"upsum":10,"upnow":1,"downsum":1}'
 		all-coupons = []
 		all-coupons = JSON.parse(couponArrJSON)[0]
@@ -56,7 +56,7 @@ main-manage = let
 		_upnow := JSON.parse(couponArrJSON)['upnow']
 		_downsum := JSON.parse(couponArrJSON)['downsum']
 		_downnow := JSON.parse(couponArrJSON)['downnow']
-		console.log "all-coupons", all-coupons
+		# console.log "all-coupons", all-coupons
 		for coupon in all-coupons
 			new Coupon {
 				couponid 			:		coupon.couponid
@@ -444,6 +444,9 @@ main-manage = let
 				console.log "11", 11
 			else if Number($(@).val!) is 1
 				console.log "22", 22
+		reg=new RegExp("(^| )Dname=([^;]*)(;|$)")
+		a1 = decodeURIComponent(document.cookie.match(reg)[2])
+		$(".tip-1-content").html("1. 本券仅在："+a1+" 使用;")
 		_max-own-dom.keyup !->
 			$(".tip-2-content").html("2. 每个微信号限领取 #{$("._max-own").val!} 张代金券；")
 		_multiple-use-dom.keyup !->
