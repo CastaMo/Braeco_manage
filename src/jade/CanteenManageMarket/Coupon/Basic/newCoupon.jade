@@ -75,7 +75,7 @@
 				#max-coupon
 					span._content 发放上限 *
 					.max-coupon-input
-						input._max-coupon.check-input(maxlength = "10")
+						input._max-coupon.check-input(placeholder='发放的卡券总数' maxlength = "10")
 						span._unit 张
 				#max-own-select
 					span._content 领取上限 *
@@ -104,7 +104,7 @@
 				#multiple-use
 					span._content 叠加使用 *
 					.multiple-use-input
-						input._multiple-use.check-input(maxlength = "10")
+						input._multiple-use.check-input(value='1' disabled='true' maxlength = "10")
 						span._unit 张
 					p.multiple-use-tip 每笔订单最多可同时叠加使用 张
 			#btn-filed
