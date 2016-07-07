@@ -260,6 +260,7 @@ main-manage = let
 
 		_save-btn-dom.click !->
 			isValid = 0
+			$("._multiple-use").val(1)
 			for p from 0 to 6 by 1
 				if $(".check-input").eq(p).val() is '' then isValid = 1
 			_init-all-blur!
