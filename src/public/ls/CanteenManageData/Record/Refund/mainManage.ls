@@ -25,6 +25,8 @@ main-manage = let
 
     _page-data-obj = null
 
+    _is-one-pinned = false
+
     _int-to-string =(number)->
         if number >= 10
             number.to-string!
@@ -97,6 +99,236 @@ main-manage = let
         _page-data-obj.en = _date-to-unix-timestamp new Date end-date
         _page-data-obj.en = _page-data-obj.en-8*3600+24*3600-1
 
+    _tr-hover-event = (event) !->
+        if _is-one-pinned
+            return
+        target = $ event.target
+        while not target.is('tr')
+            target = $ target.parent!
+        td-water-number = target.find '.td-water-number'
+        order-details-container = td-water-number.find '.order-details-container'
+        order-details-container.show!
+    
+    _tr-leave-event = (event) !->
+        if _is-one-pinned
+            return
+        target = $ event.target
+        while not target.is('tr')
+            target = $ target.parent!
+        td-water-number = target.find '.td-water-number'
+        order-details-container = td-water-number.find '.order-details-container'
+        order-details-container.hide!
+
+    _gene-order-details-container =(data-obj)->
+        container-dom = $ "<div class='order-details-container'></div>"
+        if data-obj.serial === '推送失败'
+            order-details-header-dom = $ "<div class='order-details-header order-details-header-image'><p>"+"接单失败"+
+            "</p></div>"
+        else
+            order-details-header-dom = $ "<div class='order-details-header order-details-header-image'><p>"+data-obj.serial+
+            "</p></div>"
+        pin-icon-dom = "<icon class='pin-icon unpinned-icon'></icon>"
+        order-details-header-dom.append pin-icon-dom
+        container-dom.append order-details-header-dom
+        order-details-body-dom = $ "<div class='order-details-body'></div>"
+        order-details-body-dom.append $ "<p class='order-pay-method'>"+data-obj.channel+"</p>"
+        if data-obj.type !== "堂食"
+            order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"</p>"
+        else
+            order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"号桌</p>"
+       
+        infomation-dom = $ "<div class='order-infomation info-number'></div>"
+        if data-obj.eaterid_of_dinner === null
+            infomation-dom.append $ "<span>会员编号： </span><span>"+'-'+"</span>"
+        else
+            infomation-dom.append $ "<span>会员编号： </span><span>"+data-obj.eaterid_of_dinner+"</span>"
+        order-details-body-dom.append infomation-dom
+        
+        if data-obj.phone !== '-'
+            infomation-dom = $ "<div class='order-infomation info-phone'></div>"
+            infomation-dom.append $ "<span>手机号码： </span><span>"+data-obj.phone+"</span>"
+            order-details-body-dom.append infomation-dom
+        
+        infomation-dom = $ "<div class='order-infomation info-order-pay-time'></div>"
+        unix-timestamp = parse-int data-obj.create_date
+        date = _unix-timestamp-to-date unix-timestamp
+        infomation-dom.append $ "<span>成交时间： </span><span>"+date+"</span>"
+        order-details-body-dom.append infomation-dom
+        
+        infomation-dom = $ "<div class='order-infomation info-order-number'></div>"
+        infomation-dom.append $ "<span>订单号： </span>"
+        infomation-dom.append $ "<span>"+data-obj.id+"</span>"
+        order-details-body-dom.append infomation-dom
+
+        if data-obj.describtion !== null
+            infomation-dom = $ "<div class='order-infomation'></div>"
+            infomation-dom.append $ "<span>备注： </span>"
+            infomation-dom.append $ "<span>"+data-obj.describtion+"</span>"
+            order-details-body-dom.append infomation-dom
+
+        order-details-body-dom.append _gene-food-block-dom data-obj.content
+
+        order-details-body-dom.append _gene-promotion-block-dom data-obj.content
+       
+        order-details-body-dom.append _gene-sum-block-dom data-obj.content, data-obj.price
+
+        container-dom.append order-details-body-dom
+        container-dom.click (event)!-> _order-details-container-click-event event
+        container-dom
+
+    _gene-food-block-dom = (content-obj) ->
+        food-block-dom = $ "<div class='details-block'></div>"
+        food-block-dom.append "<p>------------------ 餐品 -------------------</p>"
+        food-block-dom.append _gene-order-food-table content-obj
+        $ food-block-dom
+
+    _gene-promotion-block-dom = (content-obj) ->
+        promotion-block-dom = $ "<div class='details-block'></div>"
+        first-promition = true
+        for single-promotion in content-obj
+            if single-promotion.cat === 0
+                if first-promition
+                    promotion-block-dom.append $ "<p>------------------ 优惠 -------------------</p>"
+                    first-promition = false
+                promotion-block-dom.append $ "<span class='left-span'>"+single-promotion.name+"</span>"
+                promotion-block-dom.append $ "<span class='right-span'>"+single-promotion.property[0]+"</span>"
+                promotion-block-dom.append "<div class='clear'></div>"
+        $ promotion-block-dom
+
+    _gene-sum-block-dom = (content-obj, price) ->
+       sum-block-dom = $ "<div class='details-block'></div>"
+       sum-block-dom.append "<p>------------------ 总计 -------------------</p>"
+       sum = _get-food-number-sum content-obj
+       sum-block-dom.append "<span class='left-span'>餐品数："+sum.to-string!+"</span>"
+       sum-block-dom.append "<span class='right-span'>总价："+price+"</span>"
+       sum-block-dom.append "<div class='clear'></div>"
+       $ sum-block-dom
+
+    _gene-order-food-table = (content-obj) ->
+        table-dom = $ "<table class='order-food-table'></table>"
+        table-dom.append $ "<thead>
+        <tr>
+        <td class='table-cat-col'>项目</td>
+        <td class='table-num-col'>数量</td>
+        <td class='table-pri-col'>单价（元）</td>
+        </tr>
+        </thead>"
+        table-body-dom = $ "<tbody></tbody>"
+        current-cat = 0
+        for single-food in content-obj
+            if single-food.cat === 0
+                continue
+            if current-cat !== 0 and current-cat !== single-food.cat
+                table-body-dom.append "<tr><td colspan='3'>-----------------------------------------</td></tr>"
+            current-cat := single-food.cat
+            table-body-dom.append _gene-food-table-row single-food
+        table-dom.append table-body-dom
+        $ table-dom
+
+    _gene-food-table-row = (single-food) ->
+        row-dom = $ "<tr></tr>"
+        if single-food.type === 0
+            td-name = $ "<td class='table-cat-col'>"+single-food.name+"</td>"
+            if single-food.property.length > 0
+                td-name.append $ "<span class='sub-food-item'>"+'（'+(single-food.property.join '、')+"）"+"</span>"
+            row-dom.append td-name
+        if single-food.type === 1
+            td-name = $ "<td class='table-cat-col'>"+single-food.name+"</td>"
+            for food in single-food.property
+                if food instanceof Array and food.length === 1 and food[0].name === '属性'
+                    td-name.append $ "<span class='sub-food-item'>"+'（'+(food[0].p.join '、')+"）"+"</span>"
+            for food in single-food.property
+                if food instanceof Array
+                    if food.length === 1 and food[0].name === '属性'
+                        continue
+                    for food-item in food
+                        if food-item.p.length === 0
+                            td-name.append $ "<div class='sub-food-item'>"+food-item.name+"</div>"
+                        else
+                            td-name.append $ "<div class='sub-food-item'>"+food-item.name+"<span>"+'（'+(food-item.p.join '、')+"）"+"</span>"+"</div>"
+                            
+            row-dom.append td-name
+        row-dom.append "<td class='table-num-col'>"+single-food.sum+"</td>"
+        row-dom.append "<td class='table-pri-col'>"+single-food.price+"</td>"
+        $ row-dom
+
+    _get-food-number-sum = (content-obj) ->
+        sum = 0
+        for single-food in content-obj
+            if single-food.cat === 0
+                continue
+            sum += single-food.sum
+        sum
+
+    _tr-click-event = (event) !->
+        if _is-one-pinned
+            return
+        target = $ event.target
+        while not target.is 'tr'
+            target = $ target.parent!
+        td-water-number = target.find '.td-water-number'
+        container-dom = td-water-number.find '.order-details-container'
+        icon = container-dom.find ".order-details-header .pin-icon"
+        icon.remove-class 'unpinned-icon'
+        icon.add-class 'pinned-icon'
+        _is-one-pinned := true
+        container-dom.attr "id","pinned-order-container"
+        event.stop-propagation!
+
+    _order-details-container-click-event = (event)!->
+        # target = $ event.target
+        # while not target.has-class 'order-details-container'
+        #     target = $ target.parent!
+        # container-dom = target
+        # target = $ event.target
+        # if target.is "icon" and target.has-class "pin-icon"
+        #     if _is-one-pinned
+        #         target.remove-class 'pinned-icon'
+        #         target.add-class 'unpinned-icon'
+        #         container-dom.remove-attr 'id'
+        #         _is-one-pinned := false
+        #         return
+        # icon = container-dom.find ".order-details-header .pin-icon"
+        # icon.remove-class 'unpinned-icon'
+        # icon.add-class 'pinned-icon'
+        # _is-one-pinned := true
+        # container-dom.attr "id","pinned-order-container"
+
+    _html-click-event = (event)!->
+        if _is-one-pinned === false
+            return
+        target = $ event.target
+        is-outside = true
+        while (not target.is 'html') and _is-one-pinned
+            if (target.attr 'id') === 'pinned-order-container'
+                is-outside := false
+            target = target.parent!
+        if is-outside
+            pinned-container-dom = $ "\#pinned-order-container"
+            icon = pinned-container-dom.find ".order-details-header .pin-icon"
+            icon.remove-class 'pinned-icon'
+            icon.add-class 'unpinned-icon'
+            pinned-container-dom.hide!
+            _is-one-pinned := false
+            pinned-container-dom.remove-attr "id"
+            target = $ event.target
+            while not target.is 'html'
+                if target.is 'tr' and target.parent!.is 'tbody'
+                    target.trigger 'mouseenter'
+                    break
+                target = target.parent!
+        else
+            target = $ event.target
+            while not target.has-class 'order-details-container'
+                target = $ target.parent!
+            container-dom = target
+            target = $ event.target
+            if target.is "icon" and target.has-class "pin-icon"
+                target.remove-class 'pinned-icon'
+                target.add-class 'unpinned-icon'
+                _is-one-pinned := false
+                container-dom.remove-attr 'id'
+
     class Refund
         (refund) ->
             deep-copy refund, @
@@ -114,9 +346,17 @@ main-manage = let
 
         gene-tr-dom: !->
             tr-dom = $ "<tr></tr>"
+            tr-dom.hover ((event)!-> _tr-hover-event event), ((event)!-> _tr-leave-event event)
+            tr-dom.click (event)!-> _tr-click-event event
             date-string = @unix-timestamp-to-date @.start_time
+
             tr-dom.append $ "<td>"+date-string+"</td>"
-            tr-dom.append $ "<td>"+@.order+"</td>"
+
+            td-water-number-dom = $ "<td class='td-water-number'></td>"
+            td-water-number-dom.append $ "<p>"+@.order+"</p>"
+            td-water-number-dom.append $ _gene-order-details-container @.order_detail
+            tr-dom.append td-water-number-dom
+
             tr-dom.append @gene-refund-items-dom!
             tr-dom.append $ "<td>"+@.amount+"</td>"
             td-dom = $ "<td></td>"
@@ -199,6 +439,7 @@ main-manage = let
         _jump-btn-dom.click !-> _jump-btn-click-event!
         _start-date-input-dom.change !-> _start-date-input-dom-change-event!
         _end-date-input-dom.change !-> _end-date-input-dom-change-event!
+        ($ "html").click (event)!-> _html-click-event event
 
     initial: !->
         _gene-data!
