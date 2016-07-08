@@ -1,0 +1,21 @@
+#braeco-login(ng-controller='manage-login')
+  #braeco-login-wapper
+    #braeco-login-container
+      #login-form
+        .brand
+        .title 商户后台
+        form(ng-submit='loginOneUser($event)')
+          label(for='username')
+          input(type='text' id='username' placeholder='用户名' ng-model='form.username' ng-change='recordTheUsername($event)' required)
+
+          label(for='password')
+          input(type='password' id='password' placeholder='密码' ng-model='form.password' required)
+
+          input(type='checkbox' id='recordUsername' ng-model='form.isRecordUsername' ng-change='recordTheUsername($event)')
+          label(for='recordUsername') 记住账号
+
+          span.password-forgot(ng-click='forgotPassword($event)') 忘记密码？
+
+          input(type='submit' value='登录')
+
+          span.register(ng-click='registerOneUser($event)') 注册账号
