@@ -56,7 +56,7 @@ main-manage = let
         type = _type-filter-dom.val!
         location.href = _construct-url st,en,pn,type
     
-    _export-btn-click-event = !->
+    _export-btn-click-event = (event)!->
         st = _page-data-obj.st
         en = _page-data-obj.en
         if st === null
@@ -70,6 +70,9 @@ main-manage = let
         _export-form-type-dom.val _type-filter-dom.val!
         _export-form-st-dom.val st
         _export-form-en-dom.val en
+        if st > en
+            event.prevent-default!
+            alert "结束日期不能小于开始日期"
         
     _jump-btn-click-event = !->
         st = _page-data-obj.old-st
@@ -89,7 +92,6 @@ main-manage = let
         _page-data-obj.en = _page-data-obj.en-8*3600+24*3600-1
 
     _tr-hover-event = (event) !->
-        console.log "hover!"
         if _is-one-pinned
             return
         target = $ event.target
@@ -100,7 +102,6 @@ main-manage = let
         order-details-container.show!
     
     _tr-leave-event = (event) !->
-        console.log "leave"
         if _is-one-pinned
             return
         target = $ event.target
@@ -247,12 +248,6 @@ main-manage = let
        sum-block-dom.append "<span class='right-span'>总价："+price+"</span>"
        sum-block-dom.append "<div class='clear'></div>"
        $ sum-block-dom
-    
-    _gene-description-block-dom = (description) ->
-        description-block-dom = $ "<div class='details-block'></div>"
-        description-block-dom.append "<p>------------------ 备注 -------------------</p>"
-        description-block-dom.append "<div class='description-content'>"+description+"</div>"
-        $ description-block-dom
 
     _get-food-number-sum = (content-obj) ->
         sum = 0
@@ -275,7 +270,7 @@ main-manage = let
         container-dom.append order-details-header-dom
         order-details-body-dom = $ "<div class='order-details-body'></div>"
         order-details-body-dom.append $ "<p class='order-pay-method'>"+data-obj.channel+"</p>"
-        if (parse-int data-obj.table) === NaN
+        if data-obj.type !== "堂食"
             order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"</p>"
         else
             order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"号桌</p>"
@@ -286,10 +281,11 @@ main-manage = let
         else
             infomation-dom.append $ "<span>会员编号： </span><span>"+data-obj.eaterid_of_dinner+"</span>"
         order-details-body-dom.append infomation-dom
-
-        infomation-dom = $ "<div class='order-infomation info-phone'></div>"
-        infomation-dom.append $ "<span>手机号码： </span><span>"+data-obj.phone+"</span>"
-        order-details-body-dom.append infomation-dom
+        
+        if data-obj.phone !== '-'
+            infomation-dom = $ "<div class='order-infomation info-phone'></div>"
+            infomation-dom.append $ "<span>手机号码： </span><span>"+data-obj.phone+"</span>"
+            order-details-body-dom.append infomation-dom
         
         infomation-dom = $ "<div class='order-infomation info-order-pay-time'></div>"
         unix-timestamp = parse-int data-obj.create_date
@@ -302,14 +298,17 @@ main-manage = let
         infomation-dom.append $ "<span>"+data-obj.id+"</span>"
         order-details-body-dom.append infomation-dom
 
+        if data-obj.describtion !== null
+            infomation-dom = $ "<div class='order-infomation'></div>"
+            infomation-dom.append $ "<span>备注： </span>"
+            infomation-dom.append $ "<span>"+data-obj.describtion+"</span>"
+            order-details-body-dom.append infomation-dom
+
         order-details-body-dom.append _gene-food-block-dom data-obj.content
 
         order-details-body-dom.append _gene-promotion-block-dom data-obj.content
        
         order-details-body-dom.append _gene-sum-block-dom data-obj.content, data-obj.price
-
-        if data-obj.describtion !== null
-            order-details-body-dom.append _gene-description-block-dom data-obj.describtion
 
         container-dom.append order-details-body-dom
         container-dom.click (event)!-> _order-details-container-click-event event
@@ -410,7 +409,11 @@ main-manage = let
         tr-dom.append $ "<td>"+data-obj.price+"元"+"</td>"
         
         tr-dom.append $ "<td class='td-type'>"+data-obj.type+"</td>"
-        tr-dom.append $ "<td>"+data-obj.channel+"</td>"
+
+        if data-obj.channel === "微信P2P"
+            tr-dom.append $ "<td>微信支付</td>"
+        else
+            tr-dom.append $ "<td>"+data-obj.channel+"</td>"
         
         td-methods-dom =  $ "<td class='td-methods'></td>"
         refund-method-container-dom = $ "<div class='method-container'></div>"
@@ -459,7 +462,7 @@ main-manage = let
     
     _init-all-event = !->
         _search-btn-dom.click !-> _search-btn-click-event!
-        _export-btn-dom.click !-> _export-btn-click-event!
+        _export-btn-dom.click (event)!-> _export-btn-click-event event
         _type-filter-dom.change !-> _type-filter-choose-event!
         _jump-btn-dom.click !-> _jump-btn-click-event!
         _start-date-input-dom.change !-> _start-date-input-dom-change-event!

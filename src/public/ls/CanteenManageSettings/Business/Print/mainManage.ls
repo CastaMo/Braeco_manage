@@ -67,7 +67,8 @@ main-manage = let
 								</div>
 								<div class = 'clear'></div>
 							</div>"
-			_new-printer.find(".printerID").html(printer[i].id)
+			_new-printer.find(".printerID").html(printer[i].name)
+			_new-printer.find(".printerID").val(printer[i].id)
 			_new-printer.find(".printerRemark").html(printer[i].remark)
 			if printer[i].separate is true
 				_new-printer.find(".printerSeparate").html("是")
@@ -99,13 +100,13 @@ main-manage = let
 				$(".confirm-mask").fade-out 300
 			_new-printer.find(".stop-confirm-btn").click !->
 				request-object = {}
-				_hrefID = Number($(@).parent().parent().parent().parent().find(".printerID").html!)
+				_hrefID = Number($(@).parent().parent().parent().parent().find(".printerID").val!)
 				console.log "_hrefID", _hrefID
 				if $(@).parent().parent().parent().parent().find(".switch-btn p").html() is "启用"
 					_able = 1
 				else if $(@).parent().parent().parent().parent().find(".switch-btn p").html() is "停用"
 					_able = 0
-				request-object.id = Number($(@).parent().parent().parent().parent().find(".printerID").html!)
+				request-object.id = Number($(@).parent().parent().parent().parent().find(".printerID").val!)
 				require_.get("able").require {
 					data 			:		{
 						JSON 		:		JSON.stringify(request-object)
@@ -115,7 +116,7 @@ main-manage = let
 					callback 		:		(result)!-> location.reload!
 				}
 			_new-printer.find(".setting-btn").click !->
-				checkedBan = $(@).parent().parent().find(".printerID").html!
+				checkedBan = $(@).parent().parent().find(".printerID").val!
 				console.log "checkedBan", checkedBan
 				for n from 0 to printer.length-1 by 1
 					if printer[n].id is Number(checkedBan)
@@ -143,8 +144,9 @@ main-manage = let
 						$('#tables-choose .allChoose input').parent().removeClass "false"
 						$('#tables-choose .allChoose input').parent().addClass "true"
 				for i from 0 to printer.length-1 by 1
-					if $(@).parent().parent().find(".printerID").html! is "#{printer[i].id}"
-						$("._printID").html(printer[i].id)
+					if $(@).parent().parent().find(".printerID").val! is "#{printer[i].id}"
+						$("._printID").html(printer[i].name)
+						$("._printID").val(printer[i].id)
 						$("._printRemark").val(printer[i].remark)
 						$("._printCut").val("#{printer[i].separate}")
 						if printer[i].separate is true
@@ -227,20 +229,6 @@ main-manage = let
 											$(@).attr("checked", false)
 											_apply.removeClass "true"
 											_apply.addClass "false"
-											if $(@).parents(".shown").find(".checkInput").parent().hasClass("true")
-												_checkNullSize = 0
-												checkNullSize = $(@).parents(".shown").find(".inner-shown-item input").length
-												for i from 0 to checkNullSize-1 by 1
-													if $(@).parents(".shown").find(".inner-shown-item").eq(i).find("input").parent().hasClass("true")
-														_checkNullSize++
-												if _checkNullSize is 0
-														$('#categories-choose ._all input').attr("checked", false)
-														$('#categories-choose ._all input').parent().removeClass "true"
-														$('#categories-choose ._all input').parent().addClass "false"
-														$(@).parents(".shown").find(".checkInput").attr("checked", false)
-														$(@).parents(".shown").find(".checkInput").parent().removeClass "true"
-														$(@).parents(".shown").find(".checkInput").parent().addClass "false"
-												console.log "_che", _checkNullSize
 										else if _apply.hasClass("false")
 											$(@).attr("checked", true)
 											_apply.removeClass "false"
@@ -400,13 +388,13 @@ main-manage = let
 			else if $("._printCut").val() is "false"
 				request-object.separate = false
 			request-object.remark = $("._printRemark").val!
-			request-object.id = Number($("._printID").html!)
+			request-object.id = Number($("._printID").val!)
 			request-object.size = Number($("._printFont").val!)
 			console.log "request-object", request-object
 			require_.get("modify").require {
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
-					printer-id:		Number($("._printID").html!)
+					printer-id:		Number($("._printID").val!)
 				}
 				callback 	:		(result)!-> alert('修改成功', true);setTimeout('location.reload()', 2000)
 			}

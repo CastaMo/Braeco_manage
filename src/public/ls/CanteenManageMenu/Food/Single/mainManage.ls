@@ -324,8 +324,12 @@ main-manage = let
 				}
 				if not @able then @cover-dom.fade-in 200
 				else @cover-dom.fade-out 200
+				combo-str = ""
+				if @dc-type is "combo_only"
+					combo-str = "(仅套餐可点)"
+					if @e-name then combo-str = "<br>#{combo-str}"
 				@c-name-dom.html @c-name; @c-name-dom.attr {"title": @c-name}
-				@e-name-dom.html @e-name; @e-name-dom.attr {"title": @e-name}
+				@e-name-dom.html "#{@e-name}#{combo-str}"; @e-name-dom.attr {"title": @e-name}
 				@default-price-dom.html @default-price
 				_update-property-dom @
 				_update-dc-dom @

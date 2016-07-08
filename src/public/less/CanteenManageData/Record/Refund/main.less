@@ -158,8 +158,114 @@
                                     text-align: center;
                                 }
                             }
+                            .status-content-red {
+                                font-size: 12px;
+                                color: rgb(235, 79, 16);
+                                margin-top: 5px;
+                            }
+                            .status-content-yellow {
+                                font-size: 12px;
+                                color: #FFC107;
+                                margin-top: 5px;
+                            }
+                            .status-content-green {
+                                font-size: 12px;
+                                color: rgb(0, 192, 73);
+                                margin-top: 5px;
+                            }
+                        }
+                        td.td-water-number {
+                            position: relative;
+                            .order-details-container {
+                                display: none;
+                                position: absolute;
+                                margin-left: -100px;
+                                width: 250px;
+                                z-index: 10;
+                                .order-details-header {
+                                    height: 60px;
+                                    line-height: 5.2;
+                                    background-size: 250px 60px;
+                                    background-repeat: no-repeat;
+                                    background-position: center;
+
+                                    .pin-icon {
+                                        cursor: pointer;
+                                        z-index: 11;
+                                        float: right;
+                                        width: 25px;
+                                        height: 25px;
+                                        margin-top: -50px;
+                                        margin-right: 25px;
+                                        background-size: 25px 25px;
+                                        background-repeat: no-repeat;
+                                        background-position: center;
+                                    }
+                                    .pinned-icon {
+                                        background-image: url(@pinned-icon-url);
+                                    }
+                                    .unpinned-icon {
+                                        background-image: url(@unpinned-icon-url);
+                                    }
+                                }
+                                .order-details-body {
+                                    font-size: 12px;
+                                    line-height: 1.5;
+                                    padding: 15px 12px 20px 12px;
+                                    background-color: #fff;
+                                    border-left: 1px solid #E7E7EB;
+                                    border-right: 1px solid #E7E7EB;
+                                    border-bottom: 1px solid #E7E7EB;
+
+                                    .order-pay-method, .order-table {
+                                        font-size: 14px;
+                                    }
+                                    .order-infomation {
+                                        text-align: left;
+                                    }
+                                    .info-number {
+                                        margin-top: 10px;
+                                    }
+                                    .details-block {
+                                        margin-top: 10px;
+                                        .description-content {
+                                            word-wrap:break-word;
+                                            text-align: left;
+                                        }
+                                    }
+                                    .left-span {
+                                        float: left;
+                                    }
+                                    .right-span {
+                                        float: right;
+                                    }
+                                    .sub-food-item {
+                                        color: #8d8d8d;
+                                    }
+                                    
+                                    table.order-food-table {
+                                        width: 100%;
+                                        .table-cat-col {
+                                            text-align: left;
+                                            width: 50%;
+                                        }
+                                        .table-num-col {
+                                            text-align: center;
+                                            width: 20%;
+                                        }
+                                        .table-pri-col {
+                                            text-align: right;
+                                            width: 30%;
+                                        }
+                                        tbody .table-pri-col {
+                                            padding-right: 5px;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
+
                     > tr:hover {
                         background-color: #fffcf6;
                     }

@@ -30,6 +30,7 @@ module.exports = function(grunt) {
     grunt.initConfig({
         // Metadata.
         pkg: grunt.file.readJSON('package.json'),
+        // secret: grunt.file.readJSON('../secret_for_formal.json'),
         secret: grunt.file.readJSON('../secret.json'),
         dirs: grunt.file.readJSON('dirs.json'),
 
@@ -327,6 +328,34 @@ module.exports = function(grunt) {
         'clean:version',
         'hashmap'
     ]);
+    
+    // just for test
+    var option2path = {
+        "settings_staff": ["/CanteenManageSettings/Staff/**/", "/Settings/Staff", ""] // settings_staff as a test, Todo -> add all
+    }
+    var target = grunt.option('target') || 'dev';
+    if (target !== 'dev') {
+        var target_path = option2path[target];
+        grunt.config('sftp.config.files', {'./': [
+            "<%= dirs.dest_path %>public/<%= dirs.version %>/public/js"+target_path[0]+"main.min*.js",
+            "<%= dirs.dest_path %>public/<%= dirs.version %>**/extra.min*.js",
+            "<%= dirs.dest_path %>public/<%= dirs.version %>/public/css"+target_path[0]+"main.min*.css",
+            "<%= dirs.dest_path %>public/<%= dirs.version %>**/extra.min*.css",
+            "<%= dirs.dest_path %>public/<%= dirs.version %>/public/css"+target_path[0]+"base64.min*.css",
+            "<%= dirs.dest_path %>public/**/specialCommon/**",
+            "<%= dirs.dest_path %>public/<%= dirs.version %>**/hash.json"
+        ]});
+        if (target_path[1] !== "") {
+            grunt.config('sftp.module_static.files', {'./': ["<%= dirs.dest_path %>views/Manage"+target_path[1]+"/*.html"]});
+        } else {
+            grunt.config('sftp.module_static.files', {});
+        }
+        if (target_path[2] !== "") {
+            grunt.config('sftp.module_dynamic.files', {'./': ["<%= dirs.dest_path %>module/Manage"+target_path[2]+"/*.php"]});
+        } else {
+            grunt.config('sftp.module_dynamic.files', {});
+        }
+    }
     grunt.registerTask('upload', [
         'clean',
         'copy:test',
