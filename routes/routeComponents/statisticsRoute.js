@@ -2,7 +2,7 @@
 
 var http = require('http');
 var StringDecoder = require('string_decoder').StringDecoder;
-var cookie = 'sid=bqsmheyfarzdlfmwu64igixjwbo0fasr';
+var cookie = 'sid=997054fnijp5gng5ve7pz6murtnoupf3';
 
 var getCallbackHandleForRequest = require("../../common/getCallbackHandleForRequest.js");
 
