@@ -22,7 +22,7 @@ angular.module 'ManageLogin' .controller 'manage-login', ['$scope', '$resource',
 
   # ====== 5 页面数据初始化 ======
   init-page-data = !->
-    access-the-status-code!
+    # access-the-status-code!
 
   # ====== 6 controller初始化接口 ======
   init-manage-login = !->
@@ -51,7 +51,10 @@ angular.module 'ManageLogin' .controller 'manage-login', ['$scope', '$resource',
       username = $scope.form.username
       password = md5.create-hash $scope.form.password
 
-      retrieve-one-user username, password
+      if /^1\d{10}$/.test(username) is true or /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/.test(username) is true
+        retrieve-one-user username, password
+      else 
+        alert '用户名格式必须是手机号码或者邮箱'
 
     else
       alert '提交正在进行，请稍后', false
@@ -84,6 +87,7 @@ angular.module 'ManageLogin' .controller 'manage-login', ['$scope', '$resource',
       password: password
 
     callback = (result)!->
+      $braecoConsole result
       switch result.message
       | 'Wrong password'   => alert '密码错误'
       | 'User not found'   => alert '用户不存在'
