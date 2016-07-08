@@ -98,12 +98,13 @@ angular.module 'ManageLogin' .controller 'manage-login', ['$scope', '$resource',
   access-the-status-code = !->
     success-func = (response)!->
       if response.status is 200
-        location.href = '/Manage/Menu/Category'
+        $braecoConsole response
+        # location.href = '/Manage/Menu/Category'
 
     error-func = (response)!->
       $braecoConsole response.status
 
-    $http { method: 'HEAD', url: '/Manage/Menu/Category' } .then success-func, error-func
+    $http { method: 'POST', url: '/Activity/Get' } .then success-func, error-func
 
   # ====== 10 初始化函数执行 ======
   init-manage-login!
