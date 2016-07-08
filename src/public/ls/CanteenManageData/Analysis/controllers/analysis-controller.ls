@@ -32,6 +32,8 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
       member-classes: null
       membership-charge: null
       membership-spend: null
+      membership-charge-order: null 
+      membership-spend-order: null
 
     # 图表实例
     $scope.analysis-member-chart = null
@@ -338,8 +340,10 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     $scope.member.member-classes = [1, 2, 3, 4, 5, 6]
 
   set-current-balance-data-panel = !->
-    $scope.member.membership-charge = $scope.statistic.membership_charge
-    $scope.member.membership-spend = $scope.statistic.membership_spend
+    $scope.member.membership-charge = $scope.statistic.membership_charge_amount
+    $scope.member.membership-spend = $scope.statistic.membership_spend_amount
+    $scope.member.membership-charge-order = $scope.statistic.membership_charge_sum
+    $scope.member.membership-spend-order = $scope.statistic.membership_spend_sum
 
   set-batch-numbers-array = (coupons)!->
     $scope.filter.coupons-batch-number = coupons
@@ -508,14 +512,15 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
       chart-data.push $scope.statistic.old_membership_detail
     else if $scope.selected-tab is 'member' and $scope.selected-panel is 'current-balance'
       $braecoConsole 'init current-balance line chart'
-      chart-data.push $scope.statistic.membership_charge_detail
-      chart-data.push $scope.statistic.membership_spend_detail
+      chart-data.push $scope.statistic.membership_charge_amount_detail
+      chart-data.push $scope.statistic.membership_spend_amount_detail
     else if $scope.selected-tab is 'coupons'
       $braecoConsole 'init coupons line chart'
       if $scope.coupons.coupon_sum isnt 0
-        chart-data.push $scope.coupons.coupon_detail[$scope.filter.coupons-selected-batch-number].scan.detail
-        chart-data.push $scope.coupons.coupon_detail[$scope.filter.coupons-selected-batch-number].get.detail
-        chart-data.push $scope.coupons.coupon_detail[$scope.filter.coupons-selected-batch-number].get.detail
+        if $scope.coupons.coupon_detail[$scope.filter.coupons-selected-batch-number]
+          chart-data.push $scope.coupons.coupon_detail[$scope.filter.coupons-selected-batch-number].scan.detail
+          chart-data.push $scope.coupons.coupon_detail[$scope.filter.coupons-selected-batch-number].get.detail
+          chart-data.push $scope.coupons.coupon_detail[$scope.filter.coupons-selected-batch-number].consume.detail
     chart-data
 
   get-line-chart-legends = ->
@@ -732,10 +737,13 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     post-data.unit = unit
     post-data.type = type
 
+    $braecoConsole post-data
+
     result = $scope.resource.statistic.save {}, post-data, !->
       callback? result
       set-ready-state! # 去掉loading
       $braecoConsole 'here is retrieve-statistics-by-type'
+      $braecoConsole result
       init-chart!
 
   retrieve-member-class-and-sumbalance = !->

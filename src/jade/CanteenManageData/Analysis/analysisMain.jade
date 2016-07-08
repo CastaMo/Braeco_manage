@@ -60,9 +60,15 @@
             .member-recharge.info-item
               span.left 会员充值
               span.right {{ member.membershipCharge }} 元
+            .info-item
+              span.left
+              span.right ({{ member.membershipChargeOrder }} 单)
             .balance-consume.info-item
               span.left 余额消费
               span.right {{ member.membershipSpend }} 元
+            .info-item
+              span.left
+              span.right ({{ member.membershipSpendOrder }} 单)
         .triangle
 
       .member-graphs
