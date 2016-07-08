@@ -1,0 +1,167 @@
+@import "base64";
+@import "../../common/common";
+
+html, body {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  min-width: 960px;
+}
+
+input {
+  box-sizing: content-box;
+}
+
+#braeco-login {
+  width: 100%;
+  height: 100%;
+  background: url(@login-background-url);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+
+  #braeco-login-wapper {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(44, 40, 32, 0.50);
+    #braeco-login-container {
+      padding-top: 10%;
+      padding-left: 60%;
+
+      #login-form {
+        background: rgba(41,39,34,0.90);
+        border-radius: 10px;
+        width: 350px;
+        height: 375px;
+        padding-top: 2px;
+
+        .brand {
+          background-image: url(@braeco-icon-url);
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          height: 36px;
+          width: 212px;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 40px;
+          margin-bottom: 10px;
+        }
+
+        .title {
+          font-family: 'HiraginoSansGB-W3';
+          font-size: 14px;
+          color: #ffe596;
+          text-align: center;
+        }
+
+        form {
+          padding-top: 20px;
+
+          input[type='text'], input[type='password'], input[type='submit'] {
+            background: #ffffff;
+            width: 260px;
+            height: 30px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 15px;
+            border: 0px;
+          }
+
+          input[type='text'] {
+            margin-bottom: 0px;
+          }
+
+          input[type='text'], input[type='password'] {
+            padding-left: 40px;
+          }
+
+          input[type='submit'] {
+            background-color: #ffc107;
+            border-radius: 5px;
+            margin-top: 15px;
+            height: 32px;
+            width: 300px;
+            color: white;
+            transition: all 0.5s;
+          }
+
+          .disabled {
+            background-color: #6f6137 !important;
+            color: black !important;
+            transition: all 0.5s;
+          }
+
+          input[type='checkbox'] {
+            border: 1px solid #c8c7cc;
+            width: 12px;
+            height: 12px;
+            display: inline-block;
+            margin-left: 25px;
+            margin-right: 5px;
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+
+          label[for='recordUsername'] {
+            font-family: 'HiraginoSansGB-W3';
+            font-size: 14px;
+            color: #ffffff;
+            text-align: left;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+
+          label[for='username'], label[for='password'] {
+            background-repeat: no-repeat;
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            background-size: 15px 15px;
+            position: relative;
+            left: 37px;
+            top: 30px;
+          }
+
+          label[for='username'] {
+            background-image: url(@username-icon-url);
+          }
+
+          label[for='password'] {
+            background-image: url(@password-icon-url);
+          }
+
+          .password-forgot {
+            font-family: 'HiraginoSansGB-W3';
+            font-size: 12px;
+            color: #ffffff;
+            text-align: left;
+            float: right;
+            margin-right: 20px;
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+
+          .register {
+            font-family: 'HiraginoSansGB-W3';
+            font-size: 12px;
+            color: #ffc107;
+            text-align: right;
+            float: right;
+            margin-right: 25px;
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
+}
