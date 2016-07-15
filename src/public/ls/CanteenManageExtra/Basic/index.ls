@@ -99,7 +99,7 @@ do ->
 					if $ 'input[name=printer]:checked' .val! == undefined
 						return @show-message '请选择一个打印机'
 				else 
-					if @.getAttribute('empty_is_vlaid') != 'true' 
+					if @.getAttribute('empty_is_vlaid') != 'true' || @.value!=''
 						if @value == '' || /^\s*$/g.test @value
 							return @show-message '输入不可为空！'
 						if (@getAttribute 'type' ) == 'password'
@@ -190,7 +190,6 @@ do ->
 			_close_global_message!
 		add-img-input = (pic)!->
 			len = $ '.little_pic_li.pic:visible' .length
-			console.log len
 			if len<5
 				$ '.little_pic_li' .eq len .css 'display','inline-block'
 		delete-img-input = (n)!->
