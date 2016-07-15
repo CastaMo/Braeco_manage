@@ -288,14 +288,14 @@ module.exports = function(passport) {
 		}, 1000);
 	});
 
-	router.get('/manage/Extra/log', function(req, res) {
+	router.get('/Manage/Extra/Log', function(req, res) {
 		res.render('./CanteenManageExtra/Log/develop');
 	});
-	router.get('/manage/Extra/basic', function(req, res) {
-		res.render('./CanteenManageExtra/basic/develop');
+	router.get('/Manage/Extra/Basic', function(req, res) {
+		res.render('./CanteenManageExtra/Basic/develop');
 	});
-	router.get('/manage/Extra/download', function(req, res) {
-		res.render('./CanteenManageExtra/download/develop');
+	router.get('/Manage/Extra/Download', function(req, res) {
+		res.render('./CanteenManageExtra/Download/develop');
 	});
 
 	return router;
