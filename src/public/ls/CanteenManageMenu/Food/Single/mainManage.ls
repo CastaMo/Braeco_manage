@@ -14,11 +14,11 @@ main-manage = let
 
 	_map-category-name-to-id 		= {}
 	_food-single-select-dom 		= $ "select.food-single-select"
-	_copy-select-dom 				= $ "select\#select-copy"
-	_move-select-dom 				= $ "select\#select-move"
+	_copy-select-dom 						= $ "select\#select-copy"
+	_move-select-dom 						= $ "select\#select-move"
 	_single-list-field-dom 			= $ ".single-list-field"
 	_all-choose-field-dom 			= $ ".food-single-header-field .name-container > .t-choose"
-	_all-choose-dom 				= _all-choose-field-dom.find ".choose-pic"
+	_all-choose-dom 						= _all-choose-field-dom.find ".choose-pic"
 
 	_init-depend-module = !->
 		image 		:= require "./imageManage.js"
