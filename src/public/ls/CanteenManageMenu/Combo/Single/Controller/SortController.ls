@@ -62,7 +62,7 @@ class SortController
 
 	read-from-dishes: (dishes)!->
 		@reset!
-		for dish in dishes
+		for dish in dishes when dish.dc-type isnt "combo_only"
 			dish_ = new Dish dish
 			dish_.is-choose = false
 			@dishes.push dish_

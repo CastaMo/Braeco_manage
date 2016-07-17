@@ -31,15 +31,18 @@ page-manage = let
 			->
 				set-timeout (-> _main-dom.fade-in 100), 100
 				_unshow-all-toggle-dom-except-given _main-dom
+				$("html, body").animate({ scrollTop: 0 }, "fast");
 		"new"		: 		let
 			->
 				set-timeout (-> _new-dom.fade-in 100), 100
 				_unshow-all-toggle-dom-except-given _new-dom
+				$("html, body").animate({ scrollTop: 0 }, "fast");
 
 		"edit"		: 		let
 			->
 				set-timeout (-> _edit-dom.fade-in 100), 100
 				_unshow-all-toggle-dom-except-given _edit-dom
+				$("html, body").animate({ scrollTop: 0 }, "fast");
 	}
 
 	_cover-page-callback = {
