@@ -11,13 +11,15 @@ new-manange = let
 	###
 	# 	input有关的dom对象
 	###
-	_c-name-dom 			= _new-dom.find "input\#c-name"
-	_e-name-dom 			= _new-dom.find "input\#e-name"
+	_c-name-dom 			    = _new-dom.find "input\#c-name"
+	_e-name-dom 			    = _new-dom.find "input\#e-name"
 	_default-price-dom 		= _new-dom.find "input\#default-price"
-	_pic-input-dom 			= _new-dom.find "input\#new-pic"
-	_remark-dom 			= _new-dom.find "input\#remark-tag"
-	_intro-dom 				= _new-dom.find "textarea\#intro"
+	_pic-input-dom 			  = _new-dom.find "input\#new-pic"
+	_remark-dom 			    = _new-dom.find "input\#remark-tag"
+	_intro-dom 				    = _new-dom.find "textarea\#intro"
 	_dc-type-select-dom 	= _new-dom.find "select\#select-dc-type"
+	_dc-type-dom 			= _new-dom.find ".f-dc-field"
+	_combo-only-dom 	    = _new-dom.find "select\#select-combo-only"
 
 	###
 	#	放置图片显示的dom
@@ -37,7 +39,7 @@ new-manange = let
 	###
 	#	按钮dom
 	###
-	_property-add-dom 		= _new-dom.find ".add-btn"
+	_property-add-dom = _new-dom.find ".add-btn"
 	_cancel-dom 			= _new-dom.find ".cancel-btn"
 	_save-dom 				= _new-dom.find ".save-btn"
 
@@ -61,6 +63,7 @@ new-manange = let
 	_dc 					= null
 	_groups 				= null
 	_upload-flag 			= null
+	_is-combo-only 			= null
 
 	###
 	#	所有dc-type的name
@@ -102,6 +105,8 @@ new-manange = let
 		_intro-dom.val null
 		_dc-type-select-dom.val "无"; _dc-type-select-change-event!
 		_pic-display-dom.css {"background-image" : ""}
+		_combo-only-dom.val "no"
+		_combo-only-dom-change-event!
 
 		_c-name 				:= null
 		_e-name 				:= null
@@ -178,6 +183,7 @@ new-manange = let
 		_reset!
 
 	_get-upload-JSON-for-add = ->
+		if _is-combo-only then _dc-type := "combo_only"
 		return JSON.stringify {
 			dc_type 	:		_dc-type
 			dc 			:		_dc
@@ -214,6 +220,11 @@ new-manange = let
 								<div class='clear'></div>"
 
 	_property-add-btn-click-event = !-> page.cover-page "property"; group.set-current-property-active!
+
+	_combo-only-dom-change-event = !->
+		_is-combo-only := _combo-only-dom.val! is "yes"
+		if _is-combo-only then _dc-type-dom.fade-out 200
+		else _dc-type-dom.fade-in 200
 
 	###
 	#	上传图片事件
@@ -299,6 +310,8 @@ new-manange = let
 		_pic-input-dom.change !-> _pic-input-change-event @
 
 		_dc-type-select-dom.change !-> _dc-type-select-change-event!
+
+		_combo-only-dom.change !-> _combo-only-dom-change-event!
 
 		_property-add-dom.click !-> _property-add-btn-click-event!
 
