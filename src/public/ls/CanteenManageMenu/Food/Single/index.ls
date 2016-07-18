@@ -3,6 +3,7 @@ let win = window, doc = document
 
 	_get-food-JSON 		= null
 	_get-group-JSON 	= null
+	page 							= require "./pageManage.js";
 
 	_init-callback = {
 		"Need to rescan qrcode" 	:	->	win.location.pathname = "/Table/Confirm/rescan"
@@ -21,7 +22,7 @@ let win = window, doc = document
 
 	_init-all-module = !->
 		image 		= require "./imageManage.js"; 			image.initial!
-		page 		= require "./pageManage.js";			page.initial!
+		page.initial!
 		group  		= require "./groupManage.js"; 			group.initial _get-group-JSON
 		main 		= require "./mainManage.js";		 	main.initial _get-food-JSON
 		header 		= require "./headerManage.js";			header.initial!
