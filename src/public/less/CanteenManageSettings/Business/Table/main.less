@@ -205,7 +205,9 @@
 }
 #wrap{
 	background: rgba(0,0,0,0.8);
+	overflow-y: auto;
 }
+#wrap::-webkit-scrollbar{width:0;}
 .wrap{
 	display: none;
 	left: 50%;
@@ -228,9 +230,10 @@
 	background:#ffffff;
 	width:920px;
 	height:588px;
+	top:75px;
 	-webkit-transform: translate(-50%,0); 
-	  -ms-transform: translate(-50%,-50%); 
-	      transform: translate(-50%,-45%);
+	  -ms-transform: translate(-50%,0%); 
+	      transform: translate(-50%,0%);
 }
 .wrap_head{
 	background:#f4f5f9;

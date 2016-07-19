@@ -43,9 +43,7 @@ module.exports = function (componentPath) {
       keepSpecialComments: 0
     },
     compress: {
-    	files: {
-    		'<%= dirs.dest_path %><%= dirs.css %>common/extra.min.css': ['<%= dirs.dest_path %><%= dirs.css %>common/*.css']
-    	}
+    	files: {}
     }
 	};
 
@@ -160,7 +158,6 @@ module.exports = function (componentPath) {
 		configForUglify(config.uglify, taskName, uglify);
 
 	};
-
 
 	readFiles.getFileList(componentPath, configFromFile);
 	return {

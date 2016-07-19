@@ -3,7 +3,7 @@
 var http            = require('http');
 var BufferHelper    = require('./BufferHelper.js');
 var StringDecoder   = require('string_decoder').StringDecoder;
-var cookie          = 'sid=tkbobycg4ycgq6kz7ir18eunzarrd5l6;auth=1618003720';
+var cookie          = 'sid=a7trbh3hwkgft16374cot28em6ty4zpe';
 var zlib            = require('zlib');
 var fs              = require('fs');
 var flag            = true;
@@ -50,6 +50,7 @@ function getCallbackProxyHandleResponse(res) {
           });
         } else {
           var result = buffer.toString();
+          console.log(result);
           res.send(result);
         }
       } catch (e) {

@@ -97,21 +97,17 @@ do ->
 			temp.is-valid = (reg,str)->
 				if @.getAttribute('type')== 'radio'
 					if $ 'input[name=printer]:checked' .val! == undefined
-						@show-message '请选择一个打印机'
-						return false
+						return @show-message '请选择一个打印机'
 				else 
-					if @.getAttribute('empty_is_vlaid') != 'true' 
+					if @.getAttribute('empty_is_vlaid') != 'true' || @.value!=''
 						if @value == '' || /^\s*$/g.test @value
-							@show-message '输入不可为空！'
-							return false
+							return @show-message '输入不可为空！'
 						if (@getAttribute 'type' ) == 'password'
 							if @value.length<6 || @value.length>16
-								@show-message '密码长度为6-16个字符'
-								return false
-						else if (@getAttribute 'name' ) == 'email'
+								return @show-message '密码长度为6-16个字符'
+						if (@getAttribute 'name' ) == 'email'
 							if ! /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test @value
-								@show-message '请输入正确的邮箱地址'
-								return false
+								return @show-message '请输入正确的邮箱地址'
 						# 固定电话和手机号码的验证太麻烦，此处略过
 						# else if (@getAttribute 'name' ) == 'phone'
 						# 	if ! /^[0-9\-\s]+$|^1[34578][0-9]{9}/.test @value
@@ -193,8 +189,7 @@ do ->
 		close-loading = !->
 			_close_global_message!
 		add-img-input = (pic)!->
-			len = $ '.little_pic_li:visible' .length
-			console.log len
+			len = $ '.little_pic_li.pic:visible' .length
 			if len<5
 				$ '.little_pic_li' .eq len .css 'display','inline-block'
 		delete-img-input = (n)!->

@@ -21,6 +21,12 @@
 							p 基础价格 *
 							input(id='default-price' name='default-price' type="number" min="0")
 							.clear
+						.select-combo-only-container.select-container
+							p 可否单点
+							select(id='select-combo-only')
+								option(value='no') 默认可单点
+								option(value='yes') 不可单点(仅套餐可见)
+							.clear
 						//.basic-business-container
 							.name-part
 								p 基础业务 *
@@ -157,7 +163,6 @@
 								option(value='discount') 折扣优惠
 								option(value='half') 第二份半价
 								option(value='limit') 限量供应
-								option(value='combo_only') 仅套餐可点
 						.addtional.parallel-container
 							input(type="number" placeholder='(1-99)' max='99' min='1')
 							p 份
