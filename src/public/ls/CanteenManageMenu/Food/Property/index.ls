@@ -3,6 +3,8 @@ let win = window, doc = document
 
 	_get-group-JSON = null
 
+	page 	= require "./pageManage.js"
+
 	_init-callback = {
 		"Need to rescan qrcode" 	:	->	win.location.pathname = "/Table/Confirm/rescan"
 		"success" 					:	(result)->
@@ -18,7 +20,7 @@ let win = window, doc = document
 		_init-callback[result.message]?(result)
 
 	_init-all-module = !->
-		page 		= require "./pageManage.js";			page.initial!
+		page.initial!
 		main 		= require "./mainManage.js";		 	main.initial _get-group-JSON
 		new_ 		= require "./newManage.js"; 			new_.initial!
 		edit 		= require "./editManage.js"; 			edit.initial!
