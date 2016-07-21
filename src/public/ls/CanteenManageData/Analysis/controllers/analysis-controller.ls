@@ -241,6 +241,11 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     Chart.defaults.global.tooltips.enabled = true
     Chart.defaults.global.tooltips.mode = 'label'
     Chart.defaults.global.legend.labels.boxWidth = 15
+    Chart.defaults.global.tooltips.callbacks.after-body = (info, data)->
+      if $scope.selected-tab is 'member' and $scope.selected-panel is 'current-balance'
+        charge = $scope.statistic.membership_charge_sum_detail[info[0].index]
+        spend = $scope.statistic.membership_spend_sum_detail[info[1].index]
+        return "会员充值：#charge 单; 余额消费：#spend 单"
 
   set-pie-chart-global-defaults = !->
     Chart.defaults.global.legend.position = 'bottom'
