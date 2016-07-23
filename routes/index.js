@@ -92,7 +92,7 @@ module.exports = function(passport) {
 	// });
 
 	router.post('/dinner/printer/get', function(req, res, next) {
-		res.status(500).send('hello world');
+		res.json({"printer":[{"id":159,"width":0,"size":1,"page":1,"name":"815501495","remark":"\u676f\u53e3-\u65e0\u5207\u5200","ban":[],"ban_cat":[],"ban_table":[],"separate":true,"able":false},{"id":214,"width":0,"size":1,"page":1,"name":"815501495","remark":"\u676f\u53e3-\u65e0\u5207\u5200-\u5206\u5f00","ban":[],"ban_cat":[],"ban_table":[],"separate":true,"able":false},{"id":242,"width":0,"size":1,"page":1,"name":"815502045","remark":"\u95f2\u7f6e2","ban":[],"ban_cat":[],"ban_table":[],"separate":false,"able":false},{"id":297,"width":0,"size":1,"page":1,"name":"816501507","remark":"\u89e3\u7ed1\u4e2d","ban":[],"ban_cat":[],"ban_table":[],"separate":false,"able":false},{"id":316,"width":0,"size":1,"page":1,"name":"916500897","remark":"\u676f\u53e3wifi","ban":[],"ban_cat":[],"ban_table":["9"],"separate":true,"able":false},{"id":318,"width":0,"size":0,"page":1,"name":"916500382","remark":"\u6f6e\u6c55\u5434\u8bb0\u83dc\u9986","ban":[],"ban_cat":[],"ban_table":[],"separate":false,"able":false},{"id":322,"width":0,"size":1,"page":1,"name":"916500897","remark":"\u676f\u53e3wifi-3","ban":[],"ban_cat":[],"ban_table":[],"separate":false,"able":true},{"id":338,"width":0,"size":0,"page":1,"name":"815502753","remark":"\u676f\u53e3-\u6d4b\u8bd5-internal","ban":[],"ban_cat":[],"ban_table":[],"separate":false,"able":true}],"message":"success"});
 		// res.json({
 		// 	"message": "success",
 		// 	"printer": [
