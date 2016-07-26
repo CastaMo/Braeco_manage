@@ -35,7 +35,19 @@ do ->
 					else
 						data[name] = x.value
 				data
-			if temp.getAttribute('id')!='wrap_pics'
+			if temp.getAttribute('id') == 'wrap_password' || temp.getAttribute('id') == 'wrap_email'
+				temp.mysubmit =(mydata,myurl)->
+					util.ajax {
+					type : 'post'
+					url : '/user/info/update'
+					async :'true'
+					data : JSON.stringify mydata
+					success : (result)!->
+						ajax-callback result
+					unavailabled : (result)!->
+						alert '提交失败，请重试！'
+					}
+			else if temp.getAttribute('id')!='wrap_pics'
 				temp.mysubmit =(mydata,myurl)->
 					util.ajax {
 					type : 'post'
