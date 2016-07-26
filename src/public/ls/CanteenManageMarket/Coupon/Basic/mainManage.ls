@@ -149,13 +149,14 @@ main-manage = let
 							$("._pre-distribute-coupon").html("顾客支付订单后发券")
 						$("._pre-max-coupon").html("#{_coupons[j].quantity} 张")
 						$("._pre-max-own").html("每人最多领取 #{_coupons[j].max} 张")
-						_fun = ""
-						_func = ["堂食 ", "预订 ", "外卖 ", "外带"]
+						_fun = []
+						_func = ["堂食", "外带", "外卖", "预点"]
 						_hello = parseInt(_coupons[j].fun).toString(2)
-						for x from 0 to _hello.length-1 by 1
+						for x from _hello.length-1 to 0 by -1
 							if _hello[x] is "1"
-								_fun += _func[x]
-						$("._pre-apply-area").html(_fun)
+								_fun.push _func[_hello.length-1-x]
+						_fun-text = _fun.join " "
+						$("._pre-apply-area").html(_fun-text)
 						$("._pre-multiple-use").html("每笔订单最多同时叠加使用#{_coupons[j].max_use}张")
 						$("._QRcode").attr("src", "#{_coupons[j].url}")
 				page.toggle-page "detail"
