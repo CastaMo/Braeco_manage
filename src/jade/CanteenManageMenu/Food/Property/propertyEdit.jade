@@ -29,7 +29,7 @@
 									p 添加选项
 									.clear
 
-			//#uisng.top-bottom-border
+			#uisng.top-bottom-border
 				.using-content-wrapper.body-wrapper
 					.using-content-container.parallel-container
 						.word-field
@@ -37,31 +37,33 @@
 						.using-field
 							.using-wrapper
 								.using-container
-									.top-choose
-										p 全部单品
-										.tick-pic
-									ul.food-choose-list
-										.category-choose
-											.arrow-pic
-											p 店长推荐
-											.tick-pic
-									ul.food-choose-list
-										.category-choose
-											.arrow-pic
-											p 香浓咖啡
-											.tick-pic
-										li.food-choose
-											p 意式特浓咖啡
-											.tick-pic
-										li.food-choose
-											p 拿铁咖啡
-											.tick-pic
-										li.food-choose
-											p 卡布奇诺
-											.tick-pic
-										li.food-choose
-											p 单品名称最长十二个中文字
-											.tick-pic
+									.all-choose.choose-elem
+										.choose-elem-wrapper
+											.choose-elem-container
+												.left-part
+													p 全部单品
+												.right-part
+													.tick
+												.clear
+									.category-elem
+										.category-choose.choose-elem.active
+											.choose-elem-wrapper
+												.choose-elem-container
+													.left-part
+														.tria-icon
+														p 精选皇牌套餐
+													.right-part
+														.tick
+													.clear
+										ul.dish-list
+											li.dish-choose.choose-elem
+												.choose-elem-wrapper
+													.choose-elem-container
+														.left-part
+															p B餐煎饺(半打)
+														.right-part
+															.tick
+														.clear
 						.clear
 			#btn
 				.btn-wrapper.body-wrapper
