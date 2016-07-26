@@ -3,7 +3,7 @@
 var http            = require('http');
 var BufferHelper    = require('./BufferHelper.js');
 var StringDecoder   = require('string_decoder').StringDecoder;
-var cookie          = 'sid=a7trbh3hwkgft16374cot28em6ty4zpe';
+var cookie          = 'sid=2bfn9k3mfe9ylb8qxt3icvi1yws3yxg0';
 var zlib            = require('zlib');
 var fs              = require('fs');
 var flag            = true;
@@ -64,6 +64,7 @@ function getCallbackProxyHandleResponse(res) {
 }
 
 function proxySendRequest(options, callbackProxyHandleResponse, body) {
+  console.log(options);
   var request = http.request(options, callbackProxyHandleResponse);
   request.on('error', function(e) {console.log('Remote server error:', e);});
   if (options.method === "POST" && body) {
