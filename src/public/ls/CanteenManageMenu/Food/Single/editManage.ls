@@ -18,6 +18,8 @@ edit-manange = let
 	_remark-dom 			= _edit-dom.find "input\#remark-tag"
 	_intro-dom 				= _edit-dom.find "textarea\#intro"
 	_dc-type-select-dom 	= _edit-dom.find "select\#select-dc-type"
+	_dc-type-dom 			= _edit-dom.find ".f-dc-field"
+	_combo-only-dom 	    = _edit-dom.find "select\#select-combo-only"
 
 	###
 	#	放置图片显示的dom
@@ -61,6 +63,7 @@ edit-manange = let
 	_dc 					= null
 	_groups 				= null
 	_upload-flag 			= null
+	_is-combo-only 			= null
 
 	###
 	#	所有dc-type的name
@@ -102,6 +105,8 @@ edit-manange = let
 		_intro-dom.val null
 		_dc-type-select-dom.val "无"; _dc-type-select-change-event!
 		_pic-display-dom.css {"background-image" : ""}
+		_combo-only-dom.val "no"
+		_combo-only-dom-change-event!
 
 		_c-name 				:= null
 		_e-name 				:= null
@@ -144,6 +149,9 @@ edit-manange = let
 		_intro-dom.val _current-dish.detail
 		_dc-type-select-dom.val _current-dish.dc-type
 		_dc-type-select-change-event!
+		if _current-dish.dc-type is "combo_only" then _combo-only-dom.val "yes"
+		else _combo-only-dom.val "no"
+		_combo-only-dom-change-event!
 		if _current-dish.dc then (_dc-field-dom.find "input").val _current-dish.dc
 
 		_src 					:= _current-dish.pic
@@ -178,7 +186,7 @@ edit-manange = let
 		if get-total-length-for-str(_c-name) <= 0 or get-total-length-for-str(_c-name) > 32 then _err-msg += "单品名称长度应为1~32位(一个中文字符占2个单位)\n"; _valid-flag = false
 		if get-total-length-for-str(_e-name) > 32 then _err-msg += "英文名长度应为0~32位(一个中文字符占2个单位)\n"; _valid-flag = false
 		if _default-price-dom.val! is "" or _default-price < 0 or _default-price > 9999 then _err-msg += "默认价格范围应为0~9999元\n"; _valid-flag = false
-		if get-total-length-for-str(_remark) then _err-msg += "标签长度应为0~18位(一个中文字符占2个单位)\n"; _valid-flag = false
+		if get-total-length-for-str(_remark) > 18 then _err-msg += "标签长度应为0~18位(一个中文字符占2个单位)\n"; _valid-flag = false
 		if get-total-length-for-str(_intro) > 400 then _err-msg += "详情长度应为0~400位(一个中文字符占2个单位)\n"; _valid-flag = false
 		if _groups.length > 40 then _err-msg += "属性组数量应为0~40个(一个中文字符占2个单位)\n"; _valid-flag = false
 		if _dc
@@ -202,6 +210,7 @@ edit-manange = let
 		_reset!
 
 	_get-upload-JSON-for-edit = ->
+		if _is-combo-only then _dc-type := "combo_only"
 		return JSON.stringify {
 			dc_type 	:		_dc-type
 			dc 			:		_dc
@@ -238,6 +247,11 @@ edit-manange = let
 								<div class='clear'></div>"
 
 	_property-add-btn-click-event = !-> page.cover-page "property"; group.set-current-property-active!
+
+	_combo-only-dom-change-event = !->
+		_is-combo-only := _combo-only-dom.val! is "yes"
+		if _is-combo-only then _dc-type-dom.fade-out 200
+		else _dc-type-dom.fade-in 200
 
 	###
 	#	上传图片事件
@@ -330,6 +344,8 @@ edit-manange = let
 		_cancel-dom.click !-> _cancel-btn-click-event!
 
 		_save-dom.click !-> _save-btn-click-event!
+
+		_combo-only-dom.change !-> _combo-only-dom-change-event!
 
 
 	_init-depend-module = !->

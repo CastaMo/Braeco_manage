@@ -51,6 +51,7 @@ angular.module 'ManageLogin' .controller 'manage-login', ['$scope', '$resource',
       username = $scope.form.username
       password = md5.create-hash $scope.form.password
 
+      # http://www.cnblogs.com/jihua/archive/2012/09/28/yanzheng.html
       if /^1\d{10}$/.test(username) is true or /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/.test(username) is true
         retrieve-one-user username, password
       else 

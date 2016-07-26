@@ -118,13 +118,6 @@ module.exports = function(grunt) {
                 expand: true
             },
 
-            backup: {
-                cwd: '../braeco_client',
-                src: ['**/*', '!./node_modules/*'],
-                dest: '../backup/braeco_client',
-                expand: true
-            },
-
             versioncontrol: {
                 options: {
                     process: function(content, srcpath) {
@@ -137,12 +130,6 @@ module.exports = function(grunt) {
                                 path: 'bin/public/js/common/extra.min.js',
                                 prefix: '/public/js/common/extra.min_',
                                 type: '.js'
-                            },
-                            commonCss: {
-                                reg: /(?:\/public\/css\/)(\S+)(?:\/extra\.min\.css)((\?v=)(\w+))?/g,
-                                path: 'bin/public/css/common/extra.min.css',
-                                prefix: '/public/css/common/extra.min_',
-                                type: '.css'
                             }
                         };
 
@@ -166,22 +153,27 @@ module.exports = function(grunt) {
                                 type: ".js"
                             },
                         };
-                        for (var key in commonMap) {
-                            content = content.replace(commonMap[key].reg, versionPrefix + commonMap[key].prefix + md5File(commonMap[key].path).substring(0, 10) + commonMap[key].type);
+                        try {
+                            for (var key in commonMap) {
+                                content = content.replace(commonMap[key].reg, versionPrefix + commonMap[key].prefix + md5File(commonMap[key].path).substring(0, 10) + commonMap[key].type);
+                            }
+                            for (var key in pageMap) {
+                                var found = pageMap[key].reg.exec(content);
+
+                                if (!found)
+                                    continue;
+
+                                var file = pageMap[key].path.replace('{page}', found[1]),
+                                    fileMd5 = md5File(file).substring(0, 10),
+                                    prefix = pageMap[key].prefix.replace('{page}', found[1]);
+                                type = pageMap[key].type
+
+                                content = content.replace(found[0], versionPrefix + prefix + fileMd5 + type);
+                            }
+                        } catch(e) {
+                            console.log(e);
                         }
-                        for (var key in pageMap) {
-                            var found = pageMap[key].reg.exec(content);
-
-                            if (!found)
-                                continue;
-
-                            var file = pageMap[key].path.replace('{page}', found[1]),
-                                fileMd5 = md5File(file).substring(0, 10),
-                                prefix = pageMap[key].prefix.replace('{page}', found[1]);
-                            type = pageMap[key].type
-
-                            content = content.replace(found[0], versionPrefix + prefix + fileMd5 + type);
-                        }
+                        
                         return content;
                     }
                 },

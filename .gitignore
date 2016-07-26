@@ -7,3 +7,6 @@ dist/
 .editorconfig
 
 .sass-cache/
+
+getCallbackHandleForRequest.js
+

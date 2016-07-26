@@ -35,7 +35,19 @@ do ->
 					else
 						data[name] = x.value
 				data
-			if temp.getAttribute('id')!='wrap_pics'
+			if temp.getAttribute('id') == 'wrap_password' || temp.getAttribute('id') == 'wrap_email'
+				temp.mysubmit =(mydata,myurl)->
+					util.ajax {
+					type : 'post'
+					url : '/user/info/update'
+					async :'true'
+					data : JSON.stringify mydata
+					success : (result)!->
+						ajax-callback result
+					unavailabled : (result)!->
+						alert '提交失败，请重试！'
+					}
+			else if temp.getAttribute('id')!='wrap_pics'
 				temp.mysubmit =(mydata,myurl)->
 					util.ajax {
 					type : 'post'
@@ -99,7 +111,7 @@ do ->
 					if $ 'input[name=printer]:checked' .val! == undefined
 						return @show-message '请选择一个打印机'
 				else 
-					if @.getAttribute('empty_is_vlaid') != 'true' 
+					if @.getAttribute('empty_is_vlaid') != 'true' || @.value!=''
 						if @value == '' || /^\s*$/g.test @value
 							return @show-message '输入不可为空！'
 						if (@getAttribute 'type' ) == 'password'
@@ -190,7 +202,6 @@ do ->
 			_close_global_message!
 		add-img-input = (pic)!->
 			len = $ '.little_pic_li.pic:visible' .length
-			console.log len
 			if len<5
 				$ '.little_pic_li' .eq len .css 'display','inline-block'
 		delete-img-input = (n)!->

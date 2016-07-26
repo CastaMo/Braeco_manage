@@ -89,6 +89,8 @@ print-manage = let
         printer-choose-block-dom = $ "\#full-cover .printer-choose-block"
         for printer in data.printer
             print-item-dom = $ "<div class='printer-item unchecked-checkbox-item'></div>"
+            if data.printer.length > 6
+                print-item-dom.add-class "thin-printer-item"
             print-item-dom.append $ "<p>"+printer.remark+"</p>"
             input-dom = $ "<input type='checkbox' class='printer-checkbox'>"
             input-dom.val printer.id
