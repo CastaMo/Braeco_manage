@@ -104,6 +104,10 @@
     position: absolute;
     overflow: hidden;
     transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);     /* 火狐等使用Mozilla浏览器引擎的浏览器 */
+    -webkit-transform: translate(-50%,-50%);  /* Safari, 谷歌浏览器等使用Webkit引擎的浏览器 */
+    -o-transform: translate(-50%,-50%);       /* Opera浏览器(早期) */
+    -ms-transform: translate(-50%,-50%);      /* Internet Explorer (不一定) */ 
     display: none;
 }
 .wrap_head {
@@ -298,6 +302,10 @@
     border-radius: 5px;
     left: 50%;
     transform: translate(-50%,0);
+    -moz-transform: translate(-50%,0);     /* 火狐等使用Mozilla浏览器引擎的浏览器 */
+    -webkit-transform: translate(-50%,0);  /* Safari, 谷歌浏览器等使用Webkit引擎的浏览器 */
+    -o-transform: translate(-50%,0);       /* Opera浏览器(早期) */
+    -ms-transform: translate(-50%,0);      /* Internet Explorer (不一定) */ 
     display: none;
     z-index: 99
 }
