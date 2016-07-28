@@ -200,6 +200,10 @@
     border-radius: 5px;
     left: 50%;
     transform: translate(-50%,0);
+    -moz-transform: translate(-50%,0);     /* 火狐等使用Mozilla浏览器引擎的浏览器 */
+	-webkit-transform: translate(-50%,0);  /* Safari, 谷歌浏览器等使用Webkit引擎的浏览器 */
+	-o-transform: translate(-50%,0);       /* Opera浏览器(早期) */
+	-ms-transform: translate(-50%,0);      /* Internet Explorer (不一定) */ 
     display: none;
     z-index: 99
 }
@@ -214,7 +218,9 @@
 	top: 50%;
 	overflow: hidden;
 	position: absolute;
+	-moz-transform: translate(-50%,-50%);
 	-webkit-transform: translate(-50%,-50%); 
+	-o-transform: translate(-50%,-50%);
 	  -ms-transform: translate(-50%,-50%); 
 	      transform: translate(-50%,-50%);
 }
@@ -231,7 +237,9 @@
 	width:920px;
 	height:588px;
 	top:75px;
+	-moz-transform: translate(-50%,0);
 	-webkit-transform: translate(-50%,0); 
+	-o-transform: translate(-50%,0);
 	  -ms-transform: translate(-50%,0%); 
 	      transform: translate(-50%,0%);
 }
