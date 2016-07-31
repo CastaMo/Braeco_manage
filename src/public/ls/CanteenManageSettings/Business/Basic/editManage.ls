@@ -3,6 +3,7 @@ page = null
 edit-manage = let
 
     _all-roles = null
+    _edited-staff = null
 
     _init-depend-module = !->
         page := require "./pageManage.js"
