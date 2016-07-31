@@ -1,73 +1,43 @@
+page = null
 main-manage = let
-	[get-JSON, deep-copy] = [util.get-JSON, util.deep-copy]
-	page = null
-	value = []
-	dayAry = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
-	test = 0
-	payAry = ["微信支付", "现金支付"]
-	_modifyForBus-dom = $ "\#modifyForBus"
-	_cancel-dom = $ "\.canBtn"
-	_finish-dom = $ "\.finBtn"
-	_run-dom = $ "\.run-btn"
-	_stop-dom = $ "\.stop-btn"
-	_weekday-dom = $ "\.weekday input"
-	_payment-dom = $ "\.payment input"
+    
+    _outer-content-link-dom = $ "\#outer-content-link"
+    _outer-copy-btn-dom = $ "\#outer-copy-btn"
+    _pre-content-link-dom = $ "\#pre-content-link"
+    _pre-copy-btn-dom = $ "\#pre-copy-btn"
 
-	_init-all-event = !->
-		_modifyForBus-dom.click !->
-			page.toggle-page "mod"
-		_finish-dom.click !->
-			_save-form-value!
-			_show-form-value!
-			page.toggle-page "pre"
-		_cancel-dom.click !->
-			page.toggle-page "pre"
-		_run-dom.click !->
-			$('#runBusiness').removeClass "free"
-			$('#runBusiness').addClass "choose"
-			$('#stopBusiness').removeClass "choose"
-			$('#stopBusiness').addClass "free"
-			$('#runMes').html('业务已启用')
-			$('#stopMes').html('停用本业务')
-			$('#previewBusiness').css("color", '#333333')
-			$('#previewBusiness').css("border-color", '#333333')
-		_stop-dom.click !->
-			$('#runBusiness').removeClass "choose"
-			$('#runBusiness').addClass "free"
-			$('#stopBusiness').removeClass "free"
-			$('#stopBusiness').addClass "choose"
-			$('#runMes').html('启用本业务')
-			$('#stopMes').html('业务已停用')
-			$('#previewBusiness').css("color", '#E7E7EB')
-			$('#previewBusiness').css("border-color", '#E7E7EB')
-		_weekday-dom.click !->
-			_weekday = $(this).parent()
-			if $(_weekday).hasClass("true")
-				$(_weekday).removeClass "true"
-				$(_weekday).addClass "false"
-			else if $(_weekday).hasClass("false")
-				$(_weekday).removeClass "false"
-				$(_weekday).addClass "true"
-		_payment-dom.click !->
-			_payment = $(this).parent()
-			if $(_payment).hasClass("true")
-				$(_payment).removeClass "true"
-				$(_payment).addClass "false"
-			else if $(_payment).hasClass("false")
-				$(_payment).removeClass "false"
-				$(_payment).addClass "true"
+    _copy-to-clipboard = (text)!->
+        hidden-textarea = $ "<textarea></textarea>"
+        hidden-textarea.val text
+        $ 'body' .append hidden-textarea
+        hidden-textarea.select!
 
-	_show-form-value = ->
+        try
+            successful = document.execCommand 'copy'
+            msg = successful ? 'successful' : 'unsuccessful'
+            console.log 'Copying text command was ' + msg
+            alert "复制成功",true
+        catch error
+            console.log 'Unable to copy'
 
-	_save-form-value = ->
+        hidden-textarea.remove!
 
-	_init-depend-module = !->
-		page := require "./pageManage.js"
+    _outer-copy-btn-click-event = !->
+        _copy-to-clipboard _outer-content-link-dom.text!
 
-	initial: !->
-		_save-form-value!
-		_show-form-value!
-		_init-all-event!
-		_init-depend-module!
+    _pre-copy-btn-click-event = !->
+        _copy-to-clipboard _pre-content-link-dom.text!
+
+    _init-depend-module = !->
+        page := require "./pageManage.js"
+
+    _init-all-event = !->
+
+    initial: !->
+        _init-depend-module!
+        _init-all-event!
+        _outer-copy-btn-dom.click !-> _outer-copy-btn-click-event!
+        _pre-copy-btn-dom.click !-> _pre-copy-btn-click-event!
+
 
 module.exports = main-manage

@@ -129,29 +129,30 @@
             margin-right: 10px;
         }
         #new-coupon {
-            height: 40px;
-            position: relative;
             margin: 30px 0 0 30px;
             .new-btn {
-                zoom: 50%;
-                line-height: 60px;
-                font-size: 28px;
-                background-repeat: no-repeat;
-                background-color: #FFC107;
-                background-position: 30px 15px;
-                color: #FFFFFF;
-                height: 60px;
-                width: 240px;
-                border-radius: 10px;
+                cursor: pointer;
+                width: 140px;
+                height: 32px;
+                background: #ffc107;
+                border-radius: 5px;
+                border: none;
+                color: #fff;
                 &:hover {
                     background-color: #FFB300;
                 }
-                .plus-img {
-                    height: 28px;
-                    width: 28px;
+                &:focus {
+                    outline: none;
                 }
-                p {
-                    margin-left: 60px;
+                icon.add-icon {
+                    float: left;
+                    width: 14px;
+                    height: 14px;
+                    margin-top: 7px;
+                    margin-left: 10px;
+                    background-size: 14px 14px;
+                    background-repeat: no-repeat;
+                    background-position: center;
                 }
             }
         }

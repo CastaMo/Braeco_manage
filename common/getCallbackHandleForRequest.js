@@ -3,7 +3,8 @@
 var http            = require('http');
 var BufferHelper    = require('./BufferHelper.js');
 var StringDecoder   = require('string_decoder').StringDecoder;
-var cookie          = 'sid=2bfn9k3mfe9ylb8qxt3icvi1yws3yxg0';
+var defaultCookie   = 'sid=n12p4ttw11vz8pw55h70arcqupmo3clq;auth=2147483647';
+var cookie;
 var zlib            = require('zlib');
 var fs              = require('fs');
 var flag            = true;
@@ -75,9 +76,10 @@ function proxySendRequest(options, callbackProxyHandleResponse, body) {
 }
 
 function getCallbackHandleForRequest(method, devCookie) {
-  if (devCookie) cookie = devCookie;
   
   return function(req, res) {
+    cookie = defaultCookie;
+    if (devCookie) cookie = devCookie;
     var options = getOptionsForProxySendRequestConfig(req.url, method),
         callback = getCallbackProxyHandleResponse(res);
     console.log('\nAt url:', req.url);
