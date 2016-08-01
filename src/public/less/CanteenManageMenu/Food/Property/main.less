@@ -245,6 +245,59 @@
                             height: 200px;
                             overflow: auto;
                             line-height: 30px;
+                            border: solid 1px @border-grey-color;
+                            .using-container {
+                                .tick {
+                                    .background-norm();
+                                    .background-size(14px, 14px);
+                                    border: solid 1px @border-grey-color;
+                                    background-color: #fff;
+                                    margin: 8px;
+                                }
+                                .choose-elem {
+                                    border-bottom: solid 1px @border-grey-color;
+                                    cursor: pointer;
+                                    .left-part p {
+                                        width: 120px;
+                                    }
+                                    .right-part {
+                                        width: 30px;
+                                        height: 30px;
+                                    }
+                                    &:hover {
+                                        background-color: #F4F5F9;
+                                    }
+                                    &.category-choose.active {
+                                        .tria-icon {
+                                            .transform(rotate(90deg));
+                                        }
+                                    }
+                                }
+                                .all-choose .left-part {
+                                    margin-left: 25px;
+                                }
+                                .category-choose .left-part {
+                                    margin-left: 7px;
+                                    .tria-icon {
+                                        .background-norm();
+                                        .background-size(10px, 10px);
+                                        float: left;
+                                        .transition(0.3s);
+                                        margin-top: 10px;
+                                    }
+                                    p {
+                                        float: left;
+                                        margin-left: 8px;
+                                        .ellipsisWithLineNum(1);
+                                    }
+                                }
+                                ul {
+                                  display: none;
+                                }
+                                .dish-choose .left-part {
+                                    margin-left: 39px;
+                                }
+                            }
                         }
                     }
                 }
