@@ -2,6 +2,7 @@ let win = window, doc = document
 	[getJSON] = [util.getJSON]
 
 	_get-group-JSON = null
+	_get-menu-JSON 	= null
 
 	page 	= require "./pageManage.js"
 
@@ -14,6 +15,7 @@ let win = window, doc = document
 
 	_init-all-get-JSON-func = (data)->
 		_get-group-JSON := -> return data.groups
+		_get-menu-JSON := -> return data.categories
 
 
 	_main-init = (result)->
@@ -22,8 +24,8 @@ let win = window, doc = document
 	_init-all-module = !->
 		page.initial!
 		main 		= require "./mainManage.js";		 	main.initial _get-group-JSON
-		new_ 		= require "./newManage.js"; 			new_.initial!
-		edit 		= require "./editManage.js"; 			edit.initial!
+		new_ 		= require "./newManage.js"; 			new_.initial _get-menu-JSON
+		edit 		= require "./editManage.js"; 			edit.initial _get-menu-JSON
 		subItem 	= require "./subItemManage.js"; 		subItem.initial!
 		require_ 	= require "./requireManage.js"; 		require_.initial!
 
@@ -33,4 +35,3 @@ let win = window, doc = document
 		else window.main-init = _main-init
 
 	_test-is-data-ready!
-
