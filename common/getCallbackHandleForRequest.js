@@ -28,7 +28,11 @@ function getOptionsForProxySendRequestConfig(url, method) {
 function getCallbackProxyHandleResponse(res) {
   return function(remoteRes) {
     //var decoder = new StringDecoder('utf8');
-
+    var headers = remoteRes.headers;
+    for (var header in headers) {
+      console.log(header);
+      res.setHeader(header, headers[header]);
+    }
     //延时抛出异常
     // var timer = setTimeout(function () {
     //   err(new Error('timeout'));
@@ -64,12 +68,6 @@ function getCallbackProxyHandleResponse(res) {
     //   }
     //   clearTimeout(timer);
     // });
-    var encode = remoteRes.headers['content-encoding'];
-    if (encode === "gzip") {
-      res.set({
-          "Content-Encoding": "gzip"
-      });
-    }
     remoteRes.pipe(res);
   }
 }
