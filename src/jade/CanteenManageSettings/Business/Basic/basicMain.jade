@@ -3,36 +3,36 @@
         .business-title
             p 堂食
         .business-header
-            button.business-start-btn.business-start-btn-able 满送启用中
-            button.business-stop-btn.business-stop-btn-able 停止满送
-            button.edit-btn 修改
-            .alert-block
-                p.alert-information 确认停止使用满送？
+            button#canteen-start-btn.business-start-btn.business-start-btn-able 业务启用中
+            button#canteen-stop-btn.business-stop-btn.business-stop-btn-able 停用业务
+            button#canteen-edit-btn.edit-btn 修改
+            #canteen-alert-block.alert-block
+                p.alert-information 确认停止堂食业务？
                 .btn-block
-                    button.comfirm-btn 确认
-                    button.cancel-btn 取消
+                    button#canteen-comfirm-btn.comfirm-btn 确认
+                    button#canteen-cancel-btn.cancel-btn 取消
             .clear
         .business-block
-            .business-block-header 外卖设置
+            .business-block-header 堂食设置
             .business-block-content
                 div
                     span.block-description 接单日期
-                    span.business-content 堂食、预订、外卖
+                    span.business-content 周一、周二、周三、周四
                     .clear
                 div
                     span.block-description 支付渠道
-                    span.business-content 堂食、预订、外卖
+                    span.business-content 微信支付、百度钱包、现金支付
                     .clear
 
     .business-content
         .business-title
             p 外卖
         .business-header
-            button.business-start-btn.business-start-btn-able 满送启用中
-            button.business-stop-btn.business-stop-btn-able 停止满送
-            button.edit-btn 修改
-            .alert-block
-                p.alert-information 确认停止使用满送？
+            button#sellout-start-btn.business-start-btn.business-start-btn-able 业务启用中
+            button#sellout-stop-btn.business-stop-btn.business-stop-btn-able 停用业务
+            button#sellout-edit-btn.edit-btn 修改
+            #sellout-alert-block.alert-block
+                p.alert-information 确认停止外卖？
                 .btn-block
                     button.comfirm-btn 确认
                     button.cancel-btn 取消
@@ -42,11 +42,11 @@
             .business-block-content
                 div
                     span.block-description 接单日期
-                    span.business-content 堂食、预订、外卖
+                    span.business-content 周一、周二、周三、周四
                     .clear
                 div
                     span.block-description 支付渠道
-                    span.business-content 堂食、预订、外卖
+                    span.business-content 微信支付、百度钱包、现金支付
                     .clear
             .business-common-block.qrcode-block
                 .block-header 顾客长按识别二维码即可点餐：
@@ -60,20 +60,7 @@
                 .block-header 顾客通过公众号进入点餐：
                 .block-content
                     p.content-context 可复制链接配置到公众号菜单栏
-                    p#outer-content-link.content-link http://brae.co/nhbhugqwesfnasdf
+                    p#sellout-content-link.content-link http://brae.co/nhbhugqwesfnasdf
                     .clear
-                button#outer-copy-btn.block-btn 复制链接
-            .clear
-    .business-content
-        .business-title
-            p 预点
-        .business-header
-            button.business-start-btn.business-start-btn-able 满送启用中
-            button.business-stop-btn.business-stop-btn-able 停止满送
-            button.edit-btn 修改
-            .alert-block
-                p.alert-information 确认停止使用满送？
-                .btn-block
-                    button.comfirm-btn 确认
-                    button.cancel-btn 取消
+                button#sellout-copy-btn.block-btn 复制链接
             .clear

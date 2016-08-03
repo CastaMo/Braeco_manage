@@ -3,32 +3,29 @@ page-manage = let
 	$("\#Business-sub-menu").addClass "choose"
 	$("\#Business-nav li\#Basic").addClass "choose"
 
-	_pre-dom = $ "\#previewBusiness"
-	_mod-dom = $ "\#modifyBusiness"
-	_select-dom = $ "\#selectBusiness"
+	_main-dom = $ "\#basic-main"
+	_edit-dom = $ "\#basic-edit"
+
+	_all-toggle-dom = [_main-dom, _edit-dom]
+	
+	_unshow-all-toggle-dom-except-given = (dom_)->
+		for dom in _all-toggle-dom when dom isnt dom_
+			dom.fade-out 100
 
 	_toggle-page-callback = {
-		"mod"		:	 let
+		"main"      :       let
 			->
-				_select-dom.fade-out 200
-				_pre-dom.fade-out 200
-				_mod-dom.fade-in 200
-
-		"pre"		:	 let
+				set-timeout (-> _main-dom.fade-in 100), 100
+				_unshow-all-toggle-dom-except-given _main-dom
+		"edit"      :       let
 			->
-				_mod-dom.fade-out 200
-				_pre-dom.fade-in 200
-				_select-dom.fade-in 200
+				set-timeout (-> _edit-dom.fade-in 100), 100
+				_unshow-all-toggle-dom-except-given _edit-dom
 	}
 
-	_init-depend-module = !->
-		main := require "./mainManage.js"
-
 	initial: ->
-		_init-depend-module!
 
 	toggle-page: (page)->
 		_toggle-page-callback[page]?!
-		set-timeout "scrollTo(0, 0)", 0
 
 module.exports = page-manage

@@ -82,6 +82,7 @@
                         position: absolute;
                         width: 340px;
                         height: 169px;
+                        margin-left: 15px;
                         background-image: url(@alert-block-image-url);
                         background-size: 340px 169px;
                         background-repeat: no-repeat;
@@ -211,7 +212,7 @@
             }
         }
         #basic-edit {
-            margin: 30px 0;
+            display: none;
             .block-header {
                 background-color: #f4f5f9;
                 color: #4a4a4a;
@@ -225,6 +226,42 @@
                 border-left: 1px solid #E7E7E7;
                 border-right: 1px solid #E7E7E7;
                 border-bottom: 1px solid #E7E7E7;
+                .form-block {
+                    margin-bottom: 22px;
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                    > span {
+                        float: left;
+                        margin-right: 28px;
+                    }
+                    > ul {
+                        float: left;
+                    }
+                }
+                .checkbox-item {
+                    display: inline-block;
+                    > input[type="checkbox"] {
+                        cursor: pointer;
+                        float: left;
+                        width: 18px;
+                        height: 18px;
+                        margin-right: 8px;
+                        opacity: 0;
+                    }
+                    > p {
+                        float: left;
+                        margin-right: 25px;
+                    }
+                }
+                .unchecked-icon {
+                    background-size: 18px 18px;
+                    background-repeat: no-repeat;
+                }
+                .checked-icon {
+                    background-size: 18px 18px;
+                    background-repeat: no-repeat;
+                }
             }
             .btn-container {
                 padding: 20px 30px;

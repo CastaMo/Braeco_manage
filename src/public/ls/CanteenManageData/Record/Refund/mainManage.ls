@@ -50,6 +50,13 @@ main-manage = let
         date = _int-to-string d.get-date!
         year+"-"+month+"-"+date
 
+    _unix-timestamp-to-only-time = (timestamp)->
+        d = new Date timestamp*1000
+        hour = _int-to-string d.get-hours!
+        minute = _int-to-string d.get-minutes!
+        second = _int-to-string d.get-seconds!
+        hour+":"+minute+":"+second
+
     _date-to-unix-timestamp = (date)->
         date.get-time! / 1000
 
@@ -348,9 +355,9 @@ main-manage = let
             tr-dom = $ "<tr></tr>"
             tr-dom.hover ((event)!-> _tr-hover-event event), ((event)!-> _tr-leave-event event)
             tr-dom.click (event)!-> _tr-click-event event
-            date-string = @unix-timestamp-to-date @.start_time
-
-            tr-dom.append $ "<td>"+date-string+"</td>"
+            date-string = _unix-timestamp-to-only-date @.start_time
+            time-string = _unix-timestamp-to-only-time @.start_time
+            tr-dom.append $ "<td><div>"+date-string+"</div><div>"+time-string+"</div></td>"
 
             td-water-number-dom = $ "<td class='td-water-number'></td>"
             td-water-number-dom.append $ "<p>"+@.order+"</p>"

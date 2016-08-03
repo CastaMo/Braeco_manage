@@ -12,6 +12,7 @@ let win = window, doc = document
 	_init-all-module = !->
 		page = require "./pageManage.js";			page.initial!
 		main = require "./mainManage.js";		 	main.initial!
+		edit = require "./editManage.js";           edit.initial!
 
 
 	_main-init!
