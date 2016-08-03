@@ -2,11 +2,13 @@ eventbus = require "../eventbus.js"
 
 class HeaderView
 
-	all-headers-click-event = 
+	all-headers-click-event =
 		"new" 					:		!->
+			if @subitem-controller.get-all-subitems!.length is 0 then return alert "请先创建套餐子项组"
 			@new-controller.reset!
 			eventbus.emit "view:page:toggle-page", "new"
 		"edit" 					:		!->
+			if @subitem-controller.get-all-subitems!.length is 0 then return alert "请先创建套餐子项组"
 			@edit-controller.reset!
 			current-category-id = @category-controller.get-current-category-id!
 			current-combo-id 		= @combo-controller.get-current-combo-ids![0]
@@ -46,6 +48,7 @@ class HeaderView
 		@new-controller 			= options.new-controller
 		@edit-controller 			= options.edit-controller
 		@sort-controller 			= options.sort-controller
+		@subitem-controller 	= options.subitem-controller
 		@$el 									= $ options.el-CSS-selector
 		@all-default-states 	= options.all-default-states
 
