@@ -23,7 +23,7 @@ SortController 				= require "./Controller/SortController.js"
 
 
 let win = window, doc = document
-	
+
 	dc-type-map-dc-options = {
 		"sale" 			: 			{
 			min 		: 			1
@@ -106,6 +106,7 @@ let win = window, doc = document
 
 		header-view 					= new HeaderView opt 					=
 			category-controller 	: 			category-controller
+			subitem-controller 		: 			subitem-controller
 			combo-controller 			: 			combo-controller
 			header-controller 		: 			header-controller
 			new-controller 				: 			new-controller
@@ -142,7 +143,7 @@ let win = window, doc = document
 						name 							: 			"remove"
 						able 							: 			false
 					}
-					
+
 				]
 			]
 
@@ -177,7 +178,7 @@ let win = window, doc = document
 			sort-controller 			: 			sort-controller
 
 	_init-page = !->
-		page-view = new PageView opt = 
+		page-view = new PageView opt =
 			datas 					:
 				toggle 				: 	["new", "edit", "main"]
 				cover 				: 	["copy", "move", "loading", "sort"]
@@ -187,7 +188,7 @@ let win = window, doc = document
 				opt =
 					view 				: 	"li\#Combo-sub-menu"
 					class-name 	: 	"choose"
-				opt = 
+				opt =
 					view 				: 	"\#combo-nav li\#Single"
 					class-name 	: 	"choose"
 			]
@@ -202,4 +203,3 @@ let win = window, doc = document
 
 	_init-page!
 	_test-is-data-ready!
-

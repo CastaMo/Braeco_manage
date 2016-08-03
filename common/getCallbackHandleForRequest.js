@@ -30,7 +30,6 @@ function getCallbackProxyHandleResponse(res) {
     //var decoder = new StringDecoder('utf8');
     var headers = remoteRes.headers;
     for (var header in headers) {
-      console.log(header);
       res.setHeader(header, headers[header]);
     }
     //延时抛出异常
