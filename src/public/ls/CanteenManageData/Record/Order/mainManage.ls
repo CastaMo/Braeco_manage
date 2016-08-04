@@ -177,19 +177,30 @@ main-manage = let
         date = _int-to-string d.get-date!
         new_date = new Date year+"-"+month+"-"+date
         new_date.get-time! / 1000
-
-    _gene-food-table-row = (single-food) ->
+    
+    _gene-food-table-row = (single-food) -> # 生成小票订单详情中的每一行
         row-dom = $ "<tr></tr>"
-        if single-food.type == 0
+        if single-food.type == 0 # 单品
+            if single-food.refund == 0
+                single-food.discount_property.push '退款中'
+            else if single-food.refund == 1
+                single-food.discount_property.push '已退款'
+            else if single-food.refund == 2
+                single-food.discount_property.psuh '退款失败'
             td-name = $ "<td class='table-cat-col'>"+single-food.name+"</td>"
-            if single-food.property.length > 0
-                td-name.append $ "<span class='sub-food-item'>"+'（'+(single-food.property.join '、')+"）"+"</span>"
+            if single-food.discount_property != null and single-food.discount_property.length > 0
+                td-name.append $ "<span class='sub-food-item'>" + '（' + (single-food.discount_property.join '、') + '）' + "</span>"
             row-dom.append td-name
-        if single-food.type == 1
+        if single-food.type == 1 # 套餐
+            if single-food.refund == 0
+                single-food.discount_property.push '退款中'
+            else if single-food.refund == 1
+                single-food.discount_property.push '已退款'
+            else if single-food.refund == 2
+                single-food.discount_property.push '退款失败'
             td-name = $ "<td class='table-cat-col'>"+single-food.name+"</td>"
-            for food in single-food.property
-                if food instanceof Array and food.length == 1 and food[0].name == '属性'
-                    td-name.append $ "<span class='sub-food-item'>"+'（'+(food[0].p.join '、')+"）"+"</span>"
+            if single-food.discount_property != null and single-food.discount_property.length > 0
+                td-name.append $ "<span class='sub-food-item'>" + '（' + (single-food.discount_property.join '、') + '）' + "</span>"
             for food in single-food.property
                 if food instanceof Array
                     if food.length == 1 and food[0].name == '属性'
@@ -235,7 +246,6 @@ main-manage = let
         
     
     _gene-promotion-block-dom = (benefit-content-obj) ->
-        console.log benefit-content-obj
         promotion-block-dom = $ "<div class='details-block'></div>"
         first-promition = true
         for single-promotion in benefit-content-obj

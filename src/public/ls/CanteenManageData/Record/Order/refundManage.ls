@@ -200,6 +200,7 @@ refund-manage = let
                         refund-item = {}
                         refund-item.id = single-food.id
                         refund-item.property = single-food.property
+                        refund-item.discount_property = single-food.discount_property
                         refund-item.sum = cur
                         refunds.push refund-item
                         break
@@ -209,6 +210,7 @@ refund-manage = let
         }
         json-data.refund = JSON.stringify refunds
         json-data = JSON.stringify json-data
+        console.log json-data
         $.ajax {type: "POST", url: "/order/refund/"+_data-obj.id, data: json-data,\
             dataType: 'JSON', contentType:"application/json", success: _refund-post-success, error: _refund-post-fail}
         _set-password-comfirm-button-disable!
@@ -220,16 +222,12 @@ refund-manage = let
             set-timeout (!-> location.reload!),2000
         else if data.message === 'Wrong password'
             alert "密码错误"
-            # refund-error-message.text "密码错误"
         else if data.message === 'Invalid dish to refund'
             alert "非法的退款"
-            # refund-error-message.text "非法的退款"
         else if data.message === 'Order not found'
             alert "订单未找到"
-            # refund-error-message.text "订单未找到"
         else if data.message === 'Need to upload cert of wx pay'
             alert "需要上传微信证书"
-            # refund-error-message.text "错误"
         else
             alert "请求退款失败"
         _set-password-comfirm-button-able!
@@ -238,20 +236,11 @@ refund-manage = let
         alert "请求退款失败"
         set-timeout (!-> location.reload!),2000
         
-    _is-refunded = (single-food)->
-        if single-food.type === 0 and single-food.property.length > 0
-            if (single-food.property.index-of '【已退款】') >= 0 or (single-food.property.index-of '【退款中】') >= 0
-                return true
-            else
-                return false
-        else if single-food.type === 1
-            for food in single-food.property
-                if food instanceof Array and food.length === 1 and food[0].name === '属性'
-                    if (food[0].p.index-of '【已退款】') >= 0 or (food[0].p.index-of '【退款中】') >= 0
-                        return true
-                    else
-                        return false
-        return false
+    _is-refunded = (single-food)-> # 判断content中的每一个单品或套餐是否被退款
+        if single-food.refund != null
+            return true
+        else
+            return false
 
     _unset-checkbox = !->
         ($ '\#all-refund-checkbox').attr 'checked', false

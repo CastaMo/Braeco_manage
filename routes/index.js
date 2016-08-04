@@ -298,5 +298,28 @@ module.exports = function(passport) {
 		res.render('./CanteenManageExtra/Download/develop');
 	});
 
+	// Manage/Settings/Business/Basic/Data
+	router.get('/Manage/Settings/Business/Basic/Data', function(req, res) {
+		setTimeout(function() {
+			res.send("var allData = '"+'{"message":"success","data":[{"type":"eatin","able":true,"channels":{"cash":1,"p2p_wx_pub":1},"qr":null,"url":null},{"type":"takeout","able":true,"channels":{"cash":1,"p2p_wx_pub":1},"qr":"http:\/\/devel.brae.co\/public\/images\/qrcode\/46ff79b785e15f3bdd33f7168c6021b839306ed3.png","url":"http:\/\/devel.brae.co\/Table\/x2crnn3kcsowbmxi70lursmzt0ng36r1"},{"type":"takeaway","able":true,"channels":{"p2p_wx_pub":1},"qr":"http:\/\/devel.brae.co\/public\/images\/qrcode\/8b6acdadfe60bbd027cdc4c84a1a832aa0715efc.png","url":"http:\/\/devel.brae.co\/Table\/08yv1kvcw3qkmk20vwiom72k5zq3oclp"},{"type":"reserve","able":false,"channels":{"cash":1,"p2p_wx_pub":1},"qr":"http:\/\/devel.brae.co\/public\/images\/qrcode\/d77b6700f3628d22bd0510040716a2e14ec1084a.png","url":"http:\/\/devel.brae.co\/Table\/1utxu657cknh7fv41quyh6um2jmd8d8a"}]}'+"';"+
+			"if (typeof window.mainInit !== 'undefined') {mainInit(JSON.parse(allData));mainInit = null;allData = null;}");
+		}, 0);
+	});
+	// Dinner/Manage/Firm/Turn/:type/On-or-Off
+	router.post('/Dinner/Manage/Firm/Turn/:type/:method', function(req, res) {
+		var type = req.params.type;
+		var method = req.params.method;
+		console.log(type);
+		console.log(method);
+		var r = Math.floor(Math.random() * (3 - 0 + 1) + 0);
+		if (r == 0) {
+			res.status(500).send({"message": "error"});
+		} else {
+			setTimeout(function() {
+				res.json({'message': "success"});
+			}, 100);
+	    }
+	});
+
 	return router;
 };

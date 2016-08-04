@@ -2,13 +2,14 @@ main = null
 page = null
 edit-manage = let
 
-    _all-roles = null
-    _edited-staff = null
+    _edit-business = null
 
     _cancel-btn-dom = $ "\#basic-edit .cancel-btn"
     _save-btn-dom = $ "\#basic-edit .save-btn"
 
     _checkbox-dom = $ "\#basic-edit input[type='checkbox']"
+
+    _pay-method-block-dom = $ "\#basic-edit pay-method-block"
 
     _cancel-btn-click-event = !->
         _reset-checkebox!
@@ -39,6 +40,11 @@ edit-manage = let
         _checkbox-dom.each !->
             _set-checkbox-unchecked ($ this).parent!
 
+    _init-pay-method-block-dom = !->
+        for method, value of _edit-business.channels
+            if value == 1
+                _set-checkbox-checked ($ "input[value='"+method+"']").parent!
+
     _init-depend-module = !->
         page := require "./pageManage.js"
         
@@ -47,31 +53,9 @@ edit-manage = let
         _save-btn-dom.click !-> _save-btn-click-event!
         _checkbox-dom.click (event)!-> _checkbox-click-event event
 
-    _init-role-select-dom = !->
-        for role in _all-roles
-            _role-select-dom.append $ "<option value='"+role.id+"''>"+role.name+"</option>"
-    
-    _init-form-field = !->
-        _name-input-dom.val _edited-staff.name
-        selected = ($ _gender-select-dom.find "option").filter ->
-            if ($ this).text! === _edited-staff.gender
-                true
-            else
-                false
-        ($ selected).prop 'selected',true
-        _phone-input-dom.val _edited-staff.phone
-        selected = ($ _role-select-dom.find "option").filter ->
-            if ($ this).val! === _edited-staff.role.id.to-string!
-                true
-            else
-                false
-        ($ selected).prop "selected",true
-
-    get-staff-and-init: (staff, roles) !->
-        _all-roles := roles
-        _edited-staff := staff
-        _init-role-select-dom!
-        _init-form-field!
+    get-business-and-init: (business) !->
+        _edit-business := business
+        _init-pay-method-block-dom!
 
     initial: !->
         _init-depend-module!
