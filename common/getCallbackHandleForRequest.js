@@ -2,12 +2,9 @@
 
 var http            = require('http');
 var BufferHelper    = require('./BufferHelper.js');
-var StringDecoder   = require('string_decoder').StringDecoder;
 var defaultCookie   = 'sid=1w3ybzgxtabbhdpz1kh9j4sjwzhsg16h;auth=2147483647';
 var cookie;
 var zlib            = require('zlib');
-var fs              = require('fs');
-var flag            = true;
 
 function getOptionsForProxySendRequestConfig(url, method) {
   method = method.toUpperCase();
@@ -27,8 +24,10 @@ function getOptionsForProxySendRequestConfig(url, method) {
 
 function getCallbackProxyHandleResponse(res) {
   return function(remoteRes) {
-    //var decoder = new StringDecoder('utf8');
-
+    var headers = remoteRes.headers;
+    for (var header in headers) {
+      res.setHeader(header, headers[header]);
+    }
     //延时抛出异常
     // var timer = setTimeout(function () {
     //   err(new Error('timeout'));
@@ -64,12 +63,6 @@ function getCallbackProxyHandleResponse(res) {
     //   }
     //   clearTimeout(timer);
     // });
-    var encode = remoteRes.headers['content-encoding'];
-    if (encode === "gzip") {
-      res.set({
-          "Content-Encoding": "gzip"
-      });
-    }
     remoteRes.pipe(res);
   }
 }

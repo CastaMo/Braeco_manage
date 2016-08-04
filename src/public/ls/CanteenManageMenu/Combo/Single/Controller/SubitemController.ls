@@ -8,6 +8,7 @@ class SubitemController
 
 	assign: (options)!->
 		@datas 			= 	options.datas
+		@length 		= 	0
 
 	init: !->
 		@init-all-prepare!
@@ -20,6 +21,7 @@ class SubitemController
 		for data in @datas when data.type isnt "property"
 			subitem = new Subitem data
 			@subitems[data.id] = subitem
+			@length++
 		console.log @subitems
 
 	get-subitem-length: (subitem-id)-> return @subitems[subitem-id].get-content!.length
@@ -30,5 +32,6 @@ class SubitemController
 
 	get-all-subitems: -> return @subitems
 
+	get-all-subitems-length: -> return @length
 
 module.exports = SubitemController
