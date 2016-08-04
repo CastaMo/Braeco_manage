@@ -274,7 +274,7 @@ main-manage = let
             sum += single-food.sum
         sum
     
-    _gene-order-details-container =(data-obj)->
+    _gene-order-details-container =(data-obj)-> # 生成小票
         # header
         container-dom = $ "<div class='order-details-container'></div>"
         if data-obj.serial == '推送失败'
@@ -304,7 +304,7 @@ main-manage = let
             infomation-dom.append $ "<span>会员编号： </span><span>"+data-obj.eater.id+"</span>"
         order-details-body-dom.append infomation-dom
         # 手机号码
-        if data-obj.eater != null or data-obj.eater.phone != '-'
+        if data-obj.eater != null and data-obj.eater.phone != '-'
             infomation-dom = $ "<div class='order-infomation info-phone'></div>"
             infomation-dom.append $ "<span>手机号码： </span><span>"+data-obj.eater.phone+"</span>"
             order-details-body-dom.append infomation-dom
