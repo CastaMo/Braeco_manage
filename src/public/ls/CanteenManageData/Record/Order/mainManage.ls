@@ -73,7 +73,50 @@ main-manage = let
         if st > en
             event.prevent-default!
             alert "结束日期不能小于开始日期"
-        
+
+    _xmlhttp-handler = (params)!->
+        xhr = new XMLHttpRequest!
+        xhr.open 'POST', '/Dinner/Manage/Excel/1', true
+        xhr.responseType = 'arraybuffer'
+        xhr.onload = !->
+            if this.status == 200
+                filename = ''
+                disposition = xhr.getResponseHeader 'Content-Disposition'
+                # console.log disposition
+                if disposition and (disposition.indexOf 'attachment' != -1)
+                    filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+                    matches = filenameRegex.exec disposition
+                    if matches != null and matches[1]
+                        filename = matches[1].replace /['"]/g, ''
+                        console.log filename
+                type = xhr.getResponseHeader 'Content-Type'
+                if type == 'application/json'
+                    console.log "asdf asdf"
+                    return
+                else
+                    filename = "数据统计.zip"
+                    console.log filename
+                    blob = new Blob [this.repsonse], {type: type}
+                    if (typeof window.navigator.msSaveBlob) != 'undefined'
+                        window.navigator.msSaveBlob blob, filename
+                    else
+                        URL = window.URL or window.webkitURL
+                        downloadURL = URL.createObjectURL blob
+                        if filename
+                            a = document.createElement 'a'
+                            if (typeof a.download) == 'undefined'
+                                window.location = downloadURL
+                            else
+                                a.href = downloadURL
+                                a.download = filename
+                                document.body.appendChild a
+                                a.click!
+                        else
+                            window.location = downloadURL
+                        setTimeout (!-> URL.revokeObjectURL downloadURL), 100
+        xhr.setRequestHeader 'Content-type', 'application/x-www-form-urlencoded'
+        xhr.send $.param params
+
     _jump-btn-click-event = !->
         st = _page-data-obj.old-st
         en = _page-data-obj.old-en
