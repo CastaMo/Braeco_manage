@@ -2,7 +2,6 @@
 
 var http = require('http');
 var StringDecoder = require('string_decoder').StringDecoder;
-var cookie = 'sid=997054fnijp5gng5ve7pz6murtnoupf3';
 
 var getCallbackHandleForRequest = require("../../common/getCallbackHandleForRequest.js");
 
@@ -11,13 +10,13 @@ module.exports = function(router) {
     res.render('./CanteenManageMarket/Activity/develop');
   });
 
-  router.get('/Manage/Market/Activity/Data', getCallbackHandleForRequest("GET", cookie));
-  router.post('/Activity/Add/:type', getCallbackHandleForRequest("POST", cookie));
-  router.post('/pic/upload/token/activityadd', getCallbackHandleForRequest("POST", cookie));
-  router.post('/pic/upload/token/activityupdate/:id', getCallbackHandleForRequest("POST", cookie));
-  router.post('/Activity/Update/:activity_id', getCallbackHandleForRequest("POST", cookie));
-  router.post('/Activity/Remove/:activityId', getCallbackHandleForRequest("POST", cookie));
-  router.post('/Activity/Get', getCallbackHandleForRequest("POST", cookie));
+  router.get('/Manage/Market/Activity/Data', getCallbackHandleForRequest("GET"));
+  router.post('/Activity/Add/:type', getCallbackHandleForRequest("POST"));
+  router.post('/pic/upload/token/activityadd', getCallbackHandleForRequest("POST"));
+  router.post('/pic/upload/token/activityupdate/:id', getCallbackHandleForRequest("POST"));
+  router.post('/Activity/Update/:activity_id', getCallbackHandleForRequest("POST"));
+  router.post('/Activity/Remove/:activityId', getCallbackHandleForRequest("POST"));
+  router.post('/Activity/Get', getCallbackHandleForRequest("POST"));
 
   return router;
 };
