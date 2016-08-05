@@ -699,6 +699,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
   get-line-chart-datasets = (color-settings, data, legends, dataset-item)->
     datasets = []
 
+
     for i from 0 to data.length - 1
       dataset-item.backgroundColor = color-settings.backgroundColors[i]
       dataset-item.borderColor = color-settings.borderColors[i]
@@ -712,8 +713,6 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       datasets.push temp
 
     datasets
-
-    {}
 
   get-pie-chart-data = ->
     labels = get-pie-chart-data-labels!
