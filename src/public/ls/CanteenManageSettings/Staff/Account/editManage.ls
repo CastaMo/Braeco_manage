@@ -89,7 +89,7 @@ edit-manage = let
                 data.password = _new-password
             data = JSON.stringify data
             $.ajax {type: "POST", url: "/Waiter/update/"+_edited-staff.id, data: data,\
-                    dataType: "JSON", contentType: "application/json", success: _save-post-success, fail: _save-post-fail}
+                    dataType: "JSON", contentType: "application/json", success: _save-post-success, error: _save-post-fail}
             _set-save-btn-disable!
         # page.toggle-page "main"
     

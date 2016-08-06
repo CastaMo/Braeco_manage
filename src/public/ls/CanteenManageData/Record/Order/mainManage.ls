@@ -334,10 +334,9 @@ main-manage = let
         # 支付方式
         order-details-body-dom.append $ "<p class='order-pay-method'>"+data-obj.channel+"</p>"
         # 桌号
-        if data-obj.type != "堂食"
-            order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"</p>"
-        else
-            order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"号桌</p>"
+        if data-obj.type == "堂食" or data-obj.type == '外带'
+            if data-obj.table != null
+                order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"号桌</p>"
         
         # 会员编号       
         infomation-dom = $ "<div class='order-infomation info-number'></div>"

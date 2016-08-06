@@ -320,6 +320,16 @@ module.exports = function(passport) {
 			}, 100);
 	    }
 	});
+	// Dinner/Manage/Firm/Update/:type
+	router.post('/Dinner/Manage/Firm/Update/:type', function(req, res) {
+		var type = req.params.type;
+		var channels = req.body;
+		console.log(type);
+		console.log(channels);
+		setTimeout(function() {
+			res.json({"message": "success"});
+		}, 1000);
+	})
 
 	return router;
 };

@@ -16,8 +16,37 @@ edit-manage = let
         page.toggle-page 'main'
 
     _save-btn-click-event = !->
-        _reset-checkebox!
-        page.toggle-page 'main'
+        channels = {}
+        for checkbox in _checkbox-dom
+            value = ($ checkbox).val!
+            if ($ checkbox).is ":checked"
+                channels[value] = 1
+            else
+                channels[value] = 0
+        data = JSON.stringify channels
+        $.ajax {type: "POST", url: "/Dinner/Manage/Firm/Update/"+_edit-business.type, data: data,\
+            dataType: "JSON", contentType: "application/json", success: _save-post-success, error: _save-post-fail}
+        _set-save-btn-disable!
+
+    _save-post-success = (data)!->
+        console.log data
+        _set-save-btn-able!
+        alert "修改成功", true
+        set-timeout (!-> location.reload!), 1000
+
+    _save-post-fail = (error)!->
+        console.log error
+        _set-save-btn-able!
+        alert "请求修改失败"
+        set-timeout (!-> location.reload!), 1000
+
+    _set-save-btn-disable = !->
+        _save-btn-dom.prop "disabled",true
+        _save-btn-dom.add-class "save-btn-disable"
+
+    _set-save-btn-able = !->
+        _save-btn-dom.prop "disabled",false
+        _save-btn-dom.remove-class "save-btn-disable"
 
     _checkbox-click-event = (event)!->
         par = ($ event.target).parent!
@@ -55,6 +84,7 @@ edit-manage = let
 
     get-business-and-init: (business) !->
         _edit-business := business
+        console.log _edit-business
         _init-pay-method-block-dom!
 
     initial: !->

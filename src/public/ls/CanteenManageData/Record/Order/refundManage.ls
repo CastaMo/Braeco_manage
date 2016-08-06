@@ -265,12 +265,10 @@ refund-manage = let
         <tr>
         <td class='table-cat-col'>项目</td>
         <td class='table-num-col'>数量</td>
-        <td class='table-pri-col'>单价（元）</td>
+        <td class='table-pri-col'>实收（元）</td>
         </tr>
         </thead>"
         for single-food,index in _data-obj.content
-            if single-food.cat === 0
-                continue
             if _is-refunded single-food
                 continue
             refund-food-table-dom.append _gene-food-table-row single-food,index
@@ -281,11 +279,19 @@ refund-manage = let
         row-dom = $ "<tr></tr>"
         row-dom.append "<td class='id-td' style='display: none'>"+index+"</td>"
         td-name = $ "<td class='table-cat-col cat-td'>"+single-food.name+"</td>"
-        if single-food.property.length > 0 and single-food.type === 0
-            td-name.append $ "<span class='sub-food-item'>"+'（'+(single-food.property.join '、')+"）"+"</span>"
+        if single-food.discount_property.length > 0
+            td-name.append $ "<span class='sub-food-item'>"+'（'+(single-food.discount_property.join '、')+"）"+"</span>"
+        if single-food.type == 1
+            for food in single-food.property
+                if food instanceof Array
+                    for food-item in food
+                        if food-item.p.length == 0
+                            td-name.append $ "<div class='sub-food-item'>"+food-item.name+"</div>"
+                        else
+                            td-name.append $ "<div class='sub-food-item'>"+food-item.name+"<span>"+'（'+(food-item.p.join '、')+"）"+"</span>"+"</div>"
         row-dom.append td-name
         row-dom.append _gene-food-table-num-col single-food.sum
-        row-dom.append "<td class='table-pri-col pri-td'>"+single-food.price_before_discount+"</td>"
+        row-dom.append "<td class='table-pri-col pri-td'>"+single-food.price+"</td>"
         $ row-dom
         
     _gene-food-table-num-col = (food-sum)->
@@ -304,9 +310,10 @@ refund-manage = let
     _gene-refund-promotion-block-dom = !->
         promotion-block-dom = $ "<div class='refund-promotion-block'></div>"
         for single-promotion in _data-obj.benefit_content
-            promotion-block-dom.append $ "<span class='left-span'>"+single-promotion.type+"</span>"
-            promotion-block-dom.append $ "<span class='right-span promotion-total-price'>共减 "+single-promotion.total_reduce+" 元</span>"
-            promotion-block-dom.append "<div class='clear'></div>"
+            if single-promotion.price != 0
+                promotion-block-dom.append $ "<span class='left-span'>"+single-promotion.type+"</span>"
+                promotion-block-dom.append $ "<span class='right-span promotion-total-price'>共减 "+single-promotion.total_reduce+" 元</span>"
+                promotion-block-dom.append "<div class='clear'></div>"
         _refund-block-content-dom.append promotion-block-dom
     
     _gene-refund-reason-block-dom = !->
