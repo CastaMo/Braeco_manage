@@ -28,7 +28,12 @@
           width: 100px;
           margin-right: 20px;
         }
-        .date-range, .month-select, .year-select {
+        .hide-input-content {
+          color: white;
+          width: 206px;
+          background-color: transparent;
+        }
+        .calendar-icon, .month-select, .year-select {
           margin-right: 10px;
         }
         .day-and-week-input {
@@ -36,9 +41,27 @@
           position: relative;
           .after-seven-days {
             position: absolute;
-            left: 75px;
+            left: 15px;
             top: 6px;
             font-size: 12px;
+          }
+        }
+
+        .calendar-icon {
+          display: inline-block;
+          width: 30px;
+          height: 28px;
+          border: 1px solid #e7e7eb;
+          line-height: 30px;
+          border-left: 0px;
+          background-image: url(@calendar-icon-url);
+          background-size: 80%;
+          background-repeat: no-repeat;
+          background-position: 3px 4px;
+          vertical-align: bottom;
+
+          &:hover {
+            cursor: pointer;
           }
         }
 
