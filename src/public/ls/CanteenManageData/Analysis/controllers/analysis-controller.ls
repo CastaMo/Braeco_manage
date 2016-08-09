@@ -48,6 +48,9 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     $scope.selected-panel = 'current-members'
     $scope.now-time = null
 
+    $scope.member-week-string = null
+    $scope.coupons-week-string = null
+
   # ====== 2 $rootScope变量初始化 ======
   init-rootScope-variable = !->
 
@@ -97,6 +100,11 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
     | 'current-members' => set-selected-panel event.current-target, '112px', type
     | 'member-class'    => set-selected-panel event.current-target, '345px', type
     | 'current-balance' => set-selected-panel event.current-target, '580px', type
+
+  $scope.show-datepicker = (event, class-name)!->
+    $timeout(!->
+      $(class-name).datepicker('show')
+    , 0)
 
   # ====== 7 controller初始化接口 ======
   init-data-statistic = !->
@@ -235,6 +243,22 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
   init-datepicker = !->
     $ '[data-toggle="datepicker"]' .datepicker {language: 'zh-CN', start-view: 0}
 
+  set-pie-chart-global-defaults = !->
+    Chart.defaults.global.legend.position = 'bottom'
+    Chart.defaults.global.hover.mode = 'dataset'
+    Chart.defaults.global.tooltips.enabled = true
+    Chart.defaults.global.tooltips.mode = 'label'
+    Chart.defaults.global.legend.labels.boxWidth = 15
+    Chart.defaults.global.title.display = true
+    Chart.defaults.global.title.text = get-chart-title-text!
+    Chart.defaults.global.title.padding = 20
+    Chart.defaults.global.title.fontSize = 14
+    Chart.defaults.global.tooltips.titleMarginBottom = 10
+    Chart.defaults.global.tooltips.titleFontColor = 'red'
+    Chart.defaults.global.tooltips.bodySpacing = 10
+    Chart.defaults.global.tooltips.xPadding = 20
+    Chart.defaults.global.tooltips.yPadding = 20
+  
   set-line-chart-global-defaults = !->
     Chart.defaults.global.legend.position = 'bottom'
     Chart.defaults.global.hover.mode = 'dataset'
@@ -246,13 +270,62 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
         charge = $scope.statistic.membership_charge_sum_detail[info[0].index]
         spend = $scope.statistic.membership_spend_sum_detail[info[1].index]
         return "会员充值：#charge 单; 余额消费：#spend 单"
+    Chart.defaults.global.title.display = true
+    Chart.defaults.global.title.text = get-chart-title-text!
+    Chart.defaults.global.title.fontSize = 14
+    Chart.defaults.global.title.padding = 20
+    Chart.defaults.global.tooltips.titleMarginBottom = 10
+    Chart.defaults.global.tooltips.titleFontColor = 'red'
+    Chart.defaults.global.tooltips.bodySpacing = 10
+    Chart.defaults.global.tooltips.xPadding = 20
+    Chart.defaults.global.tooltips.yPadding = 20
 
-  set-pie-chart-global-defaults = !->
-    Chart.defaults.global.legend.position = 'bottom'
-    Chart.defaults.global.hover.mode = 'dataset'
-    Chart.defaults.global.tooltips.enabled = true
-    Chart.defaults.global.tooltips.mode = 'label'
-    Chart.defaults.global.legend.labels.boxWidth = 15
+  get-chart-title-text = ->
+    date = null
+
+    if $scope.selected-tab is 'member'
+      switch $scope.filter.member-time-type
+      | 'day'   => date = $scope.filter.member-date; date = date.replace('-', '年').replace('-', '月') + '日-'
+      | 'week'  => date = get-week-title-text $scope.filter.member-date
+      | 'month' => date = $scope.filter.member-selected-month + '-'
+      | 'year'  => date = $scope.filter.member-selected-year + '-'
+
+      if $scope.selected-panel is 'current-members'
+        return date + '会员统计'
+      else if $scope.selected-panel is 'member-class'
+        return '会员等级分布'
+      else if $scope.selected-panel is 'current-balance'
+        return date + '会员充值-余额消费'
+
+    else
+      switch $scope.filter.coupons-time-type
+      | 'day'   => date = $scope.filter.coupons-date; date = date.replace('-', '年').replace('-', '月') + '日-'
+      | 'week'  => date = get-week-title-text $scope.filter.coupons-date
+      | 'month' => date = $scope.filter.coupons-selected-month + '-'
+      | 'year'  => date = $scope.filter.coupons-selected-year + '-'
+
+      return date + '卡券核销'
+
+  get-week-title-text = (now-day)->
+    week-obj = { 'Mon': 0, 'Tue': 1, 'Wed': 2, 'Thu': 3, 'Fri': 4, 'Sat': 5, 'Sun': 6 }
+
+    now-day = new Date(now-day + ' 00:00:00')
+
+    weekday-str = now-day.toDateString!.substr 0, 3
+    monday = new Date(now-day.set-date(now-day.get-date! - week-obj[weekday-str]))
+    sunday = new Date(now-day.set-date(now-day.get-date! + 6))
+    mon-obj = get-date-object(monday)
+    sun-obj = get-date-object(sunday)
+
+    mon-year = mon-obj.year; mon-month = mon-obj.month; mon-day = mon-obj.day
+    sun-year = sun-obj.year; sun-month = sun-obj.month; sun-day = sun-obj.day
+
+    if $scope.selected-tab is 'member'
+      $scope.member-week-string = "#{monYear}年#{monMonth}月#{monDay}日-#{sunYear}年#{sunMonth}月#{sunDay}日"
+    else
+      $scope.coupons-week-string = "#{monYear}年#{monMonth}月#{monDay}日-#{sunYear}年#{sunMonth}月#{sunDay}日"
+
+    return "#{monYear}年#{monMonth}月#{monDay}日-#{sunYear}年#{sunMonth}月#{sunDay}日-周"
 
   set-selected-panel = (target, left, type)!->
     $ '.data-panel-item' .remove-class 'choose'

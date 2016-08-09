@@ -48,6 +48,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     $scope.statistic-chart = null
 
     $scope.selected-sales-type = 'dish' # 'dish' or 'category'
+    $scope.week-string = null # 显示出来的周字符串
 
   # ====== 2 $rootScope变量初始化 ======
   init-rootScope-variable = !->
@@ -116,11 +117,11 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     unit = $scope.statistics-filter.date-type
     date = null
 
-
     switch unit
-    | 'day', 'week'  => date = $scope.statistics-filter.date-begin.split '-'
-    | 'month'        => date-obj = get-date-object-from-zh-cn-string $scope.statistics-filter.selected-month; date = []; date.push date-obj.year; date.push date-obj.month; date.push date-obj.day
-    | 'year'         => date-obj = get-date-object-from-zh-cn-string $scope.statistics-filter.selected-year; date = []; date.push date-obj.year; date.push date-obj.month; date.push date-obj.day
+    | 'day'   => date = $scope.statistics-filter.date-begin.split '-'
+    | 'week'  => date = get-monday-from-one-day!
+    | 'month' => date-obj = get-date-object-from-zh-cn-string $scope.statistics-filter.selected-month; date = []; date.push date-obj.year; date.push date-obj.month; date.push date-obj.day
+    | 'year'  => date-obj = get-date-object-from-zh-cn-string $scope.statistics-filter.selected-year; date = []; date.push date-obj.year; date.push date-obj.month; date.push date-obj.day
 
     year = date[0]; month = date[1]; day = date[2]
 
@@ -152,6 +153,11 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     | 'category' => set-category-sales-li!
 
     init-pie-chart!
+
+  $scope.show-datepicker = (event, class-name)!->
+    $timeout(!->
+      $(class-name).datepicker('show')
+    , 0)
 
   # ====== 7 controller初始化接口 ======
   init-data-statistics = !->
@@ -343,14 +349,68 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       bfb_wap: orders?.bfb_wap?.sum
       prepayment: orders?.prepayment?.sum
 
+  set-pie-chart-global-defaults = !->
+    Chart.defaults.global.title.display = true
+    Chart.defaults.global.title.text = get-chart-title-text!
+    Chart.defaults.global.title.padding = 20
+
   set-line-chart-global-defaults = !->
     Chart.defaults.global.legend.position = 'bottom'
     Chart.defaults.global.hover.mode = 'dataset'
     Chart.defaults.global.tooltips.enabled = true
     Chart.defaults.global.tooltips.mode = 'label'
     Chart.defaults.global.legend.labels.boxWidth = 15
-    # Chart.defaults.global.tooltips
+    Chart.defaults.global.title.display = true
+    Chart.defaults.global.title.text = get-chart-title-text!
+    Chart.defaults.global.title.padding = 20
+    Chart.defaults.global.tooltips.titleMarginBottom = 10
+    Chart.defaults.global.tooltips.titleFontColor = 'red'
+    Chart.defaults.global.tooltips.bodySpacing = 10
+    Chart.defaults.global.tooltips.xPadding = 20
+    Chart.defaults.global.tooltips.yPadding = 20
 
+  get-chart-title-text = ->
+    date = null
+
+    data-type = 
+      all: '所有'
+      eatin: '堂食'
+      takeout: '外带'
+      takeaway: '外卖'
+
+    switch $scope.statistics-filter.date-type
+    | 'day'   => date = $scope.statistics-filter.date-begin; date = date.replace('-', '年').replace('-', '月') + '日'
+    | 'week'  => date = get-week-title-text!
+    | 'month' => date = $scope.statistics-filter.selected-month
+    | 'year'  => date = $scope.statistics-filter.selected-year 
+
+    type = data-type[$scope.statistics-filter.data-type]
+    if $scope.current-data-box is 'turnover'
+      return "#{date}-#{type}-营业额"
+    else if $scope.current-data-box is 'orders'
+      return "#{date}-#{type}-订单数"
+    else if $scope.current-data-box is 'sales-volume'
+      if $scope.selected-sales-type is 'dish'
+        return "#{date}-#{type}-单品销量排行"
+      else
+        return "#{date}-#{type}-品类销量排行"
+
+  get-week-title-text = ->
+    week-obj = { 'Mon': 0, 'Tue': 1, 'Wed': 2, 'Thu': 3, 'Fri': 4, 'Sat': 5, 'Sun': 6 }
+
+    now-day = $scope.datepicker.date-begin.datepicker('getDate')
+    weekday-str = now-day.toDateString!.substr 0, 3
+    monday = new Date(now-day.set-date(now-day.get-date! - week-obj[weekday-str]))
+    sunday = new Date(now-day.set-date(now-day.get-date! + 6))
+    mon-obj = get-date-object(monday)
+    sun-obj = get-date-object(sunday)
+
+    mon-year = mon-obj.year; mon-month = mon-obj.month; mon-day = mon-obj.day
+    sun-year = sun-obj.year; sun-month = sun-obj.month; sun-day = sun-obj.day
+
+    $scope.week-string = "#{monYear}年#{monMonth}月#{monDay}日-#{sunYear}年#{sunMonth}月#{sunDay}日"
+
+    return "#{monYear}年#{monMonth}月#{monDay}日-#{sunYear}年#{sunMonth}月#{sunDay}日-周"
 
   set-scope-chart-data = !->
     color-settings = get-line-chart-color-settings!
@@ -385,7 +445,20 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
 
     $ '.graph-triangle' .css 'left', left
 
-  set-pie-chart-global-defaults = !->
+  get-pie-chart-options = ->
+    {}
+
+  get-monday-from-one-day = ->
+    week-obj = { 'Mon': 0, 'Tue': 1, 'Wed': 2, 'Thu': 3, 'Fri': 4, 'Sat': 5, 'Sun': 6 }
+
+    now-day = $scope.datepicker.date-begin.datepicker('getDate')
+    weekday-str = now-day.toDateString!.substr 0, 3
+    monday = new Date(now-day.set-date(now-day.get-date! - week-obj[weekday-str]))
+    date-obj = get-date-object monday
+
+    date = []
+    date.push date-obj.year; date.push date-obj.month; date.push date-obj.day
+    date
 
   # {register-year-month-gap:, year-gap:, now-year-month-gap:}
   get-total-months-obj = (register-time-date-obj, now-date-obj)->
@@ -396,17 +469,6 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
     else
       obj.register-year-month-gap = now-date-obj.month
     obj.now-year-month-gap = now-date-obj.month
-    obj
-
-  # {year: , month: , day: }
-  get-date-object = (date)->
-    if date not instanceof Date
-      throw new Error('The parameter "date" is not a instance of "Date"')
-
-    obj = {}
-    obj.year = date.get-full-year!
-    obj.month = date.get-month! + 1 # 月份从0开始
-    obj.day = date.get-date!
     obj
 
   # {year: [,month: ]}
@@ -423,7 +485,26 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
 
   # return date-object({year: , month: , day: })
   get-select-date-object-from-date-and-week-type = ->
-    get-date-object $scope.datepicker.date-begin.datepicker('getDate')
+    if $scope.statistics-filter.date-type is 'day'
+      return get-date-object($scope.datepicker.date-begin.datepicker('getDate'))
+    else if $scope.statistics-filter.date-type is 'week'
+      week-obj = { 'Mon': 0, 'Tue': 1, 'Wed': 2, 'Thu': 3, 'Fri': 4, 'Sat': 5, 'Sun': 6 }
+
+      now-day = $scope.datepicker.date-begin.datepicker('getDate')
+      weekday-str = now-day.toDateString!.substr 0, 3
+      monday = new Date(now-day.set-date(now-day.get-date! - week-obj[weekday-str]))
+      return get-date-object(monday)
+
+  # {year: , month: , day: }
+  get-date-object = (date)->
+    if date not instanceof Date
+      throw new Error('The parameter "date" is not a instance of "Date"')
+
+    obj = {}
+    obj.year = date.get-full-year!
+    obj.month = date.get-month! + 1 # 月份从0开始
+    obj.day = date.get-date!
+    obj
 
   get-line-chart-options = ->
     set-scope-chart-options!
@@ -618,6 +699,7 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
   get-line-chart-datasets = (color-settings, data, legends, dataset-item)->
     datasets = []
 
+
     for i from 0 to data.length - 1
       dataset-item.backgroundColor = color-settings.backgroundColors[i]
       dataset-item.borderColor = color-settings.borderColors[i]
@@ -631,9 +713,6 @@ angular.module 'ManageDataStatistics' .controller 'data-statistics', ['$scope', 
       datasets.push temp
 
     datasets
-
-  get-pie-chart-options = ->
-    {}
 
   get-pie-chart-data = ->
     labels = get-pie-chart-data-labels!

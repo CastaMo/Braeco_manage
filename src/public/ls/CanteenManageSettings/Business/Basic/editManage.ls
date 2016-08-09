@@ -33,7 +33,7 @@ edit-manage = let
 
     get-staff-and-init: (staff, roles) !->
         _all-roles := roles
-        _edited-staff := staff
+        # _edited-staff := staff
         _init-role-select-dom!
         _init-form-field!
 

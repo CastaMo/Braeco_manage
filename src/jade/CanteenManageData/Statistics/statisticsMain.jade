@@ -10,8 +10,9 @@
 
         //- day and week
         .day-and-week-input
-          input.date-range.date-begin(data-toggle="datepicker" ng-model='statisticsFilter.dateBegin' ng-show='statisticsFilter.dateType == "day" || statisticsFilter.dateType == "week"'  ng-change='getStatisticsByUnit($event)')
-          span.after-seven-days(ng-if='statisticsFilter.dateType == "week"') 后七天
+          input.date-range.date-begin(data-toggle="datepicker" ng-model='statisticsFilter.dateBegin' ng-show='statisticsFilter.dateType == "day" || statisticsFilter.dateType == "week"' ng-change='getStatisticsByUnit($event)' ng-class="{ 'hide-input-content': statisticsFilter.dateType == 'week' }")
+          .calendar-icon(ng-show='statisticsFilter.dateType == "day" || statisticsFilter.dateType == "week"' ng-click='showDatepicker($event, ".date-begin")')
+          span.after-seven-days(ng-if='statisticsFilter.dateType == "week"' ng-click='showDatepicker($event, ".date-begin")') {{ weekString }}
 
         //- month
         select.month-select(ng-show='statisticsFilter.dateType == "month"' ng-model='statisticsFilter.selectedMonth'  ng-change='getStatisticsByUnit($event)')

@@ -13,9 +13,9 @@
 
         //- 日、周
         .day-and-week-input
-          input.time-type-datepicker.member-time-type-datepicker(type='text' data-toggle="datepicker" ng-model='filter.memberDate' ng-change='getStatisticsByType($event)' ng-show='filter.memberTimeType == "day" || filter.memberTimeType == "week"')
-          .calendar-icon(ng-show='filter.memberTimeType == "day" || filter.memberTimeType == "week"')
-          span.after-seven-day(ng-show='filter.memberTimeType == "week"') 后七天
+          input.time-type-datepicker.member-time-type-datepicker(type='text' data-toggle="datepicker" ng-model='filter.memberDate' ng-change='getStatisticsByType($event)' ng-show='filter.memberTimeType == "day" || filter.memberTimeType == "week"' ng-class="{ 'hide-input-content': filter.memberTimeType == 'week' }")
+          .calendar-icon(ng-show='filter.memberTimeType == "day" || filter.memberTimeType == "week"' ng-click='showDatepicker($event, ".member-time-type-datepicker")')
+          span.after-seven-day(ng-show='filter.memberTimeType == "week"' ng-click='showDatepicker($event, ".member-time-type-datepicker")') {{ memberWeekString }}
 
         //- 月
         select.member-selected-month(ng-show='filter.memberTimeType == "month"' ng-model='filter.memberSelectedMonth' ng-change='getStatisticsByType($event)')
@@ -28,7 +28,7 @@
         form(name='excelForm' method='POST' action='/Dinner/Manage/Excel/16' ng-submit='produceMembershipExcel($event)' style='display:inline-block;vertical-align:bottom;float:right' target='_blank')
           input(type='text' name='st' value='1466352000' style='display:none')
           input(type='text' name='en' value='1466438400' style='display:none')
-          input.membership-excel-producer-button(type='submit' value='导出')
+          input.membership-excel-producer-button(type='submit' value='导出明细')
 
       .data-panel
         .current-members.data-panel-item.choose(ng-click='setSelectedPanel($event, "current-members")')
@@ -94,9 +94,9 @@
 
           //- 日、周
           .day-and-week-input
-            input.time-type-datepicker.coupons-time-type-datepicker(type='text' data-toggle="datepicker" ng-model='filter.couponsDate' ng-show='filter.couponsTimeType == "day" || filter.couponsTimeType == "week"' ng-change='getStatisticsByType($event)')
-            .calendar-icon(ng-show='filter.couponsTimeType == "day" || filter.couponsTimeType == "week"')
-            span.after-seven-day(ng-show='filter.couponsTimeType == "week"') 后七天
+            input.time-type-datepicker.coupons-time-type-datepicker(type='text' data-toggle="datepicker" ng-model='filter.couponsDate' ng-show='filter.couponsTimeType == "day" || filter.couponsTimeType == "week"' ng-change='getStatisticsByType($event)' ng-class="{ 'hide-input-content': filter.couponsTimeType == 'week' }")
+            .calendar-icon(ng-show='filter.couponsTimeType == "day" || filter.couponsTimeType == "week"' ng-click='showDatepicker($event, ".coupons-time-type-datepicker")')
+            span.after-seven-day(ng-show='filter.couponsTimeType == "week"' ng-click='showDatepicker($event, ".coupons-time-type-datepicker")') {{ couponsWeekString }}
 
           //- 月
           select.member-selected-month(ng-show='filter.couponsTimeType == "month"' ng-model='filter.couponsSelectedMonth' ng-change='getStatisticsByType($event)')
