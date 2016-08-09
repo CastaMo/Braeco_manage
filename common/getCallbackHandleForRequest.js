@@ -9,7 +9,7 @@ var zlib            = require('zlib');
 function getOptionsForProxySendRequestConfig(url, method) {
   method = method.toUpperCase();
   var options = {
-    hostname: 'devel.brae.co',
+    hostname: 'brae.co',
     path: url,
     headers: {
       'Cookie': cookie
