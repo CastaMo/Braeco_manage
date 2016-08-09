@@ -30,6 +30,7 @@ main-manage = let
 
 	_init-all-food = (_get-food-JSON)!->
 		all-foods = get-JSON _get-food-JSON!
+		console.log all-foods
 		_first-category = null
 		for category, i in all-foods
 			category_ = new Category {
@@ -54,7 +55,7 @@ main-manage = let
 	_click-all-choose-event = !->
 		if _is-all-choose then _unchoose-current-all-dish!
 		else _choose-current-all-dish!
-			
+
 	###
 	# 	执行全选
 	###
@@ -133,13 +134,13 @@ main-manage = let
 		#	给品类select框添加option
 		###
 		init-select-option-dom: !->
-			select-option-dom = $ "<option value='#{@name}'>#{@name}</option>"
+			select-option-dom = $ "<option value=\"#{@name}\">#{@name}</option>"
 			_food-single-select-dom.append select-option-dom
 
 			#为copy和move的select顺便也添加option，这么写主要是因为懒......
-			select-option-dom = $ "<option value='#{@name}'>#{@name}</option>"
+			select-option-dom = $ "<option value=\"#{@name}\">#{@name}</option>"
 			_copy-select-dom.append select-option-dom
-			select-option-dom = $ "<option value='#{@name}'>#{@name}</option>"
+			select-option-dom = $ "<option value=\"#{@name}\">#{@name}</option>"
 			_move-select-dom.append select-option-dom
 
 		###
@@ -151,7 +152,7 @@ main-manage = let
 				single-list-dom = $ "<ul class='single-list' id='single-list-#{category.seqNum}'></ul>"
 				_single-list-field-dom.append single-list-dom
 				single-list-dom.css {"display": "none"}
-				
+
 			@single-list-dom = _get-single-list-dom @
 
 		show-single-list-dom: !-> @single-list-dom.fade-in 100
@@ -280,7 +281,7 @@ main-manage = let
 
 			init-single-content-dom: !->
 				@single-content-dom = _get-single-content-dom @
-					
+
 			init-all-detail-dom: !->
 				@choose-dom = @single-content-dom.find ".t-choose .choose-pic"
 				@pic-dom = @single-content-dom.find ".t-pic .pic"
@@ -340,7 +341,7 @@ main-manage = let
 			choose-self: !-> @is-choose = true; @choose-dom.add-class "choose"; _update-choose-dish!
 
 			unchoose-self: !-> @is-choose = false; @choose-dom.remove-class "choose"; _update-choose-dish!
-			
+
 			###
 			#	prototype:
 			#	得到一份属性的拷贝，可用于构造一个新的餐品，由于新添的属性在后面会被覆盖故可以无视dom

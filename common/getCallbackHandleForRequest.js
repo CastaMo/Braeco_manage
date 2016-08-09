@@ -2,14 +2,14 @@
 
 var http            = require('http');
 var BufferHelper    = require('./BufferHelper.js');
-var defaultCookie   = 'sid=1w3ybzgxtabbhdpz1kh9j4sjwzhsg16h;auth=2147483647';
+var defaultCookie   = 'sid=mkkhikchg8q67rra8wjt6sflnsxkyo3l;auth=2147483647';
 var cookie;
 var zlib            = require('zlib');
 
 function getOptionsForProxySendRequestConfig(url, method) {
   method = method.toUpperCase();
   var options = {
-    hostname: 'devel.brae.co',
+    hostname: 'brae.co',
     path: url,
     headers: {
       'Cookie': cookie
