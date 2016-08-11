@@ -40,13 +40,14 @@ class PageView
 		eventbus.on "view:page:toggle-page", (toggle-name)!~> @toggle-page toggle-name
 
 		eventbus.on "view:page:cover-page", (cover-name)!~> @cover-page cover-name
-		
+
 
 	toggle-page: (toggle-name)!->
 		@toggle-state = toggle-name
 		for toggle-name_, toggle-dom of @all-toggle-doms when toggle-name isnt toggle-name_
 			toggle-dom.fade-out 100
 		set-timeout (!~> @all-toggle-doms[toggle-name].fade-in 100), 100
+		$("html, body").animate({ scrollTop: 0 }, "fast")
 
 	cover-page: (cover-name)!->
 		@cover-state = cover-name

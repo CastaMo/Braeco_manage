@@ -6,6 +6,7 @@
   "license": "MIT",
   "devDependencies": {
     "body-parser": "^1.15.1",
+    "compression": "^1.6.2",
     "connect-livereload": "^0.5.4",
     "grunt": "^0.4.5",
     "grunt-browserify": "^4.0.1",
@@ -30,11 +31,14 @@
     "grunt-ssh": "^0.12.8",
     "grunt-usemin": "^3.1.1",
     "jade": "^1.11.0",
+    "livescript": "^1.5.0",
     "md5-file": "^2.0.4",
     "morgan": "^1.7.0",
     "passport": "^0.3.2",
     "serve-index": "^1.7.2",
-    "serve-static": "^1.10.0"
+    "serve-static": "^1.10.0",
+    "tiny-lr": "^0.2.1",
+    "webpack": "^1.13.1"
   },
   "engines": {
     "node": ">= 0.10.0"

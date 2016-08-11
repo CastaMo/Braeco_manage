@@ -27,17 +27,17 @@ main-manage = let
         page.toggle-page "edit"
 
     _presentation-start-btn-click-event = !->
-        _start-presentation-event!
+        _start-alert-block-dom.show!
 
-    _start-cancel-btn-click-event = !->\
+    _start-cancel-btn-click-event = !->
         _start-alert-block-dom.hide!
 
     _start-comfirm-btn-click-event = !->
-        location.href = "/Manage/Market/Activity"
+        _start-presentation-event!
+        _start-alert-block-dom.hide!
 
     _presentation-stop-btn-click-event = !->
-        if _start-alert-block-dom.is ":hidden"
-            _stop-alert-block-dom.show!
+        _stop-alert-block-dom.show!
 
     _stop-cancel-btn-click-event = !->
         _stop-alert-block-dom.hide!
@@ -55,7 +55,6 @@ main-manage = let
             dataType: "JSON", contentType: "application/json", success: _stop-presentation-success, error: _stop-presentation-fail}
 
     _start-presentation-success = (data)!->
-        _start-alert-block-dom.show!
         _give-on!
 
     _start-presentation-fail = (data)!->
@@ -80,7 +79,7 @@ main-manage = let
         _presentation-start-btn-dom.remove-class "presentation-start-btn-able"
         _presentation-start-btn-dom.add-class "presentation-start-btn-disable"
         _presentation-start-btn-dom.text "启用满送"
-        _presentation-start-btn-dom.click !-> _start-presentation-event!
+        _presentation-start-btn-dom.click !-> _presentation-start-btn-click-event!
         _presentation-stop-btn-dom.remove-class "presentation-stop-btn-able"
         _presentation-stop-btn-dom.add-class "presentation-stop-btn-disable"
         _presentation-stop-btn-dom.text "满送停用中"

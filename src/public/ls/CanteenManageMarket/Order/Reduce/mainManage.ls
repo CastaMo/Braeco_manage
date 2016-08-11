@@ -27,17 +27,17 @@ main-manage = let
         page.toggle-page "edit"
 
     _reduce-start-btn-click-event = !->
-        _start-reduce-event!
+        _start-alert-block-dom.show!
 
     _start-cancel-btn-click-event = !->
         _start-alert-block-dom.hide!
 
     _start-comfirm-btn-click-event = !->
-        location.href = "/Manage/Market/Activity"
+        _start-reduce-event!
+        _start-alert-block-dom.hide!
 
     _reduce-stop-btn-click-event = !->
-        if _start-alert-block-dom.is ":hidden"
-            _stop-alert-block-dom.show!
+        _stop-alert-block-dom.show!
 
     _stop-cancel-btn-click-event = !->
         _stop-alert-block-dom.hide!
@@ -55,7 +55,6 @@ main-manage = let
             dataType: "JSON", contentType: "application/json", success: _stop-reduce-success, error: _stop-reduce-fail}
 
     _start-reduce-success = !->
-        _start-alert-block-dom.show!
         _reduce-on!
 
     _start-refuce-fail = !->
@@ -79,7 +78,7 @@ main-manage = let
         _reduce-start-btn-dom.remove-class "reduce-start-btn-able"
         _reduce-start-btn-dom.add-class "reduce-start-btn-disable"
         _reduce-start-btn-dom.text "启用满减"
-        _reduce-start-btn-dom.click !-> _start-reduce-event!
+        _reduce-start-btn-dom.click !-> _reduce-start-btn-click-event!
         _reduce-stop-btn-dom.remove-class "reduce-stop-btn-able"
         _reduce-stop-btn-dom.add-class "reduce-stop-btn-disable"
         _reduce-stop-btn-dom.text "满减停用中"
