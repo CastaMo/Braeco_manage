@@ -3,16 +3,21 @@
         .business-title
             p 堂食
         .business-header
-            button#eatin-start-btn.business-start-btn.business-start-btn-able 业务启用中
-            button#eatin-stop-btn.business-stop-btn.business-stop-btn-able 停用业务
+            button#eatin-start-btn.business-start-btn 业务启用中
+            button#eatin-stop-btn.business-stop-btn 停用业务
             button#eatin-edit-btn.edit-btn 修改
-            #eatin-alert-block.alert-block
+            #eatin-start-alert-block.alert-block.start-alert-block
+                p.alert-information 确认开启堂食业务？
+                .btn-block
+                    button#eatin-start-comfirm-btn.comfirm-btn 确认
+                    button#eatin-start-cancel-btn.cancel-btn 取消
+            #eatin-stop-alert-block.alert-block.stop-alert-block
                 p.alert-information 确认停止堂食业务？
                 .btn-block
-                    button#eatin-comfirm-btn.comfirm-btn 确认
-                    button#eatin-cancel-btn.cancel-btn 取消
+                    button#eatin-stop-comfirm-btn.comfirm-btn 确认
+                    button#eatin-stop-cancel-btn.cancel-btn 取消
             .clear
-        .business-block
+        #eatin-business-block.business-block
             .business-block-header 堂食设置
             .business-block-content
                 //- div
@@ -28,16 +33,21 @@
         .business-title
             p 外卖
         .business-header
-            button#takeaway-start-btn.business-start-btn.business-start-btn-able 业务启用中
-            button#takeaway-stop-btn.business-stop-btn.business-stop-btn-able 停用业务
+            button#takeaway-start-btn.business-start-btn 业务启用中
+            button#takeaway-stop-btn.business-stop-btn 停用业务
             button#takeaway-edit-btn.edit-btn 修改
-            #takeaway-alert-block.alert-block
-                p.alert-information 确认停止外卖？
+            #takeaway-start-alert-block.alert-block.start-alert-block
+                p.alert-information 确认启用外卖业务？
                 .btn-block
-                    button#takeaway-comfirm-btn.comfirm-btn 确认
-                    button#takeaway-cancel-btn.cancel-btn 取消
+                    button#takeaway-start-comfirm-btn.comfirm-btn 确认
+                    button#takeaway-start-cancel-btn.cancel-btn 取消
+            #takeaway-stop-alert-block.alert-block.stop-alert-block
+                p.alert-information 确认停止外卖业务？
+                .btn-block
+                    button#takeaway-stop-comfirm-btn.comfirm-btn 确认
+                    button#takeaway-stop-cancel-btn.cancel-btn 取消
             .clear    
-        .business-block
+        #takeaway-business-block.business-block
             .business-block-header 外卖设置
             .business-block-content
                 //- div
@@ -69,16 +79,21 @@
         .business-title
             p 外带
         .business-header
-            button#takeout-start-btn.business-start-btn.business-start-btn-able 业务启用中
-            button#takeout-stop-btn.business-stop-btn.business-stop-btn-able 停用业务
+            button#takeout-start-btn.business-start-btn 业务启用中
+            button#takeout-stop-btn.business-stop-btn 停用业务
             button#takeout-edit-btn.edit-btn 修改
-            #takeout-alert-block.alert-block
-                p.alert-information 确认停止外带？
+            #takeout-start-alert-block.alert-block.start-alert-block
+                p.alert-information 确认启用外带业务？
                 .btn-block
-                    button#takeout-comfirm-btn.comfirm-btn 确认
-                    button#takeout-cancel-btn.cancel-btn 取消
+                    button#takeout-start-comfirm-btn.comfirm-btn 确认
+                    button#takeout-start-cancel-btn.cancel-btn 取消
+            #takeout-stop-alert-block.alert-block.stop-alert-block
+                p.alert-information 确认停止外带业务？
+                .btn-block
+                    button#takeout-stop-comfirm-btn.comfirm-btn 确认
+                    button#takeout-stop-cancel-btn.cancel-btn 取消
             .clear    
-        .business-block
+        #takeout-business-block.business-block
             .business-block-header 外带设置
             .business-block-content
                 //- div

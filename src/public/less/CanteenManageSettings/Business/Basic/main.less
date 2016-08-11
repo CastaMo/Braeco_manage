@@ -1,6 +1,10 @@
 @import "../../../common/common";
 @import "base64";
 #business {
+    * {
+        font-size: 14px;
+        font-family: "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "\9ED1\4F53", Arial, sans-serif;
+    }
     *:focus {
         outline: none;
     }
@@ -82,14 +86,14 @@
                         position: absolute;
                         width: 340px;
                         height: 169px;
-                        margin-left: 15px;
                         background-image: url(@alert-block-image-url);
                         background-size: 340px 169px;
                         background-repeat: no-repeat;
                         background-position: center;
                         .alert-information {
                             margin-top: 45px;
-                            text-align: center;
+                            margin-left: 50px;
+                            text-align: left;
                         }
                         .btn-block {
                             margin-top: 28px;
@@ -125,6 +129,12 @@
                                 background-color: #ffb300;
                             }
                         }
+                    }
+                    .stop-alert-block {
+                        margin-left: 15px;
+                    }
+                    .start-alert-block {
+                        margin-left: -106px;
                     }
                 }
                 .business-block {
@@ -212,6 +222,11 @@
                         width: 355px;
                     }
                 }
+                .disable-business-block {
+                    *:not(.business-block-header) {
+                        color: #C8C7CC !important;
+                    }
+                }
             }
         }
         #basic-edit {
@@ -264,6 +279,12 @@
                 .checked-icon {
                     background-size: 18px 18px;
                     background-repeat: no-repeat;
+                }
+                #auth-link-container {
+                    margin-top: 10px;
+                    #auth-link {
+                        color: #3596ec;
+                    }
                 }
             }
             .btn-container {

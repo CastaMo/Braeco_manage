@@ -7,6 +7,7 @@ main-manage = let
     _takeout-data = null
     _takeaway-data = null
     _reserve-data = null
+    _url = null
 
     _method-map = {
         "p2p_wx_pub": "微信支付",
@@ -28,8 +29,8 @@ main-manage = let
             console.log 'Unable to copy'
         hidden-textarea.remove!
 
-    _download-qrcode = (qrcode-src)!->
-        a = $ "<a>" .attr "href", qrcode-src .attr "download", "image.png" .appendTo "body"
+    _download-qrcode = (business-type, qrcode-src)!->
+        a = $ "<a></a>" .attr "href", qrcode-src .attr "download", business-type+".png" .attr "target","_blank" .appendTo "body"
         a[0].click!
         a.remove!
 
@@ -61,9 +62,10 @@ main-manage = let
                 method-strings.push _method-map[method]
         business-method-content-dom.text (method-strings.join '、')
 
-    _business-turn-on = (business-type)!->
+    _business-turn-on = (business-type, alert-block-dom)!->
         $.ajax {type: "POST", url: "/Dinner/Manage/Firm/Turn/"+business-type+"/On",\
             dataType: "JSON", contentType: "application/json", success: _business-turn-success, error: _business-trun-fail}
+        alert-block-dom.hide!
 
     _business-turn-off = (business-type, alert-block-dom)!->
         $.ajax {type: "POST", url: "/Dinner/Manage/Firm/Turn/"+business-type+"/Off",\
@@ -83,10 +85,14 @@ main-manage = let
     # eatin
     _eatin-start-btn-dom = $ "\#eatin-start-btn"
     _eatin-stop-btn-dom = $ "\#eatin-stop-btn"
-    _eatin-alert-block-dom = $ "\#eatin-alert-block"
-    _eatin-comfirm-btn-dom = $ "\#eatin-comfirm-btn"
-    _eatin-cancel-btn-dom = $ "\#eatin-cancel-btn"
+    _eatin-start-alert-block-dom = $ "\#eatin-start-alert-block"
+    _eatin-start-commfirm-btn-dom = $ "\#eatin-start-comfirm-btn"
+    _eatin-start-cancel-btn-dom = $ "\#eatin-start-cancel-btn"
+    _eatin-stop-alert-block-dom = $ "\#eatin-stop-alert-block"
+    _eatin-stop-comfirm-btn-dom = $ "\#eatin-stop-comfirm-btn"
+    _eatin-stop-cancel-btn-dom = $ "\#eatin-stop-cancel-btn"
     _eatin-edit-btn-dom = $ "\#eatin-edit-btn"
+    _eatin-business-block-dom = $ "\#eatin-business-block"
 
     _init-eatin = !->
         _init-eatin-status!
@@ -96,43 +102,55 @@ main-manage = let
         if _eatin-data.able
             _set-starting-status _eatin-start-btn-dom,_eatin-stop-btn-dom, _eatin-stop-btn-click-event
         else
+            _eatin-business-block-dom.add-class "disable-business-block"
             _set-stopping-status _eatin-start-btn-dom,_eatin-stop-btn-dom, _eatin-start-btn-click-event
 
     _eatin-start-btn-click-event = !->
-        _business-turn-on _eatin-data.type
+        _eatin-start-alert-block-dom.show!
+
+    _eatin-start-comfirm-btn-click-event = !->
+        _business-turn-on _eatin-data.type, _eatin-stop-alert-block-dom
+
+    _eatin-start-cancel-btn-click-event = !->
+        _eatin-start-alert-block-dom.hide!
 
     _eatin-stop-btn-click-event = !->
-        _eatin-alert-block-dom.show!
+        _eatin-stop-alert-block-dom.show!
 
-    _eatin-comfirm-btn-click-event = !->
-        _business-turn-off _eatin-data.type, _eatin-alert-block-dom
+    _eatin-stop-comfirm-btn-click-event = !->
+        _business-turn-off _eatin-data.type, _eatin-stop-alert-block-dom
 
-    _eatin-cancel-btn-click-event = !->
-        _eatin-alert-block-dom.hide!
+    _eatin-stop-cancel-btn-click-event = !->
+        _eatin-stop-alert-block-dom.hide!
 
     _eatin-edit-btn-click-event = !->
-        edit.get-business-and-init _eatin-data
+        edit.get-business-and-init _eatin-data,_url
         page.toggle-page 'edit'
 
     _init-eatin-event = !->
         _init-eatin!
-        _eatin-comfirm-btn-dom.click !-> _eatin-comfirm-btn-click-event!
-        _eatin-cancel-btn-dom.click !-> _eatin-cancel-btn-click-event!
+        _eatin-start-commfirm-btn-dom.click !-> _eatin-start-comfirm-btn-click-event!
+        _eatin-start-cancel-btn-dom.click !-> _eatin-start-cancel-btn-click-event!
+        _eatin-stop-comfirm-btn-dom.click !-> _eatin-stop-comfirm-btn-click-event!
+        _eatin-stop-cancel-btn-dom.click !-> _eatin-stop-cancel-btn-click-event!
         _eatin-edit-btn-dom.click !-> _eatin-edit-btn-click-event!
     # eatin finish
 
     # takeaway
     _takeaway-start-btn-dom = $ "\#takeaway-start-btn"
     _takeaway-stop-btn-dom = $ "\#takeaway-stop-btn"
-    _takeaway-alert-block-dom = $ "\#takeaway-alert-block"
-    _takeaway-comfirm-btn-dom = $ "\#takeaway-comfirm-btn"
-    _takeaway-cancel-btn-dom = $ "\#takeaway-cancel-btn"
+    _takeaway-start-alert-block-dom = $ "\#takeaway-start-alert-block"
+    _takeaway-start-comfirm-btn-dom = $ "\#takeaway-start-comfirm-btn"
+    _takeaway-start-cancel-btn-dom = $ "\#takeaway-start-cancel-btn"
+    _takeaway-stop-alert-block-dom = $ "\#takeaway-stop-alert-block"
+    _takeaway-stop-comfirm-btn-dom = $ "\#takeaway-stop-comfirm-btn"
+    _takeaway-stop-cancel-btn-dom = $ "\#takeaway-stop-cancel-btn"
     _takeaway-edit-btn-dom = $ "\#takeaway-edit-btn"
-
     _takeaway-content-qrcode-dom = $ "\#takeaway-content-qrcode"
     _takeaway-download-dom = $ "\#takeaway-download-btn"
     _takeaway-content-link-dom = $ "\#takeaway-content-link"
     _takeaway-copy-btn-dom = $ "\#takeaway-copy-btn"
+    _takeaway-business-block-dom = $ "\#takeaway-business-block"
 
     _init-takeaway = !->
         _init-takeaway-status!
@@ -144,34 +162,46 @@ main-manage = let
         if _takeaway-data.able
             _set-starting-status _takeaway-start-btn-dom,_takeaway-stop-btn-dom, _takeaway-stop-btn-click-event
         else
+            _takeaway-business-block-dom.add-class "disable-business-block"
             _set-stopping-status _takeaway-start-btn-dom,_takeaway-stop-btn-dom, _takeaway-start-btn-click-event
 
     _takeaway-start-btn-click-event = !->
         _business-turn-on _takeaway-data.type
 
+    _takeaway-start-btn-click-event = !->
+        _takeaway-start-alert-block-dom.show!
+
+    _takeaway-start-comfirm-btn-click-event = !->
+        _business-turn-on _takeaway-data.type, _takeaway-start-alert-block-dom
+
+    _takeaway-start-cancel-btn-click-event = !->
+        _takeaway-start-alert-block-dom.hide!
+
     _takeaway-stop-btn-click-event = !->
-        _takeaway-alert-block-dom.show!
+        _takeaway-stop-alert-block-dom.show!
 
-    _takeaway-comfirm-btn-click-event = !->
-        _business-turn-off _takeaway-data.type, _takeaway-alert-block-dom
+    _takeaway-stop-comfirm-btn-click-event = !->
+        _business-turn-off _takeaway-data.type, _takeaway-stop-alert-block-dom
 
-    _takeaway-cancel-btn-click-event = !->
-        _takeaway-alert-block-dom.hide!
+    _takeaway-stop-cancel-btn-click-event = !->
+        _takeaway-stop-alert-block-dom.hide!
 
     _takeaway-edit-btn-click-event = !->
-        edit.get-business-and-init _takeaway-data
+        edit.get-business-and-init _takeaway-data, _url
         page.toggle-page 'edit'
 
     _takeaway-copy-btn-click-event = !->
         _copy-to-clipboard _takeaway-content-link-dom.text!
 
     _takeaway-download-btn-click-event = !->
-        _download-qrcode _takeaway-data.qr
+        _download-qrcode _takeaway-data.type, _takeaway-data.qr
 
     _init-takeaway-event = !->
         _init-takeaway!
-        _takeaway-comfirm-btn-dom.click !-> _takeaway-comfirm-btn-click-event!
-        _takeaway-cancel-btn-dom.click !-> _takeaway-cancel-btn-click-event!
+        _takeaway-start-comfirm-btn-dom.click !-> _takeaway-start-comfirm-btn-click-event!
+        _takeaway-start-cancel-btn-dom.click !-> _takeaway-start-cancel-btn-click-event!
+        _takeaway-stop-comfirm-btn-dom.click !-> _takeaway-stop-comfirm-btn-click-event!
+        _takeaway-stop-cancel-btn-dom.click !-> _takeaway-stop-cancel-btn-click-event!
         _takeaway-edit-btn-dom.click !-> _takeaway-edit-btn-click-event!
         _takeaway-copy-btn-dom.click !-> _takeaway-copy-btn-click-event!
         _takeaway-download-dom.click !-> _takeaway-download-btn-click-event!
@@ -180,15 +210,18 @@ main-manage = let
     # takeout
     _takeout-start-btn-dom = $ "\#takeout-start-btn"
     _takeout-stop-btn-dom = $ "\#takeout-stop-btn"
-    _takeout-alert-block-dom = $ "\#takeout-alert-block"
-    _takeout-comfirm-btn-dom = $ "\#takeout-comfirm-btn"
-    _takeout-cancel-btn-dom = $ "\#takeout-cancel-btn"
+    _takeout-start-alert-block-dom = $ "\#takeout-start-alert-block"
+    _takeout-start-comfirm-btn-dom = $ "\#takeout-start-comfirm-btn"
+    _takeout-start-cancel-btn-dom = $ "\#takeout-start-cancel-btn"
+    _takeout-stop-alert-block-dom = $ "\#takeout-stop-alert-block"
+    _takeout-stop-comfirm-btn-dom = $ "\#takeout-stop-comfirm-btn"
+    _takeout-stop-cancel-btn-dom = $ "\#takeout-stop-cancel-btn"
     _takeout-edit-btn-dom = $ "\#takeout-edit-btn"
-
     _takeout-content-qrcode-dom = $ "\#takeout-content-qrcode"
     _takeout-download-dom = $ "\#takeout-download-btn"
     _takeout-content-link-dom = $ "\#takeout-content-link"
     _takeout-copy-btn-dom = $ "\#takeout-copy-btn"
+    _takeout-business-block-dom = $ "\#takeout-business-block"
 
     _init-takeout = !->
         _init-takeout-status!
@@ -200,34 +233,46 @@ main-manage = let
         if _takeout-data.able
             _set-starting-status _takeout-start-btn-dom,_takeout-stop-btn-dom, _takeout-stop-btn-click-event
         else
+            _takeout-business-block-dom.add-class "disable-business-block"
             _set-stopping-status _takeout-start-btn-dom,_takeout-stop-btn-dom, _takeout-start-btn-click-event
 
     _takeout-start-btn-click-event = !->
         _business-turn-on _takeout-data.type
 
+    _takeout-start-btn-click-event = !->
+        _takeout-start-alert-block-dom.show!
+
+    _takeout-start-comfirm-btn-click-event = !->
+        _business-turn-on _takeout-data.type, _takeout-start-alert-block-dom
+
+    _takeout-start-cancel-btn-click-event = !->
+        _takeout-start-alert-block-dom.hide!
+
     _takeout-stop-btn-click-event = !->
-        _takeout-alert-block-dom.show!
+        _takeout-stop-alert-block-dom.show!
 
-    _takeout-comfirm-btn-click-event = !->
-        _business-turn-off _takeout-data.type, _takeout-alert-block-dom
+    _takeout-stop-comfirm-btn-click-event = !->
+        _business-turn-off _takeout-data.type, _takeout-stop-alert-block-dom
 
-    _takeout-cancel-btn-click-event = !->
-        _takeout-alert-block-dom.hide!
+    _takeout-stop-cancel-btn-click-event = !->
+        _takeout-stop-alert-block-dom.hide!
 
     _takeout-edit-btn-click-event = !->
-        edit.get-business-and-init _takeout-data
+        edit.get-business-and-init _takeout-data,_url
         page.toggle-page 'edit'
 
     _takeout-copy-btn-click-event = !->
         _copy-to-clipboard _takeout-content-link-dom.text!
 
     _takeout-download-btn-click-event = !->
-        _download-qrcode _takeout-data.qr
+        _download-qrcode _takeout-data.type, _takeout-data.qr
 
     _init-takeout-event = !->
         _init-takeout!
-        _takeout-comfirm-btn-dom.click !-> _takeout-comfirm-btn-click-event!
-        _takeout-cancel-btn-dom.click !-> _takeout-cancel-btn-click-event!
+        _takeout-start-comfirm-btn-dom.click !-> _takeout-start-comfirm-btn-click-event!
+        _takeout-start-cancel-btn-dom.click !-> _takeout-start-cancel-btn-click-event!
+        _takeout-stop-comfirm-btn-dom.click !-> _takeout-stop-comfirm-btn-click-event!
+        _takeout-stop-cancel-btn-dom.click !-> _takeout-stop-cancel-btn-click-event!
         _takeout-edit-btn-dom.click !-> _takeout-edit-btn-click-event!
         _takeout-copy-btn-dom.click !-> _takeout-copy-btn-click-event!
         _takeout-download-dom.click !-> _takeout-download-btn-click-event!
@@ -236,12 +281,14 @@ main-manage = let
     _init-data = (_get-business-JSON)!->
         _all-business := JSON.parse _get-business-JSON!
         for data in _all-business
+            console.log data
             if data.type == 'eatin'
                 _eatin-data := data
             if data.type == 'takeout'
                 _takeout-data := data
             if data.type == 'takeaway'
                 _takeaway-data := data
+                delete _takeaway-data.channels['cash']
             if data.type == 'reserve'
                 _reserve-data := data
 
@@ -254,8 +301,9 @@ main-manage = let
         _init-takeaway-event!
         _init-takeout-event!
 
-    initial: (_get-business-JSON)!->
+    initial: (_get-business-JSON, url)!->
         _init-data _get-business-JSON
+        _url := url
         _init-depend-module!
         _init-all-event!
 

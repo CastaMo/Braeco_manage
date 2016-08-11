@@ -208,7 +208,7 @@ refund-manage = let
             "description": description,
             "password": $.md5 password,
         }
-        json-data.refund = JSON.stringify refunds
+        json-data.refund = refunds
         json-data = JSON.stringify json-data
         console.log json-data
         $.ajax {type: "POST", url: "/order/refund/"+_data-obj.id, data: json-data,\

@@ -139,10 +139,9 @@ main-manage = let
         container-dom.append order-details-header-dom
         order-details-body-dom = $ "<div class='order-details-body'></div>"
         order-details-body-dom.append $ "<p class='order-pay-method'>"+data-obj.channel+"</p>"
-        if data-obj.type !== "堂食"
-            order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"</p>"
-        else
-            order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"号桌</p>"
+        if data-obj.type == "堂食" or data-obj.type == '外带'
+            if data-obj.table != null
+                order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"号桌</p>"
        
         infomation-dom = $ "<div class='order-infomation info-number'></div>"
         if data-obj.eaterid_of_dinner === null

@@ -17,12 +17,20 @@ edit-manage = let
 
     _save-btn-click-event = !->
         channels = {}
+        channels.channels = {}
+        is-one-chosen = false
         for checkbox in _checkbox-dom
             value = ($ checkbox).val!
+            if not ($ checkbox).is ':visible'
+                continue
             if ($ checkbox).is ":checked"
-                channels[value] = 1
+                channels.channels[value] = 1
+                is-one-chosen = true
             else
-                channels[value] = 0
+                channels.channels[value] = 0
+        if not is-one-chosen
+            alert "请至少选择一种支付渠道"
+            return
         data = JSON.stringify channels
         $.ajax {type: "POST", url: "/Dinner/Manage/Firm/Update/"+_edit-business.type, data: data,\
             dataType: "JSON", contentType: "application/json", success: _save-post-success, error: _save-post-fail}
@@ -70,7 +78,10 @@ edit-manage = let
             _set-checkbox-unchecked ($ this).parent!
 
     _init-pay-method-block-dom = !->
+        for checkbox in _checkbox-dom
+            $ checkbox .parent!.hide!
         for method, value of _edit-business.channels
+            ($ "input[value='"+method+"']").parent!.show!
             if value == 1
                 _set-checkbox-checked ($ "input[value='"+method+"']").parent!
 
@@ -82,9 +93,10 @@ edit-manage = let
         _save-btn-dom.click !-> _save-btn-click-event!
         _checkbox-dom.click (event)!-> _checkbox-click-event event
 
-    get-business-and-init: (business) !->
+    get-business-and-init: (business, url) !->
         _edit-business := business
-        console.log _edit-business
+        console.log url
+        $ "\#auth-link" .prop 'href', url
         _init-pay-method-block-dom!
 
     initial: !->

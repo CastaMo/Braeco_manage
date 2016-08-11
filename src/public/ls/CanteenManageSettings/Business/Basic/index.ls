@@ -7,7 +7,7 @@ let win = window, doc = document
 		"Need to rescan qrcode" 	:	->	win.location.pathname = "/Table/Confirm/rescan"
 		"success" 					:	(result)->
 			_init-all-get-JSON-func result.data
-			_init-all-module()
+			_init-all-module result.url
 	}
 
 	_init-all-get-JSON-func = (data)->
@@ -16,9 +16,9 @@ let win = window, doc = document
 	_main-init = (result)->
 		_init-callback["success"]?(result)
 
-	_init-all-module = !->
+	_init-all-module = (url)!->
 		page = require "./pageManage.js";			page.initial!
-		main = require "./mainManage.js";		 	main.initial _get-business-JSON
+		main = require "./mainManage.js";		 	main.initial _get-business-JSON, url
 		edit = require "./editManage.js";           edit.initial!
 	
 	_test-is-data-ready = ->
