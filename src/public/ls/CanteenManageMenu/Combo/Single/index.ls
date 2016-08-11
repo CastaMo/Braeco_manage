@@ -27,7 +27,7 @@ let win = window, doc = document
 	dc-type-map-dc-options = {
 		"sale" 			: 			{
 			min 		: 			1
-			max 		:			50
+			max 		:			100000
 			word 		: 			"元"
 		}
 		"discount" 		:			{

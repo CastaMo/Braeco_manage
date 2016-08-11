@@ -36,7 +36,7 @@ class PageView extends VBase
 		for toggle-name_, toggle-dom of @all-toggle-doms when toggle-name isnt toggle-name_
 			toggle-dom.fade-out 100
 		set-timeout (!~> @all-toggle-doms[toggle-name].fade-in 100), 100
-		$("html, body").animate({ scrollTop: 0 }, "fast");
+		$("html, body").animate({ scrollTop: 0 }, "fast")
 
 	cover-page: (cover-name)!->
 		if cover-name is "exit"

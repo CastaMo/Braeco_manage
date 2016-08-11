@@ -2,7 +2,7 @@ main = page = group = require_ = null
 edit-manange = let
 
 	[		getObjectURL, 		deep-copy, 			getStrAfterFilter,
-			converImgTobase64] = 
+			converImgTobase64] =
 		[	util.getObjectURL, 	util.deep-copy, 	util.getStrAfterFilter,
 			util.converImgTobase64]
 
@@ -79,7 +79,7 @@ edit-manange = let
 	_dc-type-map-dc-options = {
 		"sale" 			: 			{
 			min 		: 			1
-			max 		:			50
+			max 		:			100000
 			word 		: 			"元"
 		}
 		"discount" 		:			{
@@ -162,7 +162,7 @@ edit-manange = let
 		###
 		_groups 				:= []
 		deep-copy _current-dish.groups, _groups
-		_connect-property-to-groups!		
+		_connect-property-to-groups!
 
 		_upload-flag 			:= null
 

@@ -11,7 +11,7 @@ page-manage = let
 	_full-cover-dom 	= $ "\#full-cover"
 	_loading-dom 		= _full-cover-dom.find ".loading-field"
 	_all-cover-dom 		= [_loading-dom]
-	
+
 	_cover-state = 0
 
 	_unshow-all-dom-except-given = (dom_)->
@@ -27,15 +27,18 @@ page-manage = let
 			->
 				_unshow-all-dom-except-given _main-dom
 				set-timeout (-> _main-dom.fade-in 100), 100
+				$("html, body").animate({ scrollTop: 0 }, "fast")
 		"new"		:	 let
 			->
 				_unshow-all-dom-except-given _new-dom
 				set-timeout (-> _new-dom.fade-in 100), 100
+				$("html, body").animate({ scrollTop: 0 }, "fast")
 
 		"edit"		:	 let
 			->
 				_unshow-all-dom-except-given _edit-dom
 				set-timeout (-> _edit-dom.fade-in 100), 100
+				$("html, body").animate({ scrollTop: 0 }, "fast")
 	}
 
 	_cover-page-callback = {
