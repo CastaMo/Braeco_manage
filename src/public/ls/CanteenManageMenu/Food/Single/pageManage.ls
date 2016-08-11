@@ -15,7 +15,7 @@ page-manage = let
 	_property-dom 		= _full-cover-dom.find ".property-field"
 	_loading-dom 		= _full-cover-dom.find ".loading-field"
 	_all-cover-dom 		= [_move-dom, _copy-dom, _property-dom, _loading-dom]
-	
+
 	_cover-state = 0
 
 	_unshow-all-toggle-dom-except-given = (dom_)->
@@ -31,15 +31,18 @@ page-manage = let
 			->
 				set-timeout (-> _main-dom.fade-in 100), 100
 				_unshow-all-toggle-dom-except-given _main-dom
+				$("html, body").animate({ scrollTop: 0 }, "fast")
 		"new"		: 		let
 			->
 				set-timeout (-> _new-dom.fade-in 100), 100
 				_unshow-all-toggle-dom-except-given _new-dom
+				$("html, body").animate({ scrollTop: 0 }, "fast")
 
 		"edit"		: 		let
 			->
 				set-timeout (-> _edit-dom.fade-in 100), 100
 				_unshow-all-toggle-dom-except-given _edit-dom
+				$("html, body").animate({ scrollTop: 0 }, "fast")
 	}
 
 	_cover-page-callback = {
@@ -78,10 +81,10 @@ page-manage = let
 
 	toggle-page: (page)->
 		_toggle-page-callback[page]?!
-		
+
 
 	cover-page: (page)->
 		_cover-page-callback[page]?!
-		
+
 
 module.exports = page-manage
