@@ -2,7 +2,7 @@ main = page = group = require_ = null
 new-manange = let
 
 	[		getObjectURL, 		deep-copy, 			getStrAfterFilter,
-			converImgTobase64] = 
+			converImgTobase64] =
 		[	util.getObjectURL, 	util.deep-copy, 	util.getStrAfterFilter,
 			util.converImgTobase64]
 
@@ -79,7 +79,7 @@ new-manange = let
 	_dc-type-map-dc-options = {
 		"sale" 			: 			{
 			min 		: 			1
-			max 		:			50
+			max 		:			100000
 			word 		: 			"元"
 		}
 		"discount" 		:			{
@@ -192,7 +192,7 @@ new-manange = let
 			name2 		:		_e-name
 			tag 		:		_remark
 			detail 		:		_intro
-			groups 		:		_groups	
+			groups 		:		_groups
 			type 		:		"normal"
 		}
 
