@@ -1,6 +1,10 @@
 @import "../../../common/common";
 @import "base64";
 #business {
+    * {
+        font-size: 14px;
+        font-family: "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "\9ED1\4F53", Arial, sans-serif;
+    }
     *:focus {
         outline: none;
     }
@@ -88,7 +92,8 @@
                         background-position: center;
                         .alert-information {
                             margin-top: 45px;
-                            text-align: center;
+                            margin-left: 50px;
+                            text-align: left;
                         }
                         .btn-block {
                             margin-top: 28px;
@@ -124,6 +129,12 @@
                                 background-color: #ffb300;
                             }
                         }
+                    }
+                    .stop-alert-block {
+                        margin-left: 15px;
+                    }
+                    .start-alert-block {
+                        margin-left: -106px;
                     }
                 }
                 .business-block {
@@ -173,6 +184,7 @@
                                 float: left;
                                 font-size: 14px;
                                 color: #3596ec;
+                                word-break: break-all;
                             }
                         }
                         .block-btn {
@@ -194,24 +206,31 @@
                         width: 354px;
                         .qrcode-container {
                             float: left;
-                            width: 66px;
-                            height: 66px;
-                            margin-right: 20px;
+                            width: 74px;
+                            height: 74px;
+                            margin-top: -6px;
+                            margin-left: -6px;
+                            margin-right: 14px;
                             border: none;
-                            background-image: url(@default-qrcode-img-url);
-                            background-size: 66px 66px;
-                            background-position: center;
-                            background-repeat: no-repeat;
+                            // background-image: url(@default-qrcode-img-url);
+                            // background-size: 66px 66px;
+                            // background-position: center;
+                            // background-repeat: no-repeat;
                         }
                     }
                     .link-block {
                         width: 355px;
                     }
                 }
+                .disable-business-block {
+                    *:not(.business-block-header) {
+                        color: #C8C7CC !important;
+                    }
+                }
             }
         }
         #basic-edit {
-            margin: 30px 0;
+            display: none;
             .block-header {
                 background-color: #f4f5f9;
                 color: #4a4a4a;
@@ -220,11 +239,53 @@
                 padding-bottom: 16px;
                 padding-left: 30px;
             }
-            .role-form {
+            .business-form {
                 padding: 32px;
                 border-left: 1px solid #E7E7E7;
                 border-right: 1px solid #E7E7E7;
                 border-bottom: 1px solid #E7E7E7;
+                .form-block {
+                    margin-bottom: 22px;
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                    > span {
+                        float: left;
+                        margin-right: 28px;
+                    }
+                    > ul {
+                        float: left;
+                    }
+                }
+                .checkbox-item {
+                    display: inline-block;
+                    > input[type="checkbox"] {
+                        cursor: pointer;
+                        float: left;
+                        width: 18px;
+                        height: 18px;
+                        margin-right: 8px;
+                        opacity: 0;
+                    }
+                    > p {
+                        float: left;
+                        margin-right: 25px;
+                    }
+                }
+                .unchecked-icon {
+                    background-size: 18px 18px;
+                    background-repeat: no-repeat;
+                }
+                .checked-icon {
+                    background-size: 18px 18px;
+                    background-repeat: no-repeat;
+                }
+                #auth-link-container {
+                    margin-top: 10px;
+                    #auth-link {
+                        color: #3596ec;
+                    }
+                }
             }
             .btn-container {
                 padding: 20px 30px;

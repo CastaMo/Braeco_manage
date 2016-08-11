@@ -200,6 +200,7 @@ refund-manage = let
                         refund-item = {}
                         refund-item.id = single-food.id
                         refund-item.property = single-food.property
+                        refund-item.discount_property = single-food.discount_property
                         refund-item.sum = cur
                         refunds.push refund-item
                         break
@@ -207,8 +208,9 @@ refund-manage = let
             "description": description,
             "password": $.md5 password,
         }
-        json-data.refund = JSON.stringify refunds
+        json-data.refund = refunds
         json-data = JSON.stringify json-data
+        console.log json-data
         $.ajax {type: "POST", url: "/order/refund/"+_data-obj.id, data: json-data,\
             dataType: 'JSON', contentType:"application/json", success: _refund-post-success, error: _refund-post-fail}
         _set-password-comfirm-button-disable!
@@ -220,16 +222,12 @@ refund-manage = let
             set-timeout (!-> location.reload!),2000
         else if data.message === 'Wrong password'
             alert "密码错误"
-            # refund-error-message.text "密码错误"
         else if data.message === 'Invalid dish to refund'
             alert "非法的退款"
-            # refund-error-message.text "非法的退款"
         else if data.message === 'Order not found'
             alert "订单未找到"
-            # refund-error-message.text "订单未找到"
         else if data.message === 'Need to upload cert of wx pay'
             alert "需要上传微信证书"
-            # refund-error-message.text "错误"
         else
             alert "请求退款失败"
         _set-password-comfirm-button-able!
@@ -238,20 +236,11 @@ refund-manage = let
         alert "请求退款失败"
         set-timeout (!-> location.reload!),2000
         
-    _is-refunded = (single-food)->
-        if single-food.type === 0 and single-food.property.length > 0
-            if (single-food.property.index-of '【已退款】') >= 0 or (single-food.property.index-of '【退款中】') >= 0
-                return true
-            else
-                return false
-        else if single-food.type === 1
-            for food in single-food.property
-                if food instanceof Array and food.length === 1 and food[0].name === '属性'
-                    if (food[0].p.index-of '【已退款】') >= 0 or (food[0].p.index-of '【退款中】') >= 0
-                        return true
-                    else
-                        return false
-        return false
+    _is-refunded = (single-food)-> # 判断content中的每一个单品或套餐是否被退款
+        if single-food.refund != null
+            return true
+        else
+            return false
 
     _unset-checkbox = !->
         ($ '\#all-refund-checkbox').attr 'checked', false
@@ -280,8 +269,6 @@ refund-manage = let
         </tr>
         </thead>"
         for single-food,index in _data-obj.content
-            if single-food.cat === 0
-                continue
             if _is-refunded single-food
                 continue
             refund-food-table-dom.append _gene-food-table-row single-food,index
@@ -292,8 +279,16 @@ refund-manage = let
         row-dom = $ "<tr></tr>"
         row-dom.append "<td class='id-td' style='display: none'>"+index+"</td>"
         td-name = $ "<td class='table-cat-col cat-td'>"+single-food.name+"</td>"
-        if single-food.property.length > 0 and single-food.type === 0
-            td-name.append $ "<span class='sub-food-item'>"+'（'+(single-food.property.join '、')+"）"+"</span>"
+        if single-food.discount_property.length > 0
+            td-name.append $ "<span class='sub-food-item'>"+'（'+(single-food.discount_property.join '、')+"）"+"</span>"
+        if single-food.type == 1
+            for food in single-food.property
+                if food instanceof Array
+                    for food-item in food
+                        if food-item.p.length == 0
+                            td-name.append $ "<div class='sub-food-item'>"+food-item.name+"</div>"
+                        else
+                            td-name.append $ "<div class='sub-food-item'>"+food-item.name+"<span>"+'（'+(food-item.p.join '、')+"）"+"</span>"+"</div>"
         row-dom.append td-name
         row-dom.append _gene-food-table-num-col single-food.sum
         row-dom.append "<td class='table-pri-col pri-td'>"+single-food.price+"</td>"
@@ -314,10 +309,10 @@ refund-manage = let
         
     _gene-refund-promotion-block-dom = !->
         promotion-block-dom = $ "<div class='refund-promotion-block'></div>"
-        for single-promotion in _data-obj.content
-            if single-promotion.cat === 0
-                promotion-block-dom.append $ "<span class='left-span'>"+single-promotion.name+"</span>"
-                promotion-block-dom.append $ "<span class='right-span'>"+single-promotion.property[0]+"</span>"
+        for single-promotion in _data-obj.benefit_content
+            if single-promotion.price != 0
+                promotion-block-dom.append $ "<span class='left-span'>"+single-promotion.type+"</span>"
+                promotion-block-dom.append $ "<span class='right-span promotion-total-price'>共减 "+single-promotion.total_reduce+" 元</span>"
                 promotion-block-dom.append "<div class='clear'></div>"
         _refund-block-content-dom.append promotion-block-dom
     

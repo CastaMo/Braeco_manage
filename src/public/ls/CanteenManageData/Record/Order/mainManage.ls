@@ -36,9 +36,9 @@ main-manage = let
     _is-one-pinned = false
     
     _construct-url = (st,en,pn,type)->
-        if st === null
+        if st == null
             st = ''
-        if en === null
+        if en == null
             en = ''
         "/Manage/Data/Record/Order?st="+st+"&en="+en+"&pn="+pn+"&type="+type
     
@@ -59,11 +59,11 @@ main-manage = let
     _export-btn-click-event = (event)!->
         st = _page-data-obj.st
         en = _page-data-obj.en
-        if st === null
+        if st == null
             st = _page-data-obj.today
         else
             st = _page-data-obj.st
-        if en === null
+        if en == null
             en = _page-data-obj.today + 24*3600-1
         else
             en = _page-data-obj.en
@@ -202,6 +202,13 @@ main-manage = let
         month = _int-to-string d.get-month!+1
         date = _int-to-string d.get-date!
         year+"-"+month+"-"+date
+
+    _unix-timestamp-to-only-time = (timestamp)->
+        d = new Date timestamp*1000
+        hour = _int-to-string d.get-hours!
+        minute = _int-to-string d.get-minutes!
+        second = _int-to-string d.get-seconds!
+        hour+":"+minute+":"+second
     
     _date-to-unix-timestamp = (date)->
         date.get-time! / 1000
@@ -213,32 +220,43 @@ main-manage = let
         date = _int-to-string d.get-date!
         new_date = new Date year+"-"+month+"-"+date
         new_date.get-time! / 1000
-
-    _gene-food-table-row = (single-food) ->
+    
+    _gene-food-table-row = (single-food) -> # 生成小票订单详情中的每一行
         row-dom = $ "<tr></tr>"
-        if single-food.type === 0
+        if single-food.type == 0 # 单品
+            if single-food.refund == 0
+                single-food.discount_property.push '退款中'
+            else if single-food.refund == 1
+                single-food.discount_property.push '已退款'
+            else if single-food.refund == 2
+                single-food.discount_property.psuh '退款失败'
             td-name = $ "<td class='table-cat-col'>"+single-food.name+"</td>"
-            if single-food.property.length > 0
-                td-name.append $ "<span class='sub-food-item'>"+'（'+(single-food.property.join '、')+"）"+"</span>"
+            if single-food.discount_property != null and single-food.discount_property.length > 0
+                td-name.append $ "<span class='sub-food-item'>" + '（' + (single-food.discount_property.join '、') + '）' + "</span>"
             row-dom.append td-name
-        if single-food.type === 1
+        if single-food.type == 1 # 套餐
+            if single-food.refund == 0
+                single-food.discount_property.push '退款中'
+            else if single-food.refund == 1
+                single-food.discount_property.push '已退款'
+            else if single-food.refund == 2
+                single-food.discount_property.push '退款失败'
             td-name = $ "<td class='table-cat-col'>"+single-food.name+"</td>"
-            for food in single-food.property
-                if food instanceof Array and food.length === 1 and food[0].name === '属性'
-                    td-name.append $ "<span class='sub-food-item'>"+'（'+(food[0].p.join '、')+"）"+"</span>"
+            if single-food.discount_property != null and single-food.discount_property.length > 0
+                td-name.append $ "<span class='sub-food-item'>" + '（' + (single-food.discount_property.join '、') + '）' + "</span>"
             for food in single-food.property
                 if food instanceof Array
-                    if food.length === 1 and food[0].name === '属性'
+                    if food.length == 1 and food[0].name == '属性'
                         continue
                     for food-item in food
-                        if food-item.p.length === 0
+                        if food-item.p.length == 0
                             td-name.append $ "<div class='sub-food-item'>"+food-item.name+"</div>"
                         else
                             td-name.append $ "<div class='sub-food-item'>"+food-item.name+"<span>"+'（'+(food-item.p.join '、')+"）"+"</span>"+"</div>"
                             
             row-dom.append td-name
         row-dom.append "<td class='table-num-col'>"+single-food.sum+"</td>"
-        row-dom.append "<td class='table-pri-col'>"+single-food.price+"</td>"
+        row-dom.append "<td class='table-pri-col'>"+single-food.price_before_discount+"</td>"
         $ row-dom
     
    
@@ -254,7 +272,7 @@ main-manage = let
         table-body-dom = $ "<tbody></tbody>"
         current-cat = 0
         for single-food in content-obj
-            if single-food.cat === 0
+            if single-food.cat == 0
                 continue
             if current-cat !== 0 and current-cat !== single-food.cat
                 table-body-dom.append "<tr><td colspan='3'>-----------------------------------------</td></tr>"
@@ -270,17 +288,16 @@ main-manage = let
         $ food-block-dom
         
     
-    _gene-promotion-block-dom = (content-obj) ->
+    _gene-promotion-block-dom = (benefit-content-obj) ->
         promotion-block-dom = $ "<div class='details-block'></div>"
         first-promition = true
-        for single-promotion in content-obj
-            if single-promotion.cat === 0
-                if first-promition
-                    promotion-block-dom.append $ "<p>------------------ 优惠 -------------------</p>"
-                    first-promition = false
-                promotion-block-dom.append $ "<span class='left-span'>"+single-promotion.name+"</span>"
-                promotion-block-dom.append $ "<span class='right-span'>"+single-promotion.property[0]+"</span>"
-                promotion-block-dom.append "<div class='clear'></div>"
+        for single-promotion in benefit-content-obj
+            if first-promition
+                promotion-block-dom.append $ "<p>------------------ 优惠 -------------------</p>"
+                first-promition = false
+            promotion-block-dom.append $ "<span class='left-span'>"+single-promotion.type+"</span>"
+            promotion-block-dom.append $ "<span class='right-span'>减"+single-promotion.total_reduce+" 元</span>"
+            promotion-block-dom.append "<div class='clear'></div>"
         $ promotion-block-dom
     
     _gene-sum-block-dom = (content-obj, price) ->
@@ -295,14 +312,15 @@ main-manage = let
     _get-food-number-sum = (content-obj) ->
         sum = 0
         for single-food in content-obj
-            if single-food.cat === 0
+            if single-food.cat == 0
                 continue
             sum += single-food.sum
         sum
     
-    _gene-order-details-container =(data-obj)->
+    _gene-order-details-container =(data-obj)-> # 生成小票
+        # header
         container-dom = $ "<div class='order-details-container'></div>"
-        if data-obj.serial === '推送失败'
+        if data-obj.serial == '推送失败'
             order-details-header-dom = $ "<div class='order-details-header order-details-header-image'><p>"+"接单失败"+
             "</p></div>"
         else
@@ -311,45 +329,48 @@ main-manage = let
         pin-icon-dom = "<icon class='pin-icon unpinned-icon'></icon>"
         order-details-header-dom.append pin-icon-dom
         container-dom.append order-details-header-dom
+
         order-details-body-dom = $ "<div class='order-details-body'></div>"
+        # 支付方式
         order-details-body-dom.append $ "<p class='order-pay-method'>"+data-obj.channel+"</p>"
-        if data-obj.type !== "堂食"
-            order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"</p>"
-        else
-            order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"号桌</p>"
-       
+        # 桌号
+        if data-obj.type == "堂食" or data-obj.type == '外带'
+            if data-obj.table != null
+                order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"号桌</p>"
+        
+        # 会员编号       
         infomation-dom = $ "<div class='order-infomation info-number'></div>"
-        if data-obj.eaterid_of_dinner === null
+        if data-obj.eater == null or data-obj.eater.id == null
             infomation-dom.append $ "<span>会员编号： </span><span>"+'-'+"</span>"
         else
-            infomation-dom.append $ "<span>会员编号： </span><span>"+data-obj.eaterid_of_dinner+"</span>"
+            infomation-dom.append $ "<span>会员编号： </span><span>"+data-obj.eater.id+"</span>"
         order-details-body-dom.append infomation-dom
-        
-        if data-obj.phone !== '-'
+        # 手机号码
+        if data-obj.eater != null and data-obj.eater.phone != '-'
             infomation-dom = $ "<div class='order-infomation info-phone'></div>"
-            infomation-dom.append $ "<span>手机号码： </span><span>"+data-obj.phone+"</span>"
+            infomation-dom.append $ "<span>手机号码： </span><span>"+data-obj.eater.phone+"</span>"
             order-details-body-dom.append infomation-dom
-        
+        # 成交时间
         infomation-dom = $ "<div class='order-infomation info-order-pay-time'></div>"
-        unix-timestamp = parse-int data-obj.create_date
+        unix-timestamp = parse-int data-obj.date.create
         date = _unix-timestamp-to-date unix-timestamp
         infomation-dom.append $ "<span>成交时间： </span><span>"+date+"</span>"
         order-details-body-dom.append infomation-dom
-        
+        # 订单号
         infomation-dom = $ "<div class='order-infomation info-order-number'></div>"
         infomation-dom.append $ "<span>订单号： </span>"
         infomation-dom.append $ "<span>"+data-obj.id+"</span>"
         order-details-body-dom.append infomation-dom
-
-        if data-obj.describtion !== null
+        # 备注
+        if data-obj.description != null
             infomation-dom = $ "<div class='order-infomation'></div>"
             infomation-dom.append $ "<span>备注： </span>"
-            infomation-dom.append $ "<span>"+data-obj.describtion+"</span>"
+            infomation-dom.append $ "<span>"+data-obj.description+"</span>"
             order-details-body-dom.append infomation-dom
 
         order-details-body-dom.append _gene-food-block-dom data-obj.content
 
-        order-details-body-dom.append _gene-promotion-block-dom data-obj.content
+        order-details-body-dom.append _gene-promotion-block-dom data-obj.benefit_content
        
         order-details-body-dom.append _gene-sum-block-dom data-obj.content, data-obj.price
 
@@ -392,12 +413,12 @@ main-manage = let
         # container-dom.attr "id","pinned-order-container"
 
     _html-click-event = (event)!->
-        if _is-one-pinned === false
+        if _is-one-pinned == false
             return
         target = $ event.target
         is-outside = true
         while (not target.is 'html') and _is-one-pinned
-            if (target.attr 'id') === 'pinned-order-container'
+            if (target.attr 'id') == 'pinned-order-container'
                 is-outside := false
             target = target.parent!
         if is-outside
@@ -430,37 +451,40 @@ main-manage = let
         tr-dom = $ "<tr></tr>"
         tr-dom.hover ((event)!-> _tr-hover-event event), ((event)!-> _tr-leave-event event)
         tr-dom.click (event)!-> _tr-click-event event
-        unix-timestamp = parse-int data-obj.create_date
-        date = _unix-timestamp-to-date unix-timestamp
-        tr-dom.append $ "<td>"+date+"</td>"
-        
-        if data-obj.eaterid_of_dinner === null
+        # 成交时间
+        unix-timestamp = parse-int data-obj.date.create
+        date = _unix-timestamp-to-only-date unix-timestamp
+        time = _unix-timestamp-to-only-time unix-timestamp
+        tr-dom.append $ "<td><div>"+date+"</div><div>"+time+"</div></td>"
+        # 会员编号
+        if data-obj.eater == null or data-obj.eater.id == null
             tr-dom.append $ "<td>"+"-"+"</td>"
         else
-            tr-dom.append $ "<td>"+data-obj.eaterid_of_dinner+"</td>"
-        tr-dom.append $ "<td>"+data-obj.id+"</td>"
-        
+            tr-dom.append $ "<td>"+data-obj.eater.id+"</td>"
+        # 订单号
+        # tr-dom.append $ "<td>"+data-obj.id+"</td>"
+        # 流水号
         td-water-number-dom = $ "<td class='td-water-number'></td>"
-        if data-obj.serial === '推送失败'
+        if data-obj.serial == '推送失败'
             number-content-dom = $ "<p class='td-water-number-content'>"+"接单失败"+"</p>"
         else
             number-content-dom = $ "<p class='td-water-number-content'>"+data-obj.serial+"</p>"
         td-water-number-dom.append number-content-dom
         td-water-number-dom.append _gene-order-details-container data-obj
         tr-dom.append td-water-number-dom
-        
+        # 交易额
         tr-dom.append $ "<td>"+data-obj.price+"元"+"</td>"
-        
+        # 订单类型
         tr-dom.append $ "<td class='td-type'>"+data-obj.type+"</td>"
-
-        if data-obj.channel === "微信P2P"
+        # 支付方式
+        if data-obj.channel == "微信P2P"
             tr-dom.append $ "<td>微信支付</td>"
         else
             tr-dom.append $ "<td>"+data-obj.channel+"</td>"
-        
+        # 操作
         td-methods-dom =  $ "<td class='td-methods'></td>"
         refund-method-container-dom = $ "<div class='method-container'></div>"
-        if data-obj.refund === '发起退款'
+        if data-obj.refund == '发起退款'
             refund-method-container-dom.add-class 'refund-method-container'
             refund-method-container-dom.append $ "<icon class='refund-icon'></icon>"
             refund-method-container-dom.append $ "<p>退款</p>"

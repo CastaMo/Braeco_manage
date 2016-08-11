@@ -50,6 +50,13 @@ main-manage = let
         date = _int-to-string d.get-date!
         year+"-"+month+"-"+date
 
+    _unix-timestamp-to-only-time = (timestamp)->
+        d = new Date timestamp*1000
+        hour = _int-to-string d.get-hours!
+        minute = _int-to-string d.get-minutes!
+        second = _int-to-string d.get-seconds!
+        hour+":"+minute+":"+second
+
     _date-to-unix-timestamp = (date)->
         date.get-time! / 1000
 
@@ -132,10 +139,9 @@ main-manage = let
         container-dom.append order-details-header-dom
         order-details-body-dom = $ "<div class='order-details-body'></div>"
         order-details-body-dom.append $ "<p class='order-pay-method'>"+data-obj.channel+"</p>"
-        if data-obj.type !== "堂食"
-            order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"</p>"
-        else
-            order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"号桌</p>"
+        if data-obj.type == "堂食" or data-obj.type == '外带'
+            if data-obj.table != null
+                order-details-body-dom.append $ "<p class='order-table'>"+data-obj.table+"号桌</p>"
        
         infomation-dom = $ "<div class='order-infomation info-number'></div>"
         if data-obj.eaterid_of_dinner === null
@@ -348,9 +354,9 @@ main-manage = let
             tr-dom = $ "<tr></tr>"
             tr-dom.hover ((event)!-> _tr-hover-event event), ((event)!-> _tr-leave-event event)
             tr-dom.click (event)!-> _tr-click-event event
-            date-string = @unix-timestamp-to-date @.start_time
-
-            tr-dom.append $ "<td>"+date-string+"</td>"
+            date-string = _unix-timestamp-to-only-date @.start_time
+            time-string = _unix-timestamp-to-only-time @.start_time
+            tr-dom.append $ "<td><div>"+date-string+"</div><div>"+time-string+"</div></td>"
 
             td-water-number-dom = $ "<td class='td-water-number'></td>"
             td-water-number-dom.append $ "<p>"+@.order+"</p>"
