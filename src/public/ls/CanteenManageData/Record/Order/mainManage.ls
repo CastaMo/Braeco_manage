@@ -346,6 +346,12 @@ main-manage = let
             infomation-dom = $ "<div class='order-infomation info-phone'></div>"
             infomation-dom.append $ "<span>手机号码： </span><span>"+data-obj.eater.phone+"</span>"
             order-details-body-dom.append infomation-dom
+        # 地址
+        if data-obj.address != null
+            infomation-dom = $ "<div class='order-infomation'></div>"
+            infomation-dom.append $ "<span>地址： </span>"
+            infomation-dom.append $ "<span>" + data-obj.address + "</span>"
+            order-details-body-dom.append infomation-dom
         # 成交时间
         infomation-dom = $ "<div class='order-infomation info-order-pay-time'></div>"
         unix-timestamp = parse-int data-obj.date.create
