@@ -4,6 +4,8 @@ edit-manage = let
 
     _edit-business = null
 
+    _block-header-dom = $ '\#basic-edit .block-header'
+
     _cancel-btn-dom = $ "\#basic-edit .cancel-btn"
     _save-btn-dom = $ "\#basic-edit .save-btn"
 
@@ -11,8 +13,16 @@ edit-manage = let
 
     _pay-method-block-dom = $ "\#basic-edit pay-method-block"
 
+    _type-map = {
+        "eatin": "堂食",
+        "takeaway": "外卖"
+        "takeout": "外带",
+        "reserve": "预点"
+    }
+
     _cancel-btn-click-event = !->
         _reset-checkebox!
+        $ '\#auth-link' .show!
         page.toggle-page 'main'
 
     _save-btn-click-event = !->
@@ -93,7 +103,11 @@ edit-manage = let
 
     get-business-and-init: (business, url) !->
         _edit-business := business
-        $ "\#auth-link" .prop 'href', url
+        _block-header-dom.text "修改"+_type-map[_edit-business.type]+"业务"
+        if _edit-business.type == 'takeaway'
+            $ "\#auth-link" .prop 'href', url
+        else
+            $ "\#auth-link" .hide!
         _init-pay-method-block-dom!
 
     initial: !->
