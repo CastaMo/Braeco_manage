@@ -37,13 +37,11 @@ edit-manage = let
         _set-save-btn-disable!
 
     _save-post-success = (data)!->
-        console.log data
         _set-save-btn-able!
         alert "修改成功", true
         set-timeout (!-> location.reload!), 1000
 
     _save-post-fail = (error)!->
-        console.log error
         _set-save-btn-able!
         alert "请求修改失败"
         set-timeout (!-> location.reload!), 1000
@@ -95,7 +93,6 @@ edit-manage = let
 
     get-business-and-init: (business, url) !->
         _edit-business := business
-        console.log url
         $ "\#auth-link" .prop 'href', url
         _init-pay-method-block-dom!
 
