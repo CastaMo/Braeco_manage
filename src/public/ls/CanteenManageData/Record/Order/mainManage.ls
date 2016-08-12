@@ -82,20 +82,16 @@ main-manage = let
             if this.status == 200
                 filename = ''
                 disposition = xhr.getResponseHeader 'Content-Disposition'
-                # console.log disposition
                 if disposition and (disposition.indexOf 'attachment' != -1)
                     filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
                     matches = filenameRegex.exec disposition
                     if matches != null and matches[1]
                         filename = matches[1].replace /['"]/g, ''
-                        console.log filename
                 type = xhr.getResponseHeader 'Content-Type'
                 if type == 'application/json'
-                    console.log "asdf asdf"
                     return
                 else
                     filename = "数据统计.zip"
-                    console.log filename
                     blob = new Blob [this.repsonse], {type: type}
                     if (typeof window.navigator.msSaveBlob) != 'undefined'
                         window.navigator.msSaveBlob blob, filename
@@ -229,7 +225,7 @@ main-manage = let
             else if single-food.refund == 1
                 single-food.discount_property.push '已退款'
             else if single-food.refund == 2
-                single-food.discount_property.psuh '退款失败'
+                single-food.discount_property.push '退款失败'
             td-name = $ "<td class='table-cat-col'>"+single-food.name+"</td>"
             if single-food.discount_property != null and single-food.discount_property.length > 0
                 td-name.append $ "<span class='sub-food-item'>" + '（' + (single-food.discount_property.join '、') + '）' + "</span>"

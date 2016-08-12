@@ -73,11 +73,9 @@ main-manage = let
         alert-block-dom.hide!
     
     _business-turn-success = (data)!->
-        console.log data
         location.reload!
 
     _business-trun-fail = (error)!->
-        console.log error
         alert "请求失败"
         set-timeout (!-> location.reload), 1000
     # common finish
@@ -281,7 +279,6 @@ main-manage = let
     _init-data = (_get-business-JSON)!->
         _all-business := JSON.parse _get-business-JSON!
         for data in _all-business
-            console.log data
             if data.type == 'eatin'
                 _eatin-data := data
             if data.type == 'takeout'

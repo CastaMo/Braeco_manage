@@ -210,7 +210,6 @@ refund-manage = let
         }
         json-data.refund = refunds
         json-data = JSON.stringify json-data
-        console.log json-data
         $.ajax {type: "POST", url: "/order/refund/"+_data-obj.id, data: json-data,\
             dataType: 'JSON', contentType:"application/json", success: _refund-post-success, error: _refund-post-fail}
         _set-password-comfirm-button-disable!
