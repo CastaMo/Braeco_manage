@@ -9,30 +9,6 @@ class SubitemModifyController extends CBase
 		@subitem-model 				= options.subitem-model
 		@dish-model 					= options.dish-model
 
-	# set-is-all-choose: (is-choose)!->
-	# 	@subitem-modify-model.set-is-all-choose is-choose
-
-	# get-is-all-choose: ->
-	# 	return @subitem-modify-model.get-is-all-choose!
-
-	# set-is-category-choose: (category-id, is-choose)!->
-	# 	@subitem-modify-model.set-is-category-choose category-id, is-choose
-
-	# set-is-category-active: (category-id, is-active)!->
-	# 	@subitem-modify-model.set-is-category-active category-id, is-active
-
-	# get-is-category-choose: (category-id)->
-	# 	return @subitem-modify-model.get-is-category-choose category-id
-
-	# get-is-category-active: (category-id)->
-	# 	return @subitem-modify-model.get-is-category-active category-id
-
-	# set-is-dish-choose: (category-id, dish-id, is-choose)!->
-	# 	@subitem-modify-model.set-is-dish-choose category-id, dish-id, is-choose
-
-	# get-is-dish-choose: (category-id, dish-id)->
-	# 	return @subitem-modify-model.get-is-dish-choose category-id, dish-id
-
 	toggle-is-all-choose: !->
 		is-choose = @subitem-modify-model.get-is-all-choose!
 		@subitem-modify-model.set-is-all-choose !is-choose

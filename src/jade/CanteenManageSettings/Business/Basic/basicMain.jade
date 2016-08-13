@@ -3,77 +3,120 @@
         .business-title
             p 堂食
         .business-header
-            button.business-start-btn.business-start-btn-able 满送启用中
-            button.business-stop-btn.business-stop-btn-able 停止满送
-            button.edit-btn 修改
-            .alert-block
-                p.alert-information 确认停止使用满送？
+            button#eatin-start-btn.business-start-btn 业务启用中
+            button#eatin-stop-btn.business-stop-btn 停用业务
+            button#eatin-edit-btn.edit-btn 修改
+            #eatin-start-alert-block.alert-block.start-alert-block
+                p.alert-information 确认开启堂食业务？
                 .btn-block
-                    button.comfirm-btn 确认
-                    button.cancel-btn 取消
+                    button#eatin-start-comfirm-btn.comfirm-btn 确认
+                    button#eatin-start-cancel-btn.cancel-btn 取消
+            #eatin-stop-alert-block.alert-block.stop-alert-block
+                p.alert-information 确认停止堂食业务？
+                .btn-block
+                    button#eatin-stop-comfirm-btn.comfirm-btn 确认
+                    button#eatin-stop-cancel-btn.cancel-btn 取消
             .clear
-        .business-block
-            .business-block-header 外卖设置
+        #eatin-business-block.business-block
+            .business-block-header 堂食设置
             .business-block-content
-                div
-                    span.block-description 接单日期
-                    span.business-content 堂食、预订、外卖
-                    .clear
+                //- div
+                //-     span.block-description 接单日期
+                //-     span.business-content 周一、周二、周三、周四
+                //-     .clear
                 div
                     span.block-description 支付渠道
-                    span.business-content 堂食、预订、外卖
+                    span#eatin-method-content.business-content
                     .clear
 
     .business-content
         .business-title
             p 外卖
         .business-header
-            button.business-start-btn.business-start-btn-able 满送启用中
-            button.business-stop-btn.business-stop-btn-able 停止满送
-            button.edit-btn 修改
-            .alert-block
-                p.alert-information 确认停止使用满送？
+            button#takeaway-start-btn.business-start-btn 业务启用中
+            button#takeaway-stop-btn.business-stop-btn 停用业务
+            button#takeaway-edit-btn.edit-btn 修改
+            #takeaway-start-alert-block.alert-block.start-alert-block
+                p.alert-information 确认启用外卖业务？
                 .btn-block
-                    button.comfirm-btn 确认
-                    button.cancel-btn 取消
+                    button#takeaway-start-comfirm-btn.comfirm-btn 确认
+                    button#takeaway-start-cancel-btn.cancel-btn 取消
+            #takeaway-stop-alert-block.alert-block.stop-alert-block
+                p.alert-information 确认停止外卖业务？
+                .btn-block
+                    button#takeaway-stop-comfirm-btn.comfirm-btn 确认
+                    button#takeaway-stop-cancel-btn.cancel-btn 取消
             .clear    
-        .business-block
+        #takeaway-business-block.business-block
             .business-block-header 外卖设置
             .business-block-content
-                div
-                    span.block-description 接单日期
-                    span.business-content 堂食、预订、外卖
-                    .clear
+                //- div
+                //-     span.block-description 接单日期
+                //-     span.business-content 周一、周二、周三、周四
+                //-     .clear
                 div
                     span.block-description 支付渠道
-                    span.business-content 堂食、预订、外卖
+                    span#takeaway-method-content.business-content
                     .clear
             .business-common-block.qrcode-block
                 .block-header 顾客长按识别二维码即可点餐：
                 .block-content
-                    img.qrcode-container
+                    img#takeaway-content-qrcode.qrcode-container
                     p.content-context 可发布于微信群或朋友圈
                     p.content-context 可嵌入公众号文章
                     .clear
-                button.block-btn 导出二维码
+                button#takeaway-download-btn.block-btn 导出二维码
             .business-common-block.link-block
                 .block-header 顾客通过公众号进入点餐：
                 .block-content
                     p.content-context 可复制链接配置到公众号菜单栏
-                    p#outer-content-link.content-link http://brae.co/nhbhugqwesfnasdf
+                    p#takeaway-content-link.content-link
                     .clear
-                button#outer-copy-btn.block-btn 复制链接
+                button#takeaway-copy-btn.block-btn 复制链接
             .clear
+
     .business-content
         .business-title
-            p 预点
+            p 外带
         .business-header
-            button.business-start-btn.business-start-btn-able 满送启用中
-            button.business-stop-btn.business-stop-btn-able 停止满送
-            button.edit-btn 修改
-            .alert-block
-                p.alert-information 确认停止使用满送？
+            button#takeout-start-btn.business-start-btn 业务启用中
+            button#takeout-stop-btn.business-stop-btn 停用业务
+            button#takeout-edit-btn.edit-btn 修改
+            #takeout-start-alert-block.alert-block.start-alert-block
+                p.alert-information 确认启用外带业务？
                 .btn-block
-                    button.comfirm-btn 确认
-                    button.cancel-btn 取消
+                    button#takeout-start-comfirm-btn.comfirm-btn 确认
+                    button#takeout-start-cancel-btn.cancel-btn 取消
+            #takeout-stop-alert-block.alert-block.stop-alert-block
+                p.alert-information 确认停止外带业务？
+                .btn-block
+                    button#takeout-stop-comfirm-btn.comfirm-btn 确认
+                    button#takeout-stop-cancel-btn.cancel-btn 取消
+            .clear    
+        #takeout-business-block.business-block
+            .business-block-header 外带设置
+            .business-block-content
+                //- div
+                //-     span.block-description 接单日期
+                //-     span.business-content 周一、周二、周三、周四
+                //-     .clear
+                div
+                    span.block-description 支付渠道
+                    span#takeout-method-content.business-content
+                    .clear
+            .business-common-block.qrcode-block
+                .block-header 顾客长按识别二维码即可点餐：
+                .block-content
+                    img#takeout-content-qrcode.qrcode-container
+                    p.content-context 可发布于微信群或朋友圈
+                    p.content-context 可嵌入公众号文章
+                    .clear
+                button#takeout-download-btn.block-btn 导出二维码
+            .business-common-block.link-block
+                .block-header 顾客通过公众号进入点餐：
+                .block-content
+                    p.content-context 可复制链接配置到公众号菜单栏
+                    p#takeout-content-link.content-link
+                    .clear
+                button#takeout-copy-btn.block-btn 复制链接
             .clear

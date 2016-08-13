@@ -2,7 +2,7 @@ main = page = group = require_ = null
 new-manange = let
 
 	[		getObjectURL, 		deep-copy, 			getStrAfterFilter,
-			converImgTobase64] = 
+			converImgTobase64] =
 		[	util.getObjectURL, 	util.deep-copy, 	util.getStrAfterFilter,
 			util.converImgTobase64]
 
@@ -79,7 +79,7 @@ new-manange = let
 	_dc-type-map-dc-options = {
 		"sale" 			: 			{
 			min 		: 			1
-			max 		:			50
+			max 		:			100000
 			word 		: 			"元"
 		}
 		"discount" 		:			{
@@ -156,7 +156,7 @@ new-manange = let
 		if get-total-length-for-str(_c-name) <= 0 or get-total-length-for-str(_c-name) > 32 then _err-msg += "单品名称长度应为1~32位(一个中文字符占2个单位)\n"; _valid-flag = false
 		if get-total-length-for-str(_e-name) > 32 then _err-msg += "英文名长度应为0~32位(一个中文字符占2个单位)\n"; _valid-flag = false
 		if _default-price-dom.val! is "" or _default-price < 0 or _default-price > 9999 then _err-msg += "默认价格范围应为0~9999元\n"; _valid-flag = false
-		if get-total-length-for-str(_remark) then _err-msg += "标签长度应为0~18位(一个中文字符占2个单位)\n"; _valid-flag = false
+		if get-total-length-for-str(_remark) > 18 then _err-msg += "标签长度应为0~18位(一个中文字符占2个单位)\n"; _valid-flag = false
 		if get-total-length-for-str(_intro) > 400 then _err-msg += "详情长度应为0~400位(一个中文字符占2个单位)\n"; _valid-flag = false
 		if _groups.length > 40 then _err-msg += "属性组数量应为0~40个(一个中文字符占2个单位)\n"; _valid-flag = false
 		if _dc
@@ -192,7 +192,7 @@ new-manange = let
 			name2 		:		_e-name
 			tag 		:		_remark
 			detail 		:		_intro
-			groups 		:		_groups	
+			groups 		:		_groups
 			type 		:		"normal"
 		}
 
