@@ -4,12 +4,13 @@ require-manage = let
 		[	util.get-JSON, 	util.ajax,	util.deep-copy]
 
 	_all-require-name = [
-		'modify',		'recharge'
+		'modify',	'recharge', 'chargeBabalce'
 	]
 
 	_all-require-URL = {
-		'modify'		:		'/Membership/Card/Setexp'
-		'recharge'		:		'/Membership/Card/Charge'
+		'modify':	'/Membership/Card/Setexp'
+		'recharge':	'/Membership/Card/Charge'
+		'chargeBabalce': '/Membership/Card/Balance/Set'
 	}
 
 	_requires = {}
@@ -27,15 +28,16 @@ require-manage = let
 		}
 
 	_correct-URL = {
-		"modify"		:		(ajax-object,data)-> ajax-object.url += "/#{data.user-id}"
-		"recharge"		:		(ajax-object,data)-> ajax-object.url += "/#{data.user-id}"
+		"modify":		(ajax-object,data)-> ajax-object.url += "/#{data.user-id}"
+		"recharge":		(ajax-object,data)-> ajax-object.url += "/#{data.user-id}"
+		"chargeBabalce": (ajax-object, data)-> ajax-object.url += "/#{data.user-id}"
 	}
 
 	_set-header = {}
 
 	_get-require-data-str = {
-		"modify"		:		(data)-> return "#{data.JSON}"
-		"recharge"		:		(data)-> return "#{data.JSON}"
+		"modify":		(data)-> return "#{data.JSON}"
+		"recharge":		(data)-> return "#{data.JSON}"
 	}
 	
 	_normal-handle = (name, result_, callback)->
@@ -46,9 +48,9 @@ require-manage = let
 		else alert "系统错误"
 
 	_require-fail-callback = {
-		"User not found"					:		-> alert "用户不存在"
-		"Membership card not exists"		:		-> alert "会员不存在"
-		"Need phone to charge"				:		-> alert "充值需要手机号码"
+		"User not found": -> alert "用户不存在"
+		"Membership card not exists": -> alert "会员不存在"
+		"Need phone to charge": -> alert "充值需要手机号码"
 	}
 
 	_require-handle = (name, config)->

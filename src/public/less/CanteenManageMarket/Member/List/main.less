@@ -1,4 +1,6 @@
 @import "../main";
+@import "./base64.less";
+
 #json-field {
     display: none;
 }
@@ -261,6 +263,31 @@
                 margin-left: 70px;
                 padding: 30px 60px 30px 50px;
                 border-bottom: solid 1px @border-grey-color;
+
+                .internal-charge {
+                    float: none;
+                    margin-bottom: 10px;
+                    .checkbox {
+                        height: 16px;
+                        width: 16px;
+                        border: 1px solid #c8c7cc;
+                        display: inline-block;
+                        vertical-align: middle;
+                        margin-right: 20px;
+                        &:hover {
+                            cursor: pointer;
+                        }
+
+                    }
+                    .choose {
+                        background-image: url(@checkbox-image-url);
+                        background-size: 100%;
+                    }
+                    .description {
+                        
+                    }
+                }
+
                 p {
                     font-size: 14px;
                 }
