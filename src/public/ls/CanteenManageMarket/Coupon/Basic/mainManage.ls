@@ -30,9 +30,11 @@ main-manage = let
 	_pass-content-dom = $ "\#pass-content-field"
 	_confirm-btn-dom = $ "\#stop-coupon .confirm-btn"
 	_confirm-cancel-btn = $ "\#stop-coupon .confirm-cancel-btn"
+	_up-page-select-dom = $ '._up'
 	_up-last-dom = $ "\._up .lastPage.btn"
 	_up-next-dom = $ "\._up .nextPage.btn"
 	_up-jump-dom = $ "\._up .jump-btn"
+	_down-page-select-dom = $ '._down'
 	_down-last-dom = $ "\._down .lastPage.btn"
 	_down-next-dom = $ "\._down .nextPage.btn"
 	_down-jump-dom = $ "\._down .jump-btn"
@@ -76,6 +78,14 @@ main-manage = let
 
 	_init-coupon-view = !->
 		_length = _coupons.length
+		if _upsum < 2
+			_up-page-select-dom.hide!
+		if _upsum == 0
+			$ '#run-coupon' .hide!
+		if _downsum < 2
+			_down-page-select-dom.hide!
+		if _downsum == 0
+			$ '#pass-coupon' .hide!
 		$("._up .page").html("#{_upnow}/#{_upsum}")
 		$("._up ._jump-input").attr("max", "#{_upsum}")
 		$("._down .page").html("#{_downnow}/#{_downsum}")
@@ -161,6 +171,19 @@ main-manage = let
 						$("._QRcode").attr("src", "#{_coupons[j].url}")
 				page.toggle-page "detail"
 
+	_set-coupon-run = !->
+		$(".detailCoupon-wrapper").removeClass "stop"
+		$(".detailCoupon-wrapper").addClass "run"
+		$(".run-btn p").html("启用发放中")
+		$(".stop-btn p").html("停止发放")
+
+	_set-coupon-stop = !->
+		$(".stop-confirm").fade-out 100
+		$(".detailCoupon-wrapper").removeClass "run"
+		$(".detailCoupon-wrapper").addClass "stop"
+		$(".run-btn p").html("启用发放")
+		$(".stop-btn p").html("停止发放中")
+
 	_init-all-event = !->
 		$.fn.datepicker.languages['zh-CN'] = {
 			days: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
@@ -182,6 +205,7 @@ main-manage = let
 		}
 		_date-period-end-dom.datepicker {
 			format: 'yyyy-mm-dd',
+			startDate: new Date(),
 			autohide: 'true',
 			autopick: 'true',
 			language: 'zh-CN',
@@ -244,6 +268,8 @@ main-manage = let
 
 		_new-btn-dom.click !->
 			page.toggle-page "new"
+			$("._date-period-tip").html("有效期：#{_date-period-start-dom.val!} 至 #{_date-period-end-dom.val!}")
+			$("._date-period-tip").html("有效期：#{_date-period-start-dom.val!} 至 #{_date-period-end-dom.val!}")
 
 		_cancel-btn-dom.click !->
 			$('#btn-filed .stop-confirm').fade-in 100
@@ -260,6 +286,11 @@ main-manage = let
 
 
 		_save-btn-dom.click !->
+			d1 = new Date _date-period-start-dom.val!
+			d2 = new Date _date-period-end-dom.val!
+			if d1 > d2
+				alert "请选择合法的日期区间"
+				return
 			isValid = 0
 			$("._multiple-use").val(1)
 			for p from 0 to 6 by 1
@@ -317,10 +348,6 @@ main-manage = let
 				alert('保存失败，尚有未填写项目')
 
 		_run-btn-dom.click !->
-			$(".detailCoupon-wrapper").removeClass "stop"
-			$(".detailCoupon-wrapper").addClass "run"
-			$(".run-btn p").html("启用发放中")
-			$(".stop-btn p").html("停止发放")
 			request-object = {}
 			request-object.status = 0
 			_object = {}
@@ -332,6 +359,7 @@ main-manage = let
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
 				}
+				callback    :       (result)!-> _set-coupon-run!
 			}
 
 		_stop-btn-dom.click !->
@@ -339,11 +367,6 @@ main-manage = let
 				$(".stop-confirm").fade-in 100
 
 		_confirm-btn-dom.click !->
-			$(".stop-confirm").fade-out 100
-			$(".detailCoupon-wrapper").removeClass "run"
-			$(".detailCoupon-wrapper").addClass "stop"
-			$(".run-btn p").html("启用发放")
-			$(".stop-btn p").html("停止发放中")
 			request-object = {}
 			request-object.status = 2
 			_couponid = $("._pre-batch-number")html!
@@ -354,6 +377,7 @@ main-manage = let
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
 				}
+				callback    :       (result)!-> _set-coupon-stop!
 			}
 
 		_confirm-cancel-btn.click !->
