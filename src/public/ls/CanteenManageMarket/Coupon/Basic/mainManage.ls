@@ -17,7 +17,7 @@ main-manage = let
 	_max-coupon-dom = $ "\._max-coupon"
 	_distribute-coupon-dom = $ "\._distribute-coupon"
 	_max-own-dom = $ "\._max-own"
-	_max-own-select-dom = $ "\.max-own-select"
+	_get-frequency-dom = $ "\._get-frequency"
 	_multiple-use-dom = $ "\._multiple-use"
 	_date-period-start-dom = $ "\._date-period-start"
 	_date-period-end-dom = $ "\._date-period-end"
@@ -66,10 +66,10 @@ main-manage = let
 				cost 				: 		coupon.cost
 				cost_reduce 		:		coupon.cost_reduce
 				max 				:		coupon.max
+				limit 				:		coupon.limit
 				max_use 			:		coupon.max_use
 				indate 				:		coupon.indate
 				remain				:		coupon.remain
-				daily				:		coupon.daily
 				fun 				: 		coupon.fun
 				pay 				:		coupon.pay
 				quantity 			:		coupon.quantity
@@ -81,11 +81,11 @@ main-manage = let
 		if _upsum < 2
 			_up-page-select-dom.hide!
 		if _upsum == 0
-			$ '#run-coupon' .hide!
+			$ '\#run-coupon' .hide!
 		if _downsum < 2
 			_down-page-select-dom.hide!
 		if _downsum == 0
-			$ '#pass-coupon' .hide!
+			$ '\#pass-coupon' .hide!
 		$("._up .page").html("#{_upnow}/#{_upsum}")
 		$("._up ._jump-input").attr("max", "#{_upsum}")
 		$("._down .page").html("#{_downnow}/#{_downsum}")
@@ -159,6 +159,7 @@ main-manage = let
 							$("._pre-distribute-coupon").html("顾客支付订单后发券")
 						$("._pre-max-coupon").html("#{_coupons[j].quantity} 张")
 						$("._pre-max-own").html("每人最多领取 #{_coupons[j].max} 张")
+						$("._pre-get-frequency").html(" #{_coupons[j].limit} 分")
 						_fun = []
 						_func = ["堂食", "外带", "外卖", "预点"]
 						_hello = parseInt(_coupons[j].fun).toString(2)
@@ -330,7 +331,7 @@ main-manage = let
 			addCoupon.quantity = $("._max-coupon").val!
 			addCoupon.max_use = $("._multiple-use").val!
 			addCoupon.max = $("._max-own").val!
-			addCoupon.daily = $("._max-own-select").val!
+			addCoupon.limit = $("._get-frequency").val!
 			if $("._distribute-coupon").val! is "0"
 				addCoupon.pay = $("._distribute-coupon").val!
 			else if $("._distribute-coupon").val! is "1"
@@ -427,6 +428,14 @@ main-manage = let
 				alert('领取上限只能为数字')
 				return false;
 
+		_get-frequency-dom.blur !->
+			if $('._get-frequency').val() == '' or /^[1-9]\d*$/.test($('._get-frequency').val())
+				return true
+			else
+				$('._get-frequency').val('')
+				alert('领取上限只能为数字')
+				return false;
+
 		_multiple-use-dom.blur !->
 			if $('._multiple-use').val() == '' or /^[1-9]\d*$/.test($('._multiple-use').val())
 				return true
@@ -465,11 +474,6 @@ main-manage = let
 				console.log "11", 11
 			else if Number($(@).val!) is 1
 				console.log "22", 22
-		_max-own-select-dom.change !->
-			if Number($(@).val!) is 0
-				console.log "11", 11
-			else if Number($(@).val!) is 1
-				console.log "22", 22
 		reg=new RegExp("(^| )Dname=([^;]*)(;|$)")
 		a1 = decodeURIComponent(document.cookie.match(reg)[2])
 		$(".tip-1-content").html("1. 本券仅在："+a1+" 使用;")
@@ -490,7 +494,7 @@ main-manage = let
 	time-out-id = ''
 	# 显示全局信息提示
 	show-global-message = (str)->
-		ob = $ '#global_message' 
+		ob = $ '\#global_message' 
 		ob.show!
 		ob.html str 
 		clearTimeout time-out-id

@@ -77,16 +77,24 @@
 					.max-coupon-input
 						input._max-coupon.check-input(placeholder='发放的卡券总数' maxlength = "10")
 						span._unit 张
-				#max-own-select
-					span._content 领取上限 *
-					select._max-own-select
-						option(value = "0") 整个有效期内每人限领
-						option(value = "1") 有效期内每人每天限领
+				//- #max-own-select
+				//- 	span._content 领取上限 *
+				//- 	select._max-own-select
+				//- 		option(value = "0") 整个有效期内每人限领
+				//- 		option(value = "1") 有效期内每人每天限领
+				//- #max-own
+				//- 	span._content
+				//- 	#max-own-input
+				//- 		input._max-own.check-input(maxlength = "10")
+				//- 		span._unit 张
 				#max-own
-					span._content
-					#max-own-input
-						input._max-own.check-input(maxlength = "10")
-						span._unit 张
+					span._content 领取上限 *
+					input._max-own.check-input
+					span._unit 张
+				#get-frequency
+					span._content 领取频率 *
+					input._get-frequency.check-input(value='30')
+					span._unit 分
 				#apply-area
 					span._content 适用业务 *
 					.apply._first.true
