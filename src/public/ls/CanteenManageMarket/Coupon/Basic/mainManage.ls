@@ -345,6 +345,7 @@ main-manage = let
 					}
 					callback 	:		(result)!-> alert('新建成功', true);setTimeout('location.reload()', 2000)
 				}
+				_save-btn-dom.unbind 'click'
 			else if isValid is 1 
 				alert('保存失败，尚有未填写项目')
 
