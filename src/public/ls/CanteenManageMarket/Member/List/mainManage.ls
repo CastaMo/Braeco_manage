@@ -156,7 +156,6 @@ main-manage = let
 					request-object.phone = $(".phoneNumber").html!
 
 				if _internal-charge-checkbox.has-class 'choose'
-					debugger
 					require_.get("chargeBabalce").require {
 						data: {
 							JSON: JSON.stringify(request-object)
@@ -168,11 +167,13 @@ main-manage = let
 					}
 				else
 					require_.get("recharge").require {
-						data 		:		{
-							JSON 	:		JSON.stringify(request-object)
-							user-id :		parentID;
+						data: {
+							JSON: JSON.stringify(request-object)
+							user-id: parentID;
 						}
-						callback 	:		(succes)!-> alert('充值成功', true);setTimeout('location.reload()', 2000)
+						callback:	(succes)!-> 
+							alert('充值成功', true)
+							setTimeout('location.reload()', 2000)
 					}
 
 			else alert('充值失败')

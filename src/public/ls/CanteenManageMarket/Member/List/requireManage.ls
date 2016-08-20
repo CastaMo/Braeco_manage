@@ -36,8 +36,9 @@ require-manage = let
 	_set-header = {}
 
 	_get-require-data-str = {
-		"modify":		(data)-> return "#{data.JSON}"
-		"recharge":		(data)-> return "#{data.JSON}"
+		"modify":	(data)-> return "#{data.JSON}"
+		"recharge":	(data)-> return "#{data.JSON}"
+		"chargeBabalce": (data)-> return "#{data.JSON}"
 	}
 	
 	_normal-handle = (name, result_, callback)->
@@ -60,6 +61,7 @@ require-manage = let
 			_correct-URL[name]? ajax-object, options.data
 			_set-header[name]? ajax-object, options.data
 			ajax-object.success = (result_)-> _normal-handle name, result_, options.callback
+			debugger
 			ajax-object.always = options.always
 			ajax ajax-object
 

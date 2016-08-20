@@ -426,7 +426,7 @@ angular.module 'ManageDataAnalysis' .controller 'data-analysis', ['$scope', '$re
   set-batch-numbers-array = (coupons)!->
     $scope.filter.coupons-batch-number = coupons
     if !$scope.filter.coupons-selected-batch-number
-      $scope.filter.coupons-selected-batch-number = coupons[0]
+      $scope.filter.coupons-selected-batch-number = coupons[0] + ''
 
   destroy-current-chart = !->
     if $scope.selected-tab is 'member'
