@@ -147,7 +147,7 @@ main-manage = let
 						$("._pre-coupon-inventory").html("#{_coupons[j].remain}")
 						$("._pre-face-value").html("#{_coupons[j].cost_reduce/100}")
 						if _coupons[j].indate.length is 20
-							$("._pre-valid-period").html("#{_coupons[j].indate.substr(10)} 至 #{_coupons[j].indate.substr(10,20)}")
+							$("._pre-valid-period").html("#{_coupons[j].indate.substr(0,10)} 至 #{_coupons[j].indate.substr(10,20)}")
 						else if _coupons[j].indate.length isnt 20
 							$("._pre-valid-period").html("领取后 #{_coupons[j].indate} 天有效，过期无效")
 						$("._pre-use-condition").html("订单额满 #{_coupons[j].cost/100} 元可使用")
