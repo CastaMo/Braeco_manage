@@ -497,11 +497,15 @@ main-manage = let
             refund-method-container-dom.append $ "<div class='refund-disable-description'><p>"+data-obj.refund+"</p></div>"
             $(refund-method-container-dom.find "icon").hover (event)!-> _refund-disable-container-hover-event event
         td-methods-dom.append refund-method-container-dom
-        print-method-container-dom = $ "<div class='method-container'>
-        <icon class='print-icon'></icon>
-        <p>打印</p>
-        </div>"
-        print-method-container-dom.click !-> _print-method-container-click-event data-obj.id
+
+        print-method-container-dom = $ "<div class='method-container'></div>"
+        if data-obj.refund != '已全额退款'
+            print-method-container-dom.append $ "<icon class='print-icon'></icon>
+                <p>打印</p>"
+            print-method-container-dom.click !-> _print-method-container-click-event data-obj.id
+        else
+            print-method-container-dom.append  $ "<icon class='print-disable-icon'></icon>
+            <p class='print-disable-word'>打印</p>"
         td-methods-dom.append print-method-container-dom
         td-methods-dom.append "<div class='clear'></div>"
         tr-dom.append td-methods-dom

@@ -17,7 +17,7 @@ main-manage = let
 	_max-coupon-dom = $ "\._max-coupon"
 	_distribute-coupon-dom = $ "\._distribute-coupon"
 	_max-own-dom = $ "\._max-own"
-	_max-own-select-dom = $ "\.max-own-select"
+	_get-frequency-dom = $ "\._get-frequency"
 	_multiple-use-dom = $ "\._multiple-use"
 	_date-period-start-dom = $ "\._date-period-start"
 	_date-period-end-dom = $ "\._date-period-end"
@@ -30,9 +30,11 @@ main-manage = let
 	_pass-content-dom = $ "\#pass-content-field"
 	_confirm-btn-dom = $ "\#stop-coupon .confirm-btn"
 	_confirm-cancel-btn = $ "\#stop-coupon .confirm-cancel-btn"
+	_up-page-select-dom = $ '._up'
 	_up-last-dom = $ "\._up .lastPage.btn"
 	_up-next-dom = $ "\._up .nextPage.btn"
 	_up-jump-dom = $ "\._up .jump-btn"
+	_down-page-select-dom = $ '._down'
 	_down-last-dom = $ "\._down .lastPage.btn"
 	_down-next-dom = $ "\._down .nextPage.btn"
 	_down-jump-dom = $ "\._down .jump-btn"
@@ -64,10 +66,10 @@ main-manage = let
 				cost 				: 		coupon.cost
 				cost_reduce 		:		coupon.cost_reduce
 				max 				:		coupon.max
+				limit 				:		coupon.limit
 				max_use 			:		coupon.max_use
 				indate 				:		coupon.indate
 				remain				:		coupon.remain
-				daily				:		coupon.daily
 				fun 				: 		coupon.fun
 				pay 				:		coupon.pay
 				quantity 			:		coupon.quantity
@@ -76,6 +78,14 @@ main-manage = let
 
 	_init-coupon-view = !->
 		_length = _coupons.length
+		if _upsum < 2
+			_up-page-select-dom.hide!
+		if _upsum == 0
+			$ '\#run-coupon' .hide!
+		if _downsum < 2
+			_down-page-select-dom.hide!
+		if _downsum == 0
+			$ '\#pass-coupon' .hide!
 		$("._up .page").html("#{_upnow}/#{_upsum}")
 		$("._up ._jump-input").attr("max", "#{_upsum}")
 		$("._down .page").html("#{_downnow}/#{_downsum}")
@@ -149,6 +159,7 @@ main-manage = let
 							$("._pre-distribute-coupon").html("顾客支付订单后发券")
 						$("._pre-max-coupon").html("#{_coupons[j].quantity} 张")
 						$("._pre-max-own").html("每人最多领取 #{_coupons[j].max} 张")
+						$("._pre-get-frequency").html(" #{_coupons[j].limit} 分")
 						_fun = []
 						_func = ["堂食", "外带", "外卖", "预点"]
 						_hello = parseInt(_coupons[j].fun).toString(2)
@@ -160,6 +171,19 @@ main-manage = let
 						$("._pre-multiple-use").html("每笔订单最多同时叠加使用#{_coupons[j].max_use}张")
 						$("._QRcode").attr("src", "#{_coupons[j].url}")
 				page.toggle-page "detail"
+
+	_set-coupon-run = !->
+		$(".detailCoupon-wrapper").removeClass "stop"
+		$(".detailCoupon-wrapper").addClass "run"
+		$(".run-btn p").html("启用发放中")
+		$(".stop-btn p").html("停止发放")
+
+	_set-coupon-stop = !->
+		$(".stop-confirm").fade-out 100
+		$(".detailCoupon-wrapper").removeClass "run"
+		$(".detailCoupon-wrapper").addClass "stop"
+		$(".run-btn p").html("启用发放")
+		$(".stop-btn p").html("停止发放中")
 
 	_init-all-event = !->
 		$.fn.datepicker.languages['zh-CN'] = {
@@ -182,6 +206,7 @@ main-manage = let
 		}
 		_date-period-end-dom.datepicker {
 			format: 'yyyy-mm-dd',
+			startDate: new Date(),
 			autohide: 'true',
 			autopick: 'true',
 			language: 'zh-CN',
@@ -244,6 +269,8 @@ main-manage = let
 
 		_new-btn-dom.click !->
 			page.toggle-page "new"
+			$("._date-period-tip").html("有效期：#{_date-period-start-dom.val!} 至 #{_date-period-end-dom.val!}")
+			$("._date-period-tip").html("有效期：#{_date-period-start-dom.val!} 至 #{_date-period-end-dom.val!}")
 
 		_cancel-btn-dom.click !->
 			$('#btn-filed .stop-confirm').fade-in 100
@@ -260,6 +287,11 @@ main-manage = let
 
 
 		_save-btn-dom.click !->
+			d1 = new Date _date-period-start-dom.val!
+			d2 = new Date _date-period-end-dom.val!
+			if d1 > d2
+				alert "请选择合法的日期区间"
+				return
 			isValid = 0
 			$("._multiple-use").val(1)
 			for p from 0 to 6 by 1
@@ -299,7 +331,7 @@ main-manage = let
 			addCoupon.quantity = $("._max-coupon").val!
 			addCoupon.max_use = $("._multiple-use").val!
 			addCoupon.max = $("._max-own").val!
-			addCoupon.daily = $("._max-own-select").val!
+			addCoupon.limit = $("._get-frequency").val!
 			if $("._distribute-coupon").val! is "0"
 				addCoupon.pay = $("._distribute-coupon").val!
 			else if $("._distribute-coupon").val! is "1"
@@ -313,14 +345,11 @@ main-manage = let
 					}
 					callback 	:		(result)!-> alert('新建成功', true);setTimeout('location.reload()', 2000)
 				}
+				_save-btn-dom.unbind 'click'
 			else if isValid is 1 
 				alert('保存失败，尚有未填写项目')
 
 		_run-btn-dom.click !->
-			$(".detailCoupon-wrapper").removeClass "stop"
-			$(".detailCoupon-wrapper").addClass "run"
-			$(".run-btn p").html("启用发放中")
-			$(".stop-btn p").html("停止发放")
 			request-object = {}
 			request-object.status = 0
 			_object = {}
@@ -332,6 +361,7 @@ main-manage = let
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
 				}
+				callback    :       (result)!-> _set-coupon-run!
 			}
 
 		_stop-btn-dom.click !->
@@ -339,11 +369,6 @@ main-manage = let
 				$(".stop-confirm").fade-in 100
 
 		_confirm-btn-dom.click !->
-			$(".stop-confirm").fade-out 100
-			$(".detailCoupon-wrapper").removeClass "run"
-			$(".detailCoupon-wrapper").addClass "stop"
-			$(".run-btn p").html("启用发放")
-			$(".stop-btn p").html("停止发放中")
 			request-object = {}
 			request-object.status = 2
 			_couponid = $("._pre-batch-number")html!
@@ -354,6 +379,7 @@ main-manage = let
 				data 		:		{
 					JSON 	:		JSON.stringify(request-object)
 				}
+				callback    :       (result)!-> _set-coupon-stop!
 			}
 
 		_confirm-cancel-btn.click !->
@@ -403,6 +429,14 @@ main-manage = let
 				alert('领取上限只能为数字')
 				return false;
 
+		_get-frequency-dom.blur !->
+			if $('._get-frequency').val() == '' or /^[1-9]\d*$/.test($('._get-frequency').val())
+				return true
+			else
+				$('._get-frequency').val('')
+				alert('领取上限只能为数字')
+				return false;
+
 		_multiple-use-dom.blur !->
 			if $('._multiple-use').val() == '' or /^[1-9]\d*$/.test($('._multiple-use').val())
 				return true
@@ -441,11 +475,6 @@ main-manage = let
 				console.log "11", 11
 			else if Number($(@).val!) is 1
 				console.log "22", 22
-		_max-own-select-dom.change !->
-			if Number($(@).val!) is 0
-				console.log "11", 11
-			else if Number($(@).val!) is 1
-				console.log "22", 22
 		reg=new RegExp("(^| )Dname=([^;]*)(;|$)")
 		a1 = decodeURIComponent(document.cookie.match(reg)[2])
 		$(".tip-1-content").html("1. 本券仅在："+a1+" 使用;")
@@ -466,7 +495,7 @@ main-manage = let
 	time-out-id = ''
 	# 显示全局信息提示
 	show-global-message = (str)->
-		ob = $ '#global_message' 
+		ob = $ '\#global_message' 
 		ob.show!
 		ob.html str 
 		clearTimeout time-out-id
