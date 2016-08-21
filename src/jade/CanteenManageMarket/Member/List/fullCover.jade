@@ -43,14 +43,17 @@
 						.close-field
 							.close-btn
 						.clear
-					.content-field
-						.content-wrapper.parallel-container
-							.parentMoney-field
+					.content-field(style='height:275px;')
+						.content-wrapper.parallel-container(style='height:115px;')
+							.internal-charge
+								span.checkbox
+								span.description 内部充值（充值余额不计入流水）
+							.parentMoney-field(style='width:95px')
 								p 目前余额：
 							.modifyIntegral
 							span 元
 							.rechargeMoney-field
-								p 充值金额
+								p(style='width:85px;') 充值金额：
 								input#_input2(maxlength = "5")
 						.clear
 						.preview-field
