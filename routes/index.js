@@ -153,7 +153,7 @@ module.exports = function(passport) {
 		// setTimeout(function() {
 		// 	var r = Math.floor(Math.random() * (3 - 0 + 1) + 0);
 		// 	if (r == 0) {
-				res.json({"message":"success"});
+				// res.json({"message":"success"});
 		// 	} else if (r == 1) {
 		// 		res.json({"message":"Order not found"});
 		// 	} else if (r == 2) {
@@ -162,7 +162,7 @@ module.exports = function(passport) {
 		// 		res.json({"message":"Need to upload cert of wx pay"});
 		// 	}
 		// }, 1000);
-		// res.status(500).send({'message': 'error'});
+		res.status(401).send({'message': 'error'});
 	});
 
 	router.post('/Dinner/Manage/Orders/Excel', function(req, res, next) {

@@ -159,7 +159,7 @@ main-manage = let
 							$("._pre-distribute-coupon").html("顾客支付订单后发券")
 						$("._pre-max-coupon").html("#{_coupons[j].quantity} 张")
 						$("._pre-max-own").html("每人最多领取 #{_coupons[j].max} 张")
-						$("._pre-get-frequency").html(" #{_coupons[j].limit} 分")
+						$("._pre-get-frequency").html("每隔 #{_coupons[j].limit} 分钟可领取")
 						_fun = []
 						_func = ["堂食", "外带", "外卖", "预点"]
 						_hello = parseInt(_coupons[j].fun).toString(2)
