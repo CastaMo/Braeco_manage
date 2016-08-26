@@ -60,10 +60,10 @@ main-manage = let
 		$('#_input2').blur !->
 			if $('#_input2').val() == '' or /^\+?[1-9]\d*$/.test($('#_input2').val())
 				return true
-			else
-				$('#_input2').val('')
-				alert('充值金额只能为正整数')
-				return false
+			# else
+			# 	$('#_input2').val('')
+			# 	alert('充值金额只能为正整数')
+			# 	return false
 
 		$("._suppPhone").blur !->
 			if $('._suppPhone').val() == '' or /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/.test($('._suppPhone').val())
