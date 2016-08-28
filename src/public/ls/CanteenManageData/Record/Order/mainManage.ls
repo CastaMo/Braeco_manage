@@ -14,6 +14,9 @@ main-manage = let
     _start-date-input-dom = $ '\#record-order-main .start-date'
     _end-date-input-dom = $ '\#record-order-main .end-date'
     _search-btn-dom = $ "\#record-order-main .search-btn"
+
+    _print-all-btn-dom = $ "\#record-order-main .print-all-btn"
+
     _export-form-dom = $ "\#record-order-main \#export-form"
     _export-form-class-dom = $ "\#record-order-main \#export-form-class"
     _export-form-st-dom = $ "\#record-order-main \#export-form-st"
@@ -149,6 +152,63 @@ main-manage = let
         td-water-number = target.find '.td-water-number'
         order-details-container = td-water-number.find '.order-details-container'
         order-details-container.hide!
+
+    _td-hover-event = (event) !->
+        if _is-one-pinned
+            return
+        target = $ event.target
+        while not target.is('td')
+            target = $ target.parent!
+        td-dom = $ target
+        tr-dom = $ target.parent!
+        td-water-number = tr-dom.find '.td-water-number'
+        order-details-container = td-water-number.find '.order-details-container'
+        order-details-container.show!
+
+    _td-leave-event = (event) !->
+        if _is-one-pinned
+            return
+        target = $ event.target
+        while not target.is('td')
+            target = $ target.parent!
+        td-dom = $ target
+        tr-dom = $ target.parent!
+        td-water-number = tr-dom.find '.td-water-number'
+        order-details-container = td-water-number.find '.order-details-container'
+        order-details-container.hide!
+
+    _checkbox-change-event = (event) !->
+        checkbox = $ event.target
+        parent = checkbox.parent!
+        if checkbox.is ":checked"
+            parent.add-class 'checked'
+        else
+            parent.remove-class 'checked'
+        if _count-checked-checkbox! > 1
+            _print-all-btn-dom.show!
+        else
+            _print-all-btn-dom.hide!
+
+    _count-checked-checkbox = ->
+        _print-all-checkbox-dom = $ "\#record-order-main .print-all-checkbox"
+        count = 0
+        for checkbox-dom in _print-all-checkbox-dom
+            if ($ checkbox-dom).is ':checked'
+                count += 1
+        return count
+
+    _get-checked-checkbox-values = ->
+        checked-value = []
+        _print-all-checkbox-dom = $ "\#record-order-main .print-all-checkbox"
+        count = 0
+        for checkbox-dom in _print-all-checkbox-dom
+            if ($ checkbox-dom).is ':checked'
+                checked-value.push ($ checkbox-dom).val!
+        return checked-value
+
+    _print-all-btn-click-event = ->
+        print.initial-print-page _get-checked-checkbox-values!,true
+        _full-cover-dom.fade-in 100
     
     _refund-method-container-click-event = (data-obj) !->
         refund.initial-refund-page data-obj
@@ -268,8 +328,8 @@ main-manage = let
         table-body-dom = $ "<tbody></tbody>"
         current-cat = 0
         for single-food in content-obj
-            if single-food.cat == 0
-                continue
+            # if single-food.cat == 0
+                # continue
             if current-cat !== 0 and current-cat !== single-food.cat
                 table-body-dom.append "<tr><td colspan='3'>-----------------------------------------</td></tr>"
             current-cat := single-food.cat
@@ -395,6 +455,22 @@ main-manage = let
         container-dom.attr "id","pinned-order-container"
         event.stop-propagation!
 
+    _td-click-event = (event) !->
+        if _is-one-pinned
+            return
+        target = $ event.target
+        while not target.is 'td'
+            target = $ target.parent!
+        tr-dom = $ target.parent!
+        td-water-number = tr-dom.find '.td-water-number'
+        container-dom = td-water-number.find '.order-details-container'
+        icon = container-dom.find ".order-details-header .pin-icon"
+        icon.remove-class 'unpinned-icon'
+        icon.add-class 'pinned-icon'
+        _is-one-pinned := true
+        container-dom.attr "id","pinned-order-container"
+        event.stop-propagation!
+
     _order-details-container-click-event = (event)!->
         # target = $ event.target
         # while not target.has-class 'order-details-container'
@@ -433,7 +509,7 @@ main-manage = let
             pinned-container-dom.remove-attr "id"
             target = $ event.target
             while not target.is 'html'
-                if target.is 'tr' and target.parent!.is 'tbody'
+                if target.is 'td'
                     target.trigger 'mouseenter'
                     break
                 target = target.parent!
@@ -451,22 +527,37 @@ main-manage = let
 
     _gene-tr-dom = (data-obj)->
         tr-dom = $ "<tr></tr>"
-        tr-dom.hover ((event)!-> _tr-hover-event event), ((event)!-> _tr-leave-event event)
-        tr-dom.click (event)!-> _tr-click-event event
+        # tr-dom.hover ((event)!-> _tr-hover-event event), ((event)!-> _tr-leave-event event)
+        # tr-dom.click (event)!-> _tr-click-event event
+        # checkbox
+        checkbox-dom = $ "<input type='checkbox' class='print-all-checkbox'>"
+        checkbox-dom.val data-obj.id
+        checkbox-dom.change (event)!-> _checkbox-change-event event
+        td-checkbox-dom = $ "<td class='td-checkbox'></td>"
+        td-checkbox-dom.append checkbox-dom
+        tr-dom.append td-checkbox-dom
         # 成交时间
         unix-timestamp = parse-int data-obj.date.create
         date = _unix-timestamp-to-only-date unix-timestamp
         time = _unix-timestamp-to-only-time unix-timestamp
-        tr-dom.append $ "<td><div>"+date+"</div><div>"+time+"</div></td>"
+        td-time-dom = $ "<td><div>"+date+"</div><div>"+time+"</div></td>"
+        td-time-dom.hover ((event)!-> _td-hover-event event), ((event)!-> _td-leave-event event)
+        td-time-dom.click (event)!-> _td-click-event event
+        tr-dom.append td-time-dom
         # 会员编号
         if data-obj.eater == null or data-obj.eater.id == null
-            tr-dom.append $ "<td>"+"-"+"</td>"
+            td-member-dom = $ "<td>"+"-"+"</td>"
         else
-            tr-dom.append $ "<td>"+data-obj.eater.id+"</td>"
+            td-member-dom = $ "<td>"+data-obj.eater.id+"</td>"
+        td-member-dom.hover ((event)!-> _td-hover-event event), ((event)!-> _td-leave-event event)
+        td-member-dom.click (event)!-> _td-click-event event
+        tr-dom.append td-member-dom
         # 订单号
         # tr-dom.append $ "<td>"+data-obj.id+"</td>"
         # 流水号
         td-water-number-dom = $ "<td class='td-water-number'></td>"
+        td-water-number-dom.hover ((event)!-> _td-hover-event event), ((event)!-> _td-leave-event event)
+        td-water-number-dom.click (event)!-> _td-click-event event
         if data-obj.serial == '推送失败'
             number-content-dom = $ "<p class='td-water-number-content'>"+"接单失败"+"</p>"
         else
@@ -475,14 +566,23 @@ main-manage = let
         td-water-number-dom.append _gene-order-details-container data-obj
         tr-dom.append td-water-number-dom
         # 交易额
-        tr-dom.append $ "<td>"+data-obj.price+"元"+"</td>"
+        td-money-dom = $ "<td>"+data-obj.price+"元"+"</td>" 
+        td-money-dom.hover ((event)!-> _td-hover-event event), ((event)!-> _td-leave-event event)
+        td-money-dom.click (event)!-> _td-click-event event
+        tr-dom.append td-money-dom
         # 订单类型
-        tr-dom.append $ "<td class='td-type'>"+data-obj.type+"</td>"
+        td-type-dom = $ "<td class='td-type'>"+data-obj.type+"</td>"
+        td-type-dom.hover ((event)!-> _td-hover-event event), ((event)!-> _td-leave-event event)
+        td-type-dom.click (event)!-> _td-click-event event
+        tr-dom.append td-type-dom
         # 支付方式
         if data-obj.channel == "微信P2P"
-            tr-dom.append $ "<td>微信支付</td>"
+            td-channel-dom = $ "<td>微信支付</td>"
         else
-            tr-dom.append $ "<td>"+data-obj.channel+"</td>"
+            td-channel-dom = $ "<td>"+data-obj.channel+"</td>"
+        td-channel-dom.hover ((event)!-> _td-hover-event event), ((event)!-> _td-leave-event event)
+        td-channel-dom.click (event)!-> _td-click-event event
+        tr-dom.append td-channel-dom
         # 操作
         td-methods-dom =  $ "<td class='td-methods'></td>"
         refund-method-container-dom = $ "<div class='method-container'></div>"
@@ -540,6 +640,7 @@ main-manage = let
         _jump-btn-dom.click !-> _jump-btn-click-event!
         _start-date-input-dom.change !-> _start-date-input-dom-change-event!
         _end-date-input-dom.change !-> _end-date-input-dom-change-event!
+        _print-all-btn-dom.click !-> _print-all-btn-click-event!
         ($ "html").click (event)!-> _html-click-event event
 
     _init-page-info = !->
