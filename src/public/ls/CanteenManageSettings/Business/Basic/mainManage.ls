@@ -13,6 +13,7 @@ main-manage = let
         "p2p_wx_pub": "微信支付",
         "cash": "现金支付"
     }
+    _date-map = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
 
     # common
     _copy-to-clipboard = (text)!->
@@ -55,12 +56,23 @@ main-manage = let
         stop-btn.click click-event
 
     _set-business-method-content-dom = (business-type, business-method)!->
-        business-method-content-dom = $ "#"+business-type+"-method-content"
+        business-method-content-dom = $ "\#"+business-type+"-method-content"
         method-strings = []
         for method, value of business-method
             if value == 1
                 method-strings.push _method-map[method]
         business-method-content-dom.text (method-strings.join '、')
+
+    _set-business-date-content-dom = (business-type, business-date)!->
+        business-date-content-dom = $ "\#"+business-type+"-date-content"
+        date-strings = []
+        for i from 1 to 6
+            value = Math.pow(2, i)
+            if (value .&. business-date) == value
+                date-strings.push _date-map[i]
+        if (Math.pow(2, 0) .&. business-date) == 1
+            date-strings.push _date-map[0]
+        business-date-content-dom.text (date-strings.join '、')
 
     _business-turn-on = (business-type, alert-block-dom)!->
         $.ajax {type: "POST", url: "/Dinner/Manage/Firm/Turn/"+business-type+"/On",\
@@ -94,6 +106,7 @@ main-manage = let
 
     _init-eatin = !->
         _init-eatin-status!
+        _set-business-date-content-dom _eatin-data.type, _eatin-data.able_peroid_week
         _set-business-method-content-dom _eatin-data.type, _eatin-data.channels
 
     _init-eatin-status = !->
@@ -153,6 +166,7 @@ main-manage = let
     _init-takeaway = !->
         _init-takeaway-status!
         _set-business-method-content-dom _takeaway-data.type, _takeaway-data.channels
+        _set-business-date-content-dom _takeaway-data.type, _takeaway-data.able_peroid_week
         _takeaway-content-qrcode-dom.attr "src",_takeaway-data.qr
         _takeaway-content-link-dom.text _takeaway-data.url
 
@@ -223,6 +237,7 @@ main-manage = let
 
     _init-takeout = !->
         _init-takeout-status!
+        _set-business-date-content-dom _takeout-data.type, _takeout-data.able_peroid_week
         _set-business-method-content-dom _takeout-data.type, _takeout-data.channels
         _takeout-content-qrcode-dom.attr "src",_takeout-data.qr
         _takeout-content-link-dom.text _takeout-data.url
