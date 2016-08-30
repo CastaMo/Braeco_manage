@@ -9,9 +9,9 @@ edit-manage = let
     _cancel-btn-dom = $ "\#basic-edit .cancel-btn"
     _save-btn-dom = $ "\#basic-edit .save-btn"
 
-    _checkbox-dom = $ "\#basic-edit input[type='checkbox']"
+    _accept-date-checkbox-dom = $ "\#basic-edit .accept-date-block input[type='checkbox']"
+    _pay-method-checkbox-dom = $ "\#basic-edit .pay-method-block input[type='checkbox']"
 
-    _pay-method-block-dom = $ "\#basic-edit pay-method-block"
 
     _type-map = {
         "eatin": "堂食",
@@ -26,22 +26,30 @@ edit-manage = let
         page.toggle-page 'main'
 
     _save-btn-click-event = !->
-        channels = {}
-        channels.channels = {}
+        form-data = {}
+        form-data.channels = {}
+        form-data.able_peroid_week = 0
+        for checkbox in _accept-date-checkbox-dom
+            value = ($ checkbox).val!
+            if ($ checkbox).is ":checked"
+                form-data.able_peroid_week += parse-int(($ checkbox).val!)
+        if form-data.able_peroid_week == 0
+            alert "请至少选择一个接单日期"
+            return
         is-one-chosen = false
-        for checkbox in _checkbox-dom
+        for checkbox in _pay-method-checkbox-dom
             value = ($ checkbox).val!
             if not ($ checkbox).is ':visible'
                 continue
             if ($ checkbox).is ":checked"
-                channels.channels[value] = 1
+                form-data.channels[value] = 1
                 is-one-chosen = true
             else
-                channels.channels[value] = 0
+                form-data.channels[value] = 0
         if not is-one-chosen
             alert "请至少选择一种支付渠道"
             return
-        data = JSON.stringify channels
+        data = JSON.stringify form-data
         $.ajax {type: "POST", url: "/Dinner/Manage/Firm/Update/"+_edit-business.type, data: data,\
             dataType: "JSON", contentType: "application/json", success: _save-post-success, error: _save-post-fail}
         _set-save-btn-disable!
@@ -82,11 +90,19 @@ edit-manage = let
         checkbox-par.add-class "unchecked-icon"
 
     _reset-checkebox = !->
-        _checkbox-dom.each !->
+        _pay-method-checkbox-dom.each !->
+            _set-checkbox-unchecked ($ this).parent!
+        _accept-date-checkbox-dom.each !->
             _set-checkbox-unchecked ($ this).parent!
 
+    _init-accept-date-checkbox-dom = !->
+        for checkbox in _accept-date-checkbox-dom
+            value = parse-int($ checkbox .val!)
+            if (value .&. _edit-business.able_peroid_week) == value
+                _set-checkbox-checked ($ checkbox .parent!)
+
     _init-pay-method-block-dom = !->
-        for checkbox in _checkbox-dom
+        for checkbox in _pay-method-checkbox-dom
             $ checkbox .parent!.hide!
         for method, value of _edit-business.channels
             ($ "input[value='"+method+"']").parent!.show!
@@ -99,7 +115,8 @@ edit-manage = let
     _init-event = !->
         _cancel-btn-dom.click !-> _cancel-btn-click-event!
         _save-btn-dom.click !-> _save-btn-click-event!
-        _checkbox-dom.click (event)!-> _checkbox-click-event event
+        _pay-method-checkbox-dom.click (event)!-> _checkbox-click-event event
+        _accept-date-checkbox-dom.click (event)!-> _checkbox-click-event event
 
     get-business-and-init: (business, url) !->
         _edit-business := business
@@ -109,6 +126,7 @@ edit-manage = let
         else
             $ "\#auth-link" .hide!
         _init-pay-method-block-dom!
+        _init-accept-date-checkbox-dom!
 
     initial: !->
         _init-depend-module!
