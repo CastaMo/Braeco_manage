@@ -30,8 +30,8 @@ module.exports = function(grunt) {
     grunt.initConfig({
         // Metadata.
         pkg: grunt.file.readJSON('package.json'),
-        // secret: grunt.file.readJSON('../secret_for_formal.json'),
-        secret: grunt.file.readJSON('../secret.json'),
+        secret: grunt.file.readJSON('../secret_for_formal.json'),
+        // secret: grunt.file.readJSON('../secret.json'),
         dirs: grunt.file.readJSON('dirs.json'),
 
         banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
@@ -173,7 +173,7 @@ module.exports = function(grunt) {
                         } catch(e) {
                             console.log(e);
                         }
-                        
+
                         return content;
                     }
                 },
@@ -320,7 +320,7 @@ module.exports = function(grunt) {
         'clean:version',
         'hashmap'
     ]);
-    
+
     // just for test
     var option2path = {
         "settings_staff": ["/CanteenManageSettings/Staff/**/", "/Settings/Staff", ""] // settings_staff as a test, Todo -> add all

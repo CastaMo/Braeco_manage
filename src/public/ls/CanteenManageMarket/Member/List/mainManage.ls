@@ -20,6 +20,7 @@ main-manage = let
 	_loop-level-dom = $ "\.table-title ._loop-level a"
 	_loop-exp-dom = $ "\.table-title ._loop-exp a"
 	_loop-balance-dom = $ "\.table-title ._loop-balance a"
+	_internal-charge-checkbox = $ "\.internal-charge \.checkbox"
 	
 	_init-all-keyup = !->
 		$("._searchInput").keyup !->
@@ -59,10 +60,10 @@ main-manage = let
 		$('#_input2').blur !->
 			if $('#_input2').val() == '' or /^\+?[1-9]\d*$/.test($('#_input2').val())
 				return true
-			else
-				$('#_input2').val('')
-				alert('充值金额只能为正整数')
-				return false
+			# else
+			# 	$('#_input2').val('')
+			# 	alert('充值金额只能为正整数')
+			# 	return false
 
 		$("._suppPhone").blur !->
 			if $('._suppPhone').val() == '' or /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/.test($('._suppPhone').val())
@@ -153,14 +154,36 @@ main-manage = let
 					request-object.phone = $("._suppPhone").val!
 				else
 					request-object.phone = $(".phoneNumber").html!
-				require_.get("recharge").require {
-					data 		:		{
-						JSON 	:		JSON.stringify(request-object)
-						user-id :		parentID;
+
+				if _internal-charge-checkbox.has-class 'choose'
+					require_.get("chargeBabalce").require {
+						data: {
+							JSON: JSON.stringify(request-object)
+							user-id: parentID
+						}
+						callback: (succes)!->
+							alert('充值成功', true)
+							setTimeout('location.reload()', 2000)
 					}
-					callback 	:		(succes)!-> alert('充值成功', true);setTimeout('location.reload()', 2000)
-				}
+				else
+					require_.get("recharge").require {
+						data: {
+							JSON: JSON.stringify(request-object)
+							user-id: parentID;
+						}
+						callback:	(succes)!-> 
+							alert('充值成功', true)
+							setTimeout('location.reload()', 2000)
+					}
+
 			else alert('充值失败')
+
+		_internal-charge-checkbox.click !->
+			$ '.checkbox' .toggle-class 'choose'
+			if $('.rechargeMoney-field p').text! is '充值金额：'
+				$ '.rechargeMoney-field p' .text '充值后余额：'
+			else 
+				$ '.rechargeMoney-field p' .text '充值金额：'
 
 	class Member
 		(options)!->

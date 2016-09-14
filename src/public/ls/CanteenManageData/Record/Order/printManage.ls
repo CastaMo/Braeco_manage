@@ -1,5 +1,7 @@
 print-manage = let
+    _is-print-all = null
     _order-id = null
+    _order-ids = null
     _printer = null
 
     _close-button-dom = $ "\#full-cover .print-close-button"
@@ -9,6 +11,8 @@ print-manage = let
     _comfirm-button-dom = $ "\#full-cover .print-block-content .comfirm-btn"
 
     _checkbox-inputs-dom = $ "\#full-cover .print-block-content input[type='checkbox']"
+
+    _print-block-title-dom = $ "\#full-cover .print-block-title"
 
     _close-button-dom-click-event = !->
         _full-cover-dom.fade-out 100
@@ -45,10 +49,18 @@ print-manage = let
                 checked-printer-ids.push parse-int ($ this).val!
         if checked-printer-ids.length === 0
             alert "请选择打印机"
-        else
+        else if not _is-print-all
             checked-printer-ids-json = JSON.stringify checked-printer-ids
             $.ajax {type: "POST", url: "/order/reprint/"+_order-id, data: checked-printer-ids-json,\
                 dataType: 'JSON', contentType:"application/json", success: _print-success, error: _print-fail}
+            _set-comfirm-button-disable!
+        else
+            data = {}
+            data.printer = checked-printer-ids
+            data.order = _order-ids
+            data-json = JSON.stringify data
+            $.ajax {type: "POST", url: "/Order/Reprint/Aggregate", data: data-json,\
+                dataType: "JSON", contentType: "application/json", success: _print-success, error: _print-fail}
             _set-comfirm-button-disable!
     
     _print-success = (data)!->
@@ -69,14 +81,12 @@ print-manage = let
         printer-choose-block-dom = $ "\#full-cover .printer-choose-block"
         printer-choose-block-dom.empty!
         
-    _hide-print-page = !->
+    _hide-refund-page = !->
         refund-page-dom = $ "\#full-cover .refund-block"
         print-page-dom = $ "\#full-cover .print-block"
         refund-page-dom.hide!
         print-page-dom.show!
-    
-    
-        
+
     _get-printer-infomation = !->
         $.ajax {type: "POST", url: "/dinner/printer/get", dataType: 'JSON',\
             contentType:"application/json", success: _gene-printer-chooser, error: _get-printer-fail}
@@ -109,9 +119,15 @@ print-manage = let
         _cancel-button-dom.click !-> _cancel-button-dom-click-event!
         _comfirm-button-dom.click !-> _comfirm-button-dom-click-event!
 
-    initial-print-page: (order-id)!->
-        _order-id := order-id
-        _hide-print-page!
+    initial-print-page: (order-id, print-all=false)!->
+        _is-print-all := print-all
+        if _is-print-all
+            _print-block-title-dom.text '选择打印总单的打印机'
+            _order-ids := order-id
+        else
+            _print-block-title-dom.text '选择打印该单的打印机'
+            _order-id := order-id
+        _hide-refund-page!
         _get-printer-infomation!
         
     
