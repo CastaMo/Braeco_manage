@@ -116,8 +116,7 @@ class ComboListView
 
 		combo-dom-object.dc-dom.html "<p>#{get-dc-info combo.dc-type, combo.dc}</p>"
 
-		combo-dom-object.remark-dom
-										.html combo.get-detail!
+		combo-dom-object.remark-dom.html combo.tag
 
 		if combo.able then combo-dom-object	.cover-dom .fade-out 200
 		else combo-dom-object .cover-dom .fade-in 200

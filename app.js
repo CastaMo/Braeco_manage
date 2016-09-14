@@ -8,6 +8,7 @@ var passport 		= require("passport");
 var route 			= require("./routes")(passport);
 var readFiles 	= require("./common/readFiles");
 
+
 app.set(function () {
     app.use(express.bodyParser({ keepExtensions: true, uploadDir: '/tmp' }));
 });
