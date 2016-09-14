@@ -13,6 +13,7 @@ main-manage = let
         "p2p_wx_pub": "微信支付",
         "cash": "现金支付"
     }
+    _date-map = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
 
     # common
     _copy-to-clipboard = (text)!->
@@ -33,6 +34,55 @@ main-manage = let
         a = $ "<a></a>" .attr "href", qrcode-src .attr "download", business-type+".png" .attr "target","_blank" .appendTo "body"
         a[0].click!
         a.remove!
+
+    _tran-time-num-to-arr = (time-num)->
+        time-array = []
+        time-string = time-num.toString 2
+        len = time-string.length
+        is-zero = true
+        for i from len-1 to 0 by -1
+            if (time-string[i] == '1')
+                if (is-zero == true)
+                    time-array.push len-1-i
+                if i == 0
+                    time-array.push len-1-i
+                else if (i - 1 >= 0) and (time-string[i-1] == '0')
+                    time-array.push len-1-i
+                is-zero = false
+            if (time-string[i] == '0')
+                is-zero = true
+        time-array
+
+    _tran-time-num-to-strings = (time-num)->
+        string-arr = []
+        time-array = _tran-time-num-to-arr(time-num)
+        len = time-array.length
+        if len % 2 == 1
+            return
+        for i from 0 to len-1 by 2
+            string-arr.push _tran-time-num-to-string time-array[i]
+            string-arr.push _tran-time-num-to-string time-array[i+1]+1
+        string-arr
+
+    _tran-time-num-to-string = (num)->
+        t = parse-int num / 2
+        if t < 10
+            hour = '0' + t.toString!
+        else
+            hour = t.toString!
+        if (num % 2) == 0
+            minu = '00'
+        else
+            minu = '30'
+        return hour + ' : ' + minu
+
+    _gene-time-content = (business-type, time-num)!->
+        time-strings = _tran-time-num-to-strings time-num
+        business-time-content-dom = $ "\#"+business-type+"-time-content"
+        len = time-strings.length
+        for i from 0 to len-1 by 2
+            business-time-content-dom.append $ "<div class='business-time-period'>" + time-strings[i]\
+                + " 至 " + time-strings[i+1] + "</div>"
 
     _set-stopping-status = (start-btn, stop-btn, click-event)!->
         start-btn.remove-class "business-start-btn-able"
@@ -55,12 +105,23 @@ main-manage = let
         stop-btn.click click-event
 
     _set-business-method-content-dom = (business-type, business-method)!->
-        business-method-content-dom = $ "#"+business-type+"-method-content"
+        business-method-content-dom = $ "\#"+business-type+"-method-content"
         method-strings = []
         for method, value of business-method
             if value == 1
                 method-strings.push _method-map[method]
         business-method-content-dom.text (method-strings.join '、')
+
+    _set-business-date-content-dom = (business-type, business-date)!->
+        business-date-content-dom = $ "\#"+business-type+"-date-content"
+        date-strings = []
+        for i from 1 to 6
+            value = Math.pow(2, i)
+            if (value .&. business-date) == value
+                date-strings.push _date-map[i]
+        if (Math.pow(2, 0) .&. business-date) == 1
+            date-strings.push _date-map[0]
+        business-date-content-dom.text (date-strings.join '、')
 
     _business-turn-on = (business-type, alert-block-dom)!->
         $.ajax {type: "POST", url: "/Dinner/Manage/Firm/Turn/"+business-type+"/On",\
@@ -94,7 +155,11 @@ main-manage = let
 
     _init-eatin = !->
         _init-eatin-status!
+        _set-business-date-content-dom _eatin-data.type, _eatin-data.able_peroid_week
         _set-business-method-content-dom _eatin-data.type, _eatin-data.channels
+        # console.log _eatin-data.able_peroid_day.toString(2)
+        # console.log _tran-time-num-to-strings _eatin-data.able_peroid_day
+        _gene-time-content _eatin-data.type,_eatin-data.able_peroid_day
 
     _init-eatin-status = !->
         if _eatin-data.able
@@ -153,8 +218,10 @@ main-manage = let
     _init-takeaway = !->
         _init-takeaway-status!
         _set-business-method-content-dom _takeaway-data.type, _takeaway-data.channels
+        _set-business-date-content-dom _takeaway-data.type, _takeaway-data.able_peroid_week
         _takeaway-content-qrcode-dom.attr "src",_takeaway-data.qr
         _takeaway-content-link-dom.text _takeaway-data.url
+        _gene-time-content _takeaway-data.type,_takeaway-data.able_peroid_day
 
     _init-takeaway-status = !->
         if _takeaway-data.able
@@ -223,9 +290,11 @@ main-manage = let
 
     _init-takeout = !->
         _init-takeout-status!
+        _set-business-date-content-dom _takeout-data.type, _takeout-data.able_peroid_week
         _set-business-method-content-dom _takeout-data.type, _takeout-data.channels
         _takeout-content-qrcode-dom.attr "src",_takeout-data.qr
         _takeout-content-link-dom.text _takeout-data.url
+        _gene-time-content _takeout-data.type,_takeout-data.able_peroid_day
 
     _init-takeout-status = !->
         if _takeout-data.able

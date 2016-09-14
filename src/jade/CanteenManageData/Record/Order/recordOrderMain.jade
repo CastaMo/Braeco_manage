@@ -17,6 +17,7 @@
                 option(value="takeout") 外带
                 option(value="takeaway") 外卖
                 option(value="membership") 会员卡充值
+            button.print-all-btn 打印总单
             form(id="export-form" action="/Dinner/Manage/Excel/1" method="POST")
                 input(id="export-form-st" name="st" type='number' value="0" style="display:none")
                 input(id="export-form-en" name="en" type='number' value="0" style="display:none")
@@ -26,6 +27,7 @@
     table.ro-container-table
         thead
             tr
+                th.rot-checkbox
                 th.rot-pay-time 成交时间
                 th.rot-number 会员编号
                 th.rot-water-number 流水号

@@ -231,8 +231,11 @@ refund-manage = let
             alert "请求退款失败"
         _set-password-comfirm-button-able!
 
-    _refund-post-fail = (data)!->
-        alert "请求退款失败"
+    _refund-post-fail = (error)!->
+        if error.status == 401
+            alert "权限不足"
+        else
+            alert "请求退款失败"
         set-timeout (!-> location.reload!),2000
         
     _is-refunded = (single-food)-> # 判断content中的每一个单品或套餐是否被退款

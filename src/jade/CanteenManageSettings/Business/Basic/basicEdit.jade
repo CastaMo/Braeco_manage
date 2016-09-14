@@ -1,38 +1,47 @@
 #basic-edit
     .block-header 
     .business-form
-        //- .form-block.accept-date-block
-        //-     span 接单日期
-        //-     ul
-        //-         li.checkbox-item.unchecked-icon
-        //-             input(type="checkbox" value="0")
-        //-             p 周一
-        //-             .clear
-        //-         li.checkbox-item.unchecked-icon
-        //-             input(type="checkbox" value="1")
-        //-             p 周二
-        //-             .clear
-        //-         li.checkbox-item.unchecked-icon
-        //-             input(type="checkbox" value="2")
-        //-             p 周三
-        //-             .clear
-        //-         li.checkbox-item.unchecked-icon
-        //-             input(type="checkbox" value="3")
-        //-             p 周四
-        //-             .clear
-        //-         li.checkbox-item.unchecked-icon
-        //-             input(type="checkbox" value="4")
-        //-             p 周五
-        //-             .clear
-        //-         li.checkbox-item.unchecked-icon
-        //-             input(type="checkbox" value="5")
-        //-             p 周六
-        //-             .clear
-        //-         li.checkbox-item.unchecked-icon
-        //-             input(type="checkbox" value="6")
-        //-             p 周日
-        //-             .clear
-        //-     .clear
+        .form-block.accept-date-block
+            span 营业日期
+            ul
+                li.checkbox-item.unchecked-icon
+                    input(type="checkbox" value="2")
+                    p 周一
+                    .clear
+                li.checkbox-item.unchecked-icon
+                    input(type="checkbox" value="4")
+                    p 周二
+                    .clear
+                li.checkbox-item.unchecked-icon
+                    input(type="checkbox" value="8")
+                    p 周三
+                    .clear
+                li.checkbox-item.unchecked-icon
+                    input(type="checkbox" value="16")
+                    p 周四
+                    .clear
+                li.checkbox-item.unchecked-icon
+                    input(type="checkbox" value="32")
+                    p 周五
+                    .clear
+                li.checkbox-item.unchecked-icon
+                    input(type="checkbox" value="64")
+                    p 周六
+                    .clear
+                li.checkbox-item.unchecked-icon
+                    input(type="checkbox" value="1")
+                    p 周日
+                    .clear
+            .clear
+        .form-block.accept-time-block
+            span 营业时间
+            ul.accept-time-list
+                .accept-time-item#zero-time-item-info 未设置接单时段
+            .clear
+            .add-btn-block
+                button.add-btn
+                    icon.add-icon
+                    span 添加时段
         .form-block.pay-method-block
             span 支付渠道
             ul
@@ -55,6 +64,7 @@
             .clear
             #auth-link-container
                 a(id="auth-link" target='_blank') 公众号授权
+        .clear
 
     .btn-container
         button.cancel-btn 取消

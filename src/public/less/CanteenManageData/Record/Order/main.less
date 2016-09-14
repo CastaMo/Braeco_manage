@@ -91,6 +91,19 @@
                         padding-left: 5px;
                         border: 1px solid #e7e7eb;
                     }
+                    .print-all-btn {
+                        display: none;
+                        cursor: pointer;
+                        margin-left: 58px;
+                        width: 96px;
+                        height: 32px;
+                        background-color: #fff;
+                        border: 1px solid #e7e7eb;
+                        border-radius: 5px;
+                        &:hover {
+                            background-color: #F4F5F9;
+                        }
+                    }
                     #export-form {
                         padding: 0;
                         float: right;
@@ -122,11 +135,14 @@
                         > th {
                             font-weight: normal;
                         }
+                        .rot-checkbox {
+                            width: 6%;
+                        }
                         .rot-pay-time {
                             width: 15%;
                         }
                         .rot-number {
-                            width: 13%;
+                            width: 10%;
                         }
                         .rot-water-number {
                             width: 10%;
@@ -138,7 +154,7 @@
                             width: 12%;
                         }
                         .rot-pay-method {
-                            width: 15%;
+                            width: 12%;
                         }
                         .rot-method {
                             width: 20%;
@@ -176,12 +192,15 @@
                                 .refund-disable-word {
                                     color: #e7e7eb;
                                 }
-                                .print-icon {
+                                .print-icon, .print-disable-icon {
                                     width: 20px;
                                     height: 20px;
                                     margin-top: 2px;
                                     margin-bottom: 6px;
                                     background-size: 20px 20px;
+                                }
+                                .print-disable-word {
+                                    color: #e7e7eb;
                                 }
                                 .refund-disable-description {
                                     display: none;
@@ -294,6 +313,24 @@
                                         }
                                     }
                                 }
+                            }
+                        }
+                        td.td-checkbox {
+                            background-size: 16px 16px;
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            background-image: url(@unchecked-icon-url);
+                            &.checked {
+                                background-image: url(@yellow-checked-icon-url);
+                            }
+                            content: center;
+                            input[type='checkbox'] {
+                                text-align: center;
+                                vertical-align: middle;
+                                opacity: 0;
+                                cursor: pointer;
+                                width: 16px;
+                                height: 16px;
                             }
                         }
                     }
@@ -557,7 +594,7 @@
                         input {
                             width: 180px;
                             padding: 8px;
-                            border: 1px solid #E7E7EB;
+                            border: 1px solid #c8c7cc;
                         }
                     }
                     .password-block-button {
