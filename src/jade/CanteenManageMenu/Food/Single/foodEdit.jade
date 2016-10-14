@@ -104,37 +104,37 @@
 						.right-part
 							textarea(id="intro" name="intro")
 						.clear
-		//.f-shelves-field.top-bottom-border
+		.f-shelves-field.top-bottom-border
 			.shelves-wrapper.t-wrapper
 				.shelves-container
 					.date-container
 						p 上架日期
 						ul.date-list.parallel-container
-							li#date-Mon.parallel-container
+							li#date-0.parallel-container.active(data-value='1')
 								.tick
 								p 周一
 								.clear
-							li#date-Tue.parallel-container
+							li#date-1.parallel-container.active(data-value='2')
 								.tick
 								p 周二
 								.clear
-							li#date-Wed.parallel-container
+							li#date-2.parallel-container.active(data-value='4')
 								.tick
 								p 周三
 								.clear
-							li#date-Thurs.parallel-container
+							li#date-3.parallel-container.active(data-value='8')
 								.tick
 								p 周四
 								.clear
-							li#date-Fri.parallel-container
+							li#date-4.parallel-container.active(data-value='16')
 								.tick
 								p 周五
 								.clear
-							li#date-Sat.parallel-container
+							li#date-5.parallel-container.active(data-value='32')
 								.tick
 								p 周六
 								.clear
-							li#date-Sun.parallel-container
+							li#date-6.parallel-container.active(data-value='64')
 								.tick
 								p 周日
 								.clear
@@ -143,13 +143,36 @@
 					.time-container
 						.left-part
 							p 上架时间
-							#time
 							.clear
 						.right-part
-							.btn-field
-								.btn.manage-time-btn
-									p 管理上架时间
-								.clear
+							.time-field
+								ul.time-list
+								.add-time-btn-field
+									.add-time-btn
+										.middle-field.parallel-container
+											.add-icon
+											p 添加时段
+											.clear
+								#time-picker
+									.time-picker-container
+										.picker-field
+											.hour-picker.picker.parallel-container
+												.num-field
+													p 00
+												.oper-field
+													.upper-btn
+													.down-btn
+												.clear
+											.minute-picker.picker.parallel-container
+												.num-field
+													p 00
+												.oper-field
+													.upper-btn
+													.down-btn
+												.clear
+											.clear
+										.confirm-btn
+											p 确定
 						.clear
 		.f-dc-field
 			.dc-wrapper.t-wrapper

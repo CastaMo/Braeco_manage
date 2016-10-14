@@ -27,16 +27,18 @@ class NewController
 	reset: !->
 		@upload-pic-flag 		= false
 		@pic 								= null
-		@config-data 				= 
-			name 					: null
-			name2 				: null
-			type 					: null
-			price 				: null
-			groups			 	: []
-			tag 					: null
-			detail 				: null
-			dc_type 			: null
-			dc 						: null
+		@config-data 	= 
+			name 							: null
+			name2 						: null
+			type 							: null
+			price 						: null
+			groups					 	: []
+			tag 							: null
+			detail 						: null
+			dc_type 					: null
+			dc 								: null
+			able_peroid_day 	: null
+			able_peroid_week 	: null
 		eventbus.emit "controller:new:reset"
 		@add-subitem!
 
@@ -93,6 +95,8 @@ class NewController
 		if dc = @config-data.dc
 			if options = @dc-type-map-dc-options[@config-data.dc-type]
 				if Number(dc) < Number(options.min) or Number(dc) > Number(options.max) then err-msg += "优惠范围应在#{options.min}~#{options.max}之内\n"; valid-flag = false
+		if @config-data.able_peroid_week is 0 then err-msg += "上架日期不能为空\n"; valid-flag = false
+		if @config-data.able_peroid_day is 0 then err-msg += "上架时间不能为空\n"; valid-flag = false
 		if not valid-flag then alert err-msg
 		return valid-flag
 

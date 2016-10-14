@@ -35,9 +35,14 @@ class EditView
 		@cancel-btn-dom 					= @$el.find ".cancel-btn"
 		@save-btn-dom 						= @$el.find ".save-btn"
 
+		@time-picker-dom 					= @$el.find "\#time-picker"
+		@time-list-dom 						= @$el.find "ul.time-list"
+
 		@all-subitem-doms 				= []
 
 	init-all-event: !->
+		self = @
+
 		@type-dom.change !~> @type-dom-change-event @type-dom.val!
 
 		@pic-upload-dom.change !~> @pic-upload-event @pic-upload-dom[0].files[0]
@@ -57,6 +62,64 @@ class EditView
 		eventbus.on "controller:edit:add-subitem", !~> @add-subitem-dom!; @update-all-subitem-dom!
 
 		eventbus.on "controller:edit:read-from-combo", (combo)!~> @read-from-combo combo
+
+		$("body").click !->
+			self.time-picker-dom.fade-out 200
+
+		@time-picker-dom.click !->
+			return false
+
+		@$el.on "click", ".time-choose", !->
+			row-index = $(@).parents("li").index()
+			if $(@).index() is 2 then col-index = 1
+			else col-index = 0
+			self.time-picker-dom.css {
+				"left" 	: "#{col-index * 140}px"
+				"top" 	: "#{row-index * 50 + 50}px"
+			}
+			self.time-picker-dom.data("index", row-index * 2 + col-index)
+
+			time-value = $(@).data("value")
+
+			self.set-time-value-for-time-picker time-value
+
+			self.time-picker-dom.fade-in 200
+			return false
+
+		@time-picker-dom.on "click", ".confirm-btn", !->
+			index = Number self.time-picker-dom.data("index")
+			time-value = Number self.time-picker-dom.data("value")
+			self.set-time-value-for-time-choose index, time-value
+			self.time-picker-dom.fade-out 200
+
+		@$el.on "click", ".add-time-btn" !->
+			self.time-list-dom.append $(self.get-time-dom-str-by-value(0, 0))
+
+		@time-list-dom.on "click", ".delete-time-icon", !->
+			$(@).parents("li").remove()
+
+		@$el.find(".date-list").on "click", "li", !->
+			$(@).toggle-class "active"
+
+		@time-picker-dom.on "click", "\#upper-btn-0", !->
+			time-value = self.time-picker-dom.data("value")
+			time-value = (time-value + 2) % 49
+			self.set-time-value-for-time-picker time-value
+
+		@time-picker-dom.on "click", "\#upper-btn-1", !->
+			time-value = self.time-picker-dom.data("value")
+			time-value = (time-value + 1) % 49
+			self.set-time-value-for-time-picker time-value
+
+		@time-picker-dom.on "click", "\#down-btn-0", !->
+			time-value = self.time-picker-dom.data("value")
+			time-value = (time-value + 47) % 49
+			self.set-time-value-for-time-picker time-value
+
+		@time-picker-dom.on "click", "\#down-btn-1", !->
+			time-value = self.time-picker-dom.data("value")
+			time-value = (time-value + 48) % 49
+			self.set-time-value-for-time-picker time-value
 
 	type-dom-change-event: (type)!->
 		if type is "combo_static" then @price-display-dom.fade-in 200
@@ -188,23 +251,91 @@ class EditView
 		@all-subitem-doms[0].top-dom.fade-out 200
 
 	get-config-data-by-input: !->
+
+		self = @
+
+		_get-week-value = ->
+			value = 0
+			self.$el.find "ul.date-list li"
+					.each (i, ele)!-> if $(ele).has-class "active" then value := value .|. (Math.pow(2, i))
+			return value
+
+		_get-day-value = ->
+			temps = []
+			value = 0
+			map-num = {}
+			self.time-list-dom.find "li"
+							.each (i, ele)!->
+								start 	= $(ele).find "\#time-start" .data("value")
+								end 		= $(ele).find "\#time-end" .data("value")
+								temps.push [start, end]
+			for temp in temps
+				start 	= temp[0]
+				end 	= temp[1]
+				if start > end then value := -1; break
+				if start is end then continue
+				for i in [start to end - 1]
+					if (map-num[i]) then continue
+					map-num[i] = 1
+					value += Math.pow(2, i)
+			return value
+
 		groups = []
 		require = []
 		for subitem-dom-object in @all-subitem-doms
 			groups.push subitem-dom-object.select-dom.val!
 			require.push subitem-dom-object.input-dom.val!
 		config-data =
-			name 					: @c-name-dom.val!
-			name2 				: @e-name-dom.val!
-			type 					: @type-dom.val!
-			price 				: @price-dom.val!
-			tag 					: @remark-dom.val!
-			detail 				: @intro-dom.val!
-			dc_type 			: @dc-type-dom.val!
-			dc 						: @dc-dom .find "input" .val!
-			groups 				: groups
-			require 			: require
+			name 							: @c-name-dom.val!
+			name2 						: @e-name-dom.val!
+			type 							: @type-dom.val!
+			price 						: @price-dom.val!
+			tag 							: @remark-dom.val!
+			detail 						: @intro-dom.val!
+			dc_type 					: @dc-type-dom.val!
+			dc 								: @dc-dom .find "input" .val!
+			groups 						: groups
+			require 					: require
+			able_peroid_week 	: _get-week-value!
+			able_peroid_day 	: _get-day-value!
 		return config-data
+
+	get-time-array-by-value: (time-value)->
+		hour-str = Math.floor(time-value / 2)
+		if hour-str < 10 then hour-str = "0" + hour-str
+
+		if time-value % 2 is 1 then minute-str = "30"
+		else minute-str = "00"
+
+		return [hour-str, minute-str]
+
+	set-time-value-for-time-picker: (time-value)!->
+		time-array = @get-time-array-by-value time-value
+
+		@time-picker-dom.find(".hour-picker p").html time-array[0]
+		@time-picker-dom.find(".minute-picker p").html time-array[1]
+
+		@time-picker-dom.data("value", time-value)
+
+	set-time-value-for-time-choose: (index, time-value)!->
+		row-index = Math.floor(index / 2)
+		col-index = index % 2
+		time-array = @get-time-array-by-value time-value
+		@time-list-dom
+				.find("li:eq(#{row-index}) .time-choose:eq(#{col-index})")
+				.html time-array.join(" : ")
+				.data("value", time-value)
+
+	get-time-dom-str-by-value: (start-value, end-value)->
+		start-time-array 	= @get-time-array-by-value start-value
+		end-time-array 		= @get-time-array-by-value end-value
+		return "<li class='time parallel-container'>
+					<span id='time-start' class='time-choose' data-value='#{start-value}'>#{start-time-array.join(" : ")}</span>
+					<span class='context-middle'>至</span>
+					<span id='time-end' class='time-choose' data-value='#{end-value}'>#{end-time-array.join(" : ")}</span>
+					<div class='delete-time-icon'></div>
+					<div class='clear'></div>
+				</li>"
 
 	read-from-combo: (combo)!->
 		@c-name-dom.val combo.c-name
@@ -218,6 +349,37 @@ class EditView
 		for subitem-id, i in combo.groups
 			@add-subitem-dom {subitem-id: subitem-id, require: combo.require[i]}
 		@update-all-subitem-dom!
+
+		@$el.find "ul.date-list li" .remove-class "active"
+		for i in [0 to 6] when combo.able_peroid_week .&. Math.pow(2, i)
+			@$el.find "ul.date-list li:eq(#{i})" .add-class "active"
+
+		@time-list-dom.html ""
+		if combo.able_peroid_day is 0
+			@time-list-dom.html @get-time-dom-str-by-value(0, 0)
+		else
+			temps = []
+			able_value = combo.able_peroid_day
+			while able_value > 0
+				temps.push able_value % 2
+				able_value = Math.floor(able_value / 2)
+			start = -1
+			end = -1
+			for ele, i in temps
+				# 命中
+				if ele is 1
+					if start is -1 then start = end = i
+					else end = i
+
+				# miss
+				else
+					if start >= 0
+						str = @get-time-dom-str-by-value start, end+1
+						@time-list-dom.append($(str))
+					start = -1; end = -1
+			if start >= 0
+				str = @get-time-dom-str-by-value start, end+1
+				@time-list-dom.append($(str))
 
 	reset: !->
 		@c-name-dom.val null; 										@e-name-dom.val null

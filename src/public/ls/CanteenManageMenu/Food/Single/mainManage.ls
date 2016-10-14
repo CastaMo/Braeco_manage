@@ -171,20 +171,22 @@ main-manage = let
 
 		add-dish: (options)!->
 			dish = new Dish {
-				able 			:		options.able
-				default-price 	:		options.default_price
-				detail 			:		options.detail 		|| ""
-				id 				:		options.id
-				c-name 			:		options.name 		|| ""
-				e-name 			:		options.name2 		|| ""
-				pic 			:		options.pic 		|| ""
-				groups 			:		options.groups 		|| []
-				tag 			:		options.tag 		|| ""
-				category-id 	:		@id
-				dc-type			:		options.dc_type		|| ""
-				dc 				:		options.dc 			|| 0
-				is-head 		:		options.is-head 	|| false
-				type 			:		options.type 		|| "normal"
+				able 				:		options.able
+				default-price 		:		options.default_price
+				detail 				:		options.detail 		|| ""
+				id 					:		options.id
+				c-name 				:		options.name 		|| ""
+				e-name 				:		options.name2 		|| ""
+				pic 				:		options.pic 		|| ""
+				groups 				:		options.groups 		|| []
+				tag 				:		options.tag 		|| ""
+				category-id 		:		@id
+				dc-type				:		options.dc_type		|| ""
+				dc 					:		options.dc 			|| 0
+				is-head 			:		options.is-head 	|| false
+				type 				:		options.type 		|| "normal"
+				able_peroid_week 	: 		options.able_peroid_week
+				able_peroid_day 	: 		options.able_peroid_day
 			}
 
 		change-able-dish: (dish-id, able)!-> _dishes[@id][dish-id].change-able-self able
