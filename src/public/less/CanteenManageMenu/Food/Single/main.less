@@ -11,7 +11,7 @@
     }
     .tick {
         .background-norm();
-        .background-size(15px, 15px);
+        .background-size(13px, 13px);
         background-color: #fff;
         border: solid 1px @border-grey-color;
         float: left;
@@ -411,25 +411,122 @@
                     }
                     .time-container {
                         .left-part {
-                            width: 464px;
+                            width: 56px;
                             p {
                                 float: left;
                             }
-                            #time {
-                                cursor: text;
-                                float: right;
-                                width: 380px;
-                                height: 30px;
-                                border: solid 1px @border-grey-color;
-                            }
                         }
                         .right-part {
-                            .manage-time-btn {
-                                height: 30px;
-                                border: solid 1px @border-grey-color;
-                                width: 160px;
-                                text-align: center;
-                                padding: 0;
+                            width: 569px;
+                            position: relative;
+                            .time-field {
+                                ul li {
+                                    margin-bottom: 20px;
+                                    .time-choose {
+                                        line-height: 30px;
+                                        height: 30px;
+                                        border-left: solid 1px #E7E7EB;
+                                        border-top: solid 1px #E7E7EB;
+                                        border-bottom: solid 1px #E7E7EB;
+                                        display: inline-block;
+                                        box-sizing: border-box;
+                                        padding-left: 8px;
+                                        &:after {
+                                            margin-top: -1px;
+                                            margin-left: 8px;
+                                            content: '';
+                                            float: right;
+                                            .background-size(30px, 30px);
+                                            .background-norm();
+                                        }
+                                    }
+                                    .context-middle {
+                                        margin: 0 18px;
+                                    }
+                                    .delete-time-icon {
+                                        cursor: pointer;
+                                        margin-left: 20px;
+                                        width: 30px;
+                                        height: 30px;
+                                        background-size: 16px 20px;
+                                        .background-norm();
+                                    }
+                                    &:last-of-type {
+                                        margin-bottom: 0;
+                                    }
+                                }
+                                .add-time-btn-field {
+                                    margin-top: 20px;
+                                    .add-time-btn {
+                                        cursor: pointer;
+                                        line-height: 30px;
+                                        border: solid 1px #E7E7EB;
+                                        .rounded-corners(5px);
+                                        width: 160px;
+                                        .middle-field {
+                                            width: 80px;
+                                            margin: 0 auto;
+                                            .add-icon {
+                                                margin-top: 8px;
+                                                .background-norm();
+                                                .background-size(14px, 14px);
+                                            }
+                                            p {
+                                                float: right;
+                                            }
+                                        }
+                                    }
+                                }
+                                #time-picker {
+                                    .hide;
+                                    background-color: #fff;
+                                    border: solid 1px #E7E7EB;
+                                    z-index: 100;
+                                    position: absolute;
+                                    top: 50px;
+                                    left: 0;
+                                    .shadow(2px 2px 2px rgba(0, 0, 0, 0.349019607843137));
+                                    .time-picker-container {
+                                        padding: 30px;
+                                        .picker-field {
+                                            .hour-picker {
+                                                float: left;
+                                            }
+                                            .minute-picker {
+                                                float: right;
+                                            }
+                                            .picker {
+                                                border: solid 1px #E7E7EB;
+                                                .num-field {
+                                                    line-height: 41px;
+                                                    font-size: 20px;
+                                                    padding: 0 14px;
+                                                }
+                                                .oper-field {
+                                                    > * {
+                                                        cursor: pointer;
+                                                        .background-norm();
+                                                        .background-size(20px, 20px);
+                                                        border-left: solid 1px #E7E7EB;
+                                                    }
+                                                    .upper-btn {
+                                                        border-bottom: solid 1px #E7E7EB;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        .confirm-btn {
+                                            cursor: pointer;
+                                            margin-top: 20px;
+                                            .rounded-corners(5px);
+                                            color: #fff;
+                                            background-color: #FFC107;
+                                            line-height: 32px;
+                                            width: 158px;
+                                            text-align: center;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

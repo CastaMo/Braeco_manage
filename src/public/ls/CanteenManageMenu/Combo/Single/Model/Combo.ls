@@ -17,6 +17,8 @@ class Combo
 		@pic 							= 		options.pic 						|| ""
 		@type 						= 		options.type
 		@tag 							= 		options.tag 						|| ""
+		@able_peroid_week = 		options.able_peroid_week|| 1
+		@able_peroid_day 	= 		options.able_peroid_day|| 1
 
 	set-able: (able)!->
 		@able = able
@@ -64,6 +66,8 @@ class Combo
 			pic 						:			@pic
 			type 						:			@type
 			tag 						:			@tag
+			able_peroid_week: 		@able_peroid_week
+			able_peroid_day : 		@able_peroid_day
 
 
 module.exports = Combo

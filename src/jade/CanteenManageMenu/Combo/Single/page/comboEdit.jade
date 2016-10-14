@@ -75,7 +75,77 @@
 						.right-part
 							textarea(id="edit-intro")
 						.clear
-		.c-dc
+		.c-shelves
+			.shelves-wrapper.c-wrapper
+				.shelves-container
+					.date-container
+						p 上架日期
+						ul.date-list.parallel-container
+							li#date-0.parallel-container.active(data-value='1')
+								.tick
+								p 周一
+								.clear
+							li#date-1.parallel-container.active(data-value='2')
+								.tick
+								p 周二
+								.clear
+							li#date-2.parallel-container.active(data-value='4')
+								.tick
+								p 周三
+								.clear
+							li#date-3.parallel-container.active(data-value='8')
+								.tick
+								p 周四
+								.clear
+							li#date-4.parallel-container.active(data-value='16')
+								.tick
+								p 周五
+								.clear
+							li#date-5.parallel-container.active(data-value='32')
+								.tick
+								p 周六
+								.clear
+							li#date-6.parallel-container.active(data-value='64')
+								.tick
+								p 周日
+								.clear
+							.clear
+						.clear
+					.time-container
+						.left-part
+							p 上架时间
+							.clear
+						.right-part
+							.time-field
+								ul.time-list
+								.add-time-btn-field
+									.add-time-btn
+										.middle-field.parallel-container
+											.add-icon
+											p 添加时段
+											.clear
+								#time-picker
+									.time-picker-container
+										.picker-field
+											.hour-picker.picker.parallel-container
+												.num-field
+													p 00
+												.oper-field
+													#upper-btn-0.upper-btn
+													#down-btn-0.down-btn
+												.clear
+											.minute-picker.picker.parallel-container
+												.num-field
+													p 00
+												.oper-field
+													#upper-btn-1.upper-btn
+													#down-btn-1.down-btn
+												.clear
+											.clear
+										.confirm-btn
+											p 确定
+						.clear
+		.c-dc.top-bottom-border
 			.c-dc-wrapper.c-wrapper
 				.c-dc-container
 					.dc-field

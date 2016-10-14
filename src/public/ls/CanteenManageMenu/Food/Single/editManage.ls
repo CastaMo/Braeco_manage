@@ -21,6 +21,10 @@ edit-manange = let
 	_dc-type-dom 			= _edit-dom.find ".f-dc-field"
 	_combo-only-dom 	    = _edit-dom.find "select\#select-combo-only"
 
+	_time-picker-dom 		= _edit-dom.find "\#time-picker"
+
+	_time-list-dom	 		= _edit-dom.find "ul.time-list"
+
 	###
 	#	放置图片显示的dom
 	###
@@ -64,6 +68,9 @@ edit-manange = let
 	_groups 				= null
 	_upload-flag 			= null
 	_is-combo-only 			= null
+
+	able_peroid_week 		= null
+	able_peroid_day 		= null
 
 	###
 	#	所有dc-type的name
@@ -118,6 +125,8 @@ edit-manange = let
 		_dc 					:= null
 		_upload-flag 			:= null
 		_groups 				:= []
+		able_peroid_week 		:= null
+		able_peroid_day 		:= null
 
 		_current-dish 			:= null
 
@@ -126,6 +135,32 @@ edit-manange = let
 			if _dc-type is "none" or _dc-type is "half" then return null
 			return parse-int (_dc-field-dom.find "input").val!
 
+		_get-week-value = ->
+			value = 0
+			_edit-dom.find "ul.date-list li"
+					.each (i, ele)!-> if $(ele).has-class "active" then value := value .|. (Math.pow(2, i))
+			return value
+
+		_get-day-value = ->
+			temps = []
+			value = 0
+			map-num = {}
+			_time-list-dom.find "li"
+							.each (i, ele)!->
+								start 	= $(ele).find "\#time-start" .data("value")
+								end 	= $(ele).find "\#time-end" .data("value")
+								temps.push [start, end]
+			for temp in temps
+				start 	= temp[0]
+				end 	= temp[1]
+				if start > end then value := -1; break
+				if start is end then continue
+				for i in [start to end - 1]
+					if (map-num[i]) then continue
+					map-num[i] = 1
+					value += Math.pow(2, i)
+			return value
+
 		_c-name  			:= getStrAfterFilter _c-name-dom.val!
 		_e-name 			:= getStrAfterFilter _e-name-dom.val!
 		_default-price 		:= Number _default-price-dom.val!
@@ -133,6 +168,9 @@ edit-manange = let
 		_intro 				:= getStrAfterFilter _intro-dom.val!
 		_dc-type 			:= getStrAfterFilter _dc-type-select-dom.val!
 		_dc 				:= _get-dc-value!
+		able_peroid_week 	:= _get-week-value!
+		able_peroid_day 	:= _get-day-value!
+		
 
 	_connect-property-to-groups = !->
 		group.set-current-property-sub-item-by-target {
@@ -156,6 +194,39 @@ edit-manange = let
 
 		_src 					:= _current-dish.pic
 		if _src then _pic-display-dom.css {"background-image" : "url('#{_src}')"}
+
+		_edit-dom.find "ul.date-list li" .remove-class "active"
+		for i in [0 to 6] when _current-dish.able_peroid_week .&. Math.pow(2, i)
+			_edit-dom.find "ul.date-list li:eq(#{i})" .add-class "active"
+
+		_time-list-dom.html ""
+		if _current-dish.able_peroid_day is 0
+			_time-list-dom.html _get-time-dom-str-by-value(0, 0)
+		else
+			temps = []
+			able_value = _current-dish.able_peroid_day
+			while able_value > 0
+				temps.push able_value % 2
+				able_value = Math.floor(able_value / 2)
+			start = -1
+			end = -1
+			for ele, i in temps
+				# 命中
+				if ele is 1
+					if start is -1 then start = end = i
+					else end = i
+
+				# miss
+				else
+					if start >= 0
+						str = _get-time-dom-str-by-value start, end+1
+						_time-list-dom.append($(str))
+					start = -1; end = -1
+			if start >= 0
+				str = _get-time-dom-str-by-value start, end+1
+				_time-list-dom.append($(str))
+
+
 
 		###
 		#	连接当前属性组与当前餐品以及groupMange进行绑定
@@ -191,6 +262,9 @@ edit-manange = let
 		if _groups.length > 40 then _err-msg += "属性组数量应为0~40个(一个中文字符占2个单位)\n"; _valid-flag = false
 		if _dc
 			options = _dc-type-map-dc-options[_dc-type]; if _dc < options.min or _dc > options.max then _err-msg += "优惠范围应在#{options.min}~#{options.max}之内\n"; _valid-flag = false
+		if able_peroid_day is -1 then _err-msg += "对于上架时间的时间段，起点应小于终点\n"; _valid-flag = false
+		if able_peroid_week is 0 then _err-msg += "上架日期不能为空\n"; _valid-flag = false
+		if able_peroid_day is 0 then _err-msg += "上架时间不能为空\n"; _valid-flag = false
 		if _valid-flag then return _valid-flag
 		alert _err-msg; return _valid-flag
 
@@ -205,6 +279,8 @@ edit-manange = let
 			tag 				:		_remark
 			dc-type 			: 		_dc-type
 			dc 					: 		_dc
+			able_peroid_day 	: 		able_peroid_day
+			able_peroid_week 	: 		able_peroid_week
 		}
 		page.toggle-page "main"
 		_reset!
@@ -212,15 +288,17 @@ edit-manange = let
 	_get-upload-JSON-for-edit = ->
 		if _is-combo-only then _dc-type := "combo_only"
 		return JSON.stringify {
-			dc_type 	:		_dc-type
-			dc 			:		_dc
-			price 		:		_default-price
-			name 		:		_c-name
-			name2 		:		_e-name
-			tag 		:		_remark
-			detail 		:		_intro
-			groups 		:		_groups
-			type 		:		"normal"
+			dc_type 			:		_dc-type
+			dc 					:		_dc
+			price 				:		_default-price
+			name 				:		_c-name
+			name2 				:		_e-name
+			tag 				:		_remark
+			detail 				:		_intro
+			groups 				:		_groups
+			type 				:		"normal"
+			able_peroid_day 	: 		able_peroid_day
+			able_peroid_week 	: 		able_peroid_week
 		}
 
 	###************ operation end **********###
@@ -330,6 +408,43 @@ edit-manange = let
 			always 				:	!-> page.cover-page "exit"
 		}
 
+	_get-time-array-by-value = (time-value)->
+		hour-str = Math.floor(time-value / 2)
+		if hour-str < 10 then hour-str = "0" + hour-str
+
+		if time-value % 2 is 1 then minute-str = "30"
+		else minute-str = "00"
+
+		return [hour-str, minute-str]
+
+	_set-time-value-for-time-picker = (time-value)!->
+		time-array = _get-time-array-by-value time-value
+
+		_time-picker-dom.find(".hour-picker p").html time-array[0]
+		_time-picker-dom.find(".minute-picker p").html time-array[1]
+
+		_time-picker-dom.data("value", time-value)
+
+	_set-time-value-for-time-choose = (index, time-value)!->
+		row-index = Math.floor(index / 2)
+		col-index = index % 2
+		time-array = _get-time-array-by-value time-value
+		_time-list-dom
+				.find("li:eq(#{row-index}) .time-choose:eq(#{col-index})")
+				.html time-array.join(" : ")
+				.data("value", time-value)
+
+	_get-time-dom-str-by-value = (start-value, end-value)->
+		start-time-array 	= _get-time-array-by-value start-value
+		end-time-array 		= _get-time-array-by-value end-value
+		return "<li class='time parallel-container'>
+					<span id='time-start' class='time-choose' data-value='#{start-value}'>#{start-time-array.join(" : ")}</span>
+					<span class='context-middle'>至</span>
+					<span id='time-end' class='time-choose' data-value='#{end-value}'>#{end-time-array.join(" : ")}</span>
+					<div class='delete-time-icon'></div>
+					<div class='clear'></div>
+				</li>"
+
 
 	###************ event end **********###
 
@@ -346,6 +461,64 @@ edit-manange = let
 		_save-dom.click !-> _save-btn-click-event!
 
 		_combo-only-dom.change !-> _combo-only-dom-change-event!
+
+		$("body").click !->
+			_time-picker-dom.fade-out 200
+
+		_time-picker-dom.click !->
+			return false
+
+		_edit-dom.on "click", ".time-choose", !->
+			row-index = $(@).parents("li").index()
+			if $(@).index() is 2 then col-index = 1
+			else col-index = 0
+			_time-picker-dom.css {
+				"left" 	: "#{col-index * 140}px"
+				"top" 	: "#{row-index * 50 + 50}px"
+			}
+			_time-picker-dom.data("index", row-index * 2 + col-index)
+
+			time-value = $(@).data("value")
+
+			_set-time-value-for-time-picker time-value
+
+			_time-picker-dom.fade-in 200
+			return false
+
+		_time-picker-dom.on "click", ".confirm-btn", !->
+			index = Number _time-picker-dom.data("index")
+			time-value = Number _time-picker-dom.data("value")
+			_set-time-value-for-time-choose index, time-value
+			_time-picker-dom.fade-out 200
+
+		_edit-dom.on "click", ".add-time-btn" !->
+			_time-list-dom.append $(_get-time-dom-str-by-value(0, 0))
+
+		_time-list-dom.on "click", ".delete-time-icon", !->
+			$(@).parents("li").remove()
+
+		_edit-dom.find(".date-list").on "click", "li", !->
+			$(@).toggle-class "active"
+
+		_time-picker-dom.find ".upper-btn:eq(0)" .on "click", !->
+			time-value = _time-picker-dom.data("value")
+			time-value = (time-value + 2) % 49
+			_set-time-value-for-time-picker time-value
+
+		_time-picker-dom.find ".upper-btn:eq(1)" .on "click", !->
+			time-value = _time-picker-dom.data("value")
+			time-value = (time-value + 1) % 49
+			_set-time-value-for-time-picker time-value
+
+		_time-picker-dom.find ".down-btn:eq(0)" .on "click", !->
+			time-value = _time-picker-dom.data("value")
+			time-value = (time-value + 47) % 49
+			_set-time-value-for-time-picker time-value
+
+		_time-picker-dom.find ".down-btn:eq(1)" .on "click", !->
+			time-value = _time-picker-dom.data("value")
+			time-value = (time-value + 48) % 49
+			_set-time-value-for-time-picker time-value
 
 
 	_init-depend-module = !->
