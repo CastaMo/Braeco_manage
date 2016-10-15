@@ -95,6 +95,7 @@ class EditController
 				if Number(dc) < Number(options.min) or Number(dc) > Number(options.max) then err-msg += "优惠范围应在#{options.min}~#{options.max}之内\n"; valid-flag = false
 		if @config-data.able_peroid_week is 0 then err-msg += "上架日期不能为空\n"; valid-flag = false
 		if @config-data.able_peroid_day is 0 then err-msg += "上架时间不能为空\n"; valid-flag = false
+		if @config-data.able_peroid_day is -1 then err-msg += "对于上架时间的时间段，起点应小于终点\n"; valid-flag = false
 		if not valid-flag then alert err-msg
 		return valid-flag
 
